@@ -14,16 +14,16 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_routing
-    assert_routing '', :controller => 'articles', :action => 'list', :tags => []
-    assert_routing 'about', :controller => 'articles', :action => 'list', :tags => ['about']
+    assert_routing '', :controller => 'mephisto', :action => 'list', :tags => []
+    assert_routing 'about', :controller => 'mephisto', :action => 'list', :tags => ['about']
   end
 
   def test_list_by_tags
     get :list, :tags => []
     assert_equal tags(:home), assigns(:tag)
-    assert_equal [articles(:another), articles(:welcome)], assigns(:articles)
+    assert_equal [articles(:another).attributes, articles(:welcome).attributes], assigns(:articles)
     get :list, :tags => %w(about)
     assert_equal tags(:about), assigns(:tag)
-    assert_equal [articles(:welcome)], assigns(:articles)
+    assert_equal [articles(:welcome).attributes], assigns(:articles)
   end
 end
