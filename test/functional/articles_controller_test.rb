@@ -50,7 +50,7 @@ class ArticlesControllerTest < Test::Unit::TestCase
   def test_create
     num_articles = Article.count
 
-    post :create, :article => {}
+    post :create, :article => { :title => 'gahhh' }
 
     assert_response :redirect
     assert_redirected_to :action => 'list'
