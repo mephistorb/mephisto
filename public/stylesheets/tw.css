@@ -1,0 +1,102 @@
+body {
+  margin:0; padding:0;
+  font-family:Georgia, times, serif;
+  font-size:14px;
+  color:#222;
+  line-height:20px;
+  background:url(kabukiwithdragontat.jpg) no-repeat right 90px;
+}
+
+h1, h2, h3 {
+  margin:0 0 15px 0;
+}
+
+.meta {
+  background-color:#ddd;
+  font-size:12px;
+  line-height:20px;
+  padding:0 15px;
+}
+
+#header {
+  margin:15px 0 25px 0;
+  padding:50px 30px 0 30px;
+  background-color:#444;
+}
+
+#site_title {
+  font-size:30px;
+  font-weight:bold;
+  font-family:verdana;
+  letter-spacing:3px;
+  color:#fff;
+}
+
+#content, #footer {
+  opacity:.8;
+  background:#fff;
+  color:#000;
+}
+
+#content {
+  padding:0 30px;
+  width:725px;
+}
+
+#main_article {
+  width:444px;
+  padding-right:30px;
+  margin-right:1px;
+  /* border-right:1px solid #999; */
+  float:left;
+}
+
+#side {
+  padding-left:30px;
+  width:220px;
+  font-size:12px;
+  float:left;
+}
+
+#footer {
+  width:785px;
+  padding-top:30px;
+  margin-top:30px;
+  /* border-top:1px solid #999; */
+  font-size:12px;
+}
+
+#footer div {
+  width:332px;
+  padding:0 30px;
+  float:left;
+}
+
+#side h3,
+#footer h3 {
+  color:#333;
+  font-size:12px;
+  font-family:verdana;
+  font-weight:normal;
+  letter-spacing:2px;
+  border-bottom:1px solid #999;
+}
+
+#side h3 {
+  font-size:13px;
+}
+
+.c:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.c {display: inline-table;}
+
+/* Hides from IE-mac \*/
+* html .c {height: 1%;}
+.c {display: block;}
+/* End hide from IE-mac */

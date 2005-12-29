@@ -1,13 +1,15 @@
 <div id="main_article">
 {% for article in articles %}
 {% if forloop.first %}
-{{ article.title }}
+<h3>{{ article.title }}</h3>
+{{ article.summary | textilize }}
+<p class="meta">27 dec 2005 | <a href="#">0 comments</a></p>
 {% endif %}
 {% endfor %}
 </div>
 
 <div id="side">
-blah blah.
+<h3>recent articles</h3>
 {% for article in articles %}
 {% if forloop.index > 1 %}
 <p>{{ article.title }}</p>
