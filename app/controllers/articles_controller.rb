@@ -5,7 +5,14 @@ class ArticlesController < ApplicationController
   end
 
   def list
-    @article_pages, @articles = paginate :articles, :per_page => 10
+    @tag = params[:tags].blank? ?
+      Tag.find_by_name('home') :
+      Tag.find_by_name(params[:tags].join('/'))
+
+    @article_pages = Paginator.new self, @tag.articles.size, 15, params[:page]
+    @articles = @tag.articles.find_by_date \
+                          :limit  =>  @article_pages.items_per_page,
+                          :offset =>  @article_pages.current.offset
   end
 
   def show

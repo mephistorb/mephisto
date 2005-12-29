@@ -5,12 +5,26 @@ require 'articles_controller'
 class ArticlesController; def rescue_action(e) raise e end; end
 
 class ArticlesControllerTest < Test::Unit::TestCase
-  fixtures :articles
+  fixtures :articles, :tags, :taggings
 
   def setup
     @controller = ArticlesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+  end
+
+  def test_routing
+    assert_routing '', :controller => 'articles', :action => 'list', :tags => []
+    assert_routing 'about', :controller => 'articles', :action => 'list', :tags => ['about']
+  end
+
+  def test_list_by_tags
+    get :list, :tags => []
+    assert_equal tags(:home), assigns(:tag)
+    assert_equal [articles(:another), articles(:welcome)], assigns(:articles)
+    get :list, :tags => %w(about)
+    assert_equal tags(:about), assigns(:tag)
+    assert_equal [articles(:welcome)], assigns(:articles)
   end
 
   def test_index
