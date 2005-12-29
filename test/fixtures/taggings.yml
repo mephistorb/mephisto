@@ -1,5 +1,18 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first:
+# :article_id, :integer
+# :tag_id, :integer
+# :position, :integer, :default => 1
+welcome_home:
   id: 1
-another:
+  article_id: 1
+  tag_id: 1
+  position: 1
+another_home:
   id: 2
+  article_id: 2
+  tag_id: 1
+  position: 2
+welcome_about:
+  id: 3
+  article_id: 1
+  tag_id: 2
+  position: 1

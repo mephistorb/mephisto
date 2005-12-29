@@ -1,5 +1,7 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first:
+# title, :string, :limit => 255
+home:
   id: 1
-another:
+  name: home
+about:
   id: 2
+  name: about

@@ -1,5 +1,23 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first:
+# :title, :string, :limit => 255
+# :permalink, :string, :limit => 255
+# :summary, :text
+# :description, :text
+# :created_at, :datetime
+# :updated_at, :datetime
+# :published_at, :datetime
+welcome:
   id: 1
+  title: Welcome to Mephisto
+  permalink: welcome_to_mephisto
+  summary: This is my own little blogging tool
+  created_at: <%= 5.days.ago.to_s(:db) %>
+  updated_at: <%= 5.days.ago.to_s(:db) %>
+  published_at: <%= 3.days.ago.to_s(:db) %>
 another:
   id: 2
+  title: Another Welcome to Mephisto
+  permalink: another_welcome_to_mephisto
+  summary: This is my own little blogging tool
+  created_at: <%= 4.days.ago.to_s(:db) %>
+  updated_at: <%= 4.days.ago.to_s(:db) %>
+  published_at: <%= 4.days.ago.to_s(:db) %>

@@ -3,23 +3,25 @@
 # then regenerate this schema definition.
 
 ActiveRecord::Schema.define() do
-  create_table :articles do |t|
-    t.column :title, :string, :limit => 255
-    t.column :permalink, :string, :limit => 255
-    t.column :summary, :text
-    t.column :description, :text
-    t.column :created_at, :datetime
-    t.column :updated_at, :datetime
-    t.column :published_at, :datetime
+
+  create_table "articles", :force => true do |t|
+    t.column "title", :string
+    t.column "permalink", :string
+    t.column "summary", :text
+    t.column "description", :text
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+    t.column "published_at", :datetime
   end
 
-  create_table :tags do |t|
-    t.column :title, :string, :limit => 255
+  create_table "taggings", :force => true do |t|
+    t.column "article_id", :integer
+    t.column "tag_id", :integer
+    t.column "position", :integer, :default => 1
   end
 
-  create_table :taggings do |t|
-    t.column :article_id, :integer
-    t.column :tag_id, :integer
-    t.column :position, :integer, :default => 1
+  create_table "tags", :force => true do |t|
+    t.column "name", :string
   end
+
 end

@@ -5,6 +5,6 @@ class TaggingTest < Test::Unit::TestCase
 
   # Replace this with your real tests.
   def test_truth
-    assert_kind_of Tagging, taggings(:first)
+    assert_kind_of Tagging, taggings(:welcome_home)
   end
 end
