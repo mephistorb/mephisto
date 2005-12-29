@@ -1,6 +1,5 @@
 class MephistoController < ApplicationController
-  self.template_root = "#{RAILS_ROOT}/theme"
-  layout 'application'
+  layout 'default'
 
   def list
     @tag = params[:tags].blank? ?
