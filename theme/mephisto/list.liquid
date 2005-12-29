@@ -1,0 +1,16 @@
+<div id="main_article">
+{% for article in articles %}
+{% if forloop.first %}
+{{ article.title }}
+{% endif %}
+{% endfor %}
+</div>
+
+<div id="side">
+blah blah.
+{% for article in articles %}
+{% if forloop.index > 1 %}
+<p>{{ article.title }}</p>
+{% endif %}
+{% endfor %}
+</div>
