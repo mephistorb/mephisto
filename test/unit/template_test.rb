@@ -31,6 +31,6 @@ class TemplateTest < Test::Unit::TestCase
 
   protected
   def assert_template_type(expected_template_name, template_type)
-    assert_equal(templates(expected_template_name), Template.find_preferred(template_type))
+    assert_equal(templates(expected_template_name).data, Template.find_preferred(template_type))
   end
 end

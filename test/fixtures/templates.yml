@@ -1,7 +1,42 @@
 # :name, :string, :limit => 255
 # :data, :text
-<% [:home, :index, :single, :tag, :archive, :page, :author, :search, :error].each_with_index do |name, i| %>
-<%= name %>:
-  id: <%= i + 1 %>
-  name: <%= name %>
-<% end %>
+layout:
+  id: 1
+  name: layout
+  data: "<html><body><h1>This is the layout</h1>{{ content_for_layout }}</body></html>"
+home:
+  id: 2
+  name: home
+  data: home
+index:
+  id: 3
+  name: index
+  data: index
+single:
+  id: 4
+  name: single
+  data: single
+tag:
+  id: 5
+  name: tag
+  data: tag
+archive:
+  id: 6
+  name: archive
+  data: archive
+page:
+  id: 7
+  name: page
+  data: page
+author:
+  id: 8
+  name: author
+  data: author
+search:
+  id: 9
+  name: search
+  data: search
+error:
+  id: 10
+  name: error
+  data: error

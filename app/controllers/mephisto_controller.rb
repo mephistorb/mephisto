@@ -10,5 +10,11 @@ class MephistoController < ApplicationController
     @articles = @tag.articles.find_by_date(
                   :limit  =>  @article_pages.items_per_page,
                   :offset =>  @article_pages.current.offset).collect { |a| a.attributes }
+
+    @template_type = :main
+
+    headers["Content-Type"] ||= 'text/html; charset=utf-8'
+    @templates = Template.templates_for(@template_type)
+    render :text => Liquid::Template.parse(@templates['layout']).render
   end
 end

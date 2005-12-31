@@ -5,7 +5,7 @@ require 'mephisto_controller'
 class MephistoController; def rescue_action(e) raise e end; end
 
 class MephistoControllerTest < Test::Unit::TestCase
-  fixtures :articles, :tags, :taggings
+  fixtures :articles, :tags, :taggings, :templates
 
   def setup
     @controller = MephistoController.new
@@ -25,5 +25,10 @@ class MephistoControllerTest < Test::Unit::TestCase
     get :list, :tags => %w(about)
     assert_equal tags(:about), assigns(:tag)
     assert_equal [articles(:welcome).attributes], assigns(:articles)
+  end
+
+  def test_should_render_liquid_templates
+    get :list, :tags => []
+    assert_tag :tag => 'h1', :content => 'This is the layout'
   end
 end
