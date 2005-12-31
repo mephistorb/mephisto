@@ -24,4 +24,9 @@ ActiveRecord::Schema.define() do
     t.column "name", :string
   end
 
+  create_table "templates", :force => true do |t|
+    t.column "name", :string
+    t.column "data", :text
+  end
+
 end

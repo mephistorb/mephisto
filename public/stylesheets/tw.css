@@ -4,7 +4,8 @@ body {
   font-size:14px;
   color:#222;
   line-height:20px;
-  background:url(kabukiwithdragontat.jpg) no-repeat right 90px;
+  text-align:center;
+  background:url(bg-lg.jpg) fixed no-repeat right top;
 }
 
 h1, h2, h3 {
@@ -20,8 +21,14 @@ h1, h2, h3 {
 
 #header {
   margin:15px 0 25px 0;
-  padding:50px 30px 0 30px;
   background-color:#444;
+  text-align:left;
+}
+
+#header .inner {
+  width:725px;
+  padding:50px 30px 0 30px;
+  margin:auto;
 }
 
 #site_title {
@@ -33,9 +40,9 @@ h1, h2, h3 {
 }
 
 #content, #footer {
-  opacity:.8;
-  background:#fff;
   color:#000;
+  text-align:left;
+  margin:auto;
 }
 
 #content {

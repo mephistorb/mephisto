@@ -1,0 +1,7 @@
+# :name, :string, :limit => 255
+# :data, :text
+<% [:home, :index, :single, :tag, :archive, :page, :author, :search, :error].each_with_index do |name, i| %>
+<%= name %>:
+  id: <%= i + 1 %>
+  name: <%= name %>
+<% end %>
