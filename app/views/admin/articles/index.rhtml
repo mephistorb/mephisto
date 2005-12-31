@@ -1,0 +1,20 @@
+<div id="main">
+  <% form_remote_for :article, Article.new, :url => { :action => 'create' } do |f| -%>
+    <p><%= f.text_field :title %></p>
+    <p><%= f.text_area  :summary %></p>
+    <p><%= f.text_area  :description %></p>
+    <p><%= submit_tag 'Publish' %></p>
+  <% end -%>
+
+  <div id="articles">
+  <% @articles.each do |article| -%>
+    <div class="article">
+    <h2><%=h article.title %></h2>
+    </div>
+  <% end -%>
+  </div>
+</div>
+
+<div id="side">
+  
+</div>

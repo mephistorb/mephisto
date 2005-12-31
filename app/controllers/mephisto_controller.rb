@@ -1,7 +1,7 @@
 class MephistoController < ApplicationController
   layout 'default'
 
-  def dispatch
+  def list
     if params[:tags].blank?
       @tag = Tag.find_by_name('home')
       template_type = :main
@@ -13,9 +13,19 @@ class MephistoController < ApplicationController
     @article_pages = Paginator.new self, @tag.articles.size, 15, params[:page]
     @articles = @tag.articles.find_by_date(
                   :limit  =>  @article_pages.items_per_page,
-                  :offset =>  @article_pages.current.offset).collect { |a| a.attributes }
+                  :offset =>  @article_pages.current.offset).collect { |a| a.to_liquid }
 
     render_liquid_template_for(template_type, 'tag' => @tag, 'articles' => @articles)
+  end
+
+  def search
+    conditions = ['title LIKE :q OR summary LIKE :q OR description LIKE :q', { :q => "%#{params[:q]}%" }]
+    @article_pages = Paginator.new self, Article.count(conditions), 15, params[:page]
+    @articles = Article.find(:all, :conditions => conditions, :order => 'published_at DESC',
+                  :limit  =>  @article_pages.items_per_page,
+                  :offset =>  @article_pages.current.offset).collect { |a| a.to_liquid }
+
+    render_liquid_template_for(:search, 'tag' => @tag, 'articles' => @articles)
   end
 
   protected
