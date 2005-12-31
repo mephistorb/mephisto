@@ -2,11 +2,11 @@ class MephistoController < ApplicationController
   layout 'default'
 
   def dispatch
-    main
+    articles(params[:tags].blank? ? :main : :tag)
   end
 
   protected
-  def main
+  def articles(template_type = :main)
     @tag = params[:tags].blank? ?
       Tag.find_by_name('home') :
       Tag.find_by_name(params[:tags].join('/'))
