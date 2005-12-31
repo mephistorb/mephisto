@@ -7,4 +7,9 @@ class ArticleTest < Test::Unit::TestCase
     a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)'
     assert_equal 'this_is_a_tripped_out_title_1_well_not_really', a.permalink
   end
+
+  def test_full_permalink
+    date = 3.days.ago
+    assert_equal [date.year, date.month, date.day, 'welcome_to_mephisto'].join('/'), articles(:welcome).full_permalink
+  end
 end

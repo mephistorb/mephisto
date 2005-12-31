@@ -17,6 +17,7 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_routing '', :controller => 'mephisto', :action => 'list', :tags => []
     assert_routing 'about', :controller => 'mephisto', :action => 'list', :tags => ['about']
     assert_routing 'search/foo', :controller => 'mephisto', :action => 'search', :q => 'foo'
+    assert_routing '2006/01/01/foo', :controller => 'mephisto', :action => 'show', :year => '2006', :month => '01', :day => '01', :permalink => 'foo'
   end
 
   def test_list_by_tags
@@ -39,5 +40,11 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_search_entries
     get :search, :q => 'another'
     assert_equal [articles(:another).to_liquid], assigns(:articles)
+  end
+
+  def test_should_show_entry
+    date = 3.days.ago
+    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome_to_mephisto'
+    assert_equal articles(:welcome).to_liquid, assigns(:article)
   end
 end

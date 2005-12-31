@@ -28,6 +28,11 @@ class MephistoController < ApplicationController
     render_liquid_template_for(:search, 'tag' => @tag, 'articles' => @articles)
   end
 
+  def show
+    @article = Article.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink]).to_liquid
+    render_liquid_template_for(:single, 'articles' => [@article])
+  end
+
   protected
   def render_liquid_template_for(template_type, assigns = {})
     headers["Content-Type"] ||= 'text/html; charset=utf-8'
