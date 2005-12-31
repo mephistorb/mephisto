@@ -31,5 +31,7 @@ class MephistoControllerTest < Test::Unit::TestCase
     get :dispatch, :tags => []
     assert_tag :tag => 'h1', :content => 'This is the layout'
     assert_tag :tag => 'p',  :content => 'home'
+    get :dispatch, :tags => %w(about)
+    assert_tag :tag => 'p',  :content => 'tag'
   end
 end

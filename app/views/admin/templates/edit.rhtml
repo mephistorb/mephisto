@@ -1,0 +1,9 @@
+<div id="main">
+<% form_for :template, @tmpl, :url => { :action => 'update' } do |f| -%>
+  <p><%= f.text_field :name %></p>
+  <p><%= f.text_area :data %></p>
+  <p><%= submit_tag 'Save' %></p>
+<% end -%>
+</div>
+
+<%= render :partial => 'side' %>
