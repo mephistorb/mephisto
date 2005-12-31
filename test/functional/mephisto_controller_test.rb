@@ -14,21 +14,22 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_routing
-    assert_routing '', :controller => 'mephisto', :action => 'list', :tags => []
-    assert_routing 'about', :controller => 'mephisto', :action => 'list', :tags => ['about']
+    assert_routing '', :controller => 'mephisto', :action => 'dispatch', :tags => []
+    assert_routing 'about', :controller => 'mephisto', :action => 'dispatch', :tags => ['about']
   end
 
   def test_list_by_tags
-    get :list, :tags => []
+    get :dispatch, :tags => []
     assert_equal tags(:home), assigns(:tag)
     assert_equal [articles(:another).attributes, articles(:welcome).attributes], assigns(:articles)
-    get :list, :tags => %w(about)
+    get :dispatch, :tags => %w(about)
     assert_equal tags(:about), assigns(:tag)
     assert_equal [articles(:welcome).attributes], assigns(:articles)
   end
 
   def test_should_render_liquid_templates
-    get :list, :tags => []
+    get :dispatch, :tags => []
     assert_tag :tag => 'h1', :content => 'This is the layout'
+    assert_tag :tag => 'p',  :content => 'home'
   end
 end

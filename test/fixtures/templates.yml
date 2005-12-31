@@ -7,36 +7,36 @@ layout:
 home:
   id: 2
   name: home
-  data: home
+  data: "<p>home</p>"
 index:
   id: 3
   name: index
-  data: index
+  data: "<p>index</p>"
 single:
   id: 4
   name: single
-  data: single
+  data: "<p>single</p>"
 tag:
   id: 5
   name: tag
-  data: tag
+  data: "<p>tag</p>"
 archive:
   id: 6
   name: archive
-  data: archive
+  data: "<p>archive</p>"
 page:
   id: 7
   name: page
-  data: page
+  data: "<p>page</p>"
 author:
   id: 8
   name: author
-  data: author
+  data: "<p>author</p>"
 search:
   id: 9
   name: search
-  data: search
+  data: "<p>search</p>"
 error:
   id: 10
   name: error
-  data: error
+  data: "<p>error</p>"
