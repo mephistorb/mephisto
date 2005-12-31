@@ -45,4 +45,12 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
     assert_redirected_to :action => 'edit'
     assert flash[:error]
   end
+
+  def test_should_save_template
+    post :update, :id => templates(:layout).id, :template => { :name => 'foo' }
+    assert_redirected_to :action => 'edit'
+    assert flash[:notice]
+    templates(:layout).reload
+    assert_equal 'foo', templates(:layout).name
+  end
 end
