@@ -1,0 +1,19 @@
+<div id="main">
+  <div id="tags">
+  <% @tags.each do |tag| -%>
+    <div class="tag">
+      <%=h tag.name %>[edit]
+    </div>
+  <% end -%>
+  </div>
+</div>
+
+<div id="side">
+  <% form_remote_for :tag, @tag, :url => { :action => 'create' } do |f| %>
+    <p>
+      <%= f.text_field :name %>
+      <%= submit_tag 'Create' %>
+    </p>
+  <% end -%>
+</div>
+
