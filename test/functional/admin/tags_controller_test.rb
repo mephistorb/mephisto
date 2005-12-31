@@ -18,6 +18,13 @@ class Admin::TagsControllerTest < Test::Unit::TestCase
     assert_equal 2, assigns(:tags).length
   end
 
+  def test_should_save_template
+    assert_difference Tag, :count do
+      post :create, :tag => { :name => 'foo' }
+      assert_response :success
+    end
+  end
+
   #def test_should_require_ajax
   #  get :create, :id => tags(:home).id, :tag => { :name => 'gah' }
   #  assert_redirected_to :action => 'index'
@@ -31,13 +38,5 @@ class Admin::TagsControllerTest < Test::Unit::TestCase
   #def test_should_require_posted_template
   #  xhr :post, :update, :id => tags(:layout).id
   #  assert_equal '', @request.body
-  #end
-  #
-  #def test_should_save_template
-  #  post :update, :id => templates(:layout).id, :template => { :name => 'foo' }
-  #  assert_redirected_to :action => 'edit'
-  #  assert flash[:notice]
-  #  templates(:layout).reload
-  #  assert_equal 'foo', templates(:layout).name
   #end
 end

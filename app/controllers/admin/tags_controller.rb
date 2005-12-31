@@ -5,6 +5,6 @@ class Admin::TagsController < ApplicationController
   end
 
   def create
-    
+    @tag = Tag.create(params[:tag])
   end
 end
