@@ -6,6 +6,13 @@ Form.clear_default_text = function(input, remove_class) {
   }
 }
 
+var Template = {
+  navigate_to: function(select) {
+    var template = select.options[select.selectedIndex].value;
+    if(template) location.href = "/admin/templates/edit/" + template;
+  }
+};
+
 Ajax.Responders.register({
   // log the beginning of the requests
   onCreate: function(request, transport) {

@@ -3,12 +3,13 @@ class Template < ActiveRecord::Base
     :main   => [:home,   :index],
     :single => [:single, :index],
     :tag    => [:tag,    :archive, :index],
-    :page   => [:page,   :index],
-    :author => [:author, :archive, :index],
+    #:page   => [:page,   :index],
+    #:author => [:author, :archive, :index],
     :search => [:search, :index],
-    :error  => [:error,  :index]
+    #:error  => [:error,  :index]
   }
-  cattr_reader :hierarchy
+  @@template_types = @@hierarchy.values.flatten.uniq
+  cattr_reader :hierarchy, :template_types
 
   class << self
     def find_all_by_name(template_type)
@@ -16,7 +17,9 @@ class Template < ActiveRecord::Base
     end
 
     def templates_for(template_type)
-      find_all_by_name(template_type).inject({}) { |templates, template| templates.merge(template.name => template.data) }
+      find_all_by_name(template_type).inject({}) do |templates, template| 
+        template.data.blank? ? templates : templates.merge(template.name => template.data)
+      end
     end
 
     def find_preferred(template_type, templates = nil)
@@ -24,5 +27,9 @@ class Template < ActiveRecord::Base
       hierarchy[template_type].each { |name| return templates[name.to_s] if templates[name.to_s] }
       nil
     end
+  end
+  
+  def to_param
+    name
   end
 end

@@ -19,7 +19,7 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_edit_template_form
-    get :edit, :id => templates(:layout).id
+    get :edit, :id => templates(:layout).name
     assert_equal 10, assigns(:templates).length
     assert_tag :tag => 'form'
     assert_tag :tag => 'input',    :attributes => { :id => 'template_name' }
@@ -37,17 +37,17 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_require_posted_template
-    get :update, :id => templates(:layout).id, :template => { :name => 'foo' }
+    get :update, :id => templates(:layout).name, :template => { :name => 'foo' }
     assert_redirected_to :action => 'edit'
     assert flash[:error]
     
-    post :update, :id => templates(:layout).id
+    post :update, :id => templates(:layout).name
     assert_redirected_to :action => 'edit'
     assert flash[:error]
   end
 
   def test_should_save_template
-    post :update, :id => templates(:layout).id, :template => { :name => 'foo' }
+    post :update, :id => templates(:layout).name, :template => { :name => 'foo' }
     assert_redirected_to :action => 'edit'
     assert flash[:notice]
     templates(:layout).reload

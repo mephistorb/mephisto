@@ -1,0 +1,4 @@
+<h3>
+  choose a template 
+  <%= select_tag 'template', options_for_select(Template.template_types.unshift('')), :onchange => "Template.navigate_to(this)" %>
+</h3>

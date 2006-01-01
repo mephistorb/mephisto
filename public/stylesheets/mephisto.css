@@ -60,6 +60,11 @@ input.default {
   list-style: square;
 }
 
+#template_data {
+  width:100%;
+  height:600px;
+}
+
 #header {
   border-bottom:10px solid #DDE0E9;
   font-size:24px;
