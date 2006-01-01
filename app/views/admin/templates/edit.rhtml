@@ -2,7 +2,7 @@
 
 <%= render :partial => 'templates' %>
 
-<% form_for :template, @tmpl, :url => { :action => 'update' } do |f| -%>
+<% form_for :template, @tmpl, :url => { :action => 'update', :id => @tmpl } do |f| -%>
   <h1><%=h @tmpl.name %></h1>
   <p><%= f.text_area :data %></p>
   <p><%= submit_tag 'Save' %></p>

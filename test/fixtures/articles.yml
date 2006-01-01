@@ -28,3 +28,4 @@ welcome_comment:
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 3.days.ago.to_s(:db) %>
   published_at: <%= 3.days.ago.to_s(:db) %>
+  type: Comment

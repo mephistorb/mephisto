@@ -1,6 +1,7 @@
 class Article < ActiveRecord::Base
   has_many :taggings
   has_many :tags, :through => :taggings
+  has_many :comments
 
   class << self
     def find_by_permalink(year, month, day, permalink)

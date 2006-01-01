@@ -1,4 +1,4 @@
-class Admin::TagsController < ApplicationController
+class Admin::TagsController < Admin::BaseController
   in_place_edit_for :tag, :name
   
   def index

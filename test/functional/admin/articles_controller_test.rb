@@ -5,12 +5,13 @@ require 'admin/articles_controller'
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
 class Admin::ArticlesControllerTest < Test::Unit::TestCase
-  fixtures :articles, :tags, :taggings
+  fixtures :articles, :tags, :taggings, :users
 
   def setup
     @controller = Admin::ArticlesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    login_as :quentin
   end
 
   def test_should_show_articles

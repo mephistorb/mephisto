@@ -5,12 +5,13 @@ require 'admin/tags_controller'
 class Admin::TagsController; def rescue_action(e) raise e end; end
 
 class Admin::TagsControllerTest < Test::Unit::TestCase
-  fixtures :tags
+  fixtures :tags, :users
 
   def setup
     @controller = Admin::TagsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    login_as :quentin
   end
 
   def test_should_list_templates

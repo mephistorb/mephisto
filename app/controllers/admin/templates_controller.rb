@@ -1,4 +1,4 @@
-class Admin::TemplatesController < ApplicationController
+class Admin::TemplatesController < Admin::BaseController
   before_filter :select_template, :except => :index
   verify :params => :id, :only => [:edit, :update],
          :add_flash   => { :error => 'Template required' },

@@ -1,4 +1,4 @@
-class Admin::ArticlesController < ApplicationController
+class Admin::ArticlesController < Admin::BaseController
   def index
     @tags     = Tag.find :all
     @article  = Article.new

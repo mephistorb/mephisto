@@ -5,12 +5,13 @@ require 'admin/templates_controller'
 class Admin::TemplatesController; def rescue_action(e) raise e end; end
 
 class Admin::TemplatesControllerTest < Test::Unit::TestCase
-  fixtures :templates
+  fixtures :templates, :users
 
   def setup
     @controller = Admin::TemplatesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    login_as :quentin
   end
 
   def test_should_list_templates
