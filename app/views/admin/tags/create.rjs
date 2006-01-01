@@ -1,1 +1,6 @@
-page.call 'alert', 'yes!'
+unless @tag.new_record?
+  page.insert_html :bottom, 'tags', :partial => 'tag'
+  page << "$('tag_name').value = ''"
+else
+  page.visual_effect :shake, 'tag_name'
+end

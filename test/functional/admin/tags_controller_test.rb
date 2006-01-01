@@ -18,11 +18,22 @@ class Admin::TagsControllerTest < Test::Unit::TestCase
     assert_equal 2, assigns(:tags).length
   end
 
-  def test_should_save_template
+  def test_should_create_template
     assert_difference Tag, :count do
       post :create, :tag => { :name => 'foo' }
       assert_response :success
     end
+  end
+
+  def test_should_edit_name
+    xhr :post, :set_tag_name, :id => tags(:home).id, :value => 'foo'
+    tags(:home).reload
+    assert_equal 'foo', tags(:home).name
+  end
+
+  def test_should_destroy_tag
+    xhr :post, :destroy, :id => tags(:home).id
+    assert_nil Tag.find_by_id(tags(:home).id)
   end
 
   #def test_should_require_ajax

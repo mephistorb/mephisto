@@ -1,5 +1,6 @@
 class MephistoController < ApplicationController
   layout 'default'
+  session :off
 
   def list
     if params[:tags].blank?

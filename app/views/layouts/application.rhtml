@@ -1,14 +1,27 @@
 <html>
 <head>
-  <title>Articles: <%= controller.action_name %></title>
-  <%= stylesheet_link_tag 'scaffold' %>
+  <title>Mephisto: <%= controller.controller_name %></title>
+  <%= stylesheet_link_tag 'mephisto' %>
   <%= javascript_include_tag :defaults %>
 </head>
 <body>
 
-<p style="color: green"><%= flash[:notice] %></p>
+<div id="wrapper">
+  <div id="header">
+    <div id="title">mephisto.</div>
+    <ul>
+      <li><%= link_to 'articles', :controller => 'articles' %></li>
+      <li><%= link_to 'tags', :controller => 'tags' %></li>
+      <li><%= link_to 'templates', :controller => 'templates' %></li>
+    </ul>
+  </div>
+<% if flash[:notice] -%>
+  <div id="flash"><%= flash[:notice] %></div>
+<% end -%>
 
+  <div id="main" class="c">
 <%= yield %>
-
+  </div>
+</div>
 </body>
 </html>

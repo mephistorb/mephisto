@@ -1,0 +1,5 @@
+<div class="tag" id="tag_<%=tag.id%>">
+  <span id="tag_<%=tag.id%>_name"><%=h tag.name %></span>
+  <%= link_to_remote 'Delete', :url => { :action => 'destroy', :id => tag }, :confirm => "Are you sure you want to delete #{tag.name}?" %>
+  <%= in_place_editor "tag_#{tag.id}_name", :url => { :action => 'set_tag_name', :id => tag } %>
+</div>
