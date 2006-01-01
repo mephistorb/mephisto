@@ -10,6 +10,6 @@ class ArticleTest < Test::Unit::TestCase
 
   def test_full_permalink
     date = 3.days.ago
-    assert_equal [date.year, date.month, date.day, 'welcome_to_mephisto'].join('/'), articles(:welcome).full_permalink
+    assert_equal ['', date.year, date.month, date.day, 'welcome_to_mephisto'].join('/'), articles(:welcome).full_permalink
   end
 end

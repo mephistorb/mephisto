@@ -11,12 +11,12 @@ class Article < ActiveRecord::Base
 
   def to_liquid
     attributes.merge(
-      :url => full_permalink
+      'url' => full_permalink
     )
   end
 
   def full_permalink
-    [published_at.year, published_at.month, published_at.day, permalink].join('/')
+    ['', published_at.year, published_at.month, published_at.day, permalink].join('/')
   end
 
   protected

@@ -46,5 +46,6 @@ class MephistoControllerTest < Test::Unit::TestCase
     date = 3.days.ago
     get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome_to_mephisto'
     assert_equal articles(:welcome).to_liquid, assigns(:article)
+    assert_tag :tag => 'a', :attributes => { :href => articles(:welcome).full_permalink }, :content => articles(:welcome).title
   end
 end
