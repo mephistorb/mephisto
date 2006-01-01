@@ -2,7 +2,7 @@ class Admin::ArticlesController < ApplicationController
   def index
     @tags     = Tag.find :all
     @article  = Article.new
-    @articles = Article.find :all, :order => 'created_at DESC'
+    @articles = Article.find :all, :order => 'created_at DESC', :conditions => 'article_id IS NULL'
   end
 
   def create

@@ -60,6 +60,25 @@ input.default {
   list-style: square;
 }
 
+#article_summary {
+  width:100%;
+  height:100px;
+}
+
+#article_description {
+  width:100%;
+  height:400px;
+}
+
+#article_tags {
+  list-style-type:none;
+}
+
+#article_tags li {
+  width:100px;
+  float:left;
+}
+
 #template_data {
   width:100%;
   height:600px;

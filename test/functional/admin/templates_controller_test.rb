@@ -15,14 +15,11 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
 
   def test_should_list_templates
     get :index
-    assert_equal 10, assigns(:templates).length
   end
 
   def test_should_show_edit_template_form
     get :edit, :id => templates(:layout).name
-    assert_equal 10, assigns(:templates).length
     assert_tag :tag => 'form'
-    assert_tag :tag => 'input',    :attributes => { :id => 'template_name' }
     assert_tag :tag => 'textarea', :attributes => { :id => 'template_data' }
   end
 

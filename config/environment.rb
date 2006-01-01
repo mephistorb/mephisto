@@ -53,4 +53,4 @@ end
 # Include your application configuration below
 require 'string_ext'
 require 'time_ext'
-Liquid::Template.register_filter(MephistoHelper)
+Liquid::Template.register_filter(Mephisto::Filter)

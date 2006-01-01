@@ -8,10 +8,10 @@ class TemplateTest < Test::Unit::TestCase
     assert_template_type :home,   :main
     assert_template_type :single, :single
     assert_template_type :tag,    :tag
-    assert_template_type :page,   :page
-    assert_template_type :author, :author
+    #assert_template_type :page,   :page
+    #assert_template_type :author, :author
     assert_template_type :search, :search
-    assert_template_type :error,  :error
+    #assert_template_type :error,  :error
   end
 
   def test_fallback_templates
@@ -19,14 +19,14 @@ class TemplateTest < Test::Unit::TestCase
     assert_template_type :index,   :main
     assert_template_type :index,   :single
     assert_template_type :archive, :tag
-    assert_template_type :index,   :page
-    assert_template_type :archive, :author
+    #assert_template_type :index,   :page
+    #assert_template_type :archive, :author
     assert_template_type :index,   :search
-    assert_template_type :index,   :error
+    #assert_template_type :index,   :error
 
     templates(:archive).destroy
     assert_template_type :index, :tag
-    assert_template_type :index, :author
+    #assert_template_type :index, :author
   end
 
   protected

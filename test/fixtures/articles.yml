@@ -21,3 +21,10 @@ another:
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   published_at: <%= 4.days.ago.to_s(:db) %>
+welcome_comment:
+  id: 3
+  article_id: 1
+  description: This blogging tool rocks.
+  created_at: <%= 3.days.ago.to_s(:db) %>
+  updated_at: <%= 3.days.ago.to_s(:db) %>
+  published_at: <%= 3.days.ago.to_s(:db) %>

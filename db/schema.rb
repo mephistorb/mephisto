@@ -5,6 +5,7 @@
 ActiveRecord::Schema.define() do
 
   create_table "articles", :force => true do |t|
+    t.column "article_id", :integer
     t.column "title", :string
     t.column "permalink", :string
     t.column "summary", :text
@@ -12,6 +13,7 @@ ActiveRecord::Schema.define() do
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
     t.column "published_at", :datetime
+    t.column "type", :string, :limit => 20
   end
 
   create_table "taggings", :force => true do |t|
