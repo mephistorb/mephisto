@@ -1,17 +1,23 @@
 <div id="main">
-  <% form_remote_for :article, Article.new, :url => { :action => 'create' } do |f| -%>
+  <% form_remote_for :article, @article, :url => { :action => 'create' }, 
+      :html => { :id => 'article_form' } do |f| -%>
     <p><%= f.text_field :title %></p>
     <p><%= f.text_area  :summary %></p>
     <p><%= f.text_area  :description %></p>
+    <ul>
+    <% @tags.each do |tag| -%>
+      <li><%= check_box_tag "article[tag_ids][]", tag.id, (@article.new_record? and tag.name == 'home') or @article.tags.include?(tag) %> <%=h tag.name %></li>
+    <% end -%>
+    </ul>
     <p><%= submit_tag 'Publish' %></p>
   <% end -%>
 
   <div id="articles">
-  <% @articles.each do |article| -%>
-    <div class="article">
-    <h2><%=h article.title %></h2>
-    </div>
-  <% end -%>
+<%= render :partial => 'article', :collection => @articles %>
+  </div>
+  
+  <div id="debug">
+    
   </div>
 </div>
 
