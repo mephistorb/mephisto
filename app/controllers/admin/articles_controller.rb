@@ -2,15 +2,24 @@ class Admin::ArticlesController < Admin::BaseController
   def index
     @tags     = Tag.find :all
     @article  = Article.new
-    @articles = Article.find :all, :order => 'created_at DESC', :conditions => 'article_id IS NULL'
+    @articles = Article.find :all, :order => 'articles.created_at DESC', :conditions => 'article_id IS NULL', :include => :user
   end
 
   def create
-    tag_ids  = params[:article].delete('tag_ids')
-    @article = Article.create params[:article]
-    unless @article.new_record? or tag_ids.nil?
-      tags = Tag.find(:all, :conditions => ['id in (?)', tag_ids])
-      tags.each { |tag| @article.taggings.create :tag => tag }
+    @article = current_user.articles.create params[:article].merge(:published_at => Time.now.utc)
+  end
+
+  def edit
+    @tags    = Tag.find :all
+    @article = Article.find(params[:id])
+  end
+
+  def update
+    @article = Article.find(params[:id])
+    if @article.update_attributes(params[:article])
+      redirect_to :action => 'list'
+    else
+      render :action => 'edit'
     end
   end
 end

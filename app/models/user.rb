@@ -28,6 +28,7 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
   attr_accessor :password
+  has_many :articles
 
   validates_uniqueness_of   :login, :email, :salt
   validates_length_of       :login,    :within => 3..40
@@ -60,29 +61,6 @@ class User < ActiveRecord::Base
   def encrypt(password)
     self.class.encrypt(password, salt)
   end
-
-  # More extra credit for adding 2-way encryption.  Feel free to remove self.encrypt above if you use this
-  #
-  # # Encrypts some data with the salt.
-  # def self.encrypt(password, salt)
-  #   enc = OpenSSL::Cipher::Cipher.new('DES-EDE3-CBC')
-  #   enc.encrypt(salt)
-  #   data = enc.update(password)
-  #   Base64.encode64(data << enc.final)
-  # end
-  # 
-  # # getter method to decrypt password
-  # def password
-  #   unless @password
-  #     enc = OpenSSL::Cipher::Cipher.new('DES-EDE3-CBC')
-  #     enc.decrypt(salt)
-  #     text = enc.update(Base64.decode64(crypted_password))
-  #     @password = (text << enc.final)
-  #   end
-  #   @password
-  # rescue
-  #   nil
-  # end
 
   # Uncomment these methods for user activation  These also help let the mailer know precisely when the user is activated.
   # There's also a commented-out before hook above and a protected method below.

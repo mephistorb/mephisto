@@ -7,4 +7,13 @@ class CommentTest < Test::Unit::TestCase
     assert_equal articles(:welcome), articles(:welcome_comment).article
     assert_equal [articles(:welcome_comment)], articles(:welcome).comments
   end
+
+  def test_add_comment
+    assert_difference Comment, :count do
+      assert_difference articles(:welcome), :comments_count do
+        articles(:welcome).comments.create :description => 'test comment', :author => 'bob', :author_ip => '127.0.0.1'
+        articles(:welcome).reload
+      end
+    end
+  end
 end

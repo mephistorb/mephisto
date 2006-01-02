@@ -1,22 +1,26 @@
 <div id="content">
   <% form_remote_for :article, @article, :url => { :action => 'create' }, 
       :html => { :id => 'article_form', :style => 'display:none' } do |f| -%>
-    <p><%= f.text_field :title %></p>
-    <p><%= f.text_area  :summary %></p>
-    <p><%= f.text_area  :description %></p>
-    <ul id="article_tags" class="c">
-      <li><strong>tags:</strong></li>
-    <% @tags.each do |tag| -%>
-      <li><%= check_box_tag "article[tag_ids][]", tag.id, (@article.new_record? and tag.name == 'home') or @article.tags.include?(tag) %> <%=h tag.name %></li>
-    <% end -%>
-    </ul>
-    <p><%= submit_tag 'Publish' %></p>
+<%= render :partial => 'form', :object => f %>
+<p><%= submit_tag 'Publish' %></p>
   <% end -%>
   <div id="article_form_link">
-
-  <div id="articles">
-<%= render :partial => 'article', :collection => @articles %>
+    <%= link_to_function 'Add Article', "ArticleForm.show();", :id => 'article_form_show' %>
+    <%= link_to_function 'cancel', "ArticleForm.hide();", :style => 'display:none', :id => 'article_form_hide' %>
   </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Published</th>
+        <th>Edit</th>
+      </tr>
+    </thead>
+    <tbody id="articles">
+<%= render :partial => 'article', :collection => @articles %>
+    </tbody>
+  </table>
   
   <div id="debug">
     

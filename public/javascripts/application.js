@@ -13,6 +13,19 @@ var Template = {
   }
 };
 
+var ArticleForm = {
+  show: function() {
+    new Effect.BlindDown('article_form', {duration: 0.25});
+    new Effect.Appear('article_form_hide', {duration: 0.25});
+    Element.hide('article_form_show');
+  },
+  hide: function() {
+    new Effect.BlindUp('article_form', {duration: 0.25});
+    new Effect.Appear('article_form_show', {duration: 0.25});
+    Element.hide('article_form_hide');
+  }
+}
+
 Ajax.Responders.register({
   // log the beginning of the requests
   onCreate: function(request, transport) {

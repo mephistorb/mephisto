@@ -4,7 +4,7 @@ class ArticleTest < Test::Unit::TestCase
   fixtures :articles
 
   def test_should_create_permalink
-    a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)'
+    a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :user_id => 1
     assert_equal 'this_is_a_tripped_out_title_1_well_not_really', a.permalink
   end
 

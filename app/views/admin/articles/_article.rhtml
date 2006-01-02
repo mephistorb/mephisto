@@ -1,3 +1,5 @@
-<div class="article">
-  <h2><%=h article.title %></h2>
-</div>
+<tr>
+  <td><%=h article.title %></td>
+  <td><%= article.published_at ? article.published_at.to_s(:db) : "not published" %></td>
+  <td><%= link_to 'Edit', :action => 'edit', :id => article %></td>
+</tr>

@@ -6,6 +6,7 @@ ActiveRecord::Schema.define() do
 
   create_table "articles", :force => true do |t|
     t.column "article_id", :integer
+    t.column "user_id", :integer
     t.column "title", :string
     t.column "permalink", :string
     t.column "summary", :text
@@ -18,6 +19,7 @@ ActiveRecord::Schema.define() do
     t.column "author_url", :string
     t.column "author_email", :string
     t.column "author_ip", :string, :limit => 100
+    t.column "comments_count", :integer
   end
 
   create_table "taggings", :force => true do |t|

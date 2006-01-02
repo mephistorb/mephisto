@@ -1,13 +1,28 @@
 class Article < ActiveRecord::Base
-  has_many :taggings
-  has_many :tags, :through => :taggings
-  has_many :comments
+  belongs_to :user
+  has_many   :taggings
+  has_many   :tags, :through => :taggings
+  has_many   :comments
+  
+  validates_presence_of :title, :user_id
+
+  after_validation_on_create :create_permalink
+  after_save :save_taggings
 
   class << self
     def find_by_permalink(year, month, day, permalink)
       from, to = Time.delta(year, month, day)
       find :first, :conditions => ["permalink = ? AND articles.published_at BETWEEN ? AND ?", permalink, from, to]
     end
+  end
+
+  def tag_ids=(new_tags)
+    taggings.each do |tagging|
+      new_tags.include?(tagging.tag_id.to_s) ?
+        new_tags.delete(new_tags.index(tagging.tag_id.to_s)) :
+        tagging.destroy
+    end
+    @tags_to_save = Tag.find(:all, :conditions => ['id in (?)', new_tags])
   end
 
   def to_liquid
@@ -21,9 +36,11 @@ class Article < ActiveRecord::Base
   end
 
   protected
-  validates_presence_of :title
-  after_validation_on_create :create_permalink
   def create_permalink
     self.permalink = title.to_permalink
+  end
+
+  def save_taggings
+    @tags_to_save.each { |tag| taggings.create :tag => tag } if @tags_to_save
   end
 end
