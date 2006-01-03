@@ -6,8 +6,31 @@ Form.clear_default_text = function(input, remove_class) {
   }
 }
 
+Form.disable_buttons = function(form_id) {
+  $A($(form_id).getElementsByTagName('input')).each(function(input) {
+    if(input.getAttribute('type') == 'submit') {
+      input.blur();
+      input.disabled = true;
+    }
+  });
+}
+
+Form.enable_buttons = function(form_id) {
+  $A($(form_id).getElementsByTagName('input')).each(function(input) {
+    if(input.getAttribute('type') == 'submit') {
+      input.disabled = false;
+    }
+  });
+}
+
 Form.saving = function(form_name) {
-  
+  Form.disable_buttons(form_name + '_form');
+  Element.show(form_name + '_spinner');
+}
+
+Form.saved = function(form_name) {
+  Form.enable_buttons(form_name + '_form');
+  Element.hide(form_name + '_spinner');
 }
 
 var Template = {

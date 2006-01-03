@@ -15,6 +15,7 @@ welcome:
   updated_at: <%= 5.days.ago.to_s(:db) %>
   published_at: <%= 3.days.ago.to_s(:db) %>
   user_id: 1
+  comments_count: 1
 another:
   id: 2
   title: Another Welcome to Mephisto
