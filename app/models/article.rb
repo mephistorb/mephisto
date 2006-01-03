@@ -7,7 +7,8 @@ class Article < ActiveRecord::Base
   validates_presence_of :title, :user_id
 
   after_validation_on_create :create_permalink
-  after_save :save_taggings
+  before_save :cache_redcloth
+  after_save  :save_taggings
 
   class << self
     def find_by_permalink(year, month, day, permalink)
@@ -40,9 +41,10 @@ class Article < ActiveRecord::Base
   end
 
   def to_liquid
-    attributes.merge(
-      'url' => full_permalink
-    )
+    attributes.merge \
+      'url'         => full_permalink,
+      'summary'     => summary_html || '',
+      'description' => description_html || ''
   end
 
   def hash_for_permalink
@@ -59,6 +61,11 @@ class Article < ActiveRecord::Base
   protected
   def create_permalink
     self.permalink = title.to_permalink
+  end
+
+  def cache_redcloth
+    self.summary_html     = RedCloth.new(summary).to_html     unless summary.blank?
+    self.description_html = RedCloth.new(description).to_html unless description.blank?
   end
 
   def save_taggings

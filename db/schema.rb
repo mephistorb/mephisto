@@ -11,6 +11,8 @@ ActiveRecord::Schema.define() do
     t.column "permalink", :string
     t.column "summary", :text
     t.column "description", :text
+    t.column "summary_html", :text
+    t.column "description_html", :text
     t.column "created_at", :datetime
     t.column "updated_at", :datetime
     t.column "published_at", :datetime

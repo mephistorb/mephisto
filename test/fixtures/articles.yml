@@ -10,6 +10,7 @@ welcome:
   title: Welcome to Mephisto
   permalink: welcome_to_mephisto
   summary: This is my own little blogging tool
+  summary_html: This is my own little blogging tool
   created_at: <%= 5.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
   published_at: <%= 3.days.ago.to_s(:db) %>
@@ -19,6 +20,7 @@ another:
   title: Another Welcome to Mephisto
   permalink: another_welcome_to_mephisto
   summary: This is my own little blogging tool
+  summary_html: This is my own little blogging tool
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   published_at: <%= 4.days.ago.to_s(:db) %>
@@ -27,6 +29,7 @@ welcome_comment:
   id: 3
   article_id: 1
   description: This blogging tool rocks.
+  description_html: This blogging tool rocks.
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 3.days.ago.to_s(:db) %>
   published_at: <%= 3.days.ago.to_s(:db) %>
@@ -36,6 +39,7 @@ unpublished:
   title: Unpublished Article
   permalink: unpublished_article
   summary: This is my own little blogging tool
+  summary_html: This is my own little blogging tool
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   user_id: 1
@@ -44,6 +48,7 @@ future:
   title: Article in the Future
   permalink: article_in_the_future
   summary: This is my own little blogging tool
+  summary_html: This is my own little blogging tool
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   published_at: <%= 4.days.from_now.to_s(:db) %>

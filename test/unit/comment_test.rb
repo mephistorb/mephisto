@@ -16,4 +16,9 @@ class CommentTest < Test::Unit::TestCase
       end
     end
   end
+
+  def test_add_comment
+    c = articles(:welcome).comments.create :description => '*test* comment', :author => 'bob', :author_ip => '127.0.0.1'
+    assert_equal "<p><strong>test</strong> comment</p>", c.description_html
+  end
 end

@@ -30,4 +30,10 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal :pending,     articles(:future).status
     assert_equal :unpublished, articles(:unpublished).status
   end
+
+  def test_should_cache_redcloth
+    a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :user_id => 1, :summary => '*foo*', :description => '_bar_'
+    assert_equal '<p><strong>foo</strong></p>', a.summary_html
+    assert_equal '<p><em>bar</em></p>',         a.description_html
+  end
 end
