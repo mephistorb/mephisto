@@ -6,6 +6,10 @@ Form.clear_default_text = function(input, remove_class) {
   }
 }
 
+Form.saving = function(form_name) {
+  
+}
+
 var Template = {
   navigate_to: function(select) {
     var template = select.options[select.selectedIndex].value;

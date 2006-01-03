@@ -1,5 +1,10 @@
-<tr>
-  <td><%=h article.title %></td>
-  <td><%= article.published_at ? article.published_at.to_s(:db) : "not published" %></td>
-  <td><%= link_to 'Edit', :action => 'edit', :id => article %></td>
+<tr class="<%= article.status %>" id="article_<%= article.id %>">
+  <td class="article_title">
+    <%= image_tag flag_status[article.status], :size => '16x16', :alt => "this article is #{article.status}" %>
+    <%=h article.title %>
+    <%= link_to_image('page_go', article_url(article.hash_for_permalink), :size => '16x16') if article.published? and not article.pending? %>
+  </td>
+  <td><%= article.published? ? article.published_at.to_s(:db) : "not published" %></td>
+  <td><%= link_to_image('page_edit', { :action => 'edit', :id => article }, { :size => '16x16' }) %></td>
+  <td><%= link_to_image('page_delete', { :action => 'delete', :id => article }, { :size => '16x16' }) %></td>
 </tr>

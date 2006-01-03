@@ -1,0 +1,12 @@
+<p><%= form.text_field :title %></p>
+<p><%= form.text_area  :summary %></p>
+<p><%= form.text_area  :description %></p>
+<ul id="article_tags" class="c">
+  <li><strong>tags:</strong></li>
+<% @tags.each do |tag| -%>
+  <li><%= check_box_tag "article[tag_ids][]", tag.id, 
+            ((@article.new_record? and tag.name == 'home') or @article.tags.include?(tag)),
+            :id => "article_tag_ids_#{tag.id}" 
+      %> <%=h tag.name %></li>
+<% end -%>
+</ul>

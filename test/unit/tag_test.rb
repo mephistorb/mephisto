@@ -26,4 +26,10 @@ class TagTest < Test::Unit::TestCase
     articles(:welcome).update_attribute :tag_ids, [tags(:home).id]
     assert_equal [tags(:home)], articles(:welcome).tags(true)
   end
+
+  def test_should_update_article_with_no_tags
+    assert_equal [tags(:home), tags(:about)], articles(:welcome).tags
+    articles(:welcome).update_attribute :tag_ids, []
+    assert_equal [], articles(:welcome).tags(true)
+  end
 end

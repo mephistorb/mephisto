@@ -2,9 +2,12 @@
 
 <%= render :partial => 'templates' %>
 
-<% form_for :template, @tmpl, :url => { :action => 'update', :id => @tmpl } do |f| -%>
+<% form_remote_for :template, @tmpl, :url => { :action => 'update', :id => @tmpl }, :html => { :id => 'template_form' },
+     :loading  => "Form.saving('template')",
+     :complete => "Form.saved('template')"
+   do |f| -%>
   <h1><%=h @tmpl.name %></h1>
   <p><%= f.text_area :data %></p>
-  <p><%= submit_tag 'Save' %></p>
+  <p><%= submit_tag 'Save' %><span id="template_spinner"> saving...</span></p>
 <% end -%>
 </div>

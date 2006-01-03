@@ -8,7 +8,9 @@ class Admin::TemplatesController < Admin::BaseController
          :redirect_to => { :action => 'edit' }
 
   def update
-    if @tmpl.update_attributes(params[:template])
+    saved = @tmpl.update_attributes(params[:template])
+    return if request.xhr?
+    if saved
       flash[:notice] = "#{@tmpl.name} updated."
       redirect_to :action => 'edit', :id => @tmpl
     else

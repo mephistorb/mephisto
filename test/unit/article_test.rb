@@ -12,4 +12,22 @@ class ArticleTest < Test::Unit::TestCase
     date = 3.days.ago
     assert_equal ['', date.year, date.month, date.day, 'welcome_to_mephisto'].join('/'), articles(:welcome).full_permalink
   end
+
+  def test_should_show_published_status
+    assert articles(:welcome).published?
+    assert articles(:future).published?
+    assert !articles(:unpublished).published?
+  end
+
+  def test_should_show_pending_status
+    assert !articles(:welcome).pending?
+    assert articles(:future).pending?
+    assert !articles(:unpublished).pending?
+  end
+
+  def test_should_show_status
+    assert_equal :published,   articles(:welcome).status
+    assert_equal :pending,     articles(:future).status
+    assert_equal :unpublished, articles(:unpublished).status
+  end
 end

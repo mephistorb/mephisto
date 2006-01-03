@@ -16,6 +16,20 @@ class Article < ActiveRecord::Base
     end
   end
 
+  def published?
+    not published_at.nil?
+  end
+  
+  def pending?
+    published? and Time.now.utc < published_at
+  end
+
+  def status
+    return :unpublished unless published?
+    return :pending     if     pending?
+    :published
+  end
+
   def tag_ids=(new_tags)
     taggings.each do |tagging|
       new_tags.include?(tagging.tag_id.to_s) ?
@@ -29,6 +43,13 @@ class Article < ActiveRecord::Base
     attributes.merge(
       'url' => full_permalink
     )
+  end
+
+  def hash_for_permalink
+    { :year      => published_at.year, 
+      :month     => published_at.month, 
+      :day       => published_at.day, 
+      :permalink => permalink }
   end
 
   def full_permalink
