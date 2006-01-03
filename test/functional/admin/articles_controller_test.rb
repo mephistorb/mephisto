@@ -23,6 +23,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_difference Article, :count do
       xhr :post, :create, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah" }
       assert_response :success
+      assert !assigns(:article).published?
     end
   end
 
@@ -51,14 +52,22 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_update_article_with_no_tags
-    xhr :post, :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah" }
-    assert_redirected_to :action => 'list'
+    post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah" }
+    assert_redirected_to :action => 'index'
     assert_equal [], assigns(:article).tags
   end
 
   def test_should_update_article_with_given_tags
-    xhr :post, :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah", :tag_ids => [tags(:home).id] }
-    assert_redirected_to :action => 'list'
+    post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah", :tag_ids => [tags(:home).id] }
+    assert_redirected_to :action => 'index'
     assert_equal [tags(:home)], assigns(:article).tags
+  end
+
+  def test_should_clear_published_date
+    assert articles(:welcome).published?
+    post :update, :id => articles(:welcome).id, :article => { :title => 'welcome' }
+    assert_redirected_to :action => 'index'
+    articles(:welcome).reload
+    assert !articles(:welcome).published?
   end
 end

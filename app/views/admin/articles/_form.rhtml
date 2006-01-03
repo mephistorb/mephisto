@@ -10,3 +10,8 @@
       %> <%=h tag.name %></li>
 <% end -%>
 </ul>
+<p>
+  <label for="article_published">Published?</label>
+  <%= check_box_tag 'article_published', '1', (@article.new_record? or @article.published?) %>
+  <%= form.datetime_select 'published_at' %>
+</p>
