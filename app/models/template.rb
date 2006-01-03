@@ -8,7 +8,7 @@ class Template < ActiveRecord::Base
     :search => [:search, :index],
     #:error  => [:error,  :index]
   }
-  @@template_types = @@hierarchy.values.flatten.uniq
+  @@template_types = @@hierarchy.values.flatten.uniq << ['layout']
   cattr_reader :hierarchy, :template_types
 
   class << self
