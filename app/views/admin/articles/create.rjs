@@ -1,4 +1,5 @@
 unless @article.new_record?
   page.insert_html :top, :articles, :partial => 'article'
   page.call "Form.reset", 'article_form'
+  page.call 'ArticleForm.hide'
 end
