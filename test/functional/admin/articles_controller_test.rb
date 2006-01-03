@@ -58,9 +58,11 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_update_article_with_given_tags
-    post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah", :tag_ids => [tags(:home).id] }
-    assert_redirected_to :action => 'index'
-    assert_equal [tags(:home)], assigns(:article).tags
+    assert_difference Tagging, :count, -1 do
+      post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah", :tag_ids => [tags(:home).id] }
+      assert_redirected_to :action => 'index'
+      assert_equal [tags(:home)], assigns(:article).tags
+    end
   end
 
   def test_should_clear_published_date
