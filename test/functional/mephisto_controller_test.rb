@@ -23,7 +23,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_list_by_tags
     get :list, :tags => []
     assert_equal tags(:home), assigns(:tag)
-    assert_equal [articles(:another).to_liquid, articles(:welcome).to_liquid], assigns(:articles)
+    assert_equal [articles(:welcome).to_liquid, articles(:another).to_liquid], assigns(:articles)
     get :list, :tags => %w(about)
     assert_equal tags(:about), assigns(:tag)
     assert_equal [articles(:welcome).to_liquid], assigns(:articles)

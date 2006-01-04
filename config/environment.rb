@@ -54,3 +54,4 @@ end
 require 'string_ext'
 require 'time_ext'
 Liquid::Template.register_filter(Mephisto::Filter)
+Liquid::Template.register_block('textile', Mephisto::Textile)

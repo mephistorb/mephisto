@@ -9,7 +9,7 @@ class TagTest < Test::Unit::TestCase
   end
 
   def test_articles_association_by_published_at
-    assert_equal [articles(:another), articles(:welcome)], tags(:home).articles.find_by_date
+    assert_equal [articles(:welcome), articles(:another)], tags(:home).articles.find_by_date
   end
 
   def test_articles_association_by_position
