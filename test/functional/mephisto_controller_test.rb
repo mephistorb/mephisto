@@ -18,10 +18,10 @@ class MephistoControllerTest < Test::Unit::TestCase
       test.assert_routing '',               :action => 'list', :tags => []
       test.assert_routing 'about',          :action => 'list', :tags => ['about']
       test.assert_routing 'search/foo',     :action => 'search', :q => 'foo'
-      test.assert_routing '2006',           :action => 'yearly',  :year => '2006'
-      test.assert_routing '2006/01',        :action => 'monthly', :year => '2006', :month => '01'
-      test.assert_routing '2006/01/01',     :action => 'daily',   :year => '2006', :month => '01', :day => '01'
-      test.assert_routing '2006/01/01/foo', :action => 'show',    :year => '2006', :month => '01', :day => '01', :permalink => 'foo'
+      test.assert_routing '2006',           :action => 'yearly', :year => '2006'
+      test.assert_routing '2006/01',        :action => 'date',   :year => '2006', :month => '01'
+      test.assert_routing '2006/01/01',     :action => 'date',   :year => '2006', :month => '01', :day => '01'
+      test.assert_routing '2006/01/01/foo', :action => 'show',   :year => '2006', :month => '01', :day => '01', :permalink => 'foo'
     end
   end
 
@@ -55,8 +55,14 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_daily_entries
-    date = 3.days.ago.monday
-    get :daily, :year => date.year, :month => date.month, :day => date.day
-    
+    date = 4.days.ago
+    get :date, :year => date.year, :month => date.month, :day => date.day
+    assert_equal [articles(:another)], assigns(:articles)
+  end
+
+  def test_should_show_monthly_entries
+    date = 4.days.ago
+    get :date, :year => date.year, :month => date.month
+    assert_equal [articles(:welcome), articles(:another)], assigns(:articles)
   end
 end

@@ -20,7 +20,8 @@ class MephistoController < ApplicationController
   end
 
   def search
-    conditions     = ['title LIKE :q OR summary LIKE :q OR description LIKE :q', { :q => "%#{params[:q]}%" }]
+    conditions     = ['published_at <= :now AND type IS NULL AND title LIKE :q OR summary LIKE :q OR description LIKE :q', 
+                     { :now => Time.now.utc, :q => "%#{params[:q]}%" }]
     @article_pages = Paginator.new self, Article.count(conditions), 15, params[:page]
     @articles      = Article.find(:all, :conditions => conditions, :order => 'published_at DESC',
                        :limit  =>  @article_pages.items_per_page,
@@ -36,7 +37,7 @@ class MephistoController < ApplicationController
     render_liquid_template_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments)
   end
 
-  def daily
+  def date
     @articles = Article.find_all_by_published_date(params[:year], params[:month], params[:day])
     render_liquid_template_for(:archive, 'articles' => @articles)
   end

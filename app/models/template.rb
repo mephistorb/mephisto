@@ -14,7 +14,7 @@ class Template < ActiveRecord::Base
 
   class << self
     def find_all_by_name(template_type)
-      find(:all, :conditions => ['name IN (?)', (hierarchy[template_type] << :layout).collect { |v| v.to_s }])
+      find(:all, :conditions => ['name IN (?)', (hierarchy[template_type] + [:layout]).collect { |v| v.to_s }])
     end
 
     def templates_for(template_type)

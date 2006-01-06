@@ -13,12 +13,14 @@ class Article < ActiveRecord::Base
   class << self
     def find_by_permalink(year, month, day, permalink)
       from, to = Time.delta(year, month, day)
-      find :first, :conditions => ["permalink = ? AND published_at BETWEEN ? AND ?", permalink, from, to]
+      find :first, :conditions => ["published_at <= ? AND type IS NULL AND permalink = ? AND published_at BETWEEN ? AND ?", 
+        Time.now.utc, permalink, from, to]
     end
     
     def find_all_by_published_date(year, month, day = nil)
       from, to = Time.delta(year, month, day)
-      find :all, :conditions => ["published_at BETWEEN ? AND ?", from, to]
+      find :all, :order => 'published_at DESC', :conditions => ["published_at <= ? AND type IS NULL AND published_at BETWEEN ? AND ?", 
+        Time.now.utc, from, to]
     end
   end
 

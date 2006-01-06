@@ -7,10 +7,10 @@ ActionController::Routing::Routes.draw do |map|
     map.article ':year/:month/:day/:permalink', :action => 'show',    
       :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
 
-    map.daily   ':year/:month/:day',            :action => 'daily',  
+    map.daily   ':year/:month/:day',            :action => 'date',  
       :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
 
-    map.monthly ':year/:month',                 :action => 'monthly', 
+    map.monthly ':year/:month',                 :action => 'date', 
       :requirements => { :year => /\d{4}/, :month => /\d{1,2}/ }
 
     map.yearly  ':year',                        :action => 'yearly',  
