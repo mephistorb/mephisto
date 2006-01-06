@@ -1,9 +1,14 @@
 class Comment < Article
-  belongs_to :article
+  belongs_to :article, :counter_cache => true
   before_save :cache_redcloth
 
   def to_liquid
-    attributes
+    { 'author'       => author,
+      'author_url'   => author_url,
+      'author_email' => author_email,
+      'author_ip'    => author_ip,
+      'body'         => description_html,
+      'created_at'   => created_at }
   end
 
   protected

@@ -1,12 +1,13 @@
 class Template < ActiveRecord::Base
   @@hierarchy = {
-    :main   => [:home,   :index],
-    :single => [:single, :index],
-    :tag    => [:tag,    :archive, :index],
-    #:page   => [:page,   :index],
-    #:author => [:author, :archive, :index],
-    :search => [:search, :index],
-    #:error  => [:error,  :index]
+    :main    => [:home,   :index],
+    :single  => [:single, :index],
+    :tag     => [:tag,    :archive, :index],
+    :archive => [:archive, :index],
+    #:page    => [:page,   :index],
+    #:author  => [:author, :archive, :index],
+    :search  => [:search, :archive, :index],
+    #:error   => [:error,  :index]
   }
   @@template_types = @@hierarchy.values.flatten.uniq << ['layout']
   cattr_reader :hierarchy, :template_types

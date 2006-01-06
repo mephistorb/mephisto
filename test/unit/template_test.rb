@@ -21,11 +21,12 @@ class TemplateTest < Test::Unit::TestCase
     assert_template_type :archive, :tag
     #assert_template_type :index,   :page
     #assert_template_type :archive, :author
-    assert_template_type :index,   :search
+    assert_template_type :archive, :search
     #assert_template_type :index,   :error
 
     templates(:archive).destroy
     assert_template_type :index, :tag
+    assert_template_type :index, :search
     #assert_template_type :index, :author
   end
 

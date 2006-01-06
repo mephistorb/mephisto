@@ -13,7 +13,12 @@ class Article < ActiveRecord::Base
   class << self
     def find_by_permalink(year, month, day, permalink)
       from, to = Time.delta(year, month, day)
-      find :first, :conditions => ["permalink = ? AND articles.published_at BETWEEN ? AND ?", permalink, from, to]
+      find :first, :conditions => ["permalink = ? AND published_at BETWEEN ? AND ?", permalink, from, to]
+    end
+    
+    def find_all_by_published_date(year, month, day = nil)
+      from, to = Time.delta(year, month, day)
+      find :all, :conditions => ["published_at BETWEEN ? AND ?", from, to]
     end
   end
 
@@ -40,11 +45,14 @@ class Article < ActiveRecord::Base
     @tags_to_save = Tag.find(:all, :conditions => ['id in (?)', new_tags])
   end
 
-  def to_liquid
-    attributes.merge \
-      'url'         => full_permalink,
-      'summary'     => summary_html || '',
-      'description' => description_html || ''
+  def to_liquid(mode = :list)
+    mode = :list unless mode == :single
+    { 'title'          => title,
+      'permalink'      => permalink,
+      'url'            => full_permalink,
+      'body'           => (mode == :list ? (summary_html || description_html) : description_html),
+      'published_at'   => published_at,
+      'comments_count' => comments_count }
   end
 
   def hash_for_permalink

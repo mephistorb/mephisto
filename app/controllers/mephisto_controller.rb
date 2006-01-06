@@ -32,8 +32,13 @@ class MephistoController < ApplicationController
   def show
     @article  = Article.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
     @comments = @article.comments.collect { |c| c.to_liquid }
-    @article  = @article.to_liquid
+    @article  = @article.to_liquid(:single)
     render_liquid_template_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments)
+  end
+
+  def daily
+    @articles = Article.find_all_by_published_date(params[:year], params[:month], params[:day])
+    render_liquid_template_for(:archive, 'articles' => @articles)
   end
 
   protected
