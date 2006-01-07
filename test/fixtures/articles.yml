@@ -20,8 +20,8 @@ another:
   id: 2
   title: Another Welcome to Mephisto
   permalink: another_welcome_to_mephisto
-  summary: This is my own little blogging tool
-  summary_html: This is my own little blogging tool
+  description: This is my own little blogging tool
+  description_html: This is my own little blogging tool
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   published_at: <%= 4.days.ago.to_s(:db) %>

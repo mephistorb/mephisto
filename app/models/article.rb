@@ -48,11 +48,10 @@ class Article < ActiveRecord::Base
   end
 
   def to_liquid(mode = :list)
-    mode = :list unless mode == :single
     { 'title'          => title,
       'permalink'      => permalink,
       'url'            => full_permalink,
-      'body'           => (mode == :list ? (summary_html || description_html) : description_html),
+      'body'           => body_for_mode(mode),
       'published_at'   => published_at,
       'comments_count' => comments_count }
   end
@@ -80,5 +79,10 @@ class Article < ActiveRecord::Base
 
   def save_taggings
     @tags_to_save.each { |tag| taggings.create :tag => tag } if @tags_to_save
+  end
+
+  def body_for_mode(mode = :list)
+    mode = :list unless mode == :single
+    (mode == :list ? (summary_html || description_html) : description_html)
   end
 end
