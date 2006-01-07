@@ -9,8 +9,10 @@ welcome:
   id: 1
   title: Welcome to Mephisto
   permalink: welcome_to_mephisto
-  summary: This is my own little blogging tool
-  summary_html: This is my own little blogging tool
+  summary: welcome summary
+  summary_html: welcome summary
+  description: welcome description
+  description_html: welcome description
   created_at: <%= 5.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
   published_at: <%= 3.days.ago.to_s(:db) %>
@@ -20,8 +22,8 @@ another:
   id: 2
   title: Another Welcome to Mephisto
   permalink: another_welcome_to_mephisto
-  description: This is my own little blogging tool
-  description_html: This is my own little blogging tool
+  description: another description
+  description_html: another description
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   published_at: <%= 4.days.ago.to_s(:db) %>

@@ -25,21 +25,35 @@ class MephistoControllerTest < Test::Unit::TestCase
     end
   end
 
-  def test_list_by_tags
+  def test_should_list_on_home
     get :list, :tags => []
     assert_equal tags(:home), assigns(:tag)
     assert_equal [articles(:welcome).to_liquid, articles(:another).to_liquid], assigns(:articles)
+  end
+
+  def test_list_by_tags
     get :list, :tags => %w(about)
     assert_equal tags(:about), assigns(:tag)
     assert_equal [articles(:welcome).to_liquid], assigns(:articles)
   end
 
-  def test_should_render_liquid_templates
+  def test_should_render_liquid_templates_on_home
     get :list, :tags => []
     assert_tag :tag => 'h1', :content => 'This is the layout'
     assert_tag :tag => 'p',  :content => 'home'
+    assert_tag :tag => 'h2', :content => articles(:welcome).title
+    assert_tag :tag => 'h2', :content => articles(:another).title
+    assert_tag :tag => 'p',  :content => articles(:welcome).summary
+    assert_tag :tag => 'p',  :content => articles(:another).description
+  end
+
+  def test_should_render_liquid_templates_by_tags
     get :list, :tags => %w(about)
-    assert_tag :tag => 'p',  :content => 'tag'
+    assert_tag    :tag => 'p',  :content => 'tag'
+    assert_tag    :tag => 'h2', :content => articles(:welcome).title
+    assert_no_tag :tag => 'h2', :content => articles(:another).title
+    assert_tag    :tag => 'p',  :content => articles(:welcome).summary
+    assert_no_tag :tag => 'p',  :content => articles(:another).description
   end
 
   def test_should_search_entries
