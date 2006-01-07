@@ -15,8 +15,8 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_routing
     with_options :controller => 'mephisto' do |test|
-      test.assert_routing '',               :action => 'list', :tags => []
-      test.assert_routing 'about',          :action => 'list', :tags => ['about']
+      test.assert_routing '',               :action => 'list',   :tags => []
+      test.assert_routing 'about',          :action => 'list',   :tags => ['about']
       test.assert_routing 'search/foo',     :action => 'search', :q => 'foo'
       test.assert_routing '2006',           :action => 'yearly', :year => '2006'
       test.assert_routing '2006/01',        :action => 'date',   :year => '2006', :month => '01'
