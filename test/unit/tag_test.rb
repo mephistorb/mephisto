@@ -32,4 +32,9 @@ class TagTest < Test::Unit::TestCase
     articles(:welcome).update_attribute :tag_ids, []
     assert_equal [], articles(:welcome).tags(true)
   end
+
+  def test_should_create_correct_tag_url_hash
+    assert_equal({ :tags => [] },        tags(:home).hash_for_url)
+    assert_equal({ :tags => %w(about) }, tags(:about).hash_for_url)
+  end
 end

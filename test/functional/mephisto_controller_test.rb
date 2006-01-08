@@ -28,13 +28,13 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_list_on_home
     get :list, :tags => []
     assert_equal tags(:home), assigns(:tag)
-    assert_equal [articles(:welcome).to_liquid, articles(:another).to_liquid], assigns(:articles)
+    assert_equal [articles(:welcome), articles(:another)], assigns(:articles)
   end
 
   def test_list_by_tags
     get :list, :tags => %w(about)
     assert_equal tags(:about), assigns(:tag)
-    assert_equal [articles(:welcome).to_liquid], assigns(:articles)
+    assert_equal [articles(:welcome)], assigns(:articles)
   end
 
   def test_should_render_liquid_templates_on_home
@@ -58,7 +58,7 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_search_entries
     get :search, :q => 'another'
-    assert_equal [articles(:another).to_liquid], assigns(:articles)
+    assert_equal [articles(:another)], assigns(:articles)
   end
 
   def test_should_show_entry

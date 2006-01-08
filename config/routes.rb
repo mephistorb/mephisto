@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.admin   'admin', :controller => 'admin/base', :action => 'index'
+  map.feed    'feed/*tags', :controller => 'feed', :action => 'feed'
 
   map.connect ':controller/:action/:id'
 

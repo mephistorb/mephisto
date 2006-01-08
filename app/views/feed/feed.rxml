@@ -1,0 +1,16 @@
+xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
+
+xml.feed "xml:lang" => "en-US", "xmlns" => 'http://www.w3.org/2005/Atom' do
+  xml.title       "Mephisto - #{@tag.name}"
+  xml.id          "tag:#{request.host},#{Time.now.year}:mephisto/#{@tag.name}"
+  xml.generator   "Mephisto", :uri => "http://mephisto.techno-weenie.net", :version => '666'
+  xml.link "rel" => "self",      "type" => "application/xml+atom", "href" => url_for(:only_path => false)
+  xml.link "rel" => "alternate", "type" => "text/html",            "href" => tags_url(@tag.hash_for_url :only_path => false)
+
+  if @articles.any?
+    xml.updated @articles.first.updated_at.xmlschema unless @articles.empty?
+    @articles.each do |article|
+      render :partial => 'article', :locals => {:article => article, :xm => xml}
+    end
+  end
+end

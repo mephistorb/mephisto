@@ -1,0 +1,12 @@
+xm.entry do
+  xm.author do
+    xm.name article.user.login
+  end
+  xm.id        "tag:#{request.host},#{article.published_at.to_date.to_s :db}:#{article.guid}"
+  xm.published article.published_at.xmlschema
+  xm.updated   article.published_at.xmlschema
+  xm.link "rel" => "alternate", "type" => "text/html", "href" => article_url(article.hash_for_permalink)
+  xm.title     strip_tags(article.title)
+  xm.summary   textilize(article.summary),     'type' => 'html' unless article.summary.blank?
+  xm.content   textilize(article.description), 'type' => 'html' unless article.description.blank?
+end

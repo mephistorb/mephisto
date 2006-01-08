@@ -1,6 +1,6 @@
 class MephistoController < ApplicationController
-  layout 'default'
   session :off
+  caches_page_with_references :list, :search, :show, :date
 
   def list
     if params[:tags].blank?
@@ -14,7 +14,7 @@ class MephistoController < ApplicationController
     @article_pages = Paginator.new self, @tag.articles.size, 15, params[:page]
     @articles      = @tag.articles.find_by_date(
                        :limit  =>  @article_pages.items_per_page,
-                       :offset =>  @article_pages.current.offset).collect { |a| a.to_liquid }
+                       :offset =>  @article_pages.current.offset)
 
     render_liquid_template_for(template_type, 'tag' => @tag, 'articles' => @articles)
   end
@@ -25,7 +25,7 @@ class MephistoController < ApplicationController
     @article_pages = Paginator.new self, Article.count(conditions), 15, params[:page]
     @articles      = Article.find(:all, :conditions => conditions, :order => 'published_at DESC',
                        :limit  =>  @article_pages.items_per_page,
-                       :offset =>  @article_pages.current.offset).collect { |a| a.to_liquid }
+                       :offset =>  @article_pages.current.offset)
 
     render_liquid_template_for(:search, 'tag' => @tag, 'articles' => @articles)
   end
@@ -33,6 +33,7 @@ class MephistoController < ApplicationController
   def show
     @article  = Article.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
     @comments = @article.comments.collect { |c| c.to_liquid }
+    self.cached_references << @article
     @article  = @article.to_liquid(:single)
     render_liquid_template_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments)
   end
@@ -48,6 +49,10 @@ class MephistoController < ApplicationController
     templates                 = Template.templates_for(template_type)
     preferred_template        = Template.find_preferred(template_type, templates)
     layout_template           = templates['layout']
+    unless assigns['article']
+      self.cached_references += assigns['articles']
+      assigns['articles']     = assigns['articles'].collect { |a| a.to_liquid }
+    end
     assigns.merge! 'content_for_layout' => Liquid::Template.parse(preferred_template).render(assigns)
     render :text => Liquid::Template.parse(layout_template).render(assigns)
   end
