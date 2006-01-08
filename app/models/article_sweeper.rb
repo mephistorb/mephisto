@@ -17,9 +17,11 @@ class ArticleSweeper < ActionController::Caching::Sweeper
     when Comment
       after_save(record.article)
     when Article
-      record.tags(true).each do |t| 
-        expire_page hash_for_tags_url(t.hash_for_url)
-      end
+      record.tags(true).each { |t| self.class.expire_tag(t) }
     end
+  end
+
+  def expire_tag(tag)
+    controller.class.benchmark("Expiring tag: #{tag.name}") { expire_page hash_for_tags_url(tag.hash_for_url) }
   end
 end
