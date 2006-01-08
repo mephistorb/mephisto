@@ -16,7 +16,8 @@ class MephistoController < ApplicationController
                        :limit  =>  @article_pages.items_per_page,
                        :offset =>  @article_pages.current.offset)
 
-    render_liquid_template_for(template_type, 'tag' => @tag, 'articles' => @articles)
+    self.cached_references << @tag
+    render_liquid_template_for(template_type, 'tag' => @tag.name, 'articles' => @articles)
   end
 
   def search

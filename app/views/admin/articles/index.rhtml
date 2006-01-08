@@ -22,6 +22,11 @@
 <%= render :partial => 'article', :collection => @articles %>
     </tbody>
   </table>
+
+<p>
+<%= link_to 'Previous page', { :page => @article_pages.current.previous } if @article_pages.current.previous %>
+<%= link_to 'Next page', { :page => @article_pages.current.next } if @article_pages.current.next %> 
+</p>
 </div>
 
 <div id="side">

@@ -5,9 +5,14 @@ class Admin::ArticlesController < Admin::BaseController
   cache_sweeper :tagging_sweeper,            :only => [:create, :update]
 
   def index
-    @tags     = Tag.find :all
-    @article  = Article.new
-    @articles = Article.find :all, :order => 'articles.created_at DESC', :conditions => 'article_id IS NULL', :include => :user
+    conditions     = 'article_id IS NULL'
+    @tags          = Tag.find :all
+    @article       = Article.new
+    @article_pages = Paginator.new self, Article.count(conditions), 30, params[:page]
+    @articles      = Article.find(:all, :conditions => conditions, :order => 'articles.created_at DESC',
+                       :include => :user,
+                       :limit   =>  @article_pages.items_per_page,
+                       :offset  =>  @article_pages.current.offset)
   end
 
   def create
