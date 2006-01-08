@@ -1,6 +1,8 @@
 class Admin::ArticlesController < Admin::BaseController
   before_filter :set_default_tag_ids,        :only => [:create, :update]
   before_filter :clear_published_at_fields!, :only => [:create, :update]
+  cache_sweeper :article_sweeper,            :only => [:create, :update]
+  cache_sweeper :tagging_sweeper,            :only => [:create, :update]
 
   def index
     @tags     = Tag.find :all

@@ -1,5 +1,6 @@
 class Admin::TemplatesController < Admin::BaseController
   before_filter :select_template, :except => :index
+  cache_sweeper :template_sweeper, :only => [:update]
   verify :params => :id, :only => [:edit, :update],
          :add_flash   => { :error => 'Template required' },
          :redirect_to => { :action => 'index' }
