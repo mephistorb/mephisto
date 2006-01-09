@@ -94,7 +94,6 @@ class Article < ActiveRecord::Base
   end
 
   def body_for_mode(mode = :list)
-    mode = :list unless mode == :single
-    (mode == :list ? (summary_html || description_html) : summary_html.to_s + "\n\n" + description_html.to_s).strip
+    (mode == :single ? summary_html.to_s + "\n\n" + description_html.to_s : (summary_html || description_html)).strip
   end
 end
