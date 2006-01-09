@@ -1,19 +1,20 @@
 module Mephisto
   class CommentForm < Liquid::Block
+    include ActionView::Helpers::TagHelper
+    include ActionView::Helpers::FormTagHelper
+
     def render(context)
       result = []
       context.stack do
         context['form'] = {
-          'body'   => %Q{<textarea name="description"></textarea>},
-          'name'   => %Q{<input type="text" name="name" />},
-          'email'  => %Q{<input type="text" name="email" />}, 
-          'url'    => %Q{<input type="text" name="url" />},
-          'submit' => %Q{<input type="submit" value="Submit Comment" />}
+          'body'   => text_area_tag('description'),
+          'name'   => text_field_tag('name'),
+          'email'  => text_field_tag('email'),
+          'url'    => text_field_tag('url'),
+          'submit' => submit_tag('Send')
         }
 
-        result << %Q{<form method="post">}       \
-               << render_all(@nodelist, context) \
-               << %Q{</form>}
+        result << content_tag(:form, render_all(@nodelist, context), :method => :post)
       end
       result
     end

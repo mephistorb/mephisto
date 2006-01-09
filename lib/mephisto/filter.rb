@@ -1,14 +1,20 @@
 module Mephisto
   module Filter
+    include ActionView::Helpers::TagHelper
+
+    def url_for_article(article)
+      article['url']
+    end
+
     def link_to_article(article)
-      %Q{<a href="#{article['url']}">#{article['title']}</a>}
+      content_tag :a, article['title'], :href => article['url']
     end
 
     def link_to_comments(article)
-      %Q{<a href="#{article['url']}">#{pluralize article['comments_count'], 'comment'}</a>}
+      content_tag :a, pluralize(article['comments_count'], 'comment'), :href => article['url']
     end
 
-    def html_escape(html)
+    def escape_html(html)
       CGI::escapeHTML(html)
     end
 
