@@ -14,7 +14,7 @@ class Time
     to   = from + 1.year
     to   = from + 1.month unless month.blank?    
     to   = from + 1.day   unless day.blank?
-    #to   = to.tomorrow    unless month.blank?
-    return [from, to]
+    to   = to.tomorrow    unless month.blank? or day
+    return [from.midnight, to.midnight]
   end
 end

@@ -17,10 +17,15 @@ class Article < ActiveRecord::Base
         Time.now.utc, permalink, from, to]
     end
     
-    def find_all_by_published_date(year, month, day = nil)
+    def find_all_by_published_date(year, month, day = nil, options = {})
       from, to = Time.delta(year, month, day)
-      find :all, :order => 'published_at DESC', :conditions => ["published_at <= ? AND type IS NULL AND published_at BETWEEN ? AND ?", 
-        Time.now.utc, from, to]
+      find(:all, options.merge(:order => 'published_at DESC', :conditions => ["published_at <= ? AND type IS NULL AND published_at BETWEEN ? AND ?", 
+        Time.now.utc, from, to]))
+    end
+
+    def count_by_published_date(year, month, day = nil)
+      from, to = Time.delta(year, month, day)
+      count ["published_at <= ? AND type IS NULL AND published_at BETWEEN ? AND ?", Time.now.utc, from, to]
     end
   end
 

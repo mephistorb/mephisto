@@ -39,8 +39,17 @@ class MephistoController < ApplicationController
     render_liquid_template_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments)
   end
 
-  def date
+  def day
     @articles = Article.find_all_by_published_date(params[:year], params[:month], params[:day])
+    render_liquid_template_for(:archive, 'articles' => @articles)
+  end
+
+  def month
+    count = Article.count_by_published_date(params[:year], params[:month], params[:day])
+    @article_pages = Paginator.new self, count, 15, params[:page]
+    @articles = Article.find_all_by_published_date(params[:year], params[:month], params[:day],
+                  :limit  =>  @article_pages.items_per_page,
+                  :offset =>  @article_pages.current.offset)
     render_liquid_template_for(:archive, 'articles' => @articles)
   end
 

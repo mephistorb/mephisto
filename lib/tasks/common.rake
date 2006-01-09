@@ -5,6 +5,8 @@ task :init do
   puts 'copying files...'
   cp "#{ENV['SHARED_PATH']}/database.yml",  'config'
   cp "#{ENV['SHARED_PATH']}/dispatch.fcgi", 'public'
+  cp "#{ENV['SHARED_PATH']}/bg-lg.jpg",     'public'
+  cp "#{ENV['SHARED_PATH']}/tw.css",        'public'
 
   puts 'setting permissions...'
   chmod 0600, 'config/database.yml'
