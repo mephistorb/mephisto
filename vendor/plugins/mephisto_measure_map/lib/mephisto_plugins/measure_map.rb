@@ -12,7 +12,7 @@ module MephistoPlugins
       %Q{<!-- mmp mmid:#{article['id']} mmdate:#{format_date(article['published_at'], :db)} mmurl:#{url_for_article(article)} mmtitle:#{escape_html(article['title'])} -->}
     end
 
-    def measure_map_footer
+    def measure_map_footer(foo)
       javascript_tag nil, :src => 'http://tracker.measuremap.com/a/413'
     end
   end
