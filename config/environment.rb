@@ -54,7 +54,8 @@ end
 require 'string_ext'
 require 'time_ext'
 Liquid::Template.register_filter(Mephisto::Filter)
-Liquid::Template.register_block('textile', Mephisto::Textile)
+Liquid::Template.register_block('textile',     Mephisto::Textile)
+Liquid::Template.register_block('commentform', Mephisto::CommentForm)
 
 # http://rails.techno-weenie.net/tip/2005/12/23/make_fixtures
 ActiveRecord::Base.class_eval do
