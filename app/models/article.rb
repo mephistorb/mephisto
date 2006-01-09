@@ -59,7 +59,8 @@ class Article < ActiveRecord::Base
   end
 
   def to_liquid(mode = :list)
-    { 'title'          => title,
+    { 'id'             => id,
+      'title'          => title,
       'permalink'      => permalink,
       'url'            => full_permalink,
       'body'           => body_for_mode(mode),
