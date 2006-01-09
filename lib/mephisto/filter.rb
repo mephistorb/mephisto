@@ -8,6 +8,10 @@ module Mephisto
       %Q{<a href="#{article['url']}">#{pluralize article['comments_count'], 'comment'}</a>}
     end
 
+    def html_escape(html)
+      CGI::escapeHTML(html)
+    end
+
     def pluralize(count, singular, plural = nil)
       "#{count} " + if count == 1
         singular
