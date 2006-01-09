@@ -9,12 +9,12 @@ class Comment < Article
       'created_at' => created_at }
   end
 
-  protected
-  validates_presence_of :description, :author, :author_ip
-
   def author_link
     return author if author_url.blank?
-    author_url = "http://" + author_url if author_url !~ /^https?:\/\//
+    self.author_url = "http://" + author_url unless author_url =~ /^https?:\/\//
     %Q{<a href="#{author_url}">#{author}</a>}
   end
+
+  protected
+  validates_presence_of :description, :author, :author_ip
 end

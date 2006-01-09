@@ -37,6 +37,7 @@ welcome_comment:
   updated_at: <%= 3.days.ago.to_s(:db) %>
   published_at: <%= 3.days.ago.to_s(:db) %>
   type: Comment
+  author: rico
 unpublished:
   id: 4
   title: Unpublished Article

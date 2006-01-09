@@ -21,4 +21,12 @@ class CommentTest < Test::Unit::TestCase
     c = articles(:welcome).comments.create :description => '*test* comment', :author => 'bob', :author_ip => '127.0.0.1'
     assert_equal "<p><strong>test</strong> comment</p>", c.description_html
   end
+
+  def test_should_return_correct_author_link
+    assert_equal 'rico',                            articles(:welcome_comment).author_link
+    articles(:welcome_comment).author_url = 'abc'
+    assert_equal %Q{<a href="http://abc">rico</a>}, articles(:welcome_comment).author_link
+    articles(:welcome_comment).author_url = 'https://abc'
+    assert_equal %Q{<a href="https://abc">rico</a>}, articles(:welcome_comment).author_link
+  end
 end
