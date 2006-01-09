@@ -13,7 +13,7 @@ module MephistoPlugins
     end
 
     def measure_map_footer(foo)
-      javascript_tag nil, :src => 'http://tracker.measuremap.com/a/413'
+      content_tag :script, nil, :type => 'text/javascript', :src => 'http://tracker.measuremap.com/a/413'
     end
   end
 end
