@@ -17,7 +17,9 @@ class MephistoController < ApplicationController
                        :offset =>  @article_pages.current.offset)
 
     self.cached_references << @tag
-    render_liquid_template_for(template_type, 'tag' => @tag.name, 'articles' => @articles)
+    render_liquid_template_for(template_type, 'tag' => @tag.name, 'articles' => @articles,
+                                              'previous_page' => paged_tags_url_for(@article_pages.current.previous),
+                                              'next_page'     => paged_tags_url_for(@article_pages.current.next))
   end
 
   def search
@@ -28,7 +30,9 @@ class MephistoController < ApplicationController
                        :limit  =>  @article_pages.items_per_page,
                        :offset =>  @article_pages.current.offset)
 
-    render_liquid_template_for(:search, 'tag' => @tag, 'articles' => @articles)
+    render_liquid_template_for(:search, 'tag' => @tag, 'articles' => @articles,
+                                        'previous_page' => paged_search_url_for(@article_pages.current.previous),
+                                        'next_page'     => paged_search_url_for(@article_pages.current.next))
   end
 
   def show
@@ -50,7 +54,9 @@ class MephistoController < ApplicationController
     @articles = Article.find_all_by_published_date(params[:year], params[:month], params[:day],
                   :limit  =>  @article_pages.items_per_page,
                   :offset =>  @article_pages.current.offset)
-    render_liquid_template_for(:archive, 'articles' => @articles)
+    render_liquid_template_for(:archive, 'articles'      => @articles,
+                                         'previous_page' => paged_monthly_url_for(@article_pages.current.previous),
+                                         'next_page'     => paged_monthly_url_for(@article_pages.current.next))
   end
 
   protected
@@ -65,5 +71,17 @@ class MephistoController < ApplicationController
     end
     assigns.merge! 'content_for_layout' => Liquid::Template.parse(preferred_template).render(assigns)
     render :text => Liquid::Template.parse(layout_template).render(assigns)
+  end
+
+  def paged_search_url_for(page)
+    page ? paged_search_url(:q => params[:q], :page => page) : ''
+  end
+
+  def paged_monthly_url_for(page)
+    page ? paged_monthly_url(:year => params[:year], :month => params[:month], :page => page) : ''
+  end
+
+  def paged_tags_url_for(page)
+    page ? tags_url(:tags => @tag.to_url << 'page' << page) : ''
   end
 end

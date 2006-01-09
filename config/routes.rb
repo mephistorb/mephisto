@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
     map.daily   ':year/:month/:day',            :action => 'day',  
       :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
 
-    map.monthly ':year/:month/page/:page',       :action => 'month', 
+    map.paged_monthly ':year/:month/page/:page', :action => 'month', 
       :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :page => /\d+/ }
 
     map.monthly ':year/:month',                 :action => 'month', 
@@ -20,6 +20,7 @@ ActionController::Routing::Routes.draw do |map|
     map.yearly  ':year',                        :action => 'yearly',  
       :requirements => { :year => /\d{4}/ }
 
+    map.paged_search 'search/:q/page/:page',    :action => 'search'
     map.search  'search/:q',                    :action => 'search', :q => nil
     map.tags    '*tags',                        :action => 'list'
   end

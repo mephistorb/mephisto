@@ -12,7 +12,11 @@ class Tag < ActiveRecord::Base
   end
 
   def hash_for_url(options = {})
-    { :tags => ((name.nil? or name == 'home') ? '' : name).split('/') }.merge(options)
+    { :tags => to_url }.merge(options)
+  end
+
+  def to_url
+    ((name.nil? or name == 'home') ? '' : name).split('/')
   end
 
   protected
