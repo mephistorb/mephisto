@@ -60,19 +60,6 @@ class MephistoController < ApplicationController
   end
 
   protected
-  def render_liquid_template_for(template_type, assigns = {})
-    headers["Content-Type"] ||= 'text/html; charset=utf-8'
-    templates                 = Template.templates_for(template_type)
-    preferred_template        = Template.find_preferred(template_type, templates)
-    layout_template           = templates['layout']
-    unless assigns['article']
-      self.cached_references += assigns['articles']
-      assigns['articles']     = assigns['articles'].collect { |a| a.to_liquid }
-    end
-    assigns.merge! 'content_for_layout' => Liquid::Template.parse(preferred_template).render(assigns)
-    render :text => Liquid::Template.parse(layout_template).render(assigns)
-  end
-
   def paged_search_url_for(page)
     page ? paged_search_url(:q => params[:q], :page => page) : ''
   end

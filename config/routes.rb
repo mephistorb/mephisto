@@ -4,6 +4,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect ':controller/:action/:id'
 
+  map.comment ':year/:month/:day/:permalink/comment', :controller => 'comments', :action => 'create',    
+      :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
+
   map.with_options :controller => 'mephisto' do |map|
     map.article ':year/:month/:day/:permalink', :action => 'show',    
       :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }

@@ -66,7 +66,19 @@ class MephistoControllerTest < Test::Unit::TestCase
     date = 3.days.ago
     get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome_to_mephisto'
     assert_equal articles(:welcome).to_liquid['id'], assigns(:article)['id']
-    assert_tag :tag => 'a', :attributes => { :href => articles(:welcome).full_permalink }, :content => articles(:welcome).title
+  end
+
+  def test_should_show_comments_form
+    date = 3.days.ago
+    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome_to_mephisto'
+    assert_tag :tag => 'form',  :descendant => { 
+               :tag => 'input', :attributes => { :type => 'text', :id => 'comment_author', :name => 'comment[author]' } }
+    assert_tag :tag => 'form',  :descendant => { 
+               :tag => 'input', :attributes => { :type => 'text', :id => 'comment_url',    :name => 'comment[url]'    } }
+    assert_tag :tag => 'form',  :descendant => { 
+               :tag => 'input', :attributes => { :type => 'text', :id => 'comment_email',  :name => 'comment[email]'  } }
+    assert_tag :tag => 'form',  :descendant => { 
+               :tag => 'input', :attributes => { :type => 'text', :id => 'comment_description',  :name => 'comment[description]'  } }
   end
 
   def test_should_show_daily_entries
