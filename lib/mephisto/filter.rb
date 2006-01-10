@@ -38,7 +38,7 @@ module Mephisto
     end
 
     def format_date(date, format)
-      date.to_s(format.to_sym)
+      date ? date.to_s(format.to_sym) : nil
     end
   end
 end

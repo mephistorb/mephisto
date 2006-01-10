@@ -6,6 +6,8 @@ module Mephisto
     def render(context)
       result = []
       context.stack do
+        errors = context['errors'] ? %Q{<ul id="comment_errors"><li>#{context['errors'].join('</li><li>')}</li></ul>} : ''
+        
         context['form'] = {
           'body'   => text_area_tag('comment_description',   nil, :name => 'comment[description]'),
           'name'   => text_field_tag('comment_author',       nil, :name => 'comment[author]'),
@@ -14,7 +16,7 @@ module Mephisto
           'submit' => submit_tag('Send')
         }
 
-        result << content_tag(:form, render_all(@nodelist, context), :method => :post, :action => "#{context['article']['url']}/comment")
+        result << content_tag(:form, [errors]+render_all(@nodelist, context), :method => :post, :action => "#{context['article']['url']}/comment")
       end
       result
     end

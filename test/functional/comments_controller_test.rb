@@ -46,4 +46,23 @@ class CommentsControllerTest < Test::Unit::TestCase
       end
     end
   end
+
+  def test_should_reject_missing_article_params
+    get :create
+    assert_redirected_to @controller.send(:tags_url, { :tags => [] })
+    post :create, :year => '2006', :month => '01', :day => '01', :permalink => 'foo'
+    assert_redirected_to @controller.send(:tags_url, { :tags => [] })
+  end
+
+  def test_should_reject_get_request
+    get :create, articles(:welcome).hash_for_permalink
+    assert_redirected_to @controller.url_for(articles(:welcome).hash_for_permalink(:controller => 'mephisto', 
+                                                                                   :action     => 'show'))
+  end
+
+  def test_should_reject_invalid_post
+    post :create, articles(:welcome).hash_for_permalink
+    assert_redirected_to @controller.url_for(articles(:welcome).hash_for_permalink(:controller => 'mephisto', 
+                                                                                   :action     => 'show'))
+  end
 end
