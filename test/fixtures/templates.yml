@@ -3,7 +3,17 @@
 layout:
   id: 1
   name: layout
-  data: "<html><body><h1>This is the layout</h1>{{ content_for_layout }}</body></html>"
+  data: |-
+    <html>
+    {% head %}
+      <title>test</title>
+      {{ head.feed }}
+    {% endhead %}
+    <body>
+      <h1>This is the layout</h1>
+      {{ content_for_layout }}
+    </body></html>
+
 home:
   id: 2
   name: home

@@ -3,10 +3,10 @@ task :init do
   ENV['SHARED_PATH']  = '../../shared' unless ENV['SHARED_PATH']
   ENV['RAILS_PATH'] ||= File.join(ENV['SHARED_PATH'], 'rails')
   puts 'copying files...'
-  cp "#{ENV['SHARED_PATH']}/database.yml",  'config'
-  cp "#{ENV['SHARED_PATH']}/dispatch.fcgi", 'public'
-  cp "#{ENV['SHARED_PATH']}/bg-lg.jpg",     'public/stylesheets'
-  cp "#{ENV['SHARED_PATH']}/tw.css",        'public/stylesheets'
+  cp "#{ENV['SHARED_PATH']}/database.yml",      'config'
+  cp "#{ENV['SHARED_PATH']}/dispatch.fcgi",     'public'
+  cp "#{ENV['SHARED_PATH']}/tw_home/bg-lg.jpg", 'public/stylesheets'
+  cp "#{ENV['SHARED_PATH']}/tw_home/tw.css",    'public/stylesheets'
 
   puts 'setting permissions...'
   chmod 0600, 'config/database.yml'

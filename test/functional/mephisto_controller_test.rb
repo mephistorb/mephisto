@@ -32,6 +32,11 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal [articles(:welcome), articles(:another)], assigns(:articles)
   end
 
+  def test_should_show_correct_feed_url
+    get :list, :tags => []
+    assert_tag :tag => 'link', :type => 'application/atom+xml', :href => '/feed/atom.xml'
+  end
+
   def test_list_by_tags
     get :list, :tags => %w(about)
     assert_equal tags(:about), assigns(:tag)
