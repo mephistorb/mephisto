@@ -2,7 +2,7 @@ class Article < ActiveRecord::Base
   belongs_to :user
   has_many   :taggings
   has_many   :tags, :through => :taggings
-  has_many   :comments
+  has_many   :comments, :order => 'created_at'
   
   validates_presence_of :title, :user_id
 
