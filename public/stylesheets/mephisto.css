@@ -131,18 +131,6 @@ input.default {
   text-align:left;
 }
 
-#content {
-  float:right;
-  width:74%;
-  padding:2% 3%;
-}
-
-#side {
-  float:left;
-  width:16%;
-  padding:2%;
-}
-
 .c:after {
     content: "."; 
     display: block; 

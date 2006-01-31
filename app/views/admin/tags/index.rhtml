@@ -1,15 +1,10 @@
-<div id="content">
-  <div id="tags">
+<% form_remote_for :tag, Tag.new(:name => 'create tag'), 
+     :url => { :action => 'create' }, :html => { :id => 'tag_form' } do |f| %>
+  <p>
+    <%= f.text_field :name, :onclick => "Form.clear_default_text(this, 'default');", :class => 'default' %>
+  </p>
+<% end -%>
+
+<div id="tags">
 <%= render :partial => 'tag', :collection => @tags %>
-  </div>
 </div>
-
-<div id="side">
-  <% form_remote_for :tag, Tag.new(:name => 'create tag'), 
-       :url => { :action => 'create' }, :html => { :id => 'tag_form' } do |f| %>
-    <p>
-      <%= f.text_field :name, :onclick => "Form.clear_default_text(this, 'default');", :class => 'default' %>
-    </p>
-  <% end -%>
-</div>
-

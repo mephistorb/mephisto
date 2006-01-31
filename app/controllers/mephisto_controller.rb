@@ -5,21 +5,13 @@ class MephistoController < ApplicationController
   def list
     if params[:tags].blank?
       @tag = Tag.find_by_name('home')
-      template_type = :main
+      @template_type = :main
     else
       @tag = Tag.find_by_name(params[:tags].join('/'))
-      template_type = :tag
+      @template_type = :tag
     end
-
-    @article_pages = Paginator.new self, @tag.articles.size, 15, params[:page]
-    @articles      = @tag.articles.find_by_date(
-                       :limit  =>  @article_pages.items_per_page,
-                       :offset =>  @article_pages.current.offset)
-
-    self.cached_references << @tag
-    render_liquid_template_for(template_type, 'tag' => @tag.name, 'articles' => @articles,
-                                              'previous_page' => paged_tags_url_for(@article_pages.current.previous),
-                                              'next_page'     => paged_tags_url_for(@article_pages.current.next))
+    
+    list_tag_articles
   end
 
   def search
@@ -60,6 +52,23 @@ class MephistoController < ApplicationController
   end
 
   protected
+  def list_tag_articles
+    @article_pages = Paginator.new self, @tag.articles.size, 15, params[:page]
+    @articles      = @tag.articles.find_by_date(
+                       :limit  =>  @article_pages.items_per_page,
+                       :offset =>  @article_pages.current.offset)
+
+    self.cached_references << @tag
+    render_liquid_template_for(@template_type, 'tag'           => @tag.name, 
+                                               'articles'      => @articles,
+                                               'previous_page' => paged_tags_url_for(@article_pages.current.previous),
+                                               'next_page'     => paged_tags_url_for(@article_pages.current.next))
+  end
+
+  def show_tag_page
+    raise 'not implemented'
+  end
+
   def paged_search_url_for(page)
     page ? paged_search_url(:q => params[:q], :page => page) : ''
   end
