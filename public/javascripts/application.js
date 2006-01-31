@@ -53,6 +53,12 @@ var ArticleForm = {
   }
 }
 
+var TagForm = {
+  toggle_for_tag: function(tag) {
+    new Element.toggle('tag_' + tag + '_name', 'tag_' + tag + '_form');
+  }
+}
+
 //Ajax.Responders.register({
 //  // log the beginning of the requests
 //  onCreate: function(request, transport) {

@@ -1,7 +1,16 @@
-<div class="tag" id="tag_<%=tag.id%>">
-  <span id="tag_<%=tag.id%>_name"><%=h tag.name %></span>
+<% form_remote_for :tag, tag, :url => { :action => 'update', :id => tag }, 
+  :html => { :class => 'tag', :id => "tag_#{tag.id}"} do |f| -%>
+  <span id="tag_<%=tag.id%>_name">
+    <%=h tag.name %>
+    <%= link_to_function 'Edit', "TagForm.toggle_for_tag('#{tag.id}')" %>
+    <%= link_to_remote 'Delete', :url => { :action => 'destroy', :id => tag }, 
+          :confirm => "Are you sure you want to delete #{tag.name}?" %>
+  </span>
   <% unless tag.name == 'home' -%>
-  <%= link_to_remote 'Delete', :url => { :action => 'destroy', :id => tag }, :confirm => "Are you sure you want to delete #{tag.name}?" %>
-  <%= in_place_editor "tag_#{tag.id}_name", :url => { :action => 'set_tag_name', :id => tag } %>
+  <span id="tag_<%=tag.id%>_form" style="display:none">
+    <%= f.text_field 'name' %>
+    <label><%= f.check_box 'show_paged_articles' %> paged?</label>
+    <%= link_to_function 'cancel', "TagForm.toggle_for_tag('#{tag.id}')" %>
+  </span>
   <% end -%>
-</div>
+<% end -%>
