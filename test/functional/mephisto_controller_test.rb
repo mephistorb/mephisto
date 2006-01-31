@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require 'mephisto_controller'
+require_dependency 'mephisto_controller'
 
 # Re-raise errors caught by the controller.
 class MephistoController; def rescue_action(e) raise e end; end
@@ -34,7 +34,7 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_show_correct_feed_url
     get :list, :tags => []
-    assert_tag :tag => 'link', :type => 'application/atom+xml', :href => '/feed/atom.xml'
+    assert_tag :tag => 'link', :attributes => { :type => 'application/atom+xml', :href => '/feed/atom.xml' }
   end
 
   def test_list_by_tags

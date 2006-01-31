@@ -1,11 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require 'comments_controller'
+require_dependency 'comments_controller'
 
 # Re-raise errors caught by the controller.
 class CommentsController; def rescue_action(e) raise e end; end
 
 class CommentsControllerTest < Test::Unit::TestCase
-  fixtures :articles
+  fixtures :articles, :templates
 
   def setup
     @controller = CommentsController.new
