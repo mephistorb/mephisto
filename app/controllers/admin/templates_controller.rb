@@ -1,5 +1,5 @@
 class Admin::TemplatesController < Admin::BaseController
-  cache_sweeper :template_sweeper, :only => [:update]
+  cache_sweeper :template_sweeper
   verify :params => :id, :only => [:edit, :update],
          :add_flash   => { :error => 'Template required' },
          :redirect_to => { :action => 'index' }
