@@ -13,6 +13,7 @@ class Admin::PagesController < Admin::BaseController
       params[:articles].each_with_index do |pos, index|
         @tag.taggings.detect { |t| t.article_id.to_s == pos }.update_attributes(:position => index)
       end
+      @tag.save # kick off the sweeper!
     end
     render :nothing => true
   end
