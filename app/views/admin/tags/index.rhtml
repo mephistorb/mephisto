@@ -6,5 +6,7 @@
 <% end -%>
 
 <div id="tags">
+<% home = @tags.shift -%>
+<div><%=h home.name %></div>
 <%= render :partial => 'tag', :collection => @tags %>
 </div>
