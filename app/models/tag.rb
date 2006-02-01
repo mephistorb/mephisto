@@ -41,6 +41,10 @@ class Tag < ActiveRecord::Base
     end
   end
 
+  def title
+    name.to_s.split('/').last.humanize
+  end
+
   def hash_for_url(options = {})
     { :tags => to_url }.merge(options)
   end

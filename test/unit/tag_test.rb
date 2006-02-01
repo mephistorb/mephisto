@@ -59,4 +59,10 @@ class TagTest < Test::Unit::TestCase
     assert_equal [tags(:home), tags(:about)], Tag.find(:all)
     assert_equal [tags(:about)], Tag.find_paged
   end
+
+  def test_should_show_correct_titles
+    tags(:about).name = 'about/foo'
+    assert_equal 'Home', tags(:home).title
+    assert_equal 'Foo',  tags(:about).title
+  end
 end
