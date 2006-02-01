@@ -20,6 +20,14 @@ class Tag < ActiveRecord::Base
     end
   end
 
+  class << self
+    def find_paged(options = {})
+      with_scope :find => { :conditions => ['show_paged_articles = ?', true] } do
+        block_given? ? yield : find(:all, options)
+      end
+    end
+  end
+
   def hash_for_url(options = {})
     { :tags => to_url }.merge(options)
   end

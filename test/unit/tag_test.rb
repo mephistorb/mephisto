@@ -4,8 +4,13 @@ class TagTest < Test::Unit::TestCase
   fixtures :tags, :articles, :taggings
 
   def test_find_or_create_sanity_check
-    assert_equal tags(:home), Tag.find_or_create_by_name('home')
-    assert_equal 3, Tag.find_or_create_by_name('foo').id
+    assert_no_difference Tag, :count do
+      assert_equal tags(:home), Tag.find_or_create_by_name('home')
+    end
+    
+    assert_difference Tag, :count do 
+      Tag.find_or_create_by_name('foo')
+    end
   end
 
   def test_articles_association_by_published_at
@@ -43,5 +48,10 @@ class TagTest < Test::Unit::TestCase
   def test_should_create_correct_tag_url_hash
     assert_equal({ :tags => [] },        tags(:home).hash_for_url)
     assert_equal({ :tags => %w(about) }, tags(:about).hash_for_url)
+  end
+
+  def test_should_return_correct_tags
+    assert_equal [tags(:home), tags(:about)], Tag.find(:all)
+    assert_equal [tags(:about)], Tag.find_paged
   end
 end

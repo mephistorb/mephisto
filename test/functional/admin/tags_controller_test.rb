@@ -14,12 +14,12 @@ class Admin::TagsControllerTest < Test::Unit::TestCase
     login_as :quentin
   end
 
-  def test_should_list_templates
+  def test_should_list_tags
     get :index
-    assert_equal 2, assigns(:tags).length
+    assert_equal 1, assigns(:tags).length # the home tag is shifted off
   end
 
-  def test_should_create_template
+  def test_should_create_tag
     assert_difference Tag, :count do
       post :create, :tag => { :name => 'foo' }
       assert_response :success
