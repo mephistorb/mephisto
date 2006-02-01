@@ -1,4 +1,4 @@
 <h3>
   choose a template 
-  <%= select_tag 'template', options_for_select([''] + Template.template_types), :onchange => "Template.navigate_to(this)" %>
+  <%= select_tag 'template', options_for_select([''] + Template.template_types), :onchange => "Navigate.to_template(this)" %>
 </h3>

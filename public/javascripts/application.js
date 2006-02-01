@@ -33,10 +33,18 @@ Form.saved = function(form_name) {
   Element.hide(form_name + '_spinner');
 }
 
-var Template = {
-  navigate_to: function(select) {
-    var template = select.options[select.selectedIndex].value;
-    if(template) location.href = "/admin/templates/edit/" + template;
+var Navigate = {
+  to_template: function(select) {
+    this.to_url(select, "/admin/templates/edit/");
+  },
+
+  to_paged_tag: function(select) {
+    this.to_url(select, "/admin/pages/edit/");
+  },
+
+  to_url: function(select, url) {
+    var value = select.options[select.selectedIndex].value;
+    if(value) location.href = url + value;
   }
 };
 

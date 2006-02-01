@@ -1,4 +1,4 @@
 <h3>
   choose a paged tag
-  <%= select_tag 'tag', options_for_select([''] + Tag.find_paged.collect { |t| t.name }), :onchange => "Page.navigate_to(this)" %>
+  <%= select_tag 'tag', options_for_select([''] + Tag.find_paged.collect { |t| t.name }), :onchange => "Navigate.to_paged_tag(this)" %>
 </h3>
