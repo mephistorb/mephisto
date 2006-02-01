@@ -20,7 +20,7 @@ class MephistoController < ApplicationController
                        :limit  =>  @article_pages.items_per_page,
                        :offset =>  @article_pages.current.offset)
 
-    render_liquid_template_for(:search, 'tag' => @tag, 'articles' => @articles,
+    render_liquid_template_for(:search, 'articles'      => @articles,
                                         'previous_page' => paged_search_url_for(@article_pages.current.previous),
                                         'next_page'     => paged_search_url_for(@article_pages.current.next))
   end
@@ -58,6 +58,7 @@ class MephistoController < ApplicationController
 
     self.cached_references << @tag
     render_liquid_template_for(template_type, 'tag'           => @tag.name, 
+                                              'tag_title'     => @tag.title,
                                               'articles'      => @articles,
                                               'previous_page' => paged_tags_url_for(@article_pages.current.previous),
                                               'next_page'     => paged_tags_url_for(@article_pages.current.next))
@@ -67,9 +68,10 @@ class MephistoController < ApplicationController
     @article = page_name.nil? ? @tag.articles.find_by_position : @tag.articles.find_by_permalink(page_name)
 
     self.cached_references << @tag << @article
-    render_liquid_template_for(template_type, 'tag'     => @tag.name, 
-                                              'pages'   => @tag.articles.collect { |a| a.to_liquid },
-                                              'article' => @article.to_liquid(:single))
+    render_liquid_template_for(template_type, 'tag'       => @tag.name, 
+                                              'tag_title' => @tag.title,
+                                              'pages'     => @tag.articles.collect { |a| a.to_liquid },
+                                              'article'   => @article.to_liquid(:single))
   end
 
   def paged_search_url_for(page)

@@ -33,7 +33,7 @@ class Tag < ActiveRecord::Base
     def find_tag_and_page_name(tag_path)
       page_name = []
       tag       = nil
-      while tag.nil?
+      while tag.nil? and tag_path.any?
         tag       = find_by_name(tag_path.join('/'))
         page_name << tag_path.pop if tag.nil?
       end
