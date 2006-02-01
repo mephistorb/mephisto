@@ -1,5 +1,6 @@
 module Mephisto
   class CommentForm < Liquid::Block
+    include Reloadable
     include ActionView::Helpers::TagHelper
     include ActionView::Helpers::FormTagHelper
     

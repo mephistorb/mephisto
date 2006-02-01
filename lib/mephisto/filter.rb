@@ -1,5 +1,6 @@
 module Mephisto
   module Filter
+    include Reloadable
     include ActionView::Helpers::TagHelper
 
     def url_for_article(article)

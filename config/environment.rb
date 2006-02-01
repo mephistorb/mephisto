@@ -61,9 +61,10 @@ end
 require 'string_ext'
 require 'time_ext'
 Liquid::Template.register_filter(Mephisto::Filter)
-Liquid::Template.register_block('textile',     Mephisto::Textile)
-Liquid::Template.register_block('commentform', Mephisto::CommentForm)
-Liquid::Template.register_block('head',        Mephisto::Head)
+Liquid::Template.register_block('textile',        Mephisto::Textile)
+Liquid::Template.register_block('commentform',    Mephisto::CommentForm)
+Liquid::Template.register_block('pagenavigation', Mephisto::PageNavigation)
+Liquid::Template.register_block('head',           Mephisto::Head)
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
   :standard => '%B %d, %Y @ %I:%M%p'

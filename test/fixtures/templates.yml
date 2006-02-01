@@ -69,6 +69,11 @@ page:
       <h2>{{ article.published_at | format_date: 'standard' }}</h2>
       {{ article.body }}
     </div>
+    <ul>
+    {% pagenavigation %}
+    <li>{{ page.link }}</li>
+    {% endpagenavigation %}
+    </ul>
 author:
   id: 8
   name: author
