@@ -6,7 +6,7 @@ class Admin::ArticlesController < Admin::BaseController
 
   def index
     conditions     = 'article_id IS NULL'
-    @tags          = Tag.find :all
+    @tags          = Tag.find :all, :order => 'name'
     @article       = Article.new
     @article_pages = Paginator.new self, Article.count(conditions), 30, params[:page]
     @articles      = Article.find(:all, :conditions => conditions, :order => 'articles.created_at DESC',

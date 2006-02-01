@@ -21,10 +21,23 @@ class Tag < ActiveRecord::Base
   end
 
   class << self
+    # scopes a find operation to return only paged tags
     def find_paged(options = {})
       with_scope :find => { :conditions => ['show_paged_articles = ?', true] } do
         block_given? ? yield : find(:all, options)
       end
+    end
+    
+    # given a tag name like ['about', 'site_map'], about is the tag and site_map is a left over page_name
+    # returns [<#Tag: about>, 'site_map']
+    def find_tag_and_page_name(tag_path)
+      page_name = []
+      tag       = nil
+      while tag.nil?
+        tag       = find_by_name(tag_path.join('/'))
+        page_name << tag_path.pop if tag.nil?
+      end
+      [tag, page_name.any? ? page_name.join('/') : nil]
     end
   end
 

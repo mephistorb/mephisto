@@ -43,6 +43,12 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal articles(:welcome), assigns(:article)
   end
 
+  def test_should_show_page
+    get :list, :tags => %w(about the_site_map)
+    assert_equal tags(:about), assigns(:tag)
+    assert_equal articles(:site_map), assigns(:article)
+  end
+
   def test_should_render_liquid_templates_on_home
     get :list, :tags => []
     assert_tag :tag => 'h1', :content => 'This is the layout'

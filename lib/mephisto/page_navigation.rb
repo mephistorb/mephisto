@@ -26,7 +26,7 @@ module Mephisto
     end
     
     def page_url(page, index)
-      "/#{@tag}#{'/show/' + page['permalink'] unless index.zero?}"
+      "/#{@tag}#{'/' + page['permalink'] unless index.zero?}"
     end
   end
 end

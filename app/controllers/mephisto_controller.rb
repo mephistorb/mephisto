@@ -7,8 +7,7 @@ class MephistoController < ApplicationController
       @tag = Tag.find_by_name('home')
       list_tag_articles_with(:main)
     else
-      tags, page_name = params[:tags].join('/').split('/show/')
-      @tag = Tag.find_by_name(tags)
+      @tag, page_name = Tag.find_tag_and_page_name(params[:tags])
       @tag.show_paged_articles? ? show_tag_page_with(page_name, :page) : list_tag_articles_with(:tag)
     end
   end

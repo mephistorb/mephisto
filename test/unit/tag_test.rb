@@ -28,6 +28,11 @@ class TagTest < Test::Unit::TestCase
     assert_equal nil,                 tags(:about).articles.find_by_permalink('another_welcome_to_mephisto')
   end
 
+  def test_should_find_tag_with_permalink_extra
+    assert_equal [tags(:about), nil], Tag.find_tag_and_page_name(%w(about))
+    assert_equal [tags(:about), 'foo'], Tag.find_tag_and_page_name(%w(about foo))
+  end
+
   def test_should_create_article_with_tags
     a = Article.create :title => 'foo', :user_id => 1, :tag_ids => [tags(:home).id, tags(:about).id]
     assert_equal [tags(:home), tags(:about)], a.tags
