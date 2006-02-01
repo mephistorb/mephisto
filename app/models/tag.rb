@@ -8,7 +8,7 @@ class Tag < ActiveRecord::Base
     end
 
     def find_by_position(options = {})
-      find(:all, { :order => 'taggings.position',
+      find(:first, { :order => 'taggings.position',
                    :conditions => ['published_at <= ? AND articles.type IS NULL AND articles.published_at IS NOT NULL', Time.now.utc] } \
         .merge(options))
     end

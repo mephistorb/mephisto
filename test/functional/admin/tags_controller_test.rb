@@ -27,7 +27,7 @@ class Admin::TagsControllerTest < Test::Unit::TestCase
   end
 
   def test_should_edit_name
-    xhr :post, :set_tag_name, :id => tags(:home).id, :value => 'foo'
+    xhr :post, :update, :id => tags(:home).id, :tag => { :name => 'foo' }
     tags(:home).reload
     assert_equal 'foo', tags(:home).name
   end

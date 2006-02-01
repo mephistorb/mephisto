@@ -5,13 +5,12 @@ class MephistoController < ApplicationController
   def list
     if params[:tags].blank?
       @tag = Tag.find_by_name('home')
-      @template_type = :main
+      list_tag_articles_with(:main)
     else
-      @tag = Tag.find_by_name(params[:tags].join('/'))
-      @template_type = :tag
+      tags, page_name = params[:tags].join('/').split('/show/')
+      @tag = Tag.find_by_name(tags)
+      @tag.show_paged_articles? ? show_tag_page_with(page_name, :page) : list_tag_articles_with(:tag)
     end
-    
-    list_tag_articles
   end
 
   def search
@@ -52,21 +51,25 @@ class MephistoController < ApplicationController
   end
 
   protected
-  def list_tag_articles
+  def list_tag_articles_with(template_type)
     @article_pages = Paginator.new self, @tag.articles.size, 15, params[:page]
     @articles      = @tag.articles.find_by_date(
                        :limit  =>  @article_pages.items_per_page,
                        :offset =>  @article_pages.current.offset)
 
     self.cached_references << @tag
-    render_liquid_template_for(@template_type, 'tag'           => @tag.name, 
-                                               'articles'      => @articles,
-                                               'previous_page' => paged_tags_url_for(@article_pages.current.previous),
-                                               'next_page'     => paged_tags_url_for(@article_pages.current.next))
+    render_liquid_template_for(template_type, 'tag'           => @tag.name, 
+                                              'articles'      => @articles,
+                                              'previous_page' => paged_tags_url_for(@article_pages.current.previous),
+                                              'next_page'     => paged_tags_url_for(@article_pages.current.next))
   end
 
-  def show_tag_page
-    raise 'not implemented'
+  def show_tag_page_with(page_name, template_type)
+    @article = @tag.articles.find_by_position
+
+    self.cached_references << @tag << @article
+    render_liquid_template_for(template_type, 'tag'     => @tag.name, 
+                                              'article' => @article)
   end
 
   def paged_search_url_for(page)

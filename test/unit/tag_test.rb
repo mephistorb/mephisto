@@ -13,7 +13,7 @@ class TagTest < Test::Unit::TestCase
   end
 
   def test_articles_association_by_position
-    assert_equal [articles(:welcome), articles(:another)], tags(:home).articles.find_by_position
+    assert_equal articles(:welcome), tags(:home).articles.find_by_position
   end
 
   def test_should_create_article_with_tags
