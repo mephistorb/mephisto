@@ -4,9 +4,9 @@ class Template < ActiveRecord::Base
     :single  => [:single, :index],
     :tag     => [:tag,    :archive, :index],
     :archive => [:archive, :index],
-    #:page    => [:page,   :index],
+    :page    => [:page, :single, :index],
+    :search  => [:search, :archive, :index]
     #:author  => [:author, :archive, :index],
-    :search  => [:search, :archive, :index],
     #:error   => [:error,  :index]
   }
   @@template_types = @@hierarchy.values.flatten.uniq << ['layout']

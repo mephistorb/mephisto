@@ -40,7 +40,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_list_by_tags
     get :list, :tags => %w(about)
     assert_equal tags(:about), assigns(:tag)
-    assert_equal [articles(:welcome)], assigns(:articles)
+    assert_equal articles(:welcome), assigns(:article)
   end
 
   def test_should_render_liquid_templates_on_home
@@ -55,11 +55,7 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_render_liquid_templates_by_tags
     get :list, :tags => %w(about)
-    assert_tag    :tag => 'p',  :content => 'tag'
-    assert_tag    :tag => 'h2', :content => articles(:welcome).title
-    assert_no_tag :tag => 'h2', :content => articles(:another).title
-    assert_tag    :tag => 'p',  :content => articles(:welcome).summary
-    assert_no_tag :tag => 'p',  :content => articles(:another).description
+    assert_tag :tag => 'h1', :content => articles(:welcome).title
   end
 
   def test_should_search_entries
@@ -89,12 +85,12 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_show_daily_entries
     date = 4.days.ago
     get :day, :year => date.year, :month => date.month, :day => date.day
-    assert_equal [articles(:another)], assigns(:articles)
+    assert_equal [articles(:site_map), articles(:about), articles(:another)], assigns(:articles)
   end
 
   def test_should_show_monthly_entries
     date = 4.days.ago
     get :month, :year => date.year, :month => date.month
-    assert_equal [articles(:welcome), articles(:another)], assigns(:articles)
+    assert_equal [articles(:welcome), articles(:site_map), articles(:about), articles(:another)], assigns(:articles)
   end
 end

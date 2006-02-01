@@ -5,3 +5,4 @@ home:
 about:
   id: 2
   name: about
+  show_paged_articles: true

@@ -16,7 +16,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
 
   def test_should_show_articles
     get :index
-    assert_equal 4, assigns(:articles).length
+    assert_equal 6, assigns(:articles).length
   end
 
   def test_should_create_article

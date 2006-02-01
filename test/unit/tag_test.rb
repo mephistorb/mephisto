@@ -14,6 +14,13 @@ class TagTest < Test::Unit::TestCase
 
   def test_articles_association_by_position
     assert_equal articles(:welcome), tags(:home).articles.find_by_position
+    assert_equal articles(:welcome), tags(:about).articles.find_by_position
+  end
+
+  def test_should_find_tagged_articles_by_permalink
+    assert_equal articles(:welcome),  tags(:about).articles.find_by_permalink('welcome_to_mephisto')
+    assert_equal articles(:site_map), tags(:about).articles.find_by_permalink('the_site_map')
+    assert_equal nil,                 tags(:about).articles.find_by_permalink('another_welcome_to_mephisto')
   end
 
   def test_should_create_article_with_tags

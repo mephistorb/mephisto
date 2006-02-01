@@ -16,3 +16,14 @@ welcome_about:
   article_id: 1
   tag_id: 2
   position: 1
+about_about:
+  id: 4
+  article_id: 6
+  tag_id: 2
+  position: 2
+site_map_about:
+  id: 5
+  article_id: 7
+  tag_id: 2
+  position: 3
+

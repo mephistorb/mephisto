@@ -12,6 +12,12 @@ class Tag < ActiveRecord::Base
                    :conditions => ['published_at <= ? AND articles.type IS NULL AND articles.published_at IS NOT NULL', Time.now.utc] } \
         .merge(options))
     end
+
+    def find_by_permalink(permalink, options = {})
+      find(:first, { :order => 'taggings.position',
+                   :conditions => ['articles.permalink = ? AND published_at <= ? AND articles.type IS NULL AND articles.published_at IS NOT NULL',
+                                   permalink, Time.now.utc] }.merge(options))
+    end
   end
 
   def hash_for_url(options = {})

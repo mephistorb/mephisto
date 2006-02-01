@@ -65,11 +65,11 @@ class MephistoController < ApplicationController
   end
 
   def show_tag_page_with(page_name, template_type)
-    @article = @tag.articles.find_by_position
+    @article = page_name.nil? ? @tag.articles.find_by_position : @tag.articles.find_by_permalink(page_name)
 
     self.cached_references << @tag << @article
     render_liquid_template_for(template_type, 'tag'     => @tag.name, 
-                                              'article' => @article)
+                                              'article' => @article.to_liquid)
   end
 
   def paged_search_url_for(page)

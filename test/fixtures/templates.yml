@@ -63,7 +63,12 @@ archive:
 page:
   id: 7
   name: page
-  data: "<p>page</p>{% for article in articles %}<h2>{{ article | link_to_article }}</h2><p>{{ article.body }}</p>{% endfor %}"
+  data: |-
+    <h1>{{ article.title }}</h1>
+    <div class="article">
+      <h2>{{ article.published_at | format_date: 'standard' }}</h2>
+      {{ article.body }}
+    </div>
 author:
   id: 8
   name: author
