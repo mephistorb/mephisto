@@ -39,7 +39,7 @@ var Navigate = {
   },
 
   to_paged_tag: function(select) {
-    this.to_url(select, "/admin/pages/edit/");
+    this.to_url(select, "/admin/pages/edit?id=");
   },
 
   to_url: function(select, url) {
