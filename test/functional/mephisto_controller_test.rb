@@ -75,6 +75,15 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal articles(:welcome).to_liquid['id'], assigns(:article)['id']
   end
 
+  def test_should_show_navigation_on_paged_tags
+    get :list, :tags => %w(about)
+    assert_tag :tag => 'ul', :attributes => { :id => 'nav' },
+               :children => { :count => 3, :only => { :tag => 'li' } }
+    assert_tag :tag => 'ul', :attributes => { :id => 'nav' },
+               :descendant => { :tag => 'a', :attributes => { :class => 'selected' } }
+    assert_tag :tag => 'a', :attributes => { :class => 'selected' }, :content => 'Home'
+  end
+
   def test_should_show_comments_form
     date = 3.days.ago
     get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome_to_mephisto'
