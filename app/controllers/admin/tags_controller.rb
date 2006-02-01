@@ -1,4 +1,6 @@
-class Admin::TagsController < Admin::BaseController  
+class Admin::TagsController < Admin::BaseController
+  cache_sweeper :tag_sweeper, :except => :index
+
   def index
     @tag  = Tag.new
     @tags = Tag.find :all

@@ -19,4 +19,6 @@ class ArticleSweeper < ActionController::Caching::Sweeper
       end
     end
   end
+
+  alias_method :after_destroy, :after_save
 end

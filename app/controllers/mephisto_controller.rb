@@ -70,7 +70,7 @@ class MephistoController < ApplicationController
     self.cached_references << @tag << @article
     render_liquid_template_for(template_type, 'tag'     => @tag.name, 
                                               'pages'   => @tag.articles.collect { |a| a.to_liquid },
-                                              'article' => @article.to_liquid)
+                                              'article' => @article.to_liquid(:single))
   end
 
   def paged_search_url_for(page)
