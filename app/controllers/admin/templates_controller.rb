@@ -1,5 +1,4 @@
 class Admin::TemplatesController < Admin::BaseController
-  before_filter :select_template, :except => :index
   cache_sweeper :template_sweeper, :only => [:update]
   verify :params => :id, :only => [:edit, :update],
          :add_flash   => { :error => 'Template required' },
@@ -7,6 +6,7 @@ class Admin::TemplatesController < Admin::BaseController
   verify :method => :post, :params => :template, :only => :update,
          :add_flash   => { :error => 'Template required' },
          :redirect_to => { :action => 'edit' }
+  before_filter :select_template, :except => :index
 
   def update
     saved = @tmpl.update_attributes(params[:template])
@@ -21,6 +21,6 @@ class Admin::TemplatesController < Admin::BaseController
 
   protected
   def select_template
-    @tmpl = Template.find_by_name(params[:id])
+    @tmpl = Template.template_types.include?(params[:id].to_sym) ? Template.find_or_create_by_name(params[:id]) : nil
   end
 end
