@@ -48,11 +48,17 @@ Position.getPageSize = function() {
 }
 
 var Dialog = {
-  close: function() {
+  clear_observers: function() {
     if (!Dialog.resizeObserver) return;    
     Event.stopObserving(window, 'resize', Dialog.resizeObserver);
     Event.stopObserving(window, 'scroll', Dialog.resizeObserver);
     Dialog.resizeObserver = null;
+    Dialog.current        = null;
+  },
+
+  close: function() {
+    this.clear_observers();
+    ['dialog', 'dialog_box'].each(function(d) { if($(d)) Element.remove(d); });
   },
   
   Base:    Class.create(),
@@ -67,7 +73,7 @@ Dialog.Base.prototype = {
   },
 
   initialize: function(options) {
-    this.options = Object.extend(this.defaultOptions, options);
+    this.options = Object.extend(Object.extend({}, this.defaultOptions), options);
     this.create();
   },
 
@@ -88,12 +94,21 @@ Dialog.Base.prototype = {
   },
 
   create: function() {
-    if($('dialog')) return;
     this.setupDialog();
     document.body.appendChild(dialog);
     document.body.appendChild(dialog_box);
-    this.bindObservers();
+    this.afterCreate();
+  },
+  
+  afterCreate: function() {
+    this.layout();
+    Dialog.resizeObserver = this.layout.bind(this);
+    Event.observe(window, 'resize', Dialog.resizeObserver);
+    Event.observe(window, 'scroll', Dialog.resizeObserver);
+
+    new Effect.Fade(dialog, {from: 0.1, to: 0.4, duration:0.15});
     new Effect.Appear(dialog_box, {duration:0.4});
+    Dialog.current = this;
   },
 
   layout: function() {
@@ -114,23 +129,15 @@ Dialog.Base.prototype = {
     })
   },
 
-  bindObservers: function() {
-    this.layout();
-    Dialog.resizeObserver = this.layout.bind(this);
-    Event.observe(window, 'resize', Dialog.resizeObserver);
-    Event.observe(window, 'scroll', Dialog.resizeObserver);
-  },
-
   close: function() {
-    Dialog.close();
     new Effect.Fade('dialog_box', {duration: 0.2, afterFinish: function() {
-      Element.remove('dialog');
-      Element.remove('dialog_box');
+      if(Dialog.current.options.onClose) Dialog.current.options.onClose();
+      Dialog.close();
     }});
   }
 };
 
-Dialog.Confirm.prototype = Object.extend(Object.extend({}, Dialog.Base.prototype), {
+Object.extend(Object.extend(Dialog.Confirm.prototype, Dialog.Base.prototype), {
   defaultOptions: Object.extend(Object.extend({}, Dialog.Base.prototype.defaultOptions), {
     okayText:        "OK",
     cancelText:      "CANCEL",
@@ -139,16 +146,6 @@ Dialog.Confirm.prototype = Object.extend(Object.extend({}, Dialog.Base.prototype
     onOkay:   function() {},
     onCancel: function() {}
   }),
-
-  create: function() {
-    if($('dialog')) return;
-    this.setupDialog();
-    document.body.appendChild(dialog);
-    document.body.appendChild(dialog_box);
-    
-    this.bindObservers();
-    new Effect.Appear(dialog_box, {duration:0.4});
-  },
   
   beforeSetupDialog: Dialog.Base.prototype.setupDialog,
   setupDialog: function() {
@@ -156,12 +153,21 @@ Dialog.Confirm.prototype = Object.extend(Object.extend({}, Dialog.Base.prototype
     dialog_box.appendChild(this.create_buttons());
   },
 
+  onOkay: function() {
+    Dialog.current.options.onOkay();
+  },
+  
+  onCancel: function() {
+    Dialog.current.close();
+    Dialog.current.options.onCancel();
+  },
+
   create_buttons: function() {
     var buttons             = document.createElement('p');
     buttons.className       = 'buttons';
 
     var okay_button         = document.createElement('a');
-    okay_button.onclick     = function() { this.options.onOkay.bind(this).call(); }.bind(this);
+    Event.observe(okay_button, 'click', function() { Dialog.current.onOkay(); });
     okay_button.className   = 'okay';
     okay_button.setAttribute('href', '#');
     if(this.options.okayImage == '') {
@@ -174,8 +180,8 @@ Dialog.Confirm.prototype = Object.extend(Object.extend({}, Dialog.Base.prototype
     }
     
     var cancel_button       = document.createElement('a');
-    cancel_button.onclick   = function() { this.close(); this.options.onCancel.bind(this).call(); }.bind(this);
-    okay_button.className   = 'cancel';
+    Event.observe(cancel_button, 'click', function() { Dialog.current.onCancel(); });
+    cancel_button.className   = 'cancel';
     cancel_button.setAttribute('href', '#');
     if(this.options.cancelImage == '') {
       cancel_button.innerHTML = this.options.cancelText;
