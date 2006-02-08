@@ -1,9 +1,25 @@
+Form.default_text = {
+  clear: function(input, remove_class) {
+    input = $(input);
+    if(input.value == input.defaultValue) {
+      input.value = '';
+      if(arguments.length > 1)
+        Element.removeClassName(input, remove_class);
+    }
+    Event.observe(input, 'blur', function(){ Form.default_text.reset(input, remove_class) });
+  },
+
+  reset: function(input, add_class) {
+    if(input.value=='') {
+      input.value = input.defaultValue;
+      if(arguments.length > 1)
+        Element.addClassName(input, add_class);
+    }
+   }
+}
+
 Form.clear_default_text = function(input, remove_class) {
-  if(input.value == input.defaultValue) {
-    input.value = '';
-    if(arguments.length > 1)
-      Element.removeClassName(input, remove_class);
-  }
+  Form.default_text.clear(input, remove_class);
 }
 
 Form.disable_buttons = function(form_id) {
