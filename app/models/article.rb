@@ -81,7 +81,7 @@ class Article < ActiveRecord::Base
 
   protected
   def create_permalink
-    self.permalink = title.to_permalink
+    self.permalink = title.to_permalink unless title.nil?
   end
 
   def cache_redcloth
