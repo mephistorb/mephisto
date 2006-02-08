@@ -131,6 +131,10 @@ input.default {
   text-align:left;
 }
 
+#login_form label {
+  display: block;
+}
+
 .c:after {
     content: "."; 
     display: block; 

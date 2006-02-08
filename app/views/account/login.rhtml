@@ -1,9 +1,13 @@
-<%= start_form_tag %>
-<p><label for="login">Login</label><br/>
-<%= text_field_tag 'login' %></p>
+<%= start_form_tag({}, { :id => 'login_form' }) %>
+<p>
+  <%= label_tag 'login', 'Login' %>
+  <%= text_field_tag 'login' %>
+</p>
 
-<p><label for="password">Password</label><br/>
-<%= password_field_tag 'password' %></p>
+<p>
+  <%= label_tag 'password', 'Password' %>
+  <%= password_field_tag 'password' %>
+</p>
 
 <p><%= submit_tag 'Log in' %></p>
 <%= end_form_tag %>
