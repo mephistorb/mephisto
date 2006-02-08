@@ -15,7 +15,7 @@ Form.default_text = {
       if(arguments.length > 1)
         Element.addClassName(input, add_class);
     }
-   }
+  }
 }
 
 Form.clear_default_text = function(input, remove_class) {
@@ -23,20 +23,27 @@ Form.clear_default_text = function(input, remove_class) {
 }
 
 Form.disable_buttons = function(form_id) {
-  $A($(form_id).getElementsByTagName('input')).each(function(input) {
+  var form = $(form_id);
+  $A(form.getElementsByTagName('input')).each(function(input) {
     if(input.getAttribute('type') == 'submit') {
       input.blur();
       input.disabled = true;
     }
   });
+  
+  form.old_onsubmit = form.onsubmit;
+  form.onsubmit     = function() { return false; }
 }
 
 Form.enable_buttons = function(form_id) {
-  $A($(form_id).getElementsByTagName('input')).each(function(input) {
+  var form = $(form_id);
+  $A(form.getElementsByTagName('input')).each(function(input) {
     if(input.getAttribute('type') == 'submit') {
       input.disabled = false;
     }
   });
+  form.onsubmit     = form.old_onsubmit;
+  form.old_onsubmit = null;
 }
 
 Form.saving = function(form_name) {
