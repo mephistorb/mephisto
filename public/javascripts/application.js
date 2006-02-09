@@ -134,13 +134,15 @@ var TemplateForm = {
 
   show: function() {
     Element.hide('template_saved')
-    new Effect.BlindDown('template_form', {duration:0.4})
+    new Effect.SlideDown('template_form', {duration:0.4})
   },
   
   hide: function(callback) {
     Form.reset("template_form")
-    Element.hide('template_form')
-    new Effect.BlindDown('template_saved', {duration:0.4, afterFinish: callback})
+    new Effect.SlideUp('template_form', {duration:0.4, afterFinish: function() {
+      Element.show('template_saved')
+      callback()
+    }})
   }
 }
 

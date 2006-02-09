@@ -6,7 +6,9 @@
      :complete => "TemplateForm.completedSave()",
      :update => 'template_container' do |f| -%>
   <p><%= f.text_area :data %></p>
-  <p><%= submit_tag 'Save' %><span id="template_spinner" style="display:none"> saving...</span>
+  <p>
+    <%= submit_tag 'Save' %>
+    <span id="template_spinner" style="display:none"> saving...</span>
     <%= link_to_function 'cancel', 'TemplateForm.hide()', :id => 'template_cancel' %>
   </p>
 <% end #form_remote_for -%>

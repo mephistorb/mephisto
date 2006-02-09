@@ -14,6 +14,7 @@ pre {
   background-color: #eee;
   padding: 10px;
   font-size: 11px;
+  overflow:auto;
 }
 
 a { color: #000; }
