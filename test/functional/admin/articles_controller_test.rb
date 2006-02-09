@@ -30,19 +30,19 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_show_default_checked_tags
     get :index
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :id => "article_tag_ids_#{tags(:home).id}", :checked => 'checked' }
+    assert_tag :tag => 'input', :attributes => { :name => "article[tag_ids][]", :value => tags(:home).id.to_s }
   end
 
   def test_should_show_checked_tags
     get :edit, :id => articles(:welcome).id
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :id => "article_tag_ids_#{tags(:home).id}", :checked => 'checked' }
-    assert_tag :tag => 'input', :attributes => { :id => "article_tag_ids_#{tags(:about).id}", :checked => 'checked' }
+    assert_tag :tag => 'input', :attributes => { :name => "article[tag_ids][]", :value => tags(:home).id.to_s }
+    assert_tag :tag => 'input', :attributes => { :name => "article[tag_ids][]", :value => tags(:about).id.to_s }
 
     get :edit, :id => articles(:another).id
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :id => "article_tag_ids_#{tags(:home).id}", :checked => 'checked' }
-    assert_no_tag :tag => 'input', :attributes => { :id => "article_tag_ids_#{tags(:about).id}", :checked => 'checked' }
+    assert_tag :tag => 'input', :attributes => { :name => "article[tag_ids][]", :value => tags(:home).id.to_s }
+    assert_no_tag :tag => 'input', :attributes => { :name => "article[tag_ids][]", :value => tags(:about).id.to_s }
   end
 
   def test_should_create_article_with_given_tags

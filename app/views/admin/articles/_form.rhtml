@@ -4,9 +4,9 @@
 <ul id="article_tags" class="c">
   <li><strong>tags:</strong></li>
 <% @tags.each do |tag| -%>
-  <li id="article_tag_ids_<%= tag.id %>"<%= %( class="selected") if @article.tags.include? tag %>>
+  <li id="article_tag_ids_<%= tag.id %>"<%= %( class="selected") if @article.new_record? or @article.tags.include? tag %>>
     <%= link_to_function tag.name, "ArticleForm.toggleTag('#{tag.id}')" %>
-    <% if @article.tags.include? tag -%><%= hidden_field_tag 'article[tag_ids][]', tag.id %><% end -%>
+    <% if @article.new_record? or @article.tags.include? tag -%><%= hidden_field_tag 'article[tag_ids][]', tag.id %><% end -%>
   </li>
 <% end -%>
 </ul>
