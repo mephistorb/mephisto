@@ -49,6 +49,10 @@ class Article < ActiveRecord::Base
     :published
   end
 
+  def has_category?(category)
+    (new_record? and category.name == 'home') or categories.include? category
+  end
+
   def category_ids=(new_categories)
     categorizations.each do |categorization|
       new_categories.include?(categorization.category_id.to_s) ?

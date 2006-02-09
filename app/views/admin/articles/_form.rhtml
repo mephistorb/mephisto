@@ -4,9 +4,9 @@
 <ul id="article_categories" class="c">
   <li><strong>categories:</strong></li>
 <% @categories.each do |category| -%>
-  <li id="article_category_ids_<%= category.id %>"<%= %( class="selected") if @article.new_record? or @article.categories.include? category %>>
+  <li id="article_category_ids_<%= category.id %>"<%= %( class="selected") if @article.has_category? category %>>
     <%= link_to_function category.name, "ArticleForm.toggleCategory('#{category.id}')" %>
-    <% if @article.new_record? or @article.categories.include? category -%><%= hidden_field_tag 'article[category_ids][]', category.id %><% end -%>
+    <% if @article.has_category? category -%><%= hidden_field_tag 'article[category_ids][]', category.id %><% end -%>
   </li>
 <% end -%>
 </ul>

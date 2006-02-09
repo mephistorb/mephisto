@@ -34,6 +34,18 @@ class CategoryTest < Test::Unit::TestCase
     assert_equal [nil, 'foo'],          Category.find_category_and_page_name(%w(foo))
   end
 
+  def test_should_include_home_category_by_default
+    a = Article.new
+    assert a.has_category?(categories(:home))
+    assert !a.has_category?(categories(:about))
+  end
+
+  def test_should_include_home_category_by_default
+    assert articles(:welcome).has_category?(categories(:home))
+    assert articles(:welcome).has_category?(categories(:about))
+    assert !articles(:another).has_category?(categories(:about))
+  end
+
   def test_should_create_article_with_categories
     a = Article.create :title => 'foo', :user_id => 1, :category_ids => [categories(:home).id, categories(:about).id]
     assert_equal [categories(:home), categories(:about)], a.categories

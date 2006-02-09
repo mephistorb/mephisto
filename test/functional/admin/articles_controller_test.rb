@@ -43,6 +43,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     get :index
     assert_response :success
     assert_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:home).id.to_s }
+    assert_no_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:about).id.to_s }
   end
 
   def test_should_show_checked_categories

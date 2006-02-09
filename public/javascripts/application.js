@@ -88,15 +88,15 @@ var ArticleForm = {
     Element.hide('article_form_hide');
   },
 
-  toggleTag: function(category_id) {
+  toggleCategory: function(category_id) {
     var category_li = $('article_category_ids_' + category_id)
     if(Element.hasClassName(category_li, 'selected'))
-      this.removeTag(category_id, category_li)
+      this.removeCategory(category_id, category_li)
     else
-      this.addTag(category_id, category_li)
+      this.addCategory(category_id, category_li)
   },
 
-  addTag: function(category_id, category_li) {
+  addCategory: function(category_id, category_li) {
     Element.addClassName(category_li, 'selected')
     
     var hdn = document.createElement('input')
@@ -107,7 +107,7 @@ var ArticleForm = {
     category_li.appendChild(hdn)
   },
 
-  removeTag: function(category_id, category_li) {
+  removeCategory: function(category_id, category_li) {
     Element.removeClassName(category_li, 'selected')
     
     $A(category_li.getElementsByTagName('input')).each(function(input) {
@@ -116,7 +116,7 @@ var ArticleForm = {
   }
 }
 
-var TagForm = {
+var CategoryForm = {
   toggle_for_category: function(category) {
     new Element.toggle('category_' + category + '_name', 'category_' + category + '_form');
   }
