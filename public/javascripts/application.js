@@ -1,60 +1,64 @@
-Form.default_text = {
-  clear: function(input, remove_class) {
-    input = $(input);
-    if(input.value == input.defaultValue) {
-      input.value = '';
-      if(arguments.length > 1)
-        Element.removeClassName(input, remove_class);
+Object.extend(Form, {
+  default_text: {
+    clear: function(input, remove_class) {
+      input = $(input);
+      if(input.value == input.defaultValue) {
+        input.value = '';
+        if(arguments.length > 1)
+          Element.removeClassName(input, remove_class);
+      }
+      Event.observe(input, 'blur', function(){ Form.default_text.reset(input, remove_class) });
+    },
+
+    reset: function(input, add_class) {
+      if(input.value=='') {
+        input.value = input.defaultValue;
+        if(arguments.length > 1)
+          Element.addClassName(input, add_class);
+      }
     }
-    Event.observe(input, 'blur', function(){ Form.default_text.reset(input, remove_class) });
   },
 
-  reset: function(input, add_class) {
-    if(input.value=='') {
-      input.value = input.defaultValue;
-      if(arguments.length > 1)
-        Element.addClassName(input, add_class);
-    }
-  }
-}
+  clear_default_text: function(input, remove_class) {
+    Form.default_text.clear(input, remove_class);
+  },
 
-Form.clear_default_text = function(input, remove_class) {
-  Form.default_text.clear(input, remove_class);
-}
-
-Form.disable_buttons = function(form_id) {
-  var form = $(form_id);
-  $A(form.getElementsByTagName('input')).each(function(input) {
-    if(input.getAttribute('type') == 'submit') {
-      input.blur();
-      input.disabled = true;
-    }
-  });
+  disable_buttons: function(form_id) {
+    var form = $(form_id);
+    $A(form.getElementsByTagName('input')).each(function(input) {
+      if(input.getAttribute('type') == 'submit') {
+        input.blur();
+        input.disabled = true;
+      }
+    });
   
-  form.old_onsubmit = form.onsubmit;
-  form.onsubmit     = function() { return false; }
-}
+    form.old_onsubmit = form.onsubmit;
+    form.onsubmit     = function() { return false; }
+  },
 
-Form.enable_buttons = function(form_id) {
-  var form = $(form_id);
-  $A(form.getElementsByTagName('input')).each(function(input) {
-    if(input.getAttribute('type') == 'submit') {
-      input.disabled = false;
-    }
-  });
-  form.onsubmit     = form.old_onsubmit;
-  form.old_onsubmit = null;
-}
+  enable_buttons: function(form_id) {
+    var form = $(form_id);
+    $A(form.getElementsByTagName('input')).each(function(input) {
+      if(input.getAttribute('type') == 'submit') {
+        input.disabled = false;
+      }
+    });
+    form.onsubmit     = form.old_onsubmit;
+    form.old_onsubmit = null;
+  },
 
-Form.saving = function(form_name) {
-  Form.disable_buttons(form_name + '_form');
-  Element.show(form_name + '_spinner');
-}
+  saving: function(form_name) {
+    Form.disable_buttons(form_name + '_form');
+    Element.show(form_name + '_spinner');
+    Element.hide(form_name + '_cancel');
+  },
 
-Form.saved = function(form_name) {
-  Form.enable_buttons(form_name + '_form');
-  Element.hide(form_name + '_spinner');
-}
+  saved: function(form_name) {
+    Form.enable_buttons(form_name + '_form');
+    Element.hide(form_name + '_spinner');
+    Element.show(form_name + '_cancel');
+  }
+})
 
 var Navigate = {
   to_template: function(select) {
@@ -115,6 +119,28 @@ var ArticleForm = {
 var TagForm = {
   toggle_for_tag: function(tag) {
     new Element.toggle('tag_' + tag + '_name', 'tag_' + tag + '_form');
+  }
+}
+
+var TemplateForm = {
+  loadingDuringSave: function() {
+    Form.saving('template');
+  },
+  
+  completedSave: function() {
+    Form.saved('template')
+    this.hide(function() { new Effect.Highlight('template_saved') })
+  },
+
+  show: function() {
+    Element.hide('template_saved')
+    new Effect.BlindDown('template_form', {duration:0.4})
+  },
+  
+  hide: function(callback) {
+    Form.reset("template_form")
+    Element.hide('template_form')
+    new Effect.BlindDown('template_saved', {duration:0.4, afterFinish: callback})
   }
 }
 
