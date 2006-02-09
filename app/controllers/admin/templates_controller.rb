@@ -10,7 +10,10 @@ class Admin::TemplatesController < Admin::BaseController
 
   def update
     saved = @tmpl.update_attributes(params[:template])
-    return if request.xhr?
+    if request.xhr?
+      render :partial => 'form', :locals => { :template => @tmpl }
+      return 
+    end
     if saved
       flash[:notice] = "#{@tmpl.name} updated."
       redirect_to :action => 'edit', :id => @tmpl

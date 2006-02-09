@@ -1,0 +1,16 @@
+<h1><%=h template.name %></h1>
+
+<% form_remote_for :template, template, :url => { :action => 'update', :id => template }, 
+     :html => { :id => 'template_form', :style => 'display:none' },
+     :loading  => "Form.saving('template')",
+     :complete => "Form.saved('template'); Element.toggle(this,$('template_saved'))",
+     :update => 'template_container' do |f| -%>
+  <p><%= f.text_area :data %></p>
+  <p><%= submit_tag 'Save' %><span id="template_spinner" style="display:none"> saving...</span>
+    <a href='#' onclick='Form.reset("template_form");Element.toggle("template_saved","template_form");return false'>cancel</a>
+  </p>
+<% end #form_remote_for -%>
+<div id='template_saved'>
+<pre><code><%=h template.data %></code></pre>
+<a href='#' onclick='Element.toggle("template_saved","template_form");return false'>edit</a>
+</div>
