@@ -90,8 +90,9 @@ class User < ActiveRecord::Base
     crypted_password.nil? or not password.blank?
   end
 
+  public
   # If you're going to use activation, uncomment this too
-  #def make_activation_code
-  #  self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split('//').sort_by {rand}.join )
-  #end
+  def make_activation_code
+    self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split('//').sort_by {rand}.join )
+  end
 end

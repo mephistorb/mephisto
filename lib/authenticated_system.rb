@@ -14,6 +14,7 @@ module AuthenticatedSystem
   # 
   def current_user
     @current_user ||= session[:user] ? User.find_by_id(session[:user]) : nil
+    @current_user ||= cookies[:user] ? User.find(:first, :conditions => ['activation_code = ? and activated_at is null', cookies[:user]]) : nil
   end
 
   # store the given user in the session.  overwrite this to set how
@@ -25,6 +26,10 @@ module AuthenticatedSystem
   # 
   def current_user=(new_user)
     session[:user] = new_user.nil? ? nil : new_user.id
+    cookies[:user] = { 
+        :value   => new_user ? new_user.make_activation_code : '', 
+        :expires => new_user ? 2.weeks.from_now              : 2.weeks.ago
+    }
     @current_user = new_user
   end
 

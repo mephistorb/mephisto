@@ -1,7 +1,17 @@
 module AuthenticatedTestHelper
   # Sets the current user in the session from the user fixtures.
   def login_as(user)
-    @request.session[:user] = users(user).id
+    @request.session[:user] = user ? users(user).id : nil
+  end
+
+  def login_with_cookie_as(user)
+    @request.cookies['user'] = user ? CGI::Cookie.new( 
+      'name'   => 'user',
+      'value'   => users(user).activation_code,
+      'expires' => 2.weeks.from_now,
+      'path'    => '/',
+      'domain'  => 'example.com'
+    ) : nil
   end
 
   # Assert the block redirects to the login

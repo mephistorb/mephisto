@@ -14,6 +14,18 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     login_as :quentin
   end
 
+  def test_should_require_login
+    login_as nil
+    get :index
+    assert_redirected_to :controller => 'account', :action => 'login'
+  end
+
+  def test_should_accept_cookie_login
+    login_with_cookie_as :quentin
+    get :index
+    assert_response :success
+  end
+
   def test_should_show_articles
     get :index
     assert_equal 6, assigns(:articles).length
