@@ -6,13 +6,13 @@ class Admin::ArticlesController < Admin::BaseController
 
   def index
     conditions     = 'article_id IS NULL'
-    @tags          = Tag.find :all, :order => 'name'
     @article       = Article.new
     @article_pages = Paginator.new self, Article.count(conditions), 30, params[:page]
     @articles      = Article.find(:all, :conditions => conditions, :order => 'articles.created_at DESC',
                        :include => :user,
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)
+    load_tags!
   end
 
   def create
@@ -20,8 +20,8 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def edit
-    @tags    = Tag.find :all
     @article = Article.find(params[:id])
+    load_tags!
   end
 
   def update
@@ -35,6 +35,10 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   protected
+  def load_tags!
+    @tags = Tag.find :all, :order => 'name'
+  end
+
   def set_default_tag_ids
     params[:article][:tag_ids] ||= []
   end

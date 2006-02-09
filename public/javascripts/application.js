@@ -77,10 +77,38 @@ var ArticleForm = {
     new Effect.Appear('article_form_hide', {duration: 0.25});
     Element.hide('article_form_show');
   },
+  
   hide: function() {
     new Effect.BlindUp('article_form', {duration: 0.25});
     new Effect.Appear('article_form_show', {duration: 0.25});
     Element.hide('article_form_hide');
+  },
+
+  toggleTag: function(tag_id) {
+    var tag_li = $('article_tag_ids_' + tag_id)
+    if(Element.hasClassName(tag_li, 'selected'))
+      this.removeTag(tag_id, tag_li)
+    else
+      this.addTag(tag_id, tag_li)
+  },
+
+  addTag: function(tag_id, tag_li) {
+    Element.addClassName(tag_li, 'selected')
+    
+    var hdn = document.createElement('input')
+    hdn.setAttribute('type', 'hidden')
+    hdn.setAttribute('id', 'article_tag_ids_value_' + tag_id)
+    hdn.setAttribute('name', 'article[tag_ids][]')
+    hdn.setAttribute('value', tag_id)
+    tag_li.appendChild(hdn)
+  },
+
+  removeTag: function(tag_id, tag_li) {
+    Element.removeClassName(tag_li, 'selected')
+    
+    $A(tag_li.getElementsByTagName('input')).each(function(input) {
+      tag_li.removeChild(input)
+    })
   }
 }
 
