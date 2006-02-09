@@ -5,7 +5,7 @@ require 'admin/articles_controller'
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
 class Admin::ArticlesControllerTest < Test::Unit::TestCase
-  fixtures :articles, :tags, :taggings, :users
+  fixtures :articles, :categories, :categorizations, :users
 
   def setup
     @controller = Admin::ArticlesController.new
@@ -39,41 +39,41 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_show_default_checked_tags
+  def test_should_show_default_checked_categories
     get :index
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :name => "article[tag_ids][]", :value => tags(:home).id.to_s }
+    assert_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:home).id.to_s }
   end
 
-  def test_should_show_checked_tags
+  def test_should_show_checked_categories
     get :edit, :id => articles(:welcome).id
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :name => "article[tag_ids][]", :value => tags(:home).id.to_s }
-    assert_tag :tag => 'input', :attributes => { :name => "article[tag_ids][]", :value => tags(:about).id.to_s }
+    assert_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:home).id.to_s }
+    assert_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:about).id.to_s }
 
     get :edit, :id => articles(:another).id
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :name => "article[tag_ids][]", :value => tags(:home).id.to_s }
-    assert_no_tag :tag => 'input', :attributes => { :name => "article[tag_ids][]", :value => tags(:about).id.to_s }
+    assert_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:home).id.to_s }
+    assert_no_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:about).id.to_s }
   end
 
-  def test_should_create_article_with_given_tags
-    xhr :post, :create, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah", :tag_ids => [tags(:home).id] }
+  def test_should_create_article_with_given_categories
+    xhr :post, :create, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah", :category_ids => [categories(:home).id] }
     assert_response :success
-    assert_equal [tags(:home)], assigns(:article).tags
+    assert_equal [categories(:home)], assigns(:article).categories
   end
 
-  def test_should_update_article_with_no_tags
+  def test_should_update_article_with_no_categories
     post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah" }
     assert_redirected_to :action => 'index'
-    assert_equal [], assigns(:article).tags
+    assert_equal [], assigns(:article).categories
   end
 
-  def test_should_update_article_with_given_tags
-    assert_difference Tagging, :count, -1 do
-      post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah", :tag_ids => [tags(:home).id] }
+  def test_should_update_article_with_given_categories
+    assert_difference Categorization, :count, -1 do
+      post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah", :category_ids => [categories(:home).id] }
       assert_redirected_to :action => 'index'
-      assert_equal [tags(:home)], assigns(:article).tags
+      assert_equal [categories(:home)], assigns(:article).categories
     end
   end
 

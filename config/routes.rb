@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.admin   'admin', :controller => 'admin/base', :action => 'index'
-  map.feed    'feed/*tags', :controller => 'feed', :action => 'feed'
+  map.feed    'feed/*categories', :controller => 'feed', :action => 'feed'
 
   map.connect ':controller/:action/:id'
 
@@ -23,8 +23,8 @@ ActionController::Routing::Routes.draw do |map|
     map.yearly  ':year',                        :action => 'yearly',  
       :requirements => { :year => /\d{4}/ }
 
-    map.paged_search 'search/:q/page/:page',    :action => 'search'
-    map.search  'search/:q',                    :action => 'search', :q => nil
-    map.tags    '*tags',                        :action => 'list'
+    map.paged_search 'search/:q/page/:page', :action => 'search'
+    map.search       'search/:q',            :action => 'search', :q => nil
+    map.category     '*categories',          :action => 'list'
   end
 end

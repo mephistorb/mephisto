@@ -70,29 +70,29 @@ input.default {
   height:400px;
 }
 
-#article_tags {
+#article_categories {
   margin:0; padding:0;
   list-style-type:none;
 }
 
-#article_tags li {
+#article_categories li {
   float:left;
   margin-right:15px;
 }
 
-#article_tags li a,
-#article_tags li a:visited {
+#article_categories li a,
+#article_categories li a:visited {
   padding:5px;
 }
 
-#article_tags li.selected a,
-#article_tags li.selected a:visited {
+#article_categories li.selected a,
+#article_categories li.selected a:visited {
   background:#DDE0E9;
   color:#555;
 }
 
-#article_tags li.selected a:active,
-#article_tags li.selected a:hover {
+#article_categories li.selected a:active,
+#article_categories li.selected a:hover {
   color:#000;
 }
 

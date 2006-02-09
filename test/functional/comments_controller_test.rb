@@ -49,9 +49,9 @@ class CommentsControllerTest < Test::Unit::TestCase
 
   def test_should_reject_missing_article_params
     get :create
-    assert_redirected_to @controller.send(:tags_url, { :tags => [] })
+    assert_redirected_to @controller.send(:category_url, { :categories => [] })
     post :create, :year => '2006', :month => '01', :day => '01', :permalink => 'foo'
-    assert_redirected_to @controller.send(:tags_url, { :tags => [] })
+    assert_redirected_to @controller.send(:category_url, { :categories => [] })
   end
 
   def test_should_reject_get_request

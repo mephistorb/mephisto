@@ -65,7 +65,7 @@ var Navigate = {
     this.to_url(select, "/admin/templates/edit/");
   },
 
-  to_paged_tag: function(select) {
+  to_paged_category: function(select) {
     this.to_url(select, "/admin/pages/edit?id=");
   },
 
@@ -88,37 +88,37 @@ var ArticleForm = {
     Element.hide('article_form_hide');
   },
 
-  toggleTag: function(tag_id) {
-    var tag_li = $('article_tag_ids_' + tag_id)
-    if(Element.hasClassName(tag_li, 'selected'))
-      this.removeTag(tag_id, tag_li)
+  toggleTag: function(category_id) {
+    var category_li = $('article_category_ids_' + category_id)
+    if(Element.hasClassName(category_li, 'selected'))
+      this.removeTag(category_id, category_li)
     else
-      this.addTag(tag_id, tag_li)
+      this.addTag(category_id, category_li)
   },
 
-  addTag: function(tag_id, tag_li) {
-    Element.addClassName(tag_li, 'selected')
+  addTag: function(category_id, category_li) {
+    Element.addClassName(category_li, 'selected')
     
     var hdn = document.createElement('input')
     hdn.setAttribute('type', 'hidden')
-    hdn.setAttribute('id', 'article_tag_ids_value_' + tag_id)
-    hdn.setAttribute('name', 'article[tag_ids][]')
-    hdn.setAttribute('value', tag_id)
-    tag_li.appendChild(hdn)
+    hdn.setAttribute('id', 'article_category_ids_value_' + category_id)
+    hdn.setAttribute('name', 'article[category_ids][]')
+    hdn.setAttribute('value', category_id)
+    category_li.appendChild(hdn)
   },
 
-  removeTag: function(tag_id, tag_li) {
-    Element.removeClassName(tag_li, 'selected')
+  removeTag: function(category_id, category_li) {
+    Element.removeClassName(category_li, 'selected')
     
-    $A(tag_li.getElementsByTagName('input')).each(function(input) {
-      tag_li.removeChild(input)
+    $A(category_li.getElementsByTagName('input')).each(function(input) {
+      category_li.removeChild(input)
     })
   }
 }
 
 var TagForm = {
-  toggle_for_tag: function(tag) {
-    new Element.toggle('tag_' + tag + '_name', 'tag_' + tag + '_form');
+  toggle_for_category: function(category) {
+    new Element.toggle('category_' + category + '_name', 'category_' + category + '_form');
   }
 }
 

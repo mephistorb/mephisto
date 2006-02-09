@@ -1,14 +1,14 @@
 class Article < ActiveRecord::Base
   belongs_to :user
-  has_many   :taggings
-  has_many   :tags, :through => :taggings
+  has_many   :categorizations
+  has_many   :categories, :through => :categorizations
   has_many   :comments, :order => 'created_at'
   
   validates_presence_of :title, :user_id
 
   after_validation_on_create :create_permalink
   before_save :cache_redcloth
-  after_save  :save_taggings
+  after_save  :save_categorizations
 
   class << self
     def find_by_permalink(year, month, day, permalink)
@@ -49,13 +49,13 @@ class Article < ActiveRecord::Base
     :published
   end
 
-  def tag_ids=(new_tags)
-    taggings.each do |tagging|
-      new_tags.include?(tagging.tag_id.to_s) ?
-        new_tags.delete(new_tags.index(tagging.tag_id.to_s)) :
-        tagging.destroy
+  def category_ids=(new_categories)
+    categorizations.each do |categorization|
+      new_categories.include?(categorization.category_id.to_s) ?
+        new_categories.delete(new_categories.index(categorization.category_id.to_s)) :
+        categorization.destroy
     end
-    @tags_to_save = Tag.find(:all, :conditions => ['id in (?)', new_tags])
+    @categories_to_save = Category.find(:all, :conditions => ['id in (?)', new_categories])
   end
 
   def to_liquid(mode = :list)
@@ -89,8 +89,8 @@ class Article < ActiveRecord::Base
     self.description_html = RedCloth.new(description).to_html unless description.blank?
   end
 
-  def save_taggings
-    @tags_to_save.each { |tag| taggings.create :tag => tag } if @tags_to_save
+  def save_categorizations
+    @categories_to_save.each { |category| categorizations.create :category => category } if @categories_to_save
   end
 
   def body_for_mode(mode = :list)

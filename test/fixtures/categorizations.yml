@@ -1,29 +1,29 @@
 # :article_id, :integer
-# :tag_id, :integer
+# :category_id, :integer
 # :position, :integer, :default => 1
 welcome_home:
   id: 1
   article_id: 1
-  tag_id: 1
+  category_id: 1
   position: 1
 another_home:
   id: 2
   article_id: 2
-  tag_id: 1
+  category_id: 1
   position: 2
 welcome_about:
   id: 3
   article_id: 1
-  tag_id: 2
+  category_id: 2
   position: 1
 about_about:
   id: 4
   article_id: 6
-  tag_id: 2
+  category_id: 2
   position: 2
 site_map_about:
   id: 5
   article_id: 7
-  tag_id: 2
+  category_id: 2
   position: 3
 

@@ -4,12 +4,12 @@ class FeedController < ApplicationController
   caches_page_with_references :feed
 
   def feed
-    tags = params[:tags].clone
-    last = tags.last
-    tags.delete(last) if last =~ /\.xml$/
+    categories = params[:categories].clone
+    last = categories.last
+    categories.delete(last) if last =~ /\.xml$/
     
-    @tag      = Tag.find_by_name(tags.blank? ? 'home' : tags.join('/'))
-    @articles = @tag.articles.find_by_date(:limit => 15)
+    @category      = Category.find_by_name(categories.blank? ? 'home' : categories.join('/'))
+    @articles = @category.articles.find_by_date(:limit => 15)
     self.cached_references += @articles
   end
 end

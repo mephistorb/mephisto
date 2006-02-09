@@ -1,6 +1,6 @@
-class Tag < ActiveRecord::Base
-  has_many :taggings, :dependent => :delete_all
-  has_many :articles, :order => 'taggings.position', :through => :taggings do
+class Category < ActiveRecord::Base
+  has_many :categorizations, :dependent => :delete_all
+  has_many :articles, :order => 'categorizations.position', :through => :categorizations do
     def find_by_date(options = {})
       find(:all, { :order => 'articles.published_at desc', 
                    :conditions => ['published_at <= ? AND articles.type IS NULL AND articles.published_at IS NOT NULL', Time.now.utc] } \
@@ -8,36 +8,36 @@ class Tag < ActiveRecord::Base
     end
 
     def find_by_position(options = {})
-      find(:first, { :order => 'taggings.position',
+      find(:first, { :order => 'categorizations.position',
                    :conditions => ['published_at <= ? AND articles.type IS NULL AND articles.published_at IS NOT NULL', Time.now.utc] } \
         .merge(options))
     end
 
     def find_by_permalink(permalink, options = {})
-      find(:first, { :order => 'taggings.position',
+      find(:first, { :order => 'categorizations.position',
                    :conditions => ['articles.permalink = ? AND published_at <= ? AND articles.type IS NULL AND articles.published_at IS NOT NULL',
                                    permalink, Time.now.utc] }.merge(options))
     end
   end
 
   class << self
-    # scopes a find operation to return only paged tags
+    # scopes a find operation to return only paged categories
     def find_paged(options = {})
       with_scope :find => { :conditions => ['show_paged_articles = ?', true] } do
         block_given? ? yield : find(:all, options)
       end
     end
     
-    # given a tag name like ['about', 'site_map'], about is the tag and site_map is a left over page_name
-    # returns [<#Tag: about>, 'site_map']
-    def find_tag_and_page_name(tag_path)
+    # given a category name like ['about', 'site_map'], about is the category and site_map is a left over page_name
+    # returns [<#Category: about>, 'site_map']
+    def find_category_and_page_name(category_path)
       page_name = []
-      tag       = nil
-      while tag.nil? and tag_path.any?
-        tag       = find_by_name(tag_path.join('/'))
-        page_name << tag_path.pop if tag.nil?
+      category       = nil
+      while category.nil? and category_path.any?
+        category       = find_by_name(category_path.join('/'))
+        page_name << category_path.pop if category.nil?
       end
-      [tag, page_name.any? ? page_name.join('/') : nil]
+      [category, page_name.any? ? page_name.join('/') : nil]
     end
   end
 
@@ -46,7 +46,7 @@ class Tag < ActiveRecord::Base
   end
 
   def hash_for_url(options = {})
-    { :tags => to_url }.merge(options)
+    { :categories => to_url }.merge(options)
   end
 
   def to_url

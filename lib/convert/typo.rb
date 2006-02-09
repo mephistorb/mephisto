@@ -27,7 +27,7 @@ module Typo
                            :updated_at   => article.updated_at,
                            :user_id      => user)
 
-      article.tags.each { |tag| a.taggings.create :tag => ::Tag.find_or_create_by_name(tag.name) }
+      article.tags.each { |tag| a.categorizations.create :category => ::Category.find_or_create_by_name(tag.name) }
       comments.each do |comment|
         a.comments << ::Comment.create(:description  => comment.body,
                              :created_at   => comment.created_at,

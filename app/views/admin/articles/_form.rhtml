@@ -1,12 +1,12 @@
 <p><%= form.text_field :title %></p>
 <p><%= form.text_area  :summary %></p>
 <p><%= form.text_area  :description %></p>
-<ul id="article_tags" class="c">
-  <li><strong>tags:</strong></li>
-<% @tags.each do |tag| -%>
-  <li id="article_tag_ids_<%= tag.id %>"<%= %( class="selected") if @article.new_record? or @article.tags.include? tag %>>
-    <%= link_to_function tag.name, "ArticleForm.toggleTag('#{tag.id}')" %>
-    <% if @article.new_record? or @article.tags.include? tag -%><%= hidden_field_tag 'article[tag_ids][]', tag.id %><% end -%>
+<ul id="article_categories" class="c">
+  <li><strong>categories:</strong></li>
+<% @categories.each do |category| -%>
+  <li id="article_category_ids_<%= category.id %>"<%= %( class="selected") if @article.new_record? or @article.categories.include? category %>>
+    <%= link_to_function category.name, "ArticleForm.toggleCategory('#{category.id}')" %>
+    <% if @article.new_record? or @article.categories.include? category -%><%= hidden_field_tag 'article[category_ids][]', category.id %><% end -%>
   </li>
 <% end -%>
 </ul>

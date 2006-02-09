@@ -1,8 +1,8 @@
 class Admin::ArticlesController < Admin::BaseController
-  before_filter :set_default_tag_ids,        :only => [:create, :update]
+  before_filter :set_default_category_ids,        :only => [:create, :update]
   before_filter :clear_published_at_fields!, :only => [:create, :update]
   cache_sweeper :article_sweeper,            :only => [:create, :update]
-  cache_sweeper :tagging_sweeper,            :only => [:create, :update]
+  cache_sweeper :Category_sweeper,            :only => [:create, :update]
 
   def index
     conditions     = 'article_id IS NULL'
@@ -12,7 +12,7 @@ class Admin::ArticlesController < Admin::BaseController
                        :include => :user,
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)
-    load_tags!
+    load_categories!
   end
 
   def create
@@ -21,7 +21,7 @@ class Admin::ArticlesController < Admin::BaseController
 
   def edit
     @article = Article.find(params[:id])
-    load_tags!
+    load_categories!
   end
 
   def update
@@ -29,18 +29,18 @@ class Admin::ArticlesController < Admin::BaseController
     if @article.update_attributes(params[:article])
       redirect_to :action => 'index'
     else
-      @tags = Tag.find :all
+      @categories = Category.find :all
       render :action => 'edit'
     end
   end
 
   protected
-  def load_tags!
-    @tags = Tag.find :all, :order => 'name'
+  def load_categories!
+    @categories = Category.find :all, :order => 'name'
   end
 
-  def set_default_tag_ids
-    params[:article][:tag_ids] ||= []
+  def set_default_category_ids
+    params[:article][:category_ids] ||= []
   end
 
   def clear_published_at_fields!

@@ -11,7 +11,7 @@ module TextPattern
                          :published_at => article.Posted,
                          :updated_at   => article.LastMod,
                          :user_id      => 1)
-      a.taggings.create :tag => tag
+      a.categorizations.create :tag => tag
       article.comments.each do |comment|
         a.comments.create(:description  => comment.message,
                           :created_at   => comment.posted,

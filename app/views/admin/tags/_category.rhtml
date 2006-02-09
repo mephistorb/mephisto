@@ -1,0 +1,16 @@
+<% form_remote_for :category, category, :url => { :action => 'update', :id => category }, 
+  :html => { :class => 'category', :id => "category_#{category.id}"} do |f| -%>
+  <span id="category_<%=category.id%>_name">
+    <%=h category.name %>
+    <%= link_to_function 'Edit', "CategoryForm.toggle_for_category('#{category.id}')" %>
+    <%= link_to_remote 'Delete', :url => { :action => 'destroy', :id => category }, 
+          :confirm => "Are you sure you want to delete #{category.name}?" %>
+  </span>
+  <% unless category.name == 'home' -%>
+  <span id="category_<%=category.id%>_form" style="display:none">
+    <%= f.text_field 'name' %>
+    <label><%= f.check_box 'show_paged_articles' %> paged?</label>
+    <%= link_to_function 'cancel', "CategoryForm.toggle_for_category('#{category.id}')" %>
+  </span>
+  <% end -%>
+<% end -%>

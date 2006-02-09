@@ -2,7 +2,7 @@ class Template < ActiveRecord::Base
   @@hierarchy = {
     :main    => [:home,   :index],
     :single  => [:single, :index],
-    :tag     => [:tag,    :archive, :index],
+    :category     => [:category,    :archive, :index],
     :archive => [:archive, :index],
     :page    => [:page, :single, :index],
     :search  => [:search, :archive, :index]

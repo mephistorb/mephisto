@@ -2,11 +2,11 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   observe Article
 
   def after_create(record)
-    controller.expire_page :tags => [], :controller => '/mephisto', :action => 'list'
-    controller.expire_page :tags => [], :controller => '/feed', :action => 'feed'
-    Tag.find(:all, :conditions => ['name != ?', 'home']).each do |tag|
-      controller.expire_page :tags => tag.name.split('/'), :controller => '/mephisto', :action => 'list'
-      controller.expire_page :tags => tag.name.split('/'), :controller => '/feed', :action => 'feed'
+    controller.expire_page :categories => [], :controller => '/mephisto', :action => 'list'
+    controller.expire_page :categories => [], :controller => '/feed', :action => 'feed'
+    Category.find(:all, :conditions => ['name != ?', 'home']).each do |category|
+      controller.expire_page :categories => category.name.split('/'), :controller => '/mephisto', :action => 'list'
+      controller.expire_page :categories => category.name.split('/'), :controller => '/feed', :action => 'feed'
     end
   end
 
