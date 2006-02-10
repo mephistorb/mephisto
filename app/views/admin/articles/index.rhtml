@@ -8,13 +8,12 @@
   <%= link_to_function 'cancel', "ArticleForm.hide();", :style => 'display:none', :id => 'article_form_hide' %>
 </div>
 
-<table id="articles_table">
+<table id="article-list">
   <thead>
     <tr>
-      <th>Title</th>
-      <th>Published</th>
-      <th>Edit</th>
-      <th>Delete</th>
+      <th scope="col">Status</th>
+      <th scope="col">Article</th>
+      <th scope="col">Published</th>
     </tr>
   </thead>
   <tbody id="articles">

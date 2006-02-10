@@ -81,3 +81,111 @@ function highlight_comment() {
 window.onload = function() {
   highlight_comment();
 }
+
+
+
+Asset = {
+  upload: function(form) {
+    form = $(form);
+    form.action = "attach_asset"
+    form.submit();
+  }
+}
+
+
+
+/*-------------------- Flash ------------------------------*/
+// Flash is used to manage error messages and notices from 
+// Ajax calls.
+//
+var Flash = {
+  // When given an error message, wrap it in a list 
+  // and show it on the screen.  This message will auto-hide 
+  // after a specified amount of miliseconds
+  error: function(message) {
+    $('flash-errors').innerHTML = '';
+    $('flash-errors').innerHTML = "<ul>" + message + "</ul>";
+    new Effect.Appear('flash-errors', {duration: 0.3});
+    setTimeout(Flash.fadeError.bind(this), 5000);
+  },
+
+  // Notice-level messages.  See Messenger.error for full details.
+  notice: function(message) {
+    $('flash-notice').innerHTML = '';
+    $('flash-notice').innerHTML = "<li>" + message + "</li>";
+    new Effect.Appear('flash-notice', {duration: 0.3});
+    setTimeout(Flash.fadeNotice.bind(this), 5000);
+  },
+  
+  // Responsible for fading notices level messages in the dom    
+  fadeNotice: function() {
+    new Effect.Fade('flash-notice', {duration: 0.3});
+  },
+  
+  // Responsible for fading error messages in the DOM
+  fadeError: function() {
+    new Effect.Fade('flash-errors', {duration: 0.3});
+  }
+}
+
+
+//
+//  Resizer.js
+//  Resize two divs proportial to each other
+//
+//
+
+if (!window.Control) {
+  var Control = new Object();
+}
+
+Control.Resizer = Class.create();
+Control.Resizer.prototype = {
+  initialize: function(element1, element2, options) {
+    logger.info("Intitialized Resizer");
+    
+    this.leftElement  = $(element1);
+    this.rightElement = $(element2);
+    this.dragging     = false;
+    this.handle       = $(options.handle);
+    
+    Element.makePositioned(this.leftElement);
+    Element.makePositioned(this.rightElement);
+
+    Event.observe(this.handle, 'mousedown', this.onPress.bindAsEventListener(this));
+    Event.observe(this.handle, 'mouseover', this.onHover.bindAsEventListener(this));
+    Event.observe(document, 'mousemove', this.onDrag.bindAsEventListener(this));
+    Event.observe(document, 'mouseup', this.onBlur.bindAsEventListener(this));
+  },
+  
+  onPress: function(event) {
+    this.dragging = true;
+    var handle = Event.element(event);
+    logger.info(this.leftElement);
+    this.initialLeftWidth = Element.getStyle(this.leftElement, 'width');
+    logger.info('pressed' + this.initialLeftWidth);
+  },
+  
+  // Fix dragging to left
+  onDrag: function(event) {
+    if(this.dragging) {
+      document.body.style.cursor = 'move';
+      var currentX = Event.pointerX(event);
+      var currentY = Event.pointerY(event);
+      var offset = currentX - 20;
+      logger.info(currentX, false, true);
+      Element.setStyle(this.rightElement, {marginLeft: currentX + "px"});
+      Element.setStyle(this.leftElement, {width:  offset + "px"});
+    }
+  },
+  
+  onBlur: function(event) {
+    this.dragging = false;
+    document.body.style.cursor = 'auto';
+    logger.info('Blurred');
+  },
+  
+  onHover: function(event) {
+    Element.setStyle(this.handle, {cursor: 'move'});
+  }
+}
