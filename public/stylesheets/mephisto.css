@@ -351,7 +351,6 @@ input[type='text']:focus, textarea:focus {
 
 #article-list a {
   color: #060;
-  display: block;
   padding: 2px 10px;
   text-decoration: none;
   border: none;
@@ -480,6 +479,23 @@ input[type='text']:focus, textarea:focus {
 }
 
 /*
+ *=USERS
+ */
+
+#users {
+  list-style: none;
+  margin-top: 20px;
+}
+
+#users li {
+  background: #eee;
+  padding: 10px;
+  margin: 0 0 10px 0;
+  border: 1px solid #ccc;
+}
+
+
+/*
  *=MISC
  */
 
@@ -534,6 +550,8 @@ ul.nobull li label {
   width: 25px;
   text-indent: -99999px;
 }
+
+
 /*
  *=ERRORS AND NOTICES
  */
