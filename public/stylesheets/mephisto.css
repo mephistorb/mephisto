@@ -214,6 +214,7 @@ input[type='text']:focus, textarea:focus {
 
 #act-nav {
   list-style: none;
+  margin: 10px 0 40px 0;
 } 
 
 #act-nav li a {
@@ -385,6 +386,8 @@ input[type='text']:focus, textarea:focus {
 #live-preview h2 {
   font: 330% "Times New Roman";
 }
+
+
 /*
  *=CORNERS
  */

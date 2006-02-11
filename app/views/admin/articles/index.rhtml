@@ -1,13 +1,12 @@
-<% form_remote_for :article, @article, :url => { :action => 'create' }, 
-    :html => { :id => 'article_form', :style => 'display:none' } do |f| -%>
-<%= render :partial => 'form', :object => f %>
-<p><%= submit_tag 'Publish' %></p>
-<% end -%>
-<div id="article_form_link">
-  <%= link_to_function 'Add Article', "ArticleForm.show();", :id => 'article_form_show' %>
-  <%= link_to_function 'cancel', "ArticleForm.hide();", :style => 'display:none', :id => 'article_form_hide' %>
-</div>
+<h2>Your Articles</h2>
 
+<!-- begin action nav -->
+<ul id="act-nav">
+  <li><%= link_to "Create new article", :action => "new" %></li>
+</ul>
+<!-- /end action nav -->
+
+<!-- begin article list -->
 <table id="article-list">
   <thead>
     <tr>
@@ -20,8 +19,11 @@
 <%= render :partial => 'article', :collection => @articles %>
   </tbody>
 </table>
+<!-- /end article list -->
 
+<!-- begin pagination -->
 <p>
 <%= link_to 'Previous page', { :page => @article_pages.current.previous } if @article_pages.current.previous %>
 <%= link_to 'Next page', { :page => @article_pages.current.next } if @article_pages.current.next %> 
 </p>
+<!-- /end pagination -->

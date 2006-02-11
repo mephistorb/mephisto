@@ -12,11 +12,17 @@ class Admin::ArticlesController < Admin::BaseController
                        :include => :user,
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)
+  end
+  
+  def new
+    @article = Article.new
     load_categories!
   end
 
   def create
-    @article = current_user.articles.create params[:article]
+    if current_user.articles.create params[:article]
+      redirect_to :action => 'index'
+    end
   end
 
   def edit

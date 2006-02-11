@@ -1,18 +1,44 @@
-<p><%= form.text_field :title %></p>
-<p><%= form.text_area  :excerpt %></p>
-<p><%= form.text_area  :body %></p>
-<ul id="article_categories" class="c">
-  <li><strong>categories:</strong></li>
-<% @categories.each do |category| -%>
-  <li id="article_category_ids_<%= category.id %>"<%= %( class="selected") if @article.has_category? category %>>
-    <%= link_to_function category.name, "ArticleForm.toggleCategory('#{category.id}')" %>
-    <% if @article.has_category? category -%><%= hidden_field_tag 'article[category_ids][]', category.id %><% end -%>
-  </li>
-<% end -%>
-</ul>
+<%= error_messages_for 'article' %>
 
-<p>
-  <label for="article_published">Published?</label>
-  <%= check_box_tag 'article_published', '1', (@article.new_record? or @article.published?) %>
-  <%= form.datetime_select 'published_at' %>
-</p>
+<!-- begin required fields -->
+<div class="group">
+  <dl>
+    <dt><label for="article_title">Title</label></dt>
+    <dd><%= text_field 'article', 'title', :class => 'big'  %></dd>
+     <dt id="x-lbl" style="display:none;"><label for="article_excerpt">Excerpt</label></dt>
+      <dd id="x-body" style="display:none"><%= text_area 'article', 'excerpt', :rows => '8', :class => 'fat'  %></dd>
+    <dt><label for="article_body">Body</label> <span class="hint">(<%= link_to_function 'add excerpt', %(Element.toggle('x-lbl', 'x-body')) %>)</span></dt>
+    <dd><%= text_area 'article', 'body', :class => 'fat'  %></dd>
+    <dt><label for="article_category">Categories</label> </dt>
+    <dd>
+      <select name="article[category_ids][]" multiple="multiple" style="width:400px;">
+        <%= options_from_collection_for_select(@categories, "id", "title", @selected) %>
+      </select>
+    </dd>
+  </dl>
+</div>
+<!-- /end required fields -->
+
+
+<!-- begin optional fields -->
+<dl class="optional">
+  <dt><label for="article_created_at">Publish on this date:</label></dt>
+  <dd><%= datetime_select 'article', 'published_at', :discard_year => true %></dd>
+  <dt><%= check_box_tag 'article_published', '1', (@article.new_record? or @article.published?) %> <label for="article_published">Published on live site</label></dt>
+  <dd></dd>
+  <dt><label for="article_permalink">Permanent link</label></dt>
+  <dd><%= text_field 'article', 'permalink' %></dd>
+</dl>
+<!-- /end optional fields -->
+
+  
+<% content_for :sidebar do %>
+<div id="sbar-handle">
+  
+</div>
+<div id="live-preview"></div>
+<% end %>
+
+<%= observe_form "article-form", :frequency => 2, :with => %(Form.serialize('article-form')), :url => { :action => "live_preview" } %>      
+
+

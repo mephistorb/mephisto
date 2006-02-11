@@ -1,0 +1,9 @@
+<h2>New article</h2>
+<%= start_form_tag({:action => 'create'}, :id => 'article-form') %>
+  <%= render :partial => 'form' %>
+  
+  <p class="btns">
+    <%= submit_tag "Save article" %>
+  </p>
+  
+  <%= end_form_tag %>
