@@ -17,19 +17,20 @@
   	    <li><%= link_to 'account', :controller => 'account' %></li>
   	  </ul>
 
-  	  <h1><a href="/" title="ArticleCast">ArticleCast: Admin</a></h1>
+  	  <h1><a href="/" title="ArticleCast">Mephisto: Admin</a></h1>
 
   	  <!-- div.nav -->	
   	  <div id="nav">
         <% if logged_in? -%>
           <ul>
-            <li><%= link_to 'articles',   :controller => '/admin/articles' %></li>
+            <li><%= link_to 'Dashboard', :controller => '/admin/dashboard' %></li>
+            <li><%= link_to 'Articles',  :controller => '/admin/articles' %></li>
           </ul>
           <ul id="nav-r">
             <li><%= link_to 'categories', :controller => '/admin/categories' %></li>
             <li><%= link_to 'pages',      :controller => '/admin/pages' %></li>
             <li><%= link_to 'templates',  :controller => '/admin/templates' %></li>
-            <li><%= link_to "Users", :controller => "users" %></li>
+            <li><%= link_to "users",      :controller => "users" %></li>
           </ul>
         <% end -%>
   	  </div> 

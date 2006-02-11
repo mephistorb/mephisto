@@ -527,6 +527,11 @@ ul.nobull li {
 ul.nobull li label {
   font-weight: normal;
 }
+
+.small-col {
+  width: 25px;
+  text-indent: -99999px;
+}
 /*
  *=ERRORS AND NOTICES
  */
