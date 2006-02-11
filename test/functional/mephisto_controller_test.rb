@@ -55,8 +55,8 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'p',  :content => 'home'
     assert_tag :tag => 'h2', :content => articles(:welcome).title
     assert_tag :tag => 'h2', :content => articles(:another).title
-    assert_tag :tag => 'p',  :content => articles(:welcome).summary
-    assert_tag :tag => 'p',  :content => articles(:another).description
+    assert_tag :tag => 'p',  :content => articles(:welcome).excerpt
+    assert_tag :tag => 'p',  :content => articles(:another).body
   end
 
   def test_should_render_liquid_templates_by_categories
@@ -94,7 +94,7 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'form',     :descendant => {                                                                                  
                :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author_email', :name => 'comment[author_email]' } }
     assert_tag :tag => 'form',     :descendant => { 
-               :tag => 'textarea', :attributes => {                  :id => 'comment_description',  :name => 'comment[description]'  } }
+               :tag => 'textarea', :attributes => {                  :id => 'comment_body',  :name => 'comment[body]'  } }
   end
 
   def test_should_show_daily_entries

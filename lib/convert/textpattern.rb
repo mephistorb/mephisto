@@ -5,15 +5,15 @@ module TextPattern
     tag = Tag.find_by_name('home')
     TextPattern::Article.find(:all, :include => :comments).each do |article|
       a = ::Article.create(:title      => article.Title, 
-                         :summary      => article.Excerpt,
-                         :description  => article.Body,
+                         :excerpt      => article.Excerpt,
+                         :body  => article.Body,
                          :created_at   => article.Posted,
                          :published_at => article.Posted,
                          :updated_at   => article.LastMod,
                          :user_id      => 1)
       a.categorizations.create :tag => tag
       article.comments.each do |comment|
-        a.comments.create(:description  => comment.message,
+        a.comments.create(:body  => comment.message,
                           :created_at   => comment.posted,
                           :updated_at   => comment.posted,
                           :published_at => comment.posted,

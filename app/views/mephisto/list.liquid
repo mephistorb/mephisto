@@ -2,7 +2,7 @@
 {% for article in articles %}
 {% if forloop.first %}
 <h3>{{ article.title }}</h3>
-{{ article.summary | textilize }}
+{{ article.excerpt | textilize }}
 <p class="meta">27 dec 2005 | <a href="#">0 comments</a></p>
 {% endif %}
 {% endfor %}

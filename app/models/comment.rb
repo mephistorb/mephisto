@@ -5,7 +5,7 @@ class Comment < Article
   def to_liquid
     { 'id'         => id,
       'author'     => author_link,
-      'body'       => description_html,
+      'body'       => body_html,
       'created_at' => created_at }
   end
 
@@ -16,5 +16,5 @@ class Comment < Article
   end
 
   protected
-  validates_presence_of :description, :author, :author_ip
+  validates_presence_of :body, :author, :author_ip
 end

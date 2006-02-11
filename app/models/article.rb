@@ -89,8 +89,8 @@ class Article < ActiveRecord::Base
   end
 
   def cache_redcloth
-    self.summary_html     = RedCloth.new(summary).to_html     unless summary.blank?
-    self.description_html = RedCloth.new(description).to_html unless description.blank?
+    self.excerpt_html     = RedCloth.new(excerpt).to_html     unless excerpt.blank?
+    self.body_html = RedCloth.new(body).to_html unless body.blank?
   end
 
   def save_categorizations
@@ -98,6 +98,6 @@ class Article < ActiveRecord::Base
   end
 
   def body_for_mode(mode = :list)
-    (mode == :single ? summary_html.to_s + "\n\n" + description_html.to_s : (summary_html || description_html)).strip
+    (mode == :single ? excerpt_html.to_s + "\n\n" + body_html.to_s : (excerpt_html || body_html)).strip
   end
 end

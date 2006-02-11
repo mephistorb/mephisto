@@ -10,7 +10,7 @@ module Mephisto
         errors = context['errors'] ? %Q{<ul id="comment_errors"><li>#{context['errors'].join('</li><li>')}</li></ul>} : ''
         
         context['form'] = {
-          'body'   => text_area_tag('comment_description',   nil, :name => 'comment[description]'),
+          'body'   => text_area_tag('comment_body',   nil, :name => 'comment[body]'),
           'name'   => text_field_tag('comment_author',       nil, :name => 'comment[author]'),
           'email'  => text_field_tag('comment_author_email', nil, :name => 'comment[author_email]'),
           'url'    => text_field_tag('comment_author_url',   nil, :name => 'comment[author_url]'),

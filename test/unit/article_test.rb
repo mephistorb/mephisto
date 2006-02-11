@@ -32,8 +32,8 @@ class ArticleTest < Test::Unit::TestCase
   end
 
   def test_should_cache_redcloth
-    a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :user_id => 1, :summary => '*foo*', :description => '_bar_'
-    assert_equal '<p><strong>foo</strong></p>', a.summary_html
-    assert_equal '<p><em>bar</em></p>',         a.description_html
+    a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :user_id => 1, :excerpt => '*foo*', :body => '_bar_'
+    assert_equal '<p><strong>foo</strong></p>', a.excerpt_html
+    assert_equal '<p><em>bar</em></p>',         a.body_html
   end
 end

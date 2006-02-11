@@ -33,7 +33,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
 
   def test_should_create_article
     assert_difference Article, :count do
-      xhr :post, :create, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah" }
+      xhr :post, :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
       assert_response :success
       assert !assigns(:article).published?
     end
@@ -59,20 +59,20 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_create_article_with_given_categories
-    xhr :post, :create, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah", :category_ids => [categories(:home).id] }
+    xhr :post, :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :category_ids => [categories(:home).id] }
     assert_response :success
     assert_equal [categories(:home)], assigns(:article).categories
   end
 
   def test_should_update_article_with_no_categories
-    post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah" }
+    post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
     assert_redirected_to :action => 'index'
     assert_equal [], assigns(:article).categories
   end
 
   def test_should_update_article_with_given_categories
     assert_difference Categorization, :count, -1 do
-      post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :summary => "Blah Blah", :description => "Blah Blah", :category_ids => [categories(:home).id] }
+      post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :category_ids => [categories(:home).id] }
       assert_redirected_to :action => 'index'
       assert_equal [categories(:home)], assigns(:article).categories
     end

@@ -24,7 +24,7 @@ class CommentsControllerTest < Test::Unit::TestCase
     assert_difference Comment, :count do
       assert_difference articles(:welcome), :comments_count do
         post :create, articles(:welcome).hash_for_permalink.merge(:comment => {
-          :description => 'test comment', 
+          :body => 'test comment', 
           :author      => 'bob'
         })
         assert_redirected_to @controller.url_for(articles(:welcome).hash_for_permalink(:controller => 'mephisto', 
@@ -39,7 +39,7 @@ class CommentsControllerTest < Test::Unit::TestCase
     assert_no_difference Comment, :count do
       assert_no_difference articles(:welcome), :comments_count do
         post :create, articles(:welcome).hash_for_permalink.merge(:comment => {
-          :description => 'test comment'
+          :body => 'test comment'
         })
         assert_response :success
         articles(:welcome).reload

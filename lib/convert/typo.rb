@@ -20,8 +20,8 @@ module Typo
       user = article.user_id.nil? : ::User.find(:first) : ::User.find_by_login(Typo::User.find(article.user_id).login)
 
       a = ::Article.create(:title        => article.title, 
-                           :summary      => article.body,
-                           :description  => article.extended,
+                           :excerpt      => article.body,
+                           :body  => article.extended,
                            :created_at   => article.created_at,
                            :published_at => article.created_at,
                            :updated_at   => article.updated_at,
@@ -29,7 +29,7 @@ module Typo
 
       article.tags.each { |tag| a.categorizations.create :category => ::Category.find_or_create_by_name(tag.name) }
       comments.each do |comment|
-        a.comments << ::Comment.create(:description  => comment.body,
+        a.comments << ::Comment.create(:body  => comment.body,
                              :created_at   => comment.created_at,
                              :updated_at   => comment.updated_at,
                              :published_at => comment.created_at,

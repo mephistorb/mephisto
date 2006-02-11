@@ -11,15 +11,15 @@ class CommentTest < Test::Unit::TestCase
   def test_add_comment
     assert_difference Comment, :count do
       assert_difference articles(:welcome), :comments_count do
-        articles(:welcome).comments.create :description => 'test comment', :author => 'bob', :author_ip => '127.0.0.1'
+        articles(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1'
         articles(:welcome).reload
       end
     end
   end
 
   def test_add_comment
-    c = articles(:welcome).comments.create :description => '*test* comment', :author => 'bob', :author_ip => '127.0.0.1'
-    assert_equal "<p><strong>test</strong> comment</p>", c.description_html
+    c = articles(:welcome).comments.create :body => '*test* comment', :author => 'bob', :author_ip => '127.0.0.1'
+    assert_equal "<p><strong>test</strong> comment</p>", c.body_html
   end
 
   def test_should_return_correct_author_link

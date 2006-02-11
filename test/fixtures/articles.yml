@@ -1,7 +1,7 @@
 # :title, :string, :limit => 255
 # :permalink, :string, :limit => 255
-# :summary, :text
-# :description, :text
+# :excerpt, :text
+# :body, :text
 # :created_at, :datetime
 # :updated_at, :datetime
 # :published_at, :datetime
@@ -9,10 +9,10 @@ welcome:
   id: 1
   title: Welcome to Mephisto
   permalink: welcome_to_mephisto
-  summary: welcome summary
-  summary_html: welcome summary
-  description: welcome description
-  description_html: welcome description
+  excerpt: welcome summary
+  excerpt_html: welcome summary
+  body: welcome description
+  body_html: welcome description
   created_at: <%= 5.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
   published_at: <%= 3.days.ago.to_s(:db) %>
@@ -22,8 +22,8 @@ another:
   id: 2
   title: Another Welcome to Mephisto
   permalink: another_welcome_to_mephisto
-  description: another description
-  description_html: another description
+  body: another description
+  body_html: another description
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   published_at: <%= 4.days.ago.to_s(:db) %>
@@ -31,8 +31,8 @@ another:
 welcome_comment:
   id: 3
   article_id: 1
-  description: This blogging tool rocks.
-  description_html: This blogging tool rocks.
+  body: This blogging tool rocks.
+  body_html: This blogging tool rocks.
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 3.days.ago.to_s(:db) %>
   published_at: <%= 3.days.ago.to_s(:db) %>
@@ -42,8 +42,8 @@ unpublished:
   id: 4
   title: Unpublished Article
   permalink: unpublished_article
-  summary: This is my own little blogging tool
-  summary_html: This is my own little blogging tool
+  excerpt: This is my own little blogging tool
+  excerpt_html: This is my own little blogging tool
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   user_id: 1
@@ -51,8 +51,8 @@ future:
   id: 5
   title: Article in the Future
   permalink: article_in_the_future
-  summary: This is my own little blogging tool
-  summary_html: This is my own little blogging tool
+  excerpt: This is my own little blogging tool
+  excerpt_html: This is my own little blogging tool
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   published_at: <%= 4.days.from_now.to_s(:db) %>
@@ -61,10 +61,10 @@ about:
   id: 6
   title: About this page
   permalink: about_this_page
-  summary: This is my own about page
-  summary_html: This is my own about page
-  description: This is my own about page
-  description_html: This is my own about page
+  excerpt: This is my own about page
+  excerpt_html: This is my own about page
+  body: This is my own about page
+  body_html: This is my own about page
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   published_at: <%= 4.days.ago.to_s(:db) %>
@@ -73,10 +73,10 @@ site_map:
   id: 7
   title: The Site Map
   permalink: the_site_map
-  summary: This is my own site map
-  summary_html: This is my own site map
-  description: This is my own site map
-  description_html: This is my own site map
+  excerpt: This is my own site map
+  excerpt_html: This is my own site map
+  body: This is my own site map
+  body_html: This is my own site map
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   published_at: <%= 4.days.ago.to_s(:db) %>

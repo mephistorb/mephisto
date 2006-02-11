@@ -13,7 +13,7 @@ class MephistoController < ApplicationController
   end
 
   def search
-    conditions     = ['published_at <= :now AND type IS NULL AND title LIKE :q OR summary LIKE :q OR description LIKE :q', 
+    conditions     = ['published_at <= :now AND type IS NULL AND title LIKE :q OR excerpt LIKE :q OR body LIKE :q', 
                      { :now => Time.now.utc, :q => "%#{params[:q]}%" }]
     @article_pages = Paginator.new self, Article.count(conditions), 15, params[:page]
     @articles      = Article.find(:all, :conditions => conditions, :order => 'published_at DESC',
