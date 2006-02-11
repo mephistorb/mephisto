@@ -5,15 +5,20 @@
   <dl>
     <dt><label for="article_title">Title</label></dt>
     <dd><%= text_field 'article', 'title', :class => 'big'  %></dd>
-     <dt id="x-lbl" style="display:none;"><label for="article_excerpt">Excerpt</label></dt>
-      <dd id="x-body" style="display:none"><%= text_area 'article', 'excerpt', :rows => '8', :class => 'fat'  %></dd>
+    <dt id="x-lbl" style="display:none;"><label for="article_excerpt">Excerpt</label></dt>
+    <dd id="x-body" style="display:none"><%= text_area 'article', 'excerpt', :rows => '8', :class => 'fat'  %></dd>
     <dt><label for="article_body">Body</label> <span class="hint">(<%= link_to_function 'add excerpt', %(Element.toggle('x-lbl', 'x-body')) %>)</span></dt>
     <dd><%= text_area 'article', 'body', :class => 'fat'  %></dd>
     <dt><label for="article_category">Categories</label> </dt>
     <dd>
-      <select name="article[category_ids][]" multiple="multiple" style="width:400px;">
-        <%= options_from_collection_for_select(@categories, "id", "title", @selected) %>
-      </select>
+      <ul class="nobull">
+        <% @categories.each do |category| %>
+          <li>
+            <%= check_box_tag 'article[category_ids][]', "#{category.id}" %>
+            <label for="article_category_ids"><%= category.name %></label>
+          </li>
+        <% end %>
+      </ul>
     </dd>
   </dl>
 </div>

@@ -516,6 +516,17 @@ p.hint {
 .thumb { padding: 4px;}
 .icon {padding: 2px;}
 
+ul.nobull {
+  list-style: none;
+}
+
+ul.nobull li {
+  padding: 3px 0;
+}
+
+ul.nobull li label {
+  font-weight: normal;
+}
 /*
  *=ERRORS AND NOTICES
  */
