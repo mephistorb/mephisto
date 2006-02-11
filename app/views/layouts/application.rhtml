@@ -4,7 +4,7 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />		
 		<title>Mephisto: <%= controller.controller_name %> Admin</title>
-		<%= stylesheet_link_tag 'mephisto' %>
+		<%= stylesheet_link_tag 'mephisto', 'asset-manager' %>
 		<%= javascript_include_tag :defaults %>
 		<%= javascript_include_tag 'logger', 'mephisto' %>
 	</head>
@@ -70,7 +70,7 @@
     	  <p>Mephisto</p>
     	</div>
   	</div>
-  	
+  	<%= render :partial => 'asset_manager' %>
   	<div id="log-panel">
       <ul id="log-panel-list">
         
