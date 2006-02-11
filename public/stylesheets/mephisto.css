@@ -126,6 +126,8 @@ input[type='text']:focus, textarea:focus {
 .lil { font-size: 80%; }
 .fat { width: 100%;}
 
+.tiny { width: 30px; }
+
 /*
  *=HEADER
  */

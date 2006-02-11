@@ -1,0 +1,42 @@
+<h2>Control different parts of your website</h2>
+<%= form_tag :action => "update" %>
+<div id="general" class="setgroup">
+  <h3>General site settings</h3>
+  <dl class="setform">
+    <dt><label for="current_site_title">Website title:</label></dt>
+    <dd><%= text_field 'current_site', 'title' %></dd>
+    <dt><label for="current_site_subtitle">Website subtitle</label></dt>
+    <dd><%= text_field 'current_site', 'subtitle' %></dd>
+    <dt>
+      <label for="current_site_email">Administrator email</label>
+      <span class="hint">Shown in emails sent from your site</span>
+    </dt>
+    <dd><%= text_field 'current_site', 'email' %></dd>
+  </dl>
+</div>
+
+<div id="publish" class="setgroup">
+  <h3>Publishing and reading</h3>
+  <dl class="setform">
+    <dt>
+      <label for="current_site_ping_urls">Urls to ping when publishing</label><br />
+      <span class="hint">Each one should be on a separate line.</span>
+    </dt>
+    <dd><%= text_area 'current_site', 'ping_urls', :rows => 5, :cols => 45 %></dd>
+    <dt><label for="current_site_articles_per_page">Articles shown on homepage</label></dt>
+    <dd><%= text_field 'current_site', 'articles_per_page', :class => 'tiny' %></dd>
+    <dt>
+      <label for="current_sites_permalink_style">Permalink style</label>
+      <span class="hint">(How articles are linked to)</span>
+    </dt>
+    <dd>
+      <select name="current_site[permalink_style]">
+        <%= options_for_select(%w(permalink year/month/permalink year/month/day/permalink category/permalink), '') %>
+      </select>
+    </dd>
+    
+  </dl>
+</div>
+<p class="btns"><%= submit_tag 'Save and apply current_sites' %></p>
+<%= end_form_tag %>
+    
