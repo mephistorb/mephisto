@@ -48,7 +48,7 @@ class CategoryTest < Test::Unit::TestCase
 
   def test_should_create_article_with_categories
     a = Article.create :title => 'foo', :user_id => 1, :category_ids => [categories(:home).id, categories(:about).id]
-    assert_equal [categories(:home), categories(:about)], a.categories
+    assert_equal [categories(:about), categories(:home)], a.categories
   end
 
   def test_should_update_article_with_categories
