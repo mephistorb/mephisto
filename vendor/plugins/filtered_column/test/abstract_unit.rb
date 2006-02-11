@@ -3,32 +3,48 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'test/unit'
 require File.expand_path(File.join(File.dirname(__FILE__), '../../../../config/environment.rb'))
 require 'breakpoint'
-require 'active_record/fixtures'
 
-config = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
-ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + "/debug.log")
-ActiveRecord::Base.establish_connection(config[ENV['DB'] || 'sqlite'])
-
-load(File.dirname(__FILE__) + "/schema.rb")
-
-Test::Unit::TestCase.fixture_path = File.dirname(__FILE__) + "/fixtures/"
-$LOAD_PATH.unshift(Test::Unit::TestCase.fixture_path)
-
-class Test::Unit::TestCase #:nodoc:
-  def create_fixtures(*table_names)
-    if block_given?
-      Fixtures.create_fixtures(Test::Unit::TestCase.fixture_path, table_names) { yield }
-    else
-      Fixtures.create_fixtures(Test::Unit::TestCase.fixture_path, table_names)
-    end
+Test::Unit::TestCase.class_eval do
+  def assert_filters_called_on(klass, *filters)
+    klass.called_filters = []
+    yield
+    assert_equal filters.length, (klass.called_filters & filters).length, "#{filters.join(', ')} expected, #{klass.called_filters.join(', ')} called"
   end
 
-  # Turn off transactional fixtures if you're working with MyISAM tables in MySQL
-  self.use_transactional_fixtures = true
-  
-  # Instantiated fixtures are slow, but give you @david where you otherwise would need people(:david)
-  self.use_instantiated_fixtures  = false
+  def assert_no_filters_called_on(klass, &block)
+    assert_filters_called_on klass, &block
+  end
 end
 
 class Article < ActiveRecord::Base
+  @@called_filters = []
+  cattr_accessor :called_filters
+  def self.columns() @columns ||= []; end
+  def self.column(name, sql_type = nil, default = nil, null = true)
+    columns << ActiveRecord::ConnectionAdapters::Column.new(name.to_s, default, sql_type.to_s, null)
+  end
+
+  column :body,                        :string
+  column :body_html,                   :string
+  column :textile_body,                :string
+  column :textile_body_html,           :string
+  column :textile_and_macro_body,      :string
+  column :textile_and_macro_body_html, :string
+  column :no_textile_body,             :string
+  column :no_textile_body_html,        :string
+  column :filters,                     :text
+
+  filtered_column :body
+  filtered_column :textile_body,           :only   => :textile_filter
+  filtered_column :textile_and_macro_body, :only   => [:textile_filter, :macro_filter]
+  filtered_column :no_textile_body,        :except => :textile_filter
+
+  class << self
+    alias_method :old_filter_text, :filter_text
+
+    def filter_text(filter_name, text_to_filter)
+      (called_filters << filter_name).uniq!
+      old_filter_text(filter_name, text_to_filter)
+    end
+  end
 end

@@ -1,10 +1,9 @@
-#require 'filters/abstract_filter'
-#require 'filtered_column'
+ActiveRecord::Base.send(:include, FilteredColumn::Mixin)
 
-#Dir["#{directory}/lib/filters/*_filter.rb"].each do |filter|
-#  filter_name = File.basename(filter).sub(/\.rb/, '')
-#  require filter
-#  FilteredColumn::filters[filter_name.sub(/_filter/, '').to_sym] = filter_name.camelize.constantize
-#end
+Dir["#{directory}/lib/filtered_column/filters/*_filter.rb"].sort.each do |filter_name|
+  (FilteredColumn.default_filters << File.basename(filter_name).sub(/\.rb/, '').to_sym).uniq!
+end
 
-ActiveRecord::Base.send(:include, FilteredColumn)
+Dir["#{directory}/lib/filtered_column/filters/macros/*_macro.rb"].sort.each do |macro_name|
+  (FilteredColumn.default_macros << File.basename(macro_name).sub(/\.rb/, '').to_sym).uniq!
+end
