@@ -89,8 +89,8 @@ class Article < ActiveRecord::Base
   end
 
   def cache_redcloth
-    self.excerpt_html     = RedCloth.new(excerpt).to_html     unless excerpt.blank?
-    self.body_html = RedCloth.new(body).to_html unless body.blank?
+    self.excerpt_html = RedCloth.new(excerpt).to_html unless excerpt.blank?
+    self.body_html    = RedCloth.new(body).to_html    unless body.blank?
   end
 
   def save_categorizations
