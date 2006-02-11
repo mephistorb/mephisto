@@ -1,5 +1,10 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# "title", :string
+# "subtitle", :string
+# "email", :string
+# "ping_urls", :text
+# "filters", :text
+# "articles_per_page", :integer, :default => 15
 first:
   id: 1
-another:
-  id: 2
+  title: Mephisto
+  filters: "--- \n- :foo\n- :bar\n"
