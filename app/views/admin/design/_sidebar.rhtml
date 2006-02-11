@@ -1,12 +1,9 @@
 <% content_for :sidebar do -%>
-<ul>
-  <li>
-    Templates
-    <ul>
-    <% @templates.each do |template| -%>
-      <li><%= link_to template.name, :controller => 'templates', :action => 'edit', :id => template %></li>
-    <% end -%>
-    </ul>
-  </li>
+<h3>Templates</h3>
+<p class="hint">Modify a template by selecting it from the list below.</p>
+<ul id="resources">
+  <% @templates.each do |template| -%>
+    <li><%= link_to template.name, :controller => 'templates', :action => 'edit', :id => template %></li>
+  <% end -%>
 </ul>
 <% end -%>
