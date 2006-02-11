@@ -1,8 +1,8 @@
 module Admin::ArticlesHelper
-  def flag_status
-    @flag_status ||= { :unpublished => 'flag_red',
-                       :pending     => 'flag_yellow',
-                       :published   => 'flag_green' }
+  def status_icon
+    @status_icon ||= { :unpublished => %w(orange bstop.gif),
+                       :pending     => %w(yellow document.gif),
+                       :published   => %w(green check.gif) }
   end
 
   def link_to_article(article)

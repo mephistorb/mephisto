@@ -267,6 +267,7 @@ input[type='text']:focus, textarea:focus {
   padding: 0 5px 5px 5px;
 }
 
+
 /*
  *=SIDEBAR
  */
@@ -367,6 +368,7 @@ input[type='text']:focus, textarea:focus {
   color: #093;
 }
 
+
 /*
  *=LIVE PREVIEW
  */
@@ -418,9 +420,11 @@ input[type='text']:focus, textarea:focus {
   padding: 0;
 }
 
+
 /*
  *=RIGHT
  */
+
 
 
 /*
@@ -478,6 +482,7 @@ input[type='text']:focus, textarea:focus {
   right: 10%;
 }
 
+
 /*
  *=USERS
  */
@@ -526,14 +531,6 @@ p.hint {
   margin: 0;
 }
 
-.thumb, .icon {
-  background: #fff;
-  border: 1px solid #aaa;
-}
-
-.thumb { padding: 4px;}
-.icon {padding: 2px;}
-
 ul.nobull {
   list-style: none;
 }
@@ -580,3 +577,15 @@ ul.nobull li label {
 #flash-errors li {
   list-style: none;
 }
+
+/*
+ *=ICONS
+ */
+
+.icon { background: url(../images/icons/bg_rounded.gif);}
+
+.green { background-color: #9c0;} 
+.yellow { background-color: #fc3;}
+.black { background-color: #000;} 
+.orange { background-color: #f63;}
+.red { background-color: #f33;}
