@@ -14,8 +14,9 @@
       <ul class="nobull">
         <% @categories.each do |category| %>
           <li>
-            <%= check_box_tag 'article[category_ids][]', "#{category.id}" %>
-            <label for="article_category_ids"><%= category.name %></label>
+            <%= check_box_tag 'article[category_ids][]', category.id, @article.has_category?(category), 
+                  :id => "article_category_ids_#{category.id}" %>
+            <label for="article_category_ids_<%= category.id %>"><%= category.name %></label>
           </li>
         <% end %>
       </ul>
@@ -27,7 +28,7 @@
 
 <!-- begin optional fields -->
 <dl class="optional">
-  <dt><label for="article_created_at">Publish on this date:</label></dt>
+  <dt><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
   <dd><%= datetime_select 'article', 'published_at', :discard_year => true %></dd>
   <dt><%= check_box_tag 'article_published', '1', (@article.new_record? or @article.published?) %> <label for="article_published">Published on live site</label></dt>
   <dd></dd>

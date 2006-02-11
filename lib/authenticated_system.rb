@@ -29,7 +29,7 @@ module AuthenticatedSystem
     cookies[:user] = { 
         :value   => new_user ? new_user.make_activation_code : '', 
         :expires => new_user ? 2.weeks.from_now              : 2.weeks.ago
-    }
+    } unless new_user.nil?
     @current_user = new_user
   end
 

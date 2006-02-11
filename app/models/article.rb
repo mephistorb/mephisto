@@ -6,9 +6,9 @@ class Article < ActiveRecord::Base
   
   validates_presence_of :title, :user_id
 
-  after_validation_on_create :create_permalink
-  before_save :cache_redcloth
-  after_save  :save_categorizations
+  before_create :create_permalink
+  before_save   :cache_redcloth
+  after_save    :save_categorizations
 
   class << self
     def find_by_permalink(year, month, day, permalink)
@@ -85,7 +85,7 @@ class Article < ActiveRecord::Base
 
   protected
   def create_permalink
-    self.permalink = title.to_permalink unless title.nil?
+    self.permalink = title.to_permalink
   end
 
   def cache_redcloth

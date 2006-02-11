@@ -1,12 +1,15 @@
 class Admin::ArticlesController < Admin::BaseController
-  before_filter :set_default_category_ids,        :only => [:create, :update]
-  before_filter :clear_published_at_fields!, :only => [:create, :update]
-  cache_sweeper :article_sweeper,            :only => [:create, :update]
-  cache_sweeper :Category_sweeper,            :only => [:create, :update]
+  with_options :only => [:create, :update] do |c|
+    c.before_filter :set_default_category_ids
+    c.before_filter :clear_published_at_fields!
+    c.cache_sweeper :article_sweeper
+    c.cache_sweeper :Category_sweeper
+  end
+
+  before_filter :load_categories, :only => [:new, :edit]
 
   def index
     conditions     = 'article_id IS NULL'
-    @article       = Article.new
     @article_pages = Paginator.new self, Article.count(conditions), 30, params[:page]
     @articles      = Article.find(:all, :conditions => conditions, :order => 'articles.created_at DESC',
                        :include => :user,
@@ -16,18 +19,19 @@ class Admin::ArticlesController < Admin::BaseController
   
   def new
     @article = Article.new
-    load_categories!
   end
 
   def create
-    if current_user.articles.create params[:article]
+    @article = current_user.articles.create params[:article]
+    if @article.new_record?
+      load_categories and render :action => 'new'
+    else
       redirect_to :action => 'index'
     end
   end
 
   def edit
     @article = Article.find(params[:id])
-    load_categories!
   end
 
   def update
@@ -41,13 +45,11 @@ class Admin::ArticlesController < Admin::BaseController
   end
   
   def live_preview
-    @article = Article.new
-    @article.attributes = params[:article]
+    @article = Article.new params[:article]
   end
   
-
   protected
-  def load_categories!
+  def load_categories
     @categories = Category.find :all, :order => 'name'
   end
 

@@ -27,7 +27,7 @@ class AccountControllerTest < Test::Unit::TestCase
   def test_should_fail_login_and_not_redirect
     post :login, :login => 'quentin', :password => 'bad password'
     assert_nil session[:user]
-    assert_equal [], cookies['user']
+    assert_nil cookies['user']
     assert_response :success
   end
 

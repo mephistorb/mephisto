@@ -33,34 +33,44 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
 
   def test_should_create_article
     assert_difference Article, :count do
-      xhr :post, :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
+      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
+      assert_redirected_to :action => 'index'
+      assert !assigns(:article).published?
+    end
+  end
+
+  def test_should_show_validation_error_on_invalid_create
+    assert_no_difference Article, :count do
+      post :create, :article => { :excerpt => "Blah Blah", :body => "Blah Blah" }
       assert_response :success
+      assert assigns(:article).new_record?
+      assert assigns(:article).errors.on(:title)
       assert !assigns(:article).published?
     end
   end
 
   def test_should_show_default_checked_categories
-    get :index
+    get :new
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:home).id.to_s }
-    assert_no_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:about).id.to_s }
+    assert_tag    :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:home).id.to_s}" }
+    assert_no_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:about).id.to_s}", :checked => 'checked' }
   end
 
   def test_should_show_checked_categories
     get :edit, :id => articles(:welcome).id
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:home).id.to_s }
-    assert_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:about).id.to_s }
+    assert_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:home).id.to_s}" }
+    assert_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:about).id.to_s}" }
 
     get :edit, :id => articles(:another).id
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:home).id.to_s }
-    assert_no_tag :tag => 'input', :attributes => { :name => "article[category_ids][]", :value => categories(:about).id.to_s }
+    assert_tag    :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:home).id.to_s}" }
+    assert_no_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:about).id.to_s}", :checked => 'checked' }
   end
 
   def test_should_create_article_with_given_categories
-    xhr :post, :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :category_ids => [categories(:home).id] }
-    assert_response :success
+    post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :category_ids => [categories(:home).id] }
+    assert_redirected_to :action => 'index'
     assert_equal [categories(:home)], assigns(:article).categories
   end
 

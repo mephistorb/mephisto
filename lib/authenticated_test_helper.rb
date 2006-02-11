@@ -6,7 +6,7 @@ module AuthenticatedTestHelper
 
   def login_with_cookie_as(user)
     @request.cookies['user'] = user ? CGI::Cookie.new( 
-      'name'   => 'user',
+      'name'    => 'user',
       'value'   => users(user).activation_code,
       'expires' => 2.weeks.from_now,
       'path'    => '/',
