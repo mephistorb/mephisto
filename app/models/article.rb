@@ -1,4 +1,9 @@
 class Article < ActiveRecord::Base
+  def self.inherited(sub)
+    sub.filtered_column :body,    :only => :textile_filter
+    sub.filtered_column :excerpt, :only => :textile_filter
+  end
+
   belongs_to :user
   has_many   :categorizations
   has_many   :categories, :through => :categorizations
@@ -7,8 +12,10 @@ class Article < ActiveRecord::Base
   validates_presence_of :title, :user_id
 
   before_create :create_permalink
-  before_save   :cache_redcloth
   after_save    :save_categorizations
+  
+  filtered_column :body,    :only => :textile_filter
+  filtered_column :excerpt, :only => :textile_filter
 
   class << self
     def find_by_permalink(year, month, day, permalink)
@@ -86,11 +93,6 @@ class Article < ActiveRecord::Base
   protected
   def create_permalink
     self.permalink = title.to_permalink
-  end
-
-  def cache_redcloth
-    self.excerpt_html = RedCloth.new(excerpt).to_html unless excerpt.blank?
-    self.body_html    = RedCloth.new(body).to_html    unless body.blank?
   end
 
   def save_categorizations

@@ -1,29 +1,3 @@
-# Sample schema:
-#   create_table "users", :force => true do |t|
-#     t.column "login",            :string, :limit => 40
-#     t.column "email",            :string, :limit => 100
-#     t.column "crypted_password", :string, :limit => 40
-#     t.column "salt",             :string, :limit => 40
-#     t.column "activation_code",  :string, :limit => 40 # only if you want
-#     t.column "activated_at",     :datetime             # user activation
-#     t.column "created_at",       :datetime
-#     t.column "updated_at",       :datetime
-#   end
-#
-# If you wish to have a mailer, run:
-#
-#   ./script/generate authenticated_mailer user
-# 
-# Be sure to add the observer to the form login controller:
-#
-#   class AccountController < ActionController::Base
-#     observer :user_observer
-#   end
-#
-# For extra credit: keep these two requires for 2-way reversible encryption
-# require 'openssl'
-# require 'base64'
-#
 require 'digest/sha1'
 class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
@@ -40,6 +14,8 @@ class User < ActiveRecord::Base
                             :if => :password_required?
   validates_confirmation_of :password, :if => :password_required?
   before_save :encrypt_password
+  serialize   :filters, Array
+  
   # Uncomment this to use activation
   # before_create :make_activation_code
 
@@ -77,7 +53,11 @@ class User < ActiveRecord::Base
   # def recently_activated?
   #   @activated
   # end
-  
+
+  def filters=(value)
+    write_attribute :filters, [value].flatten.collect(&:to_sym)
+  end
+
   protected
   # before filter 
   def encrypt_password

@@ -26,17 +26,17 @@
     <dt><label for="current_site_articles_per_page">Articles shown on homepage</label></dt>
     <dd><%= text_field 'current_site', 'articles_per_page', :class => 'tiny' %></dd>
     <dt>
-      <label for="current_sites_permalink_style">Permalink style</label>
+      <label for="current_site_permalink_style">Permalink style</label>
       <span class="hint">(How articles are linked to)</span>
     </dt>
     <dd>
-      <select name="current_site[permalink_style]">
+      <select name="permalink_style">
         <%= options_for_select(%w(permalink year/month/permalink year/month/day/permalink category/permalink), '') %>
       </select>
     </dd>
     
   </dl>
 </div>
-<p class="btns"><%= submit_tag 'Save and apply current_sites' %></p>
+<p class="btns"><%= submit_tag 'Save and apply settings' %></p>
 <%= end_form_tag %>
     

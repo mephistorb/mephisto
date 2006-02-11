@@ -1,6 +1,10 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
+  def current_site
+    @current_site ||= Site.find :first
+  end
+
   def render_liquid_template_for(template_type, assigns = {})
     headers["Content-Type"] ||= 'text/html; charset=utf-8'
     @template_type            = template_type

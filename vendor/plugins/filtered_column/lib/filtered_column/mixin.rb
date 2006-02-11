@@ -16,20 +16,20 @@ module FilteredColumn
         extend(ClassMethods)
         class_inheritable_accessor :filtered_attributes, :filtered_options
         before_validation :process_filters
+        serialize         :filters, Array
         
         options = names.last.is_a?(Hash) ? names.pop : {}
         names.each do |name|
           (self.filtered_options    ||= {})[name] = options
           (self.filtered_attributes ||= []) << name
         end
-
-        serialize :filters, Array
-        define_method :filters= do |value|
-          write_attribute :filters, [value].flatten.collect(&:to_sym)
-        end
       end
 
       module InstanceMethods
+        def filters=(value)
+          write_attribute :filters, [value].flatten.collect(&:to_sym)
+        end
+
         protected
         def process_filters
           filtered_attributes.each do |attr_name|
