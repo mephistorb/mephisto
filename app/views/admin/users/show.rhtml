@@ -1,1 +1,30 @@
 <h2>Hola, <%= @user.login %>!</h2>
+<%= start_form_tag :action => 'update' %>
+
+<div class="setgroup">
+  <h3>All about you</h3>
+  <dl class="setform">
+    <dt><label for="user_text_filter">What markup type do you prefer?</label></dt>
+    <dd>
+      <select name="user[text_filter]">
+        <%= options_for_select(['Markdown', 'Textile', 'Markdown with Smarty Pants', 'Plain HTML']) %>
+      </select>
+    </dd>
+    <dt><label for="user_email">Your email</label></dt>
+    <dd><%= text_field 'user', 'email' %></dd>
+    <dt><label for="user_avatar">Your picture</label> <span class="hint">Should be no larger than 50x50 pixels (jpeg, gif, or png)</span></dt>
+    <dd><%= file_field 'user', 'avatar' %></dd>
+  </dl>
+</div>
+
+<div class="setgroup">
+  <h3>Change your password</h3>
+  <dl class="setform">
+    <dt><label for="user_password">Password</label></dt>
+    <dd><%= text_field 'user', 'password' %></dd>
+    <dt><label for="user_password_confirmation">Password confirmation</label></dt>
+    <dd><%= text_field 'user', 'password_confirmation' %></dd>
+  </dl>
+</div>
+<p class="btns"><%= submit_tag 'Save my profile' %></p>
+<%= end_form_tag %>

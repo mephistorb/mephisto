@@ -1,5 +1,5 @@
 <%= error_messages_for :article %>
 <% form_for :article, @article, :url => { :action => 'update', :id => @article } do |f| -%>
 <%= render :partial => 'form', :object => f %>
-<p><%= submit_tag 'Update' %></p>
+<p class="btns"><%= submit_tag 'Apply changes' %> or <%= link_to "cancel", :controller => "articles" %></p>
 <% end -%>
