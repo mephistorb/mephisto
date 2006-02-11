@@ -78,13 +78,15 @@ form dl {
   margin: 0 10px;
 }
 
-label {
+dt label {
   font-weight: bold;
   text-shadow: #fff 2px 2px;
+  margin: 0;
+  padding: 0;
 }
 
 dt {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 dd {
@@ -528,8 +530,9 @@ input[type='text']:focus, textarea:focus {
 }
 
 p.hint {
-  padding: 0;
-  margin: 0;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 130%;
 }
 
 ul.nobull {

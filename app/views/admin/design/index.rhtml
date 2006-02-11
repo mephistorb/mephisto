@@ -1,10 +1,24 @@
-<p>Please choose a template or an asset to edit</p>
-
-<ul>
-  <li><a href="#">Create a Template</a></li>
-  <li><a href="#">Create a CSS File</a></li>
-  <li><a href="#">Create a Javascript File</a></li>
-  <li><a href="#">Create an Image</a></li>
-</ul>
+<h2>Manage your Assets and Resources</h2>
+<%= start_form_tag :action => 'new' %>
+<div class="group">
+  <h3>Create a new template</h3>
+  <dl>
+    <dt>
+      <label for="resource_source">Template source code</label>
+      <p class="hint">You can use HTML and Liquid in your template.</p>
+    </dt>
+    <dd><%= text_area 'resource', 'source', :class => 'fat' %></dd>
+    <dt><label for="resource_name">Title of your template</label></dt>
+    <dd><%= text_field 'resource', 'name' %></dd>
+    <dt><label for="resource_type">Template type</label></dt>
+    <dd>
+      <select name="resource[type]">
+        <%= options_for_select(%w(Liquid/Html CSS Javascript)) %>
+      </select>
+    </dd>
+  </dl>
+</div>
+<p class="btns"><%= submit_tag 'Create template' %></p>
+<%= end_form_tag %>
 
 <%= render :partial => 'sidebar' %>
