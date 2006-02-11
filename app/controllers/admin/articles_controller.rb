@@ -39,6 +39,12 @@ class Admin::ArticlesController < Admin::BaseController
       render :action => 'edit'
     end
   end
+  
+  def live_preview
+    @article = Article.new
+    @article.attributes = params[:article]
+  end
+  
 
   protected
   def load_categories!

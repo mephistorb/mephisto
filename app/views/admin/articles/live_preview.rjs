@@ -1,0 +1,3 @@
+if @article
+  page.replace_html 'live-preview', :partial => 'preview', :object => @article
+end
