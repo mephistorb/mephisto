@@ -3,7 +3,7 @@ class CommentSweeper < ActionController::Caching::Sweeper
 
   def after_save(record)
     pages = CachedPage.find_by_reference(record.article)
-    unless pages.empty?
+    if pages.any?
       controller.class.benchmark "Expired pages referenced by #{record.class} ##{record.id}" do
         pages.each { |p| controller.class.expire_page(p.url) }
         CachedPage.expire_pages(pages)

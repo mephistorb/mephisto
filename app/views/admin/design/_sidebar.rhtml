@@ -1,0 +1,12 @@
+<% content_for :sidebar do -%>
+<ul>
+  <li>
+    Templates
+    <ul>
+    <% @templates.each do |template| -%>
+      <li><%= link_to template.name, :controller => 'templates', :action => 'edit', :id => template %></li>
+    <% end -%>
+    </ul>
+  </li>
+</ul>
+<% end -%>

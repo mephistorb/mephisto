@@ -1,11 +1,8 @@
 <h2>People on the inside</h2>
 <ul id="users">
+<% @users.each do |user| -%>
   <li>
-    <h3>Justin Palmer</h3>
-    <p>Justin rocks</p>
+    <h3><%= link_to user.login, :action => 'show', :id => user %></h3>
   </li>
-  <li>
-    <h3>Rick Olson</h3>
-    <p>Rick only thinks he rocks.</p>
-  </li>
+<% end -%>
 </ul>

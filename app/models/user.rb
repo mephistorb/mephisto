@@ -33,9 +33,21 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest("--#{salt}--#{password}--")
   end
 
+  def make_activation_code
+    self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split('//').sort_by {rand}.join )
+  end
+
   # Encrypts the password with the user salt
   def encrypt(password)
     self.class.encrypt(password, salt)
+  end
+
+  def filters=(value)
+    write_attribute :filters, [value].flatten.collect(&:to_sym)
+  end
+
+  def to_param
+    login
   end
 
   # Uncomment these methods for user activation  These also help let the mailer know precisely when the user is activated.
@@ -54,12 +66,7 @@ class User < ActiveRecord::Base
   #   @activated
   # end
 
-  def filters=(value)
-    write_attribute :filters, [value].flatten.collect(&:to_sym)
-  end
-
   protected
-  # before filter 
   def encrypt_password
     return unless password
     self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
@@ -68,11 +75,5 @@ class User < ActiveRecord::Base
 
   def password_required?
     crypted_password.nil? or not password.blank?
-  end
-
-  public
-  # If you're going to use activation, uncomment this too
-  def make_activation_code
-    self.activation_code = Digest::SHA1.hexdigest( Time.now.to_s.split('//').sort_by {rand}.join )
   end
 end
