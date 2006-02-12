@@ -5,9 +5,9 @@
   <dl>
     <dt><label for="article_title">Title</label></dt>
     <dd><%= text_field 'article', 'title', :class => 'big'  %></dd>
-    <dt id="x-lbl" style="display:none;"><label for="article_excerpt">Excerpt</label></dt>
+    <dt id="x-lbl" style="display:none;"><label for="article_excerpt">Excerpt</label> <span class="hint">(<%= link_to_function 'Cancel', %(Element.toggle('x-lbl', 'x-body')) %>)</span></dt>
     <dd id="x-body" style="display:none"><%= text_area 'article', 'excerpt', :rows => '8', :class => 'fat'  %></dd>
-    <dt><label for="article_body">Body</label> <span class="hint">(<%= link_to_function 'add excerpt', %(Element.toggle('x-lbl', 'x-body')) %>)</span></dt>
+    <dt><label for="article_body">Write your article</label> <span class="hint">(<%= link_to_function 'Add an excerpt', %(Element.toggle('x-lbl', 'x-body')) %>)</span></dt>
     <dd><%= text_area 'article', 'body', :class => 'fat'  %></dd>
     <dt><label for="article_category">Show article in these categories</label> </dt>
     <dd>

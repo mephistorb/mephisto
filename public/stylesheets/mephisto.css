@@ -69,6 +69,11 @@ a { color: #390; border-bottom: 1px dotted #ccc; text-decoration: none; }
   text-align: center;
 }
 
+/*
+ *=UTILS
+ */
+
+img { border: 0;}
 
 /*
  *=FORMS
