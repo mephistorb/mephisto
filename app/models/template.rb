@@ -1,6 +1,6 @@
 class Template < Asset
   acts_as_attachment :content_type => 'text/liquid'
-  before_save :set_file_path
+  before_validation :set_file_path
 
   @@hierarchy = {
     :main     => [:home,     :index],
