@@ -24,6 +24,7 @@ class Attachment < ActiveRecord::Base
   end
 
   before_validation :sanitize_path_if_available
+  acts_as_attachment
 
   class << self
     def find_with_data(quantity, options = {})
