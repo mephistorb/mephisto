@@ -76,3 +76,9 @@ search:
 error:
   id: 10
   data: "<p>error</p>"
+css:
+  id: 11
+  data: "body {}"
+js:
+  id: 12
+  data: "alert('foo')"

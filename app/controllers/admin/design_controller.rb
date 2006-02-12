@@ -1,5 +1,7 @@
 class Admin::DesignController < Admin::BaseController
+  before_filter :find_templates_and_resources!
+
   def index
-    @templates = Template.find :all
+    @resource = Resource.new
   end
 end

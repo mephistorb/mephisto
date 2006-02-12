@@ -6,4 +6,12 @@
     <li><%= link_to template.filename, :controller => 'templates', :action => 'edit', :id => template %></li>
   <% end -%>
 </ul>
+
+<h3>Resources</h3>
+<p class="hint">Modify a template by selecting it from the list below.</p>
+<ul id="resources">
+  <% @resources.each do |resource| -%>
+    <li><%= link_to resource.full_path, :controller => 'templates', :action => 'edit', :id => resource %></li>
+  <% end -%>
+</ul>
 <% end -%>

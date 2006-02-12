@@ -14,6 +14,7 @@ layout:
   content_type: 'text/liquid'
   size: 1
   filename: layout
+  path: templates
 
 home:
   id: 2
@@ -22,6 +23,7 @@ home:
   content_type: 'text/liquid'
   size: 1
   filename: home
+  path: templates
 
 index:
   id: 3
@@ -30,6 +32,7 @@ index:
   content_type: 'text/liquid'
   size: 1
   filename: index
+  path: templates
 
 single:
   id: 4
@@ -38,6 +41,7 @@ single:
   content_type: 'text/liquid'
   size: 1
   filename: single
+  path: templates
 
 category:
   id: 5
@@ -46,6 +50,7 @@ category:
   content_type: 'text/liquid'
   size: 1
   filename: category
+  path: templates
 
 archive:
   id: 6
@@ -54,6 +59,7 @@ archive:
   content_type: 'text/liquid'
   size: 1
   filename: archive
+  path: templates
 
 page:
   id: 7
@@ -62,6 +68,7 @@ page:
   content_type: 'text/liquid'
   size: 1
   filename: page
+  path: templates
 
 author:
   id: 8
@@ -70,6 +77,7 @@ author:
   content_type: 'text/liquid'
   size: 1
   filename: author
+  path: templates
 
 search:
   id: 9
@@ -78,6 +86,7 @@ search:
   content_type: 'text/liquid'
   size: 1
   filename: search
+  path: templates
 
 error:
   id: 10
@@ -86,3 +95,22 @@ error:
   content_type: 'text/liquid'
   size: 1
   filename: error
+  path: templates
+
+css:
+  id: 11
+  db_file_id: 11
+  type: Resource
+  content_type: 'text/css'
+  size: 1
+  filename: style.css
+  path: stylesheets
+
+js:
+  id: 12
+  db_file_id: 12
+  type: Resource
+  content_type: 'text/javascript'
+  size: 1
+  filename: behavior.js
+  path: javascripts

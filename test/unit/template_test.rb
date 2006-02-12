@@ -3,6 +3,10 @@ require File.dirname(__FILE__) + '/../test_helper'
 class TemplateTest < Test::Unit::TestCase
   fixtures :assets, :db_files
 
+  def test_should_ignore_resources_and_assets
+    assert_equal 10, Template.count
+  end
+
   # Replace this with your real tests.
   def test_preferred_template_hierarchy_sanity
     assert_template_type :home,    :main

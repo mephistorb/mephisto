@@ -1,5 +1,6 @@
-class Template < Resource
+class Template < Asset
   acts_as_attachment :content_type => 'text/liquid'
+  before_save :set_file_path
 
   @@hierarchy = {
     :main     => [:home,     :index],
@@ -13,7 +14,6 @@ class Template < Resource
   }
   @@template_types = @@hierarchy.values.flatten.uniq << :layout
   cattr_reader :hierarchy, :template_types
-  alias_method :data=, :attachment_data=
 
   class << self
     def find_all_by_filename(template_type)
@@ -33,11 +33,12 @@ class Template < Resource
     end
   end
 
-  def data
-    read_attribute(:data) || db_file.data
-  end
-
   def to_param
     filename
+  end
+
+  protected
+  def set_file_path
+    self.path = 'templates'
   end
 end
