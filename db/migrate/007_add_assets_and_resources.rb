@@ -2,9 +2,7 @@ class OldTemplate < ActiveRecord::Base
   set_table_name 'templates'
 end
 
-class AssetTemplate < ActiveRecord::Base
-  set_table_name 'assets'
-end
+Template.set_table_name 'assets'
 
 class AddAssetsAndResources < ActiveRecord::Migration
   def self.up
@@ -24,8 +22,11 @@ class AddAssetsAndResources < ActiveRecord::Migration
       t.column :data, :binary
     end
     
-    AssetTemplate.transaction do
-      OldTemplate.find(:all).each { |temp| t = AssetTemplate.new :attachment_data => temp.data, :filename => temp.name, :content_type => 'text/liquid' ; t.save! }
+    Template.transaction do
+      OldTemplate.find(:all).reject { |t| t.data.blank? }.each do |temp| 
+        t = Template.new :attachment_data => temp.data, :filename => temp.name, :content_type => 'text/liquid'
+        t.save!
+      end
     end
     
     drop_table :templates
