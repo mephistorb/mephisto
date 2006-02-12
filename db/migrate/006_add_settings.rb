@@ -1,3 +1,7 @@
+class OldSite < ActiveRecord::Base
+  set_table_name 'sites'
+end
+
 class AddSettings < ActiveRecord::Migration
   def self.up
     create_table :sites do |t|
@@ -12,7 +16,7 @@ class AddSettings < ActiveRecord::Migration
     add_column :articles, :filters, :text
     add_column :users,    :filters, :text
     
-    Site.create :title => 'Mephisto'
+    OldSite.create :title => 'Mephisto'
   end
 
   def self.down
