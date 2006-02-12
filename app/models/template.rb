@@ -1,6 +1,6 @@
 class Template < Asset
   acts_as_attachment :content_type => 'text/liquid'
-  before_validation :set_file_path
+  before_validation :set_file_path_and_content_type
 
   @@hierarchy = {
     :main     => [:home,     :index],
@@ -38,7 +38,8 @@ class Template < Asset
   end
 
   protected
-  def set_file_path
-    self.path = 'templates'
+  def set_file_path_and_content_type
+    self.path         = 'templates'
+    self.content_type = 'text/liquid'
   end
 end

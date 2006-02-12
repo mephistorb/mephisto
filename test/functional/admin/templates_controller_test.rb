@@ -46,8 +46,7 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
 
   def test_should_save_template
     post :update, :id => assets(:layout).filename, :template => { :filename => 'foo' }
-    assert_redirected_to :action => 'edit'
-    assert flash[:notice]
+    assert_response :success
     assets(:layout).reload
     assert_equal 'foo', assets(:layout).filename
   end

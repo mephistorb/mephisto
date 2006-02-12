@@ -1,6 +1,5 @@
 class Asset < ActiveRecord::Base
   acts_as_attachment
-  alias_method :data=, :attachment_data=
   validate :path_exists_and_valid?
 
   class << self
@@ -15,6 +14,11 @@ class Asset < ActiveRecord::Base
 
   def data
     read_attribute(:data) || (db_file_id ? db_file.data : nil)
+  end
+
+  def data=(value)
+    write_attribute :data, value
+    self.attachment_data = value
   end
 
   def path_exists_and_valid?

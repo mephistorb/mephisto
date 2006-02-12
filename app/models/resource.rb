@@ -9,6 +9,6 @@ class Resource < Asset
   protected
   def set_file_path_and_extension
     self.path      = content_path[content_type]
-    self.filename += content_ext[content_type] unless filename =~ /\.(css|js)$/
+    self.filename += content_ext[content_type] unless filename.blank? or filename =~ /\.(css|js)$/
   end
 end
