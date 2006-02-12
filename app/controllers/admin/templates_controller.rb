@@ -36,7 +36,7 @@ class Admin::TemplatesController < Admin::BaseController
   # Selects all templates for sidebar
   # Create system template if it does not exist
   def select_template
-    @tmpl      = @templates.detect { |t| t.filename == params[:id] }
-    @tmpl    ||= Template.find_or_create_by_filename(params[:id]) if Template.template_types.include?(params[:id].to_sym)
+    @tmpl   = @templates.detect { |t| t.filename == params[:id] }
+    @tmpl ||= Template.find_or_create_by_filename(params[:id]) if Template.template_types.include?(params[:id].to_sym)
   end
 end

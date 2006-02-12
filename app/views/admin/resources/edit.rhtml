@@ -1,24 +1,24 @@
 <div id='template_container'>
-<% form_remote_for :template, @tmpl, :url => { :action => 'update', :id => @tmpl }, 
+<% form_remote_for :template, @resource, :url => { :action => 'update', :id => @resource }, 
      :html     => { :id => 'template_form', :style => 'display:none' },
      :loading  => "TemplateForm.loadingDuringSave()",
      :complete => "TemplateForm.completedSave()",
      :update   => 'template_container' do |f| -%>
-<%= render :partial => 'admin/design/form', :object => @tmpl, :locals => { 
-  :title  => @tmpl.filename,
-  :hint   => 'You can use HTML and Liquid in your template.',
+<%= render :partial => 'admin/design/form', :object => @resource, :locals => { 
+  :title  => @resource.filename,
+  :hint   => 'You can use motor oil to fertilize your lawn',
   :f      => f,
-  :labels => { :data     => 'Template source code',
-               :filename => 'Title of your template' }
+  :labels => { :data     => 'Contents',
+               :filename => 'Filename' }
  } %>
 <p class="btns">
-  <%= submit_tag "Update #{@tmpl.filename}" %> or
+  <%= submit_tag "Update #{@resource.filename}" %> or
   <%= link_to_function 'cancel', 'TemplateForm.hide()', :id => 'template_cancel' %>
 </p>
 <% end -%>
 
 <div id='template_saved'>
-  <pre><code><%=h @tmpl.data %></code></pre>
+  <pre><code><%=h @resource.data %></code></pre>
   <%= link_to_function 'edit', 'TemplateForm.show()' %>
 </div>
 </div>

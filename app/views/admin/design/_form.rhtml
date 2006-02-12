@@ -1,0 +1,22 @@
+<div class="group">
+  <h3><%= title %></h3>
+  <dl>
+    <dt>
+      <%= f.label_for :data, :text => labels[:data] %>
+      <p class="hint"><%= hint %></p>
+    </dt>
+    <dd><%= f.text_area :data, :class => 'fat' %></dd>
+    <% if form.new_record? or form.is_a?(Resource) -%>
+    <dt><%= f.label_for :filename, :text => labels[:filename] %></dt>
+    <dd><%= f.text_field :filename %></dd>
+    <% end -%>
+    <% if form.new_record? -%>
+    <dt><%= f.label_for :type, :text => 'Template type' %></dt>
+    <dd>
+      <select name="resource_type" id="resource_type">
+        <%= options_for_select(%w(Liquid/Html CSS Javascript)) %>
+      </select>
+    </dd>
+    <% end -%>
+  </dl>
+</div>

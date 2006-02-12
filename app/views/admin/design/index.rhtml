@@ -1,23 +1,12 @@
 <h2>Manage your Assets and Resources</h2>
 <% form_for :resource, @resource, :url => {:action => 'new'} do |f| -%>
-<div class="group">
-  <h3>Create a new template</h3>
-  <dl>
-    <dt>
-      <%= f.label_for :data, :text => 'Template source code' %>
-      <p class="hint">You can use HTML and Liquid in your template.</p>
-    </dt>
-    <dd><%= f.text_area :data, :class => 'fat' %></dd>
-    <dt><%= f.label_for :filename, :text => 'Title of your template' %></dt>
-    <dd><%= f.text_field :filename %></dd>
-    <dt><%= f.label_for :type, :text => 'Template type' %></dt>
-    <dd>
-      <select name="resource_type" id="resource_type">
-        <%= options_for_select(%w(Liquid/Html CSS Javascript)) %>
-      </select>
-    </dd>
-  </dl>
-</div>
+<%= render :partial => 'form', :object => @resource, :locals => { 
+  :title  => 'Create a new template',
+  :hint   => 'You can use HTML and Liquid in your template.',
+  :f      => f,
+  :labels => { :data     => 'Template source code',
+               :filename => 'Title of your template' }
+ } %>
 <p class="btns"><%= submit_tag 'Create template' %></p>
 <% end -%>
 
