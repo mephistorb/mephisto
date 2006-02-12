@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TemplateTest < Test::Unit::TestCase
-  fixtures :templates
+  fixtures :assets, :db_files
 
   # Replace this with your real tests.
   def test_preferred_template_hierarchy_sanity
@@ -15,7 +15,7 @@ class TemplateTest < Test::Unit::TestCase
   end
 
   def test_fallback_templates
-    [:home, :single, :category, :page, :author, :search, :error].each { |n| templates(n).destroy }
+    [:home, :single, :category, :page, :author, :search, :error].each { |n| assets(n).destroy }
     assert_template_type :index,   :main
     assert_template_type :index,   :single
     assert_template_type :archive, :category
@@ -24,7 +24,7 @@ class TemplateTest < Test::Unit::TestCase
     assert_template_type :archive, :search
     #assert_template_type :index,   :error
 
-    templates(:archive).destroy
+    assets(:archive).destroy
     assert_template_type :index, :category
     assert_template_type :index, :search
     #assert_template_type :index, :author
@@ -32,6 +32,6 @@ class TemplateTest < Test::Unit::TestCase
 
   protected
   def assert_template_type(expected_template_name, template_type)
-    assert_equal(templates(expected_template_name).data, Template.find_preferred(template_type))
+    assert_equal(assets(expected_template_name).data, Template.find_preferred(template_type))
   end
 end

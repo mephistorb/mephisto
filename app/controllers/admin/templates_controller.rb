@@ -19,7 +19,7 @@ class Admin::TemplatesController < Admin::BaseController
         render :partial => 'form', :locals => { :template => @tmpl }
       
       when saved
-        flash[:notice] = "#{@tmpl.name} updated."
+        flash[:notice] = "#{@tmpl.filename} updated."
         redirect_to :action => 'edit', :id => @tmpl
     
       else
@@ -33,7 +33,7 @@ class Admin::TemplatesController < Admin::BaseController
   # Create system template if it does not exist
   def select_template
     @templates = Template.find :all
-    @tmpl      = @templates.detect { |t| t.name == params[:id] }
-    @tmpl    ||= Template.find_or_create_by_name(params[:id]) if Template.template_types.include?(params[:id].to_sym)
+    @tmpl      = @templates.detect { |t| t.filename == params[:id] }
+    @tmpl    ||= Template.find_or_create_by_filename(params[:id]) if Template.template_types.include?(params[:id].to_sym)
   end
 end

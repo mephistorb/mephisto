@@ -3,7 +3,7 @@
 <p class="hint">Modify a template by selecting it from the list below.</p>
 <ul id="resources">
   <% @templates.each do |template| -%>
-    <li><%= link_to template.name, :controller => 'templates', :action => 'edit', :id => template %></li>
+    <li><%= link_to template.filename, :controller => 'templates', :action => 'edit', :id => template %></li>
   <% end -%>
 </ul>
 <% end -%>

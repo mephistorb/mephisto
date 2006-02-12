@@ -1,0 +1,88 @@
+# "type", :string, :limit => 15
+# "content_type", :string, :limit => 100
+# "filename", :string
+# "path", :string
+# "db_file_id", :integer
+# "parent_id", :integer
+# "size", :integer
+# "width", :integer
+# "height", :integer
+layout:
+  id: 1
+  db_file_id: 1
+  type: Template
+  content_type: 'text/liquid'
+  size: 1
+  filename: layout
+
+home:
+  id: 2
+  db_file_id: 2
+  type: Template
+  content_type: 'text/liquid'
+  size: 1
+  filename: home
+
+index:
+  id: 3
+  db_file_id: 3
+  type: Template
+  content_type: 'text/liquid'
+  size: 1
+  filename: index
+
+single:
+  id: 4
+  db_file_id: 4
+  type: Template
+  content_type: 'text/liquid'
+  size: 1
+  filename: single
+
+category:
+  id: 5
+  db_file_id: 5
+  type: Template
+  content_type: 'text/liquid'
+  size: 1
+  filename: category
+
+archive:
+  id: 6
+  db_file_id: 6
+  type: Template
+  content_type: 'text/liquid'
+  size: 1
+  filename: archive
+
+page:
+  id: 7
+  db_file_id: 7
+  type: Template
+  content_type: 'text/liquid'
+  size: 1
+  filename: page
+
+author:
+  id: 8
+  db_file_id: 8
+  type: Template
+  content_type: 'text/liquid'
+  size: 1
+  filename: author
+
+search:
+  id: 9
+  db_file_id: 9
+  type: Template
+  content_type: 'text/liquid'
+  size: 1
+  filename: search
+
+error:
+  id: 10
+  db_file_id: 10
+  type: Template
+  content_type: 'text/liquid'
+  size: 1
+  filename: error

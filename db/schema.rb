@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 6) do
+ActiveRecord::Schema.define(:version => 7) do
 
   create_table "articles", :force => true do |t|
     t.column "article_id", :integer
@@ -25,6 +25,18 @@ ActiveRecord::Schema.define(:version => 6) do
     t.column "filters", :text
   end
 
+  create_table "assets", :force => true do |t|
+    t.column "type", :string, :limit => 15
+    t.column "content_type", :string, :limit => 100
+    t.column "filename", :string
+    t.column "path", :string
+    t.column "db_file_id", :integer
+    t.column "parent_id", :integer
+    t.column "size", :integer
+    t.column "width", :integer
+    t.column "height", :integer
+  end
+
   create_table "cached_pages", :force => true do |t|
     t.column "url", :string
     t.column "references", :text
@@ -42,6 +54,10 @@ ActiveRecord::Schema.define(:version => 6) do
     t.column "position", :integer, :default => 1
   end
 
+  create_table "db_files", :force => true do |t|
+    t.column "data", :binary
+  end
+
   create_table "sites", :force => true do |t|
     t.column "title", :string
     t.column "subtitle", :string
@@ -49,11 +65,6 @@ ActiveRecord::Schema.define(:version => 6) do
     t.column "ping_urls", :text
     t.column "filters", :text
     t.column "articles_per_page", :integer, :default => 15
-  end
-
-  create_table "templates", :force => true do |t|
-    t.column "name", :string
-    t.column "data", :text
   end
 
   create_table "users", :force => true do |t|

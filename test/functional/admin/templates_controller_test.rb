@@ -5,7 +5,7 @@ require 'admin/templates_controller'
 class Admin::TemplatesController; def rescue_action(e) raise e end; end
 
 class Admin::TemplatesControllerTest < Test::Unit::TestCase
-  fixtures :templates, :users
+  fixtures :assets, :db_files, :users
 
   def setup
     @controller = Admin::TemplatesController.new
@@ -19,7 +19,7 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_edit_template_form
-    get :edit, :id => templates(:layout).name
+    get :edit, :id => assets(:layout).filename
     assert_tag :tag => 'form'
     assert_tag :tag => 'textarea', :attributes => { :id => 'template_data' }
   end
@@ -35,20 +35,20 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_require_posted_template
-    get :update, :id => templates(:layout).name, :template => { :name => 'foo' }
+    get :update, :id => assets(:layout).filename, :template => { :filename => 'foo' }
     assert_redirected_to :action => 'edit'
     assert flash[:error]
     
-    post :update, :id => templates(:layout).name
+    post :update, :id => assets(:layout).filename
     assert_redirected_to :action => 'edit'
     assert flash[:error]
   end
 
   def test_should_save_template
-    post :update, :id => templates(:layout).name, :template => { :name => 'foo' }
+    post :update, :id => assets(:layout).filename, :template => { :filename => 'foo' }
     assert_redirected_to :action => 'edit'
     assert flash[:notice]
-    templates(:layout).reload
-    assert_equal 'foo', templates(:layout).name
+    assets(:layout).reload
+    assert_equal 'foo', assets(:layout).filename
   end
 end

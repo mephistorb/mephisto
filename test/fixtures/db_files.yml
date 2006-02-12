@@ -2,7 +2,6 @@
 # :data, :text
 layout:
   id: 1
-  name: layout
   data: |-
     <html>
     {% head %}
@@ -16,15 +15,12 @@ layout:
 
 home:
   id: 2
-  name: home
   data: "<p>home</p>{% for article in articles %}<h2>{{ article | link_to_article }}</h2><p>{{ article.body }}</p>{% endfor %}"
 index:
   id: 3
-  name: index
   data: "<p>index</p>{% for article in articles %}<h2>{{ article | link_to_article }}</h2><p>{{ article.body }}</p>{% endfor %}"
 single:
   id: 4
-  name: single
   data: |-
     <div class="article">
       <h3>{{ article.published_at | format_date: 'standard' }}</h3>
@@ -54,15 +50,12 @@ single:
 
 category:
   id: 5
-  name: category
   data: "<p>category</p>{% for article in articles %}<h2>{{ article | link_to_article }}</h2><p>{{ article.body }}</p>{% endfor %}"
 archive:
   id: 6
-  name: archive
   data: "<p>archive</p>{% for article in articles %}<h2>{{ article | link_to_article }}</h2><p>{{ article.body }}</p>{% endfor %}"
 page:
   id: 7
-  name: page
   data: |-
     <h1>{{ article.title }}</h1>
     <div class="article">
@@ -76,13 +69,10 @@ page:
     </ul>
 author:
   id: 8
-  name: author
   data: "<p>author</p>{% for article in articles %}<h2>{{ article | link_to_article }}</h2><p>{{ article.body }}</p>{% endfor %}"
 search:
   id: 9
-  name: search
   data: "<p>search</p>{% for article in articles %}<h2>{{ article | link_to_article }}</h2><p>{{ article.body }}</p>{% endfor %}"
 error:
   id: 10
-  name: error
   data: "<p>error</p>"
