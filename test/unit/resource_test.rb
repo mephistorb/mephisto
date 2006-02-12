@@ -13,4 +13,9 @@ class ResourceTest < Test::Unit::TestCase
     assert_equal 'foo.css',     Resource.create(:content_type => 'text/css',        :filename => 'foo.css', :data => 'foobar').filename
     assert_equal 'foo.js',      Resource.create(:content_type => 'text/javascript', :filename => 'foo.js',  :data => 'foobar').filename
   end
+
+  def test_should_skip_extension_for_images
+    assert_equal 'foo.txt', Resource.create(:content_type => 'image/png', :filename => 'foo.txt', :data => 'foobar').filename
+    assert_equal 'foo.jpg', Resource.create(:content_type => 'image/png', :filename => 'foo.jpg', :data => 'foobar').filename
+  end
 end
