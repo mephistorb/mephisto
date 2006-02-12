@@ -1,4 +1,5 @@
 class Site < ActiveRecord::Base
+  has_many  :assets, :as => :attachable
   serialize :filters, Array
 
   def filters=(value)

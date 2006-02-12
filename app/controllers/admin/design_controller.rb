@@ -16,7 +16,7 @@ class Admin::DesignController < Admin::BaseController
       else
         Template.create params[:resource]
     end
-    
+
     if @resource.new_record?
       render :action => 'index'
     else

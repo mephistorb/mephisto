@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
   attr_accessor :password
   has_many :articles
+  has_one  :picture, :class_name => 'Asset', :as => :attachable
 
   validates_uniqueness_of   :login, :email, :salt
   validates_length_of       :login,    :within => 3..40

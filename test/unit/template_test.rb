@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TemplateTest < Test::Unit::TestCase
-  fixtures :assets, :db_files
+  fixtures :attachments, :db_files
 
   def test_should_ignore_resources_and_assets
     assert_equal 10, Template.count
@@ -19,7 +19,7 @@ class TemplateTest < Test::Unit::TestCase
   end
 
   def test_fallback_templates
-    [:home, :single, :category, :page, :author, :search, :error].each { |n| assets(n).destroy }
+    [:home, :single, :category, :page, :author, :search, :error].each { |n| attachments(n).destroy }
     assert_template_type :index,   :main
     assert_template_type :index,   :single
     assert_template_type :archive, :category
@@ -28,7 +28,7 @@ class TemplateTest < Test::Unit::TestCase
     assert_template_type :archive, :search
     #assert_template_type :index,   :error
 
-    assets(:archive).destroy
+    attachments(:archive).destroy
     assert_template_type :index, :category
     assert_template_type :index, :search
     #assert_template_type :index, :author
@@ -36,6 +36,6 @@ class TemplateTest < Test::Unit::TestCase
 
   protected
   def assert_template_type(expected_template_name, template_type)
-    assert_equal(assets(expected_template_name).data, Template.find_preferred(template_type))
+    assert_equal(attachments(expected_template_name).data, Template.find_preferred(template_type))
   end
 end

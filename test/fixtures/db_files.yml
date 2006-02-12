@@ -82,3 +82,6 @@ css:
 js:
   id: 12
   data: "alert('foo')"
+quentin:
+  id: 13
+  data: portrait

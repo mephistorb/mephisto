@@ -5,7 +5,7 @@ require 'admin/design_controller'
 class Admin::DesignController; def rescue_action(e) raise e end; end
 
 class Admin::DesignControllerTest < Test::Unit::TestCase
-  fixtures :assets, :db_files, :users
+  fixtures :attachments, :db_files, :users
   def setup
     @controller = Admin::DesignController.new
     @request    = ActionController::TestRequest.new

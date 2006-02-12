@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ResourceTest < Test::Unit::TestCase
-  fixtures :assets, :db_files
+  fixtures :attachments, :db_files
 
   def test_should_ignore_templates_and_other_assets
     assert_equal 2, Resource.count

@@ -5,7 +5,7 @@ require_dependency 'comments_controller'
 class CommentsController; def rescue_action(e) raise e end; end
 
 class CommentsControllerTest < Test::Unit::TestCase
-  fixtures :articles, :assets
+  fixtures :articles, :attachments
 
   def setup
     @controller = CommentsController.new

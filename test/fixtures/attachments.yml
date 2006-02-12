@@ -114,3 +114,13 @@ js:
   size: 1
   filename: behavior.js
   path: javascripts
+
+quentin:
+  id: 13
+  db_file_id: 13
+  attachable_id: 1
+  attachable_type: User
+  type: Asset
+  content_type: 'image/png'
+  size: 1
+  filename: foobar.png
