@@ -8,9 +8,9 @@ class ResourceTest < Test::Unit::TestCase
   end
 
   def test_should_add_extension_if_necessary
-    assert_equal 'foo.txt.css', Resource.create(:content_type => 'text/css', :filename => 'foo.txt', :data => 'foobar').filename
+    assert_equal 'foo.txt.css', Resource.create(:content_type => 'text/css',        :filename => 'foo.txt', :data => 'foobar').filename
     assert_equal 'foo.txt.js',  Resource.create(:content_type => 'text/javascript', :filename => 'foo.txt', :data => 'foobar').filename
-    assert_equal 'foo.css',     Resource.create(:content_type => 'text/css', :filename => 'foo.css', :data => 'foobar').filename
-    assert_equal 'foo.js',      Resource.create(:content_type => 'text/javascript', :filename => 'foo.js', :data => 'foobar').filename
+    assert_equal 'foo.css',     Resource.create(:content_type => 'text/css',        :filename => 'foo.css', :data => 'foobar').filename
+    assert_equal 'foo.js',      Resource.create(:content_type => 'text/javascript', :filename => 'foo.js',  :data => 'foobar').filename
   end
 end
