@@ -142,13 +142,13 @@ if (!window.Control) {
 Control.Resizer = Class.create();
 Control.Resizer.prototype = {
   initialize: function(element1, element2, options) {
-    logger.info("Intitialized Resizer");
+    // logger.info("Intitialized Resizer");
     
     this.leftElement  = $(element1);
     this.rightElement = $(element2);
     this.dragging     = false;
     this.handle       = $(options.handle);
-    
+    if (!this.handle) return;
     Element.makePositioned(this.leftElement);
     Element.makePositioned(this.rightElement);
 

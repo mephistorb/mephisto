@@ -122,4 +122,4 @@ Logger.prototype = {
   
 }
 
-var logger = new Logger();
+// var logger = new Logger();

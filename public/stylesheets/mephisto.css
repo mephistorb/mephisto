@@ -266,8 +266,8 @@ input[type='text']:focus, textarea:focus {
   font-size: 150%;
   padding: 0 0 0 5px;
   margin: 25px 0 0 0;
-  letter-spacing: -0.09em;
-  word-spacing: -0.125em;
+  letter-spacing: -0.06em;
+  word-spacing: -0.10em;
   border-bottom: 1px dotted #ccc;
 }
 
@@ -346,6 +346,36 @@ input[type='text']:focus, textarea:focus {
 
 #sbar p, #sbar p.hint {
   padding: 0 5px;
+}
+
+#sbar .box {
+  background: #111;
+  margin: 10px;
+  border: 1px solid #333;
+}
+
+.sbar-group * {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.sbar-form {
+  width: auto;
+  text-shadow: none;
+  margin: 0 !important;
+  padding: 5px !important;
+}
+
+.sbar-group label { text-shadow: none;}
+
+.sbar-group input {
+  width: 200px;
+}
+
+#sbar input[type=file], #sbar input[type=submit] {
+  width: 100px;
+  margin: 5px 0 !important;
+  
 }
 
 /*

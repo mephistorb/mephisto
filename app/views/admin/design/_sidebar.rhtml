@@ -7,11 +7,30 @@
   <% end -%>
 </ul>
 
-<h3>Resources</h3>
-<p class="hint">Modify a template by selecting it from the list below.</p>
+<h3 style="margin-top:15px;">Images</h3>
+<p class="hint">Select an image to use in your template.</p>
 <ul id="resources">
   <% @resources.each do |resource| -%>
     <li><%= link_to resource.full_path, :controller => 'resources', :action => 'edit', :id => resource %></li>
   <% end -%>
 </ul>
+
+
+<div class="sbar-group box">
+  <%= start_form_tag :multipart => true %>
+  <dl class="sbar-form">
+    <dt>
+      <label for="resource_image">Upload new image</label>
+      <p class="hint">Upload images to use in your templates</p>
+    </dt>
+    <dd>
+      1. <%= file_field 'resource', 'image' %><br />
+      2. <%= submit_tag 'Upload' %>
+    </dd>
+  </dl>
+  <%= end_form_tag %>
+</div>
+
+
 <% end -%>
+
