@@ -122,29 +122,6 @@ var CategoryForm = {
   }
 }
 
-var TemplateForm = {
-  loadingDuringSave: function() {
-    Form.saving('template');
-  },
-  
-  completedSave: function() {
-    Form.saved('template')
-    this.hide(function() { new Effect.Highlight('template_saved') })
-  },
-
-  show: function() {
-    Element.hide('template_saved')
-    new Effect.SlideDown('template_form', {duration:0.4})
-  },
-  
-  hide: function(callback) {
-    Form.reset("template_form")
-    new Effect.SlideUp('template_form', {duration:0.4, afterFinish: function() {
-      Element.show('template_saved')
-      callback()
-    }})
-  }
-}
 
 //Ajax.Responders.register({
 //  // log the beginning of the requests

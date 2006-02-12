@@ -17,18 +17,18 @@ class Admin::TemplatesController < Admin::BaseController
   end
 
   def update
-    saved = @tmpl.update_attributes(params[:template])
-    case
-      when request.xhr?
-        render :partial => 'form', :locals => { :template => @tmpl }
-      
-      when saved
-        flash[:notice] = "#{@tmpl.filename} updated."
-        redirect_to :action => 'edit', :id => @tmpl
-    
-      else
-        render :action => 'edit'
-    end
+    @saved = @tmpl.update_attributes(params[:template])
+#     case
+#       when request.xhr?
+#         render :partial => 'form', :locals => { :template => @tmpl }
+#       
+#       when saved
+#         flash[:notice] = "#{@tmpl.filename} updated."
+#         redirect_to :action => 'edit', :id => @tmpl
+#     
+#       else
+#         render :action => 'edit'
+#     end
   end
 
   protected
