@@ -31,7 +31,7 @@ class CategoryTest < Test::Unit::TestCase
   def test_should_find_category_with_permalink_extra
     assert_equal [categories(:about), nil],   Category.find_category_and_page_name(%w(about))
     assert_equal [categories(:about), 'foo'], Category.find_category_and_page_name(%w(about foo))
-    assert_equal [nil, 'foo'],          Category.find_category_and_page_name(%w(foo))
+    assert_equal [nil, 'foo'],                Category.find_category_and_page_name(%w(foo))
   end
 
   def test_should_include_home_category_by_default
@@ -52,13 +52,13 @@ class CategoryTest < Test::Unit::TestCase
   end
 
   def test_should_update_article_with_categories
-    assert_equal [categories(:home), categories(:about)], contents(:welcome).categories
+    assert_equal [categories(:about), categories(:home)], contents(:welcome).categories
     contents(:welcome).update_attribute :category_ids, [categories(:home).id]
     assert_equal [categories(:home)], contents(:welcome).categories(true)
   end
 
   def test_should_update_article_with_no_categories
-    assert_equal [categories(:home), categories(:about)], contents(:welcome).categories
+    assert_equal [categories(:about), categories(:home)], contents(:welcome).categories
     contents(:welcome).update_attribute :category_ids, []
     assert_equal [], contents(:welcome).categories(true)
   end
@@ -69,7 +69,7 @@ class CategoryTest < Test::Unit::TestCase
   end
 
   def test_should_return_correct_categories
-    assert_equal [categories(:home), categories(:about)], Category.find(:all)
+    assert_equal [categories(:about), categories(:home)], Category.find(:all)
     assert_equal [categories(:about)], Category.find_paged
   end
 

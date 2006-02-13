@@ -100,12 +100,12 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_show_daily_entries
     date = 4.days.ago
     get :day, :year => date.year, :month => date.month, :day => date.day
-    assert_equal [contents(:site_map), contents(:about), contents(:another)], assigns(:articles)
+    assert_equal [contents(:about), contents(:site_map), contents(:another)], assigns(:articles)
   end
 
   def test_should_show_monthly_entries
     date = 4.days.ago
     get :month, :year => date.year, :month => date.month
-    assert_equal [contents(:welcome), contents(:site_map), contents(:about), contents(:another)], assigns(:articles)
+    assert_equal [contents(:welcome), contents(:about), contents(:site_map), contents(:another)], assigns(:articles)
   end
 end

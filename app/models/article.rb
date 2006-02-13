@@ -5,7 +5,7 @@ class Article < Content
   after_save    :save_categorizations
 
   has_many   :categorizations
-  has_many   :categories, :through => :categorizations
+  has_many   :categories, :through => :categorizations, :order => 'categories.name'
   has_many   :comments,   :order => 'created_at'
   
   class << self
@@ -57,7 +57,7 @@ class Article < Content
         new_categories.delete(new_categories.index(categorization.category_id.to_s)) :
         categorization.destroy
     end
-    @categories_to_save = Category.find(:all, :conditions => ['id in (?)', new_categories])
+    @categories_to_save = Category.find(:all, :conditions => ['id in (?)', new_categories]) unless new_categories.blank?
   end
 
   def to_liquid(mode = :list)
