@@ -1,22 +1,15 @@
 class Article < ActiveRecord::Base
-  def self.inherited(sub)
-    sub.filtered_column :body,    :only => :textile_filter
-    sub.filtered_column :excerpt, :only => :textile_filter
-  end
-
-  belongs_to :user
-  has_many   :categorizations
-  has_many   :categories, :through => :categorizations
-  has_many   :comments, :order => 'created_at'
-  
+  filtered_column :body, :excerpt, :only => :textile_filter
   validates_presence_of :title, :user_id
 
   before_create :create_permalink
   after_save    :save_categorizations
-  
-  filtered_column :body,    :only => :textile_filter
-  filtered_column :excerpt, :only => :textile_filter
 
+  belongs_to :user
+  has_many   :categorizations
+  has_many   :categories, :through => :categorizations
+  has_many   :comments,   :order => 'created_at'
+  
   class << self
     def find_by_permalink(year, month, day, permalink)
       from, to = Time.delta(year, month, day)

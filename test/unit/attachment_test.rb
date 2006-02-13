@@ -8,7 +8,7 @@ class AttachmentTest < Test::Unit::TestCase
   end
 
   def test_should_sanitize_path
-    a = Attachment.create :content_type => 'text/plain', :filename => 'foo.txt', :path => '//foo/bar/baz////'
+    a = Attachment.create :content_type => 'text/plain', :filename => 'foo.txt', :path => '//foo/bar/baz////', :attachment_data => 'foo'
     assert a.id
     assert_equal 'foo/bar/baz', a.path
   end

@@ -1,4 +1,5 @@
 class Comment < Article
+  validates_presence_of :body, :author, :author_ip
   belongs_to :article, :counter_cache => true
 
   def to_liquid
@@ -13,7 +14,4 @@ class Comment < Article
     self.author_url = "http://" + author_url unless author_url =~ /^https?:\/\//
     %Q{<a href="#{author_url}">#{author}</a>}
   end
-
-  protected
-  validates_presence_of :body, :author, :author_ip
 end

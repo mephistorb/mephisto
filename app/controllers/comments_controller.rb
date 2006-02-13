@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
       redirect_to(article_url(@article.hash_for_permalink)) and return
     end
 
-    @comment  = @article.comments.create(params[:comment].merge(:author_ip => request.remote_ip))
+    @comment = @article.comments.create(params[:comment].merge(:author_ip => request.remote_ip))
     if @comment.new_record?
       @comments = @article.comments.select { |c| not c.new_record? }.collect { |c| c.to_liquid }
       @article  = @article.to_liquid(:single)
