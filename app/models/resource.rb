@@ -1,6 +1,7 @@
 # A Resource is a special type of Asset for files relating to the current theme.
 # This includes css, javascript, and images.
 class Resource < Attachment
+  include Attachment::TemplateAndResourceMixin
   @@content_path = { 'text/css' => 'stylesheets', 'text/javascript' => 'javascripts' }
   @@content_ext  = { 'text/css' => '.css',        'text/javascript' => '.js' }
   cattr_accessor :content_path, :content_ext

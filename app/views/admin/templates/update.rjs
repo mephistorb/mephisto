@@ -1,3 +1,0 @@
-if @saved
-  page.call "Flash.notice('Template updated successfully')"
-end

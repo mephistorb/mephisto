@@ -17,7 +17,9 @@ class Admin::TemplatesController < Admin::BaseController
   end
 
   def update
-    @saved = @tmpl.update_attributes(params[:template])
+    render :update do |page|
+      page.call 'Flash.notice', 'Template updated successfully' if @tmpl.update_attributes(params[:template])
+    end
   end
 
   protected

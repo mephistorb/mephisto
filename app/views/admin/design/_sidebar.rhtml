@@ -5,14 +5,14 @@
   <% @templates.each do |template| -%>
     <li><%= link_to template.filename, :controller => 'templates', :action => 'edit', :id => template %></li>
   <% end -%>
+  <% @resources.each do |resource| -%>
+    <li><%= link_to resource.full_path, :controller => 'resources', :action => 'edit', :id => resource %></li>
+  <% end -%>
 </ul>
 
 <h3 style="margin-top:15px;">Images</h3>
 <p class="hint">Select an image to use in your template.</p>
 <ul id="resources">
-  <% @resources.each do |resource| -%>
-    <li><%= link_to resource.full_path, :controller => 'resources', :action => 'edit', :id => resource %></li>
-  <% end -%>
 </ul>
 
 

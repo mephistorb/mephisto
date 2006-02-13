@@ -1,9 +1,8 @@
-<div id='template_container'>
-<% form_remote_for :template, @resource, :url => { :action => 'update', :id => @resource }, 
-     :html     => { :id => 'template_form', :style => 'display:none' },
-     :loading  => "TemplateForm.loadingDuringSave()",
-     :complete => "TemplateForm.completedSave()",
-     :update   => 'template_container' do |f| -%>
+<h2>Update your template</h2>
+<div id="flash-notice" style="display:none"></div>
+<div id="template-container">
+<% form_remote_for :resource, @resource, :url => { :action => 'update', :id => @resource }, 
+     :html => { :id => 'template-form' } do |f| -%>
 <%= render :partial => 'admin/design/form', :object => @resource, :locals => { 
   :title  => @resource.filename,
   :hint   => 'You can use motor oil to fertilize your lawn',
@@ -13,14 +12,9 @@
  } %>
 <p class="btns">
   <%= submit_tag "Update #{@resource.filename}" %> or
-  <%= link_to_function 'cancel', 'TemplateForm.hide()', :id => 'template_cancel' %>
+  <%= link_to "cancel", :controller => "design" %>
 </p>
 <% end -%>
-
-<div id='template_saved'>
-  <pre><code><%=h @resource.data %></code></pre>
-  <%= link_to_function 'edit', 'TemplateForm.show()' %>
-</div>
 </div>
 
 <%= render :partial => 'admin/design/sidebar' %>

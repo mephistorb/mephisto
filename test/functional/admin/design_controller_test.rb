@@ -32,7 +32,7 @@ class Admin::DesignControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_form_on_invalid_creation_attempt
-    assert_no_difference Asset, :count do
+    assert_no_difference Resource, :count do
       post :create, :resource => { :data => 'body {}' }, :resource_type => 'CSS'
       assert_template 'index'
       assert_response :success

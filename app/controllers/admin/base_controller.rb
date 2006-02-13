@@ -7,5 +7,6 @@ class Admin::BaseController < ApplicationController
       asset.is_a? Template
     end
     @resources = @resources.sort_by { |r| r.full_path }
+    @images, @resources = @resources.partition { |r| r.image? }
   end
 end

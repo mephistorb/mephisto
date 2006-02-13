@@ -3,7 +3,7 @@ class Admin::ResourcesController < Admin::BaseController
   verify :params => :id, :only => [:edit, :update],
          :add_flash   => { :error => 'Resource required' },
          :redirect_to => { :action => 'index' }
-  verify :method => :post, :params => :template, :only => :update,
+  verify :method => :post, :params => :resource, :only => :update,
          :add_flash   => { :error => 'Resource required' },
          :redirect_to => { :action => 'edit' }
          
@@ -17,17 +17,8 @@ class Admin::ResourcesController < Admin::BaseController
   end
 
   def update
-    saved = @resource.update_attributes(params[:resource])
-    case
-      when request.xhr?
-        render :partial => 'form', :locals => { :template => @resource }
-      
-      when saved
-        flash[:notice] = "#{@tmpl.filename} updated."
-        redirect_to :action => 'edit', :id => @tmpl
-    
-      else
-        render :action => 'edit'
+    render :update do |page|
+      page.call 'Flash.notice', 'Resource updated successfully' if @resource.update_attributes(params[:resource])
     end
   end
 

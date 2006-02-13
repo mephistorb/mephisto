@@ -14,10 +14,6 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
     login_as :quentin
   end
 
-  def test_should_list_templates
-    get :index
-  end
-
   def test_should_show_edit_template_form
     get :edit, :id => attachments(:layout).filename
     assert_tag :tag => 'form'

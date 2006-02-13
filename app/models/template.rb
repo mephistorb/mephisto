@@ -1,6 +1,7 @@
 # Templates are a special type of Asset for storing liquid template data.  It defines
 # special methods for retrieving the preferred template.
 class Template < Attachment
+  include Attachment::TemplateAndResourceMixin
   acts_as_attachment :content_type => 'text/liquid'
   before_validation :set_file_path_and_content_type
 
