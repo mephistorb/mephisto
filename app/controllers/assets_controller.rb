@@ -6,7 +6,6 @@ class AssetsController < ApplicationController
     self.cached_references << @asset
 
     if @asset.image?
-      breakpoint
       send_data @asset.data, :filename => @asset.filename, :type => @asset.content_type, :disposition => 'inline'
     else
       headers['Content-Type'] = @asset.content_type

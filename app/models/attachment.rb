@@ -18,13 +18,12 @@ class Attachment < ActiveRecord::Base
 
   # Read from the model's attributes if it's available.
   def data
-    read_attribute(:data) || (db_file_id ? db_file.data : nil)
+    read_attribute(:data) || write_attribute(:data, (db_file_id ? db_file.data : nil))
   end
 
   # set the model's data attribute and attachment_data
   def data=(value)
-    write_attribute :data, value
-    self.attachment_data = value
+    self.attachment_data = write_attribute(:data, value)
   end
 
   def full_path
