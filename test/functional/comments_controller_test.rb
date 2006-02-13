@@ -5,7 +5,7 @@ require_dependency 'comments_controller'
 class CommentsController; def rescue_action(e) raise e end; end
 
 class CommentsControllerTest < Test::Unit::TestCase
-  fixtures :articles, :attachments
+  fixtures :contents, :attachments
 
   def setup
     @controller = CommentsController.new
@@ -22,27 +22,27 @@ class CommentsControllerTest < Test::Unit::TestCase
 
   def test_should_add_comment
     assert_difference Comment, :count do
-      assert_difference articles(:welcome), :comments_count do
-        post :create, articles(:welcome).hash_for_permalink.merge(:comment => {
+      assert_difference contents(:welcome), :comments_count do
+        post :create, contents(:welcome).hash_for_permalink.merge(:comment => {
           :body   => 'test comment', 
           :author => 'bob'
         })
-        assert_redirected_to @controller.url_for(articles(:welcome).hash_for_permalink(:controller => 'mephisto', 
+        assert_redirected_to @controller.url_for(contents(:welcome).hash_for_permalink(:controller => 'mephisto', 
                                                                                        :action     => 'show', 
                                                                                        :anchor     => "comment_#{assigns(:comment).id}"))
-        articles(:welcome).reload
+        contents(:welcome).reload
       end
     end
   end
 
   def test_should_show_article_page_on_invalid_comment
     assert_no_difference Comment, :count do
-      assert_no_difference articles(:welcome), :comments_count do
-        post :create, articles(:welcome).hash_for_permalink.merge(:comment => {
+      assert_no_difference contents(:welcome), :comments_count do
+        post :create, contents(:welcome).hash_for_permalink.merge(:comment => {
           :body => 'test comment'
         })
         assert_response :success
-        articles(:welcome).reload
+        contents(:welcome).reload
       end
     end
   end
@@ -55,14 +55,14 @@ class CommentsControllerTest < Test::Unit::TestCase
   end
 
   def test_should_reject_get_request
-    get :create, articles(:welcome).hash_for_permalink
-    assert_redirected_to @controller.url_for(articles(:welcome).hash_for_permalink(:controller => 'mephisto', 
+    get :create, contents(:welcome).hash_for_permalink
+    assert_redirected_to @controller.url_for(contents(:welcome).hash_for_permalink(:controller => 'mephisto', 
                                                                                    :action     => 'show'))
   end
 
   def test_should_reject_invalid_post
-    post :create, articles(:welcome).hash_for_permalink
-    assert_redirected_to @controller.url_for(articles(:welcome).hash_for_permalink(:controller => 'mephisto', 
+    post :create, contents(:welcome).hash_for_permalink
+    assert_redirected_to @controller.url_for(contents(:welcome).hash_for_permalink(:controller => 'mephisto', 
                                                                                    :action     => 'show'))
   end
 end

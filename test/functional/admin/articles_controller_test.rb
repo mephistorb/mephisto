@@ -5,7 +5,7 @@ require 'admin/articles_controller'
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
 class Admin::ArticlesControllerTest < Test::Unit::TestCase
-  fixtures :articles, :categories, :categorizations, :users
+  fixtures :contents, :categories, :categorizations, :users
 
   def setup
     @controller = Admin::ArticlesController.new
@@ -57,12 +57,12 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_checked_categories
-    get :edit, :id => articles(:welcome).id
+    get :edit, :id => contents(:welcome).id
     assert_response :success
     assert_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:home).id.to_s}" }
     assert_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:about).id.to_s}" }
 
-    get :edit, :id => articles(:another).id
+    get :edit, :id => contents(:another).id
     assert_response :success
     assert_tag    :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:home).id.to_s}" }
     assert_no_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:about).id.to_s}", :checked => 'checked' }
@@ -75,24 +75,24 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_update_article_with_no_categories
-    post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
+    post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
     assert_redirected_to :action => 'index'
     assert_equal [], assigns(:article).categories
   end
 
   def test_should_update_article_with_given_categories
     assert_difference Categorization, :count, -1 do
-      post :update, :id => articles(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :category_ids => [categories(:home).id] }
+      post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :category_ids => [categories(:home).id] }
       assert_redirected_to :action => 'index'
       assert_equal [categories(:home)], assigns(:article).categories
     end
   end
 
   def test_should_clear_published_date
-    assert articles(:welcome).published?
-    post :update, :id => articles(:welcome).id, :article => { :title => 'welcome' }
+    assert contents(:welcome).published?
+    post :update, :id => contents(:welcome).id, :article => { :title => 'welcome' }
     assert_redirected_to :action => 'index'
-    articles(:welcome).reload
-    assert !articles(:welcome).published?
+    contents(:welcome).reload
+    assert !contents(:welcome).published?
   end
 end

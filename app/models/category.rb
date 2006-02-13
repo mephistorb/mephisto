@@ -1,21 +1,22 @@
 class Category < ActiveRecord::Base
+  validates_presence_of :name
   has_many :categorizations, :dependent => :delete_all
   has_many :articles, :order => 'categorizations.position', :through => :categorizations do
     def find_by_date(options = {})
-      find(:all, { :order => 'articles.published_at desc', 
-                   :conditions => ['published_at <= ? AND articles.type IS NULL AND articles.published_at IS NOT NULL', Time.now.utc] } \
+      find(:all, { :order => 'contents.published_at desc', 
+                   :conditions => ['published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } \
         .merge(options))
     end
 
     def find_by_position(options = {})
       find(:first, { :order => 'categorizations.position',
-                   :conditions => ['published_at <= ? AND articles.type IS NULL AND articles.published_at IS NOT NULL', Time.now.utc] } \
+                   :conditions => ['published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } \
         .merge(options))
     end
 
     def find_by_permalink(permalink, options = {})
       find(:first, { :order => 'categorizations.position',
-                   :conditions => ['articles.permalink = ? AND published_at <= ? AND articles.type IS NULL AND articles.published_at IS NOT NULL',
+                   :conditions => ['contents.permalink = ? AND published_at <= ? AND contents.published_at IS NOT NULL',
                                    permalink, Time.now.utc] }.merge(options))
     end
   end
@@ -52,7 +53,4 @@ class Category < ActiveRecord::Base
   def to_url
     ((name.nil? or name == 'home') ? '' : name).split('/')
   end
-
-  protected
-  validates_presence_of :name
 end

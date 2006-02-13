@@ -1,5 +1,5 @@
-class Comment < Article
-  validates_presence_of :body, :author, :author_ip
+class Comment < Content
+  validates_presence_of :author, :author_ip
   belongs_to :article, :counter_cache => true
 
   def to_liquid

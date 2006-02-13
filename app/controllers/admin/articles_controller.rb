@@ -9,9 +9,8 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :load_categories, :only => [:new, :edit]
 
   def index
-    conditions     = 'article_id IS NULL'
-    @article_pages = Paginator.new self, Article.count(conditions), 30, params[:page]
-    @articles      = Article.find(:all, :conditions => conditions, :order => 'articles.created_at DESC',
+    @article_pages = Paginator.new self, Article.count, 30, params[:page]
+    @articles      = Article.find(:all, :order => 'contents.created_at DESC',
                        :include => :user,
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)

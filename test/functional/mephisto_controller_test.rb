@@ -5,7 +5,7 @@ require_dependency 'mephisto_controller'
 class MephistoController; def rescue_action(e) raise e end; end
 
 class MephistoControllerTest < Test::Unit::TestCase
-  fixtures :articles, :categories, :categorizations, :attachments
+  fixtures :contents, :categories, :categorizations, :attachments
 
   def setup
     @controller = MephistoController.new
@@ -29,7 +29,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_list_on_home
     get :list, :categories => []
     assert_equal categories(:home), assigns(:category)
-    assert_equal [articles(:welcome), articles(:another)], assigns(:articles)
+    assert_equal [contents(:welcome), contents(:another)], assigns(:articles)
   end
 
   def test_should_show_correct_feed_url
@@ -40,39 +40,39 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_list_by_categories
     get :list, :categories => %w(about)
     assert_equal categories(:about), assigns(:category)
-    assert_equal articles(:welcome), assigns(:article)
+    assert_equal contents(:welcome), assigns(:article)
   end
 
   def test_should_show_page
     get :list, :categories => %w(about the_site_map)
     assert_equal categories(:about), assigns(:category)
-    assert_equal articles(:site_map), assigns(:article)
+    assert_equal contents(:site_map), assigns(:article)
   end
 
   def test_should_render_liquid_templates_on_home
     get :list, :categories => []
     assert_tag :tag => 'h1', :content => 'This is the layout'
     assert_tag :tag => 'p',  :content => 'home'
-    assert_tag :tag => 'h2', :content => articles(:welcome).title
-    assert_tag :tag => 'h2', :content => articles(:another).title
-    assert_tag :tag => 'p',  :content => articles(:welcome).excerpt
-    assert_tag :tag => 'p',  :content => articles(:another).body
+    assert_tag :tag => 'h2', :content => contents(:welcome).title
+    assert_tag :tag => 'h2', :content => contents(:another).title
+    assert_tag :tag => 'p',  :content => contents(:welcome).excerpt
+    assert_tag :tag => 'p',  :content => contents(:another).body
   end
 
   def test_should_render_liquid_templates_by_categories
     get :list, :categories => %w(about)
-    assert_tag :tag => 'h1', :content => articles(:welcome).title
+    assert_tag :tag => 'h1', :content => contents(:welcome).title
   end
 
   def test_should_search_entries
     get :search, :q => 'another'
-    assert_equal [articles(:another)], assigns(:articles)
+    assert_equal [contents(:another)], assigns(:articles)
   end
 
   def test_should_show_entry
     date = 3.days.ago
     get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome_to_mephisto'
-    assert_equal articles(:welcome).to_liquid['id'], assigns(:article)['id']
+    assert_equal contents(:welcome).to_liquid['id'], assigns(:article)['id']
   end
 
   def test_should_show_navigation_on_paged_categories
@@ -100,12 +100,12 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_show_daily_entries
     date = 4.days.ago
     get :day, :year => date.year, :month => date.month, :day => date.day
-    assert_equal [articles(:site_map), articles(:about), articles(:another)], assigns(:articles)
+    assert_equal [contents(:site_map), contents(:about), contents(:another)], assigns(:articles)
   end
 
   def test_should_show_monthly_entries
     date = 4.days.ago
     get :month, :year => date.year, :month => date.month
-    assert_equal [articles(:welcome), articles(:site_map), articles(:about), articles(:another)], assigns(:articles)
+    assert_equal [contents(:welcome), contents(:site_map), contents(:about), contents(:another)], assigns(:articles)
   end
 end
