@@ -22,6 +22,12 @@ class Admin::ResourcesController < Admin::BaseController
     end
   end
 
+  def upload
+    @resource = Resource.create params[:resource]
+    flash[:notice] = "'#{@resource.filename}' was uploaded successfully."
+    redirect_to :controller => 'design', :action => 'index'
+  end
+
   protected
   def select_resource
     @resource = @resources.detect { |r| r.id.to_s == params[:id] }

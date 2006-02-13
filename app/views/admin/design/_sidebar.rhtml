@@ -13,22 +13,25 @@
 <h3 style="margin-top:15px;">Images</h3>
 <p class="hint">Select an image to use in your template.</p>
 <ul id="resources">
+  <% @images.each do |image| -%>
+    <li><%= link_to image.full_path, :controller => 'resources', :action => 'show', :id => image %></li>
+  <% end -%>
 </ul>
 
 
 <div class="sbar-group box">
-  <%= start_form_tag :multipart => true %>
+  <% form_for :resource, @resource, :controller => 'resources', :action => 'upload', :id => nil, :html => { :multipart => true } do |f| -%>
   <dl class="sbar-form">
     <dt>
-      <label for="resource_image">Upload new image</label>
+      <label for="resource_uploaded_data">Upload new image</label>
       <p class="hint">Upload images to use in your templates</p>
     </dt>
     <dd>
-      1. <%= file_field 'resource', 'image' %><br />
+      1. <%= f.file_field :uploaded_data %><br />
       2. <%= submit_tag 'Upload' %>
     </dd>
   </dl>
-  <%= end_form_tag %>
+  <% end -%>
 </div>
 
 

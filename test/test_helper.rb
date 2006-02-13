@@ -26,4 +26,18 @@ class Test::Unit::TestCase
   def assert_no_difference(object, method, &block)
     assert_difference object, method, 0, &block
   end
+
+  def assert_attachment_created(num = 1)
+    assert_difference Attachment, :count, num do
+      assert_difference DbFile, :count, num do
+        yield
+      end
+    end
+  end
+
+  def assert_no_attachment_created
+    assert_attachment_created 0 do
+      yield
+    end
+  end
 end

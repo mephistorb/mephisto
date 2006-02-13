@@ -46,4 +46,17 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
     assert_equal 'foo.css',       attachments(:css).filename
     assert_equal "body {}\na {}", attachments(:css).data
   end
+
+  def test_should_upload_resource
+    assert_attachment_created do
+      post :upload, :resource => { :uploaded_data => file_upload }
+    end
+    
+    assert_redirected_to :controller => 'admin/design', :action => 'index'
+  end
+
+  protected
+  def file_upload(options = {})
+    Technoweenie::FileUpload.new(options[:filename] || 'rails.png', options[:content_type] || 'image/png')
+  end
 end
