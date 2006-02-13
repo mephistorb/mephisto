@@ -40,9 +40,10 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_save_resource
-    post :update, :id => attachments(:css).id, :resource => { :filename => 'foo' }
+    post :update, :id => attachments(:css).id, :resource => { :filename => 'foo', :data => "body {}\na {}" }
     assert_response :success
-    attachments(:layout).reload
-    assert_equal 'foo', attachments(:css).filename
+    attachments(:css).reload
+    assert_equal 'foo.css',       attachments(:css).filename
+    assert_equal "body {}\na {}", attachments(:css).data
   end
 end
