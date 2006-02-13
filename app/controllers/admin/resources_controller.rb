@@ -1,5 +1,5 @@
 class Admin::ResourcesController < Admin::BaseController
-  #cache_sweeper :template_sweeper
+  cache_sweeper :asset_sweeper
   verify :params => :id, :only => [:edit, :update],
          :add_flash   => { :error => 'Resource required' },
          :redirect_to => { :controller => 'design', :action => 'index' }
