@@ -305,7 +305,7 @@ input[type='text']:focus, textarea:focus {
   font-family: Helvetica, "Lucida Grande", sans-serif;
 }
 
-#revisions, #resources {
+#revisions, #resources, #attachments {
   list-style: none;
   margin: 0 20px 0 5px;
 }
@@ -338,11 +338,33 @@ input[type='text']:focus, textarea:focus {
   font-style: normal;
 }
 
-#sbar .icon, #sbar .thumb {
-  border: 1px solid #333;
-  background: #222;
-  padding: 3px;
+#attachments li a {
+  color: #fff;
+  border: 0;
+  text-decoration: underline;
 }
+
+#attachments li a:hover {
+  color: #ccc;
+}
+
+#attachments li {
+  display: block;
+  list-style: none;
+  padding: 5px 8px;
+  margin: 0;
+  font-size: 90%;
+  border-bottom: 1px dotted #333;
+}
+
+#attachments li img {
+  border: 0;
+}
+
+#attachments li a.aicon {
+  margin-right: 10px;
+}
+
 
 #sbar p, #sbar p.hint {
   padding: 0 5px;
@@ -635,9 +657,12 @@ ul.nobull li label {
  */
 
 .icon { background: url(../images/icons/bg_rounded.gif);}
+.iconb { background: url(../images/icons/bg_roundedb.gif); vertical-align: middle;}
+
 
 .green { background-color: #9c0;} 
 .yellow { background-color: #fc3;}
 .black { background-color: #000;} 
 .orange { background-color: #f63;}
 .red { background-color: #f33;}
+

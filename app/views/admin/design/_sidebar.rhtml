@@ -11,10 +11,11 @@
 </ul>
 
 <h3 style="margin-top:15px;">Images</h3>
+
 <p class="hint">Select an image to use in your template.</p>
-<ul id="resources">
+<ul id="attachments">
   <% @images.each do |image| -%>
-    <li><%= link_to image.full_path, :controller => 'resources', :action => 'show', :id => image %></li>
+    <li id="image-<%= image.id %>"><%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {:url => {:controller => 'resources', :action => 'remove', :id => image}}, :class => 'aicon' %> <%= link_to image.full_path, :controller => 'resources', :action => 'show', :id => image %></li>
   <% end -%>
 </ul>
 

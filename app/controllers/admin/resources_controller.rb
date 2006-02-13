@@ -34,6 +34,12 @@ class Admin::ResourcesController < Admin::BaseController
     end
     redirect_to :controller => 'design', :action => 'index'
   end
+  
+  def remove
+    render :update do |page|
+      page.visual_effect :fade, "image-#{params[:id]}", :duration => 0.3 if Resource.find(params[:id]).destroy
+    end
+  end
 
   protected
   def select_resource
