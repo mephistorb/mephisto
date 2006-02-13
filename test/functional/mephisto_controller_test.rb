@@ -44,7 +44,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_page
-    get :list, :categories => %w(about the_site_map)
+    get :list, :categories => %w(about the-site-map)
     assert_equal categories(:about), assigns(:category)
     assert_equal contents(:site_map), assigns(:article)
   end
@@ -71,7 +71,7 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_show_entry
     date = 3.days.ago
-    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome_to_mephisto'
+    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto'
     assert_equal contents(:welcome).to_liquid['id'], assigns(:article)['id']
   end
 
@@ -86,7 +86,7 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_show_comments_form
     date = 3.days.ago
-    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome_to_mephisto'
+    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto'
     assert_tag :tag => 'form',     :descendant => { 
                :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author',       :name => 'comment[author]'       } }
     assert_tag :tag => 'form',     :descendant => {                                                                                  

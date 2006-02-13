@@ -83,7 +83,10 @@ class Article < Content
 
   protected
   def create_permalink
-    self.permalink = title.to_permalink
+    self.permalink = title.strip.downcase \
+      .gsub(/['"]/, '')                   \
+      .gsub(/(\W|\ )+/, '-')              \
+      .chomp('-').reverse.chomp('-').reverse
   end
 
   def save_categorizations

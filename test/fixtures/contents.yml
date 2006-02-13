@@ -8,7 +8,7 @@
 welcome:
   id: 1
   title: Welcome to Mephisto
-  permalink: welcome_to_mephisto
+  permalink: welcome-to-mephisto
   excerpt: welcome summary
   excerpt_html: welcome summary
   body: welcome description
@@ -22,7 +22,7 @@ welcome:
 another:
   id: 2
   title: Another Welcome to Mephisto
-  permalink: another_welcome_to_mephisto
+  permalink: another-welcome-to-mephisto
   body: another description
   body_html: another description
   created_at: <%= 4.days.ago.to_s(:db) %>
@@ -43,7 +43,8 @@ welcome_comment:
 unpublished:
   id: 4
   title: Unpublished Article
-  permalink: unpublished_article
+  permalink: unpublished-article
+  body: unpublished
   excerpt: This is my own little blogging tool
   excerpt_html: This is my own little blogging tool
   created_at: <%= 4.days.ago.to_s(:db) %>
@@ -53,7 +54,8 @@ unpublished:
 future:
   id: 5
   title: Article in the Future
-  permalink: article_in_the_future
+  body: future
+  permalink: article-in-the-future
   excerpt: This is my own little blogging tool
   excerpt_html: This is my own little blogging tool
   created_at: <%= 4.days.ago.to_s(:db) %>
@@ -64,7 +66,7 @@ future:
 about:
   id: 6
   title: About this page
-  permalink: about_this_page
+  permalink: about-this-page
   excerpt: This is my own about page
   excerpt_html: This is my own about page
   body: This is my own about page
@@ -77,7 +79,7 @@ about:
 site_map:
   id: 7
   title: The Site Map
-  permalink: the_site_map
+  permalink: the-site-map
   excerpt: This is my own site map
   excerpt_html: This is my own site map
   body: This is my own site map

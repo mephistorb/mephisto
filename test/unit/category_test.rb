@@ -23,9 +23,9 @@ class CategoryTest < Test::Unit::TestCase
   end
 
   def test_should_find_categorized_articles_by_permalink
-    assert_equal contents(:welcome),  categories(:about).articles.find_by_permalink('welcome_to_mephisto')
-    assert_equal contents(:site_map), categories(:about).articles.find_by_permalink('the_site_map')
-    assert_equal nil,                 categories(:about).articles.find_by_permalink('another_welcome_to_mephisto')
+    assert_equal contents(:welcome),  categories(:about).articles.find_by_permalink('welcome-to-mephisto')
+    assert_equal contents(:site_map), categories(:about).articles.find_by_permalink('the-site-map')
+    assert_equal nil,                 categories(:about).articles.find_by_permalink('another-welcome-to-mephisto')
   end
 
   def test_should_find_category_with_permalink_extra
