@@ -1,6 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
-  map.admin   'admin', :controller => 'admin/base', :action => 'index'
   map.feed    'feed/*categories', :controller => 'feed', :action => 'feed'
+
+  map.with_options :controller => 'assets', :action => 'show' do |map|
+    map.css    'stylesheets/*path', :dir => 'stylesheets'
+    map.js     'javascripts/*path', :dir => 'javascripts'
+    map.images 'images/*path',      :dir => 'images'
+  end
+
+  map.admin   'admin', :controller => 'admin/base', :action => 'index'
 
   map.connect ':controller/:action/:id'
 

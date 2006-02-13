@@ -12,4 +12,10 @@ class AttachmentTest < Test::Unit::TestCase
     assert a.id
     assert_equal 'foo/bar/baz', a.path
   end
+
+  def test_should_find_by_full_path
+    assert_equal attachments(:css),     Attachment.find_by_full_path('stylesheets/style.css')
+    assert_equal attachments(:js),      Attachment.find_by_full_path('javascripts/behavior.js')
+    assert_equal attachments(:quentin), Attachment.find_by_full_path('images/foobar.png')
+  end
 end
