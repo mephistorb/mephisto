@@ -2,10 +2,13 @@ class Admin::ResourcesController < Admin::BaseController
   #cache_sweeper :template_sweeper
   verify :params => :id, :only => [:edit, :update],
          :add_flash   => { :error => 'Resource required' },
-         :redirect_to => { :action => 'index' }
+         :redirect_to => { :controller => 'design', :action => 'index' }
   verify :method => :post, :params => :resource, :only => :update,
          :add_flash   => { :error => 'Resource required' },
          :redirect_to => { :action => 'edit' }
+  verify :method => :post, :params => :resource, :only => :upload,
+         :add_flash   => { :error => 'Resource required' },
+         :redirect_to => { :controller => 'design', :action => 'index' }
          
   with_options :except => :index do |c|
     c.before_filter :find_templates_and_resources!
@@ -23,8 +26,12 @@ class Admin::ResourcesController < Admin::BaseController
   end
 
   def upload
-    @resource = Resource.create params[:resource]
-    flash[:notice] = "'#{@resource.filename}' was uploaded successfully."
+    @resource = Resource.new params[:resource]
+    if @resource.image? and @resource.save
+      flash[:notice] = "'#{@resource.filename}' was uploaded successfully."
+    else
+      flash[:error]  = "A bad or nonexistant image was uploaded."
+    end
     redirect_to :controller => 'design', :action => 'index'
   end
 

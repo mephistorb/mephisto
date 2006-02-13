@@ -55,6 +55,21 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
     assert_redirected_to :controller => 'admin/design', :action => 'index'
   end
 
+  def test_should_redirect_on_upload_get_request
+    assert_no_attachment_created do
+      get :upload, :resource => 'foo'
+      assert_redirected_to :controller => 'admin/design', :action => 'index'
+    end
+  end
+
+  def test_should_redirect_on_empty_upload
+    assert_no_attachment_created do
+      post :upload, :resource => { :uploaded_data => nil }
+    end
+    
+    assert_redirected_to :controller => 'admin/design', :action => 'index'
+  end
+
   protected
   def file_upload(options = {})
     Technoweenie::FileUpload.new(options[:filename] || 'rails.png', options[:content_type] || 'image/png')
