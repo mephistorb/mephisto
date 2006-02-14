@@ -3,7 +3,7 @@ module FilteredColumn
   module Filters
     class MarkdownFilter
       def self.filter(text)
-        BlueCloth.new(text.gsub(%r{</?notextile>}, '')).to_html if Object.const_defined?("BlueCloth")
+        Object.const_defined?("BlueCloth") ? BlueCloth.new(text.gsub(%r{</?notextile>}, '')).to_html : text
       end
     end
   end

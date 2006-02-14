@@ -2,7 +2,7 @@ module FilteredColumn
   module Filters
     class SmartypantsFilter
       def self.filter(text)
-        RubyPants.new(text).to_html if Object.const_defined?("RubyPants")
+        Object.const_defined?("RubyPants") ? RubyPants.new(text).to_html : text
       end
     end
   end

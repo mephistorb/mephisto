@@ -2,7 +2,7 @@ module FilteredColumn
   module Filters
     class TextileFilter
       def self.filter(text)
-        RedCloth.new(text).to_html if Object.const_defined?("RedCloth")
+        Object.const_defined?("RedCloth") ? RedCloth.new(text).to_html : text
       end
     end
   end
