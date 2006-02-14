@@ -120,8 +120,19 @@ quentin:
   db_file_id: 13
   attachable_id: 1
   attachable_type: User
+  type: Avatar
+  content_type: 'image/png'
+  size: 1
+  filename: quentin.png
+  path: images/users
+
+site:
+  id: 14
+  db_file_id: 14
+  attachable_id: 1
+  attachable_type: Site
   type: Asset
   content_type: 'image/png'
   size: 1
   filename: foobar.png
-  path: images
+  path: images/site

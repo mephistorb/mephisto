@@ -28,7 +28,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def full_path
-    File.join(path, filename)
+    (path and filename) ? File.join(path, filename) : (filename || path)
   end
 
   module TemplateAndResourceMixin

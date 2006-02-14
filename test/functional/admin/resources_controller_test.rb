@@ -69,9 +69,4 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
     
     assert_redirected_to :controller => 'admin/design', :action => 'index'
   end
-
-  protected
-  def file_upload(options = {})
-    Technoweenie::FileUpload.new(options[:filename] || 'rails.png', options[:content_type] || 'image/png')
-  end
 end

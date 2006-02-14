@@ -5,14 +5,50 @@ require 'admin/users_controller'
 class Admin::UsersController; def rescue_action(e) raise e end; end
 
 class Admin::UsersControllerTest < Test::Unit::TestCase
+  fixtures :users, :attachments, :db_files
   def setup
     @controller = Admin::UsersController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    login_as :quentin
   end
 
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  def test_should_update_email_and_password
+    post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }
+    users(:quentin).reload
+    assert_equal 'foo', users(:quentin).email
+    assert_equal users(:quentin), User.authenticate('quentin', 'testy')
+    assert_redirected_to :action => 'show', :id => users(:quentin).login
+  end
+
+  def test_should_leave_password_alone
+    post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => '', :password_confirmation => '' }
+    users(:quentin).reload
+    assert_equal 'foo', users(:quentin).email
+    assert_equal users(:quentin), User.authenticate('quentin', 'quentin')
+    assert_redirected_to :action => 'show', :id => users(:quentin).login
+  end
+
+  def test_should_show_error
+    post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'tea', :password_confirmation => '' }
+    users(:quentin).reload
+    assert_equal 'quentin@example.com', users(:quentin).email
+    assert_equal users(:quentin), User.authenticate('quentin', 'quentin')
+    assert_response :success
+    assert_template 'show'
+  end
+
+  def test_should_not_upload_nonexistent_file
+    assert_no_attachment_created { test_should_update_email_and_password }
+  end
+
+  def test_should_upload_avatar
+    assert_attachment_created do
+      post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }, :avatar => file_upload
+      users(:quentin).reload
+      assert_equal 'foo', users(:quentin).email
+      assert_equal users(:quentin), User.authenticate('quentin', 'testy')
+      assert_redirected_to :action => 'show', :id => users(:quentin).login
+    end
   end
 end

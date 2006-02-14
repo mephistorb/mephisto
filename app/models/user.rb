@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   serialize   :filters, Array
   
   has_many :articles
-  has_one  :avatar, :class_name => 'Asset', :as => :attachable
+  has_one  :avatar, :as => :attachable
   
   # Uncomment this to use activation
   # before_create :make_activation_code

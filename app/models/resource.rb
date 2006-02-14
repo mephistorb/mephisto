@@ -6,8 +6,8 @@ class Resource < Attachment
   @@content_ext  = { 'text/css' => '.css',        'text/javascript' => '.js' }
   cattr_accessor :content_path, :content_ext
 
-  acts_as_attachment :content_type => ['text/css', 'text/javascript', :image], :resize_to => '75x75>'
   before_validation  :set_file_path_and_extension
+  acts_as_attachment :content_type => ['text/css', 'text/javascript', :image], :resize_to => '75x75>'
 
   protected
   def set_file_path_and_extension

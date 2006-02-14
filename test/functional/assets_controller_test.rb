@@ -26,7 +26,7 @@ class AssetsControllerTest < Test::Unit::TestCase
   end
 
   def test_should_find_image_by_full_path
-    get :show, :path => %w(images foobar.png)
+    get :show, :path => %w(images users quentin.png)
     assert_equal 'image/png', @response.headers['Content-Type']
     assert_equal attachments(:quentin).data, @response.body
   end
