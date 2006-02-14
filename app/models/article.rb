@@ -4,9 +4,9 @@ class Article < Content
   before_create :create_permalink
   after_save    :save_categorizations
 
-  has_many   :categorizations
-  has_many   :categories, :through => :categorizations, :order => 'categories.name'
-  has_many   :comments,   :order => 'created_at'
+  has_many :categorizations
+  has_many :categories, :through => :categorizations, :order => 'categories.name'
+  has_many :comments,   :order => 'created_at'
   
   class << self
     def find_by_permalink(year, month, day, permalink)

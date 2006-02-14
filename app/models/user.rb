@@ -2,20 +2,20 @@ require 'digest/sha1'
 class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
   attr_accessor :password
-  has_many :articles
-  has_one  :picture, :class_name => 'Asset', :as => :attachable
 
-  validates_uniqueness_of   :login, :email, :salt
+  validates_presence_of     :login, :email
+  validates_presence_of     :password,                   :if => :password_required?
+  validates_presence_of     :password_confirmation,      :if => :password_required?
+  validates_length_of       :password, :within => 5..40, :if => :password_required?
+  validates_confirmation_of :password,                   :if => :password_required?
   validates_length_of       :login,    :within => 3..40
   validates_length_of       :email,    :within => 3..100
-  validates_length_of       :password, :within => 5..40, :if => :password_required?
-  validates_presence_of     :login, :email
-  validates_presence_of     :password, 
-                            :password_confirmation,
-                            :if => :password_required?
-  validates_confirmation_of :password, :if => :password_required?
+  validates_uniqueness_of   :login, :email, :salt
   before_save :encrypt_password
   serialize   :filters, Array
+  
+  has_many :articles
+  has_one  :avatar, :class_name => 'Asset', :as => :attachable
   
   # Uncomment this to use activation
   # before_create :make_activation_code
@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
 
   protected
   def encrypt_password
-    return unless password
+    return if password.blank?
     self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
     self.crypted_password = encrypt(password)
   end
