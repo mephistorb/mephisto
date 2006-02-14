@@ -5,7 +5,7 @@ end
 class RenameArticlesToContent < ActiveRecord::Migration
   def self.up
     OldArticle.transaction do
-      OldArticle.find(:all, :conditions => ['type != ?', 'Comment']).each do |article|
+      OldArticle.find(:all, :conditions => ['type != ? or type IS NULL', 'Comment']).each do |article|
         article[:type] = 'Article' and article.save!
       end
     end
