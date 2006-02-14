@@ -69,7 +69,7 @@ class CategoryTest < Test::Unit::TestCase
   end
 
   def test_should_return_correct_categories
-    assert_equal [categories(:about), categories(:home)], Category.find(:all)
+    assert_equal [categories(:about), categories(:home)], Category.find(:all, :order => 'name')
     assert_equal [categories(:about)], Category.find_paged
   end
 

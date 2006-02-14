@@ -1,6 +1,7 @@
 # Base file attachment method
 class Attachment < ActiveRecord::Base  
   before_validation :sanitize_path_if_available
+  validates_uniqueness_of :filename, :scope => :path
   acts_as_attachment
 
   class << self    
