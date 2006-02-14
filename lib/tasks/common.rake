@@ -4,7 +4,7 @@ task :init do
   ENV['RAILS_PATH'] ||= File.join(ENV['SHARED_PATH'], 'rails')
   puts 'copying files...'
   cp "#{ENV['SHARED_PATH']}/database.yml",      'config'
-  cp "#{ENV['SHARED_PATH']}/lighttpd.conf",     'config'
+  cp "#{ENV['SHARED_PATH']}/lighttpd.conf",     'config' rescue nil # not all of us have this you know
   cp "#{ENV['SHARED_PATH']}/dispatch.fcgi",     'public'
   Dir.glob("#{ENV['SHARED_PATH']}/style/*").each do |file|
     cp file, 'public/stylesheets'
