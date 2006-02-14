@@ -6,7 +6,7 @@ xm.entry do
   xm.published article.published_at.xmlschema
   xm.updated   article.published_at.xmlschema
   xm.link "rel" => "alternate", "type" => "text/html", "href" => article_url(article.hash_for_permalink)
-  xm.title     strip_categories(article.title)
-  xm.summary   textilize(article.excerpt),     'type' => 'html' unless article.excerpt.blank?
-  xm.content   textilize(article.body), 'type' => 'html' unless article.body.blank?
+  xm.title     strip_tags(article.title)
+  xm.summary   textilize(article.excerpt), 'type' => 'html' unless article.excerpt.blank?
+  xm.content   textilize(article.body),    'type' => 'html' unless article.body.blank?
 end
