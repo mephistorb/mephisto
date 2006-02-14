@@ -3,7 +3,7 @@ class Admin::ArticlesController < Admin::BaseController
     c.before_filter :set_default_category_ids
     c.before_filter :clear_published_at_fields!
     c.cache_sweeper :article_sweeper
-    c.cache_sweeper :Category_sweeper
+    c.cache_sweeper :category_sweeper
   end
 
   before_filter :load_categories, :only => [:new, :edit]
@@ -60,5 +60,6 @@ class Admin::ArticlesController < Admin::BaseController
     return if params[:article_published]
     params[:article].keys.select { |k| k =~ /^published_at/ }.each { |k| params[:article].delete(k) }
     params[:article][:published_at] = nil
+    true
   end
 end

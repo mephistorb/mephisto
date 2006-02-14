@@ -7,9 +7,8 @@ ActionController::Routing::Routes.draw do |map|
     m.images 'images/*path',      :dir => 'images'
   end
 
-  map.admin   'admin', :controller => 'admin/base', :action => 'index'
-
   map.connect ':controller/:action/:id'
+  map.admin   'admin', :controller => 'admin/base', :action => 'index'
 
   map.comment ':year/:month/:day/:permalink/comment', :controller => 'comments', :action => 'create',    
       :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
