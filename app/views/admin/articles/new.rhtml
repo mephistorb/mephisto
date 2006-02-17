@@ -1,9 +1,8 @@
 <h2>Creating a new article</h2>
-<%= start_form_tag({:action => 'create'}, :id => 'article-form') %>
-  <%= render :partial => 'form' %>
+<% form_for :article, @article, :action => 'create', :html => {:id => 'article-form'} do |f| -%>
+  <%= render :partial => 'form', :object => f %>
   
   <p class="btns">
     <%= submit_tag "Save article" %> or <%= link_to "cancel", :controller => "articles" %>
   </p>
-  
-  <%= end_form_tag %>
+<% end -%>
