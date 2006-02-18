@@ -2,7 +2,7 @@ require 'convert/textpattern/article'
 require 'convert/textpattern/comment'
 module TextPattern
   def self.convert
-    category = Category.find_by_name('home')
+    section = Section.find_by_name('home')
     TextPattern::Article.find(:all, :include => :comments).each do |article|
       a = ::Article.create \
         :title        => article.Title, 
@@ -13,7 +13,7 @@ module TextPattern
         :updated_at   => article.LastMod,
         :user_id      => 1
 
-      a.categorizations.create :category => category
+      a.assigned_sections.create :section => section
 
       article.comments.each do |comment|
         a.comments.create \

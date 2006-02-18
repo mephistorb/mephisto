@@ -2,9 +2,9 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   observe Article
 
   def after_create(record)
-    Category.find(:all).collect { |category| category.to_url }.each do |category|
-      controller.expire_page :categories => category, :controller => '/mephisto', :action => 'list'
-      controller.expire_page :categories => category, :controller => '/feed',     :action => 'feed'
+    Section.find(:all).collect { |section| section.to_url }.each do |section|
+      controller.expire_page :sections => section, :controller => '/mephisto', :action => 'list'
+      controller.expire_page :sections => section, :controller => '/feed',     :action => 'feed'
     end
   end
 

@@ -65,7 +65,7 @@ var Navigate = {
     this.to_url(select, "/admin/templates/edit/");
   },
 
-  to_paged_category: function(select) {
+  to_paged_section: function(select) {
     this.to_url(select, "/admin/pages/edit?id=");
   },
 
@@ -88,37 +88,37 @@ var ArticleForm = {
     Element.hide('article_form_hide');
   },
 
-  toggleCategory: function(category_id) {
-    var category_li = $('article_category_ids_' + category_id)
-    if(Element.hasClassName(category_li, 'selected'))
-      this.removeCategory(category_id, category_li)
+  toggleSection: function(section_id) {
+    var section_li = $('article_section_ids_' + section_id)
+    if(Element.hasClassName(section_li, 'selected'))
+      this.removeSection(section_id, section_li)
     else
-      this.addCategory(category_id, category_li)
+      this.addSection(section_id, section_li)
   },
 
-  addCategory: function(category_id, category_li) {
-    Element.addClassName(category_li, 'selected')
+  addSection: function(section_id, section_li) {
+    Element.addClassName(section_li, 'selected')
     
     var hdn = document.createElement('input')
     hdn.setAttribute('type', 'hidden')
-    hdn.setAttribute('id', 'article_category_ids_value_' + category_id)
-    hdn.setAttribute('name', 'article[category_ids][]')
-    hdn.setAttribute('value', category_id)
-    category_li.appendChild(hdn)
+    hdn.setAttribute('id', 'article_section_ids_value_' + section_id)
+    hdn.setAttribute('name', 'article[section_ids][]')
+    hdn.setAttribute('value', section_id)
+    section_li.appendChild(hdn)
   },
 
-  removeCategory: function(category_id, category_li) {
-    Element.removeClassName(category_li, 'selected')
+  removeSection: function(section_id, section_li) {
+    Element.removeClassName(section_li, 'selected')
     
-    $A(category_li.getElementsByTagName('input')).each(function(input) {
-      category_li.removeChild(input)
+    $A(section_li.getElementsByTagName('input')).each(function(input) {
+      section_li.removeChild(input)
     })
   }
 }
 
-var CategoryForm = {
-  toggle_for_category: function(category) {
-    new Element.toggle('category_' + category + '_name', 'category_' + category + '_form');
+var SectionForm = {
+  toggle_for_section: function(section) {
+    new Element.toggle('section_' + section + '_name', 'section_' + section + '_form');
   }
 }
 

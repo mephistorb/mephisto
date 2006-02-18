@@ -43,13 +43,13 @@ single:
   filename: single
   path: templates
 
-category:
+section:
   id: 5
   db_file_id: 5
   type: Template
   content_type: 'text/liquid'
   size: 1
-  filename: category
+  filename: section
   path: templates
 
 archive:

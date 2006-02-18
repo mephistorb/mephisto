@@ -5,7 +5,7 @@ module Mephisto
 
     def render(context)
       collection = context['pages']
-      @category       = context['category']
+      @section       = context['section']
       @page      = context['article']
       result     = []
       context.stack do
@@ -27,7 +27,7 @@ module Mephisto
     end
     
     def page_url(page, index)
-      "/#{@category}#{'/' + page['permalink'] unless index.zero?}"
+      "/#{@section}#{'/' + page['permalink'] unless index.zero?}"
     end
 
     def page_anchor_options(page, index)

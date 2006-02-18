@@ -5,7 +5,7 @@ require 'admin/articles_controller'
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
 class Admin::ArticlesControllerTest < Test::Unit::TestCase
-  fixtures :contents, :categories, :categorizations, :users
+  fixtures :contents, :sections, :assigned_sections, :users
 
   def setup
     @controller = Admin::ArticlesController.new
@@ -49,23 +49,23 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_show_default_checked_categories
+  def test_should_show_default_checked_sections
     get :new
     assert_response :success
-    assert_tag    :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:home).id.to_s}" }
-    assert_no_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:about).id.to_s}", :checked => 'checked' }
+    assert_tag    :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
+    assert_no_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
   end
 
-  def test_should_show_checked_categories
+  def test_should_show_checked_sections
     get :edit, :id => contents(:welcome).id
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:home).id.to_s}" }
-    assert_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:about).id.to_s}" }
+    assert_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
+    assert_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}" }
 
     get :edit, :id => contents(:another).id
     assert_response :success
-    assert_tag    :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:home).id.to_s}" }
-    assert_no_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:about).id.to_s}", :checked => 'checked' }
+    assert_tag    :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
+    assert_no_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
   end
   
   def test_edit_form_should_have_correct_post_action
@@ -74,23 +74,23 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'form', :attributes => { :action => "/admin/articles/update/#{contents(:welcome).id}" }    
   end
 
-  def test_should_create_article_with_given_categories
-    post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :category_ids => [categories(:home).id] }
+  def test_should_create_article_with_given_sections
+    post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id] }
     assert_redirected_to :action => 'index'
-    assert_equal [categories(:home)], assigns(:article).categories
+    assert_equal [sections(:home)], assigns(:article).sections
   end
 
-  def test_should_update_article_with_no_categories
+  def test_should_update_article_with_no_sections
     post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
     assert_redirected_to :action => 'index'
-    assert_equal [], assigns(:article).categories
+    assert_equal [], assigns(:article).sections
   end
 
-  def test_should_update_article_with_given_categories
-    assert_difference Categorization, :count, -1 do
-      post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :category_ids => [categories(:home).id] }
+  def test_should_update_article_with_given_sections
+    assert_difference AssignedSection, :count, -1 do
+      post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id] }
       assert_redirected_to :action => 'index'
-      assert_equal [categories(:home)], assigns(:article).categories
+      assert_equal [sections(:home)], assigns(:article).sections
     end
   end
 

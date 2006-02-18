@@ -1,5 +1,5 @@
 class Admin::SectionsController < Admin::BaseController
-  cache_sweeper :category_sweeper, :except => :index
+  cache_sweeper :section_sweeper, :except => :index
 
   def index
     @section   = Section.new
@@ -7,21 +7,21 @@ class Admin::SectionsController < Admin::BaseController
   end
 
   def create
-    @category = Category.create(params[:category])
+    @section = Section.create(params[:section])
   end
 
   def destroy
-    Category.find(params[:id]).destroy
+    Section.find(params[:id]).destroy
     render :update do |page|
-      page.visual_effect :drop_out, "category_#{params[:id]}"
+      page.visual_effect :drop_out, "section_#{params[:id]}"
     end
   end
 
   def update
-    (@category = Category.find(params[:id])).update_attributes params[:category]
+    (@section = Section.find(params[:id])).update_attributes params[:section]
     render :update do |page|
-      page.replace_html "category_#{params[:id]}", :partial => 'category'
-      page.visual_effect :highlight, "category_#{params[:id]}"
+      page.replace_html "section_#{params[:id]}", :partial => 'section'
+      page.visual_effect :highlight, "section_#{params[:id]}"
     end
   end
 end

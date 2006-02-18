@@ -5,7 +5,7 @@ require_dependency 'mephisto_controller'
 class MephistoController; def rescue_action(e) raise e end; end
 
 class MephistoControllerTest < Test::Unit::TestCase
-  fixtures :contents, :categories, :categorizations, :attachments
+  fixtures :contents, :sections, :assigned_sections, :attachments
 
   def setup
     @controller = MephistoController.new
@@ -15,8 +15,8 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_routing
     with_options :controller => 'mephisto' do |test|
-      test.assert_routing '',               :action => 'list',   :categories => []
-      test.assert_routing 'about',          :action => 'list',   :categories => ['about']
+      test.assert_routing '',               :action => 'list',   :sections => []
+      test.assert_routing 'about',          :action => 'list',   :sections => ['about']
       test.assert_routing 'search/foo',     :action => 'search', :q => 'foo'
       test.assert_routing '2006',           :action => 'yearly', :year => '2006'
       test.assert_routing '2006/01',        :action => 'month',  :year => '2006', :month => '01'
@@ -27,30 +27,30 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_list_on_home
-    get :list, :categories => []
-    assert_equal categories(:home), assigns(:category)
+    get :list, :sections => []
+    assert_equal sections(:home), assigns(:section)
     assert_equal [contents(:welcome), contents(:another)], assigns(:articles)
   end
 
   def test_should_show_correct_feed_url
-    get :list, :categories => []
+    get :list, :sections => []
     assert_tag :tag => 'link', :attributes => { :type => 'application/atom+xml', :href => '/feed/atom.xml' }
   end
 
-  def test_list_by_categories
-    get :list, :categories => %w(about)
-    assert_equal categories(:about), assigns(:category)
+  def test_list_by_sections
+    get :list, :sections => %w(about)
+    assert_equal sections(:about), assigns(:section)
     assert_equal contents(:welcome), assigns(:article)
   end
 
   def test_should_show_page
-    get :list, :categories => %w(about the-site-map)
-    assert_equal categories(:about), assigns(:category)
+    get :list, :sections => %w(about the-site-map)
+    assert_equal sections(:about), assigns(:section)
     assert_equal contents(:site_map), assigns(:article)
   end
 
   def test_should_render_liquid_templates_on_home
-    get :list, :categories => []
+    get :list, :sections => []
     assert_tag :tag => 'h1', :content => 'This is the layout'
     assert_tag :tag => 'p',  :content => 'home'
     assert_tag :tag => 'h2', :content => contents(:welcome).title
@@ -59,8 +59,8 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'p',  :content => contents(:another).body
   end
 
-  def test_should_render_liquid_templates_by_categories
-    get :list, :categories => %w(about)
+  def test_should_render_liquid_templates_by_sections
+    get :list, :sections => %w(about)
     assert_tag :tag => 'h1', :content => contents(:welcome).title
   end
 
@@ -75,8 +75,8 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal contents(:welcome).to_liquid['id'], assigns(:article)['id']
   end
 
-  def test_should_show_navigation_on_paged_categories
-    get :list, :categories => %w(about)
+  def test_should_show_navigation_on_paged_sections
+    get :list, :sections => %w(about)
     assert_tag :tag => 'ul', :attributes => { :id => 'nav' },
                :children => { :count => 3, :only => { :tag => 'li' } }
     assert_tag :tag => 'ul', :attributes => { :id => 'nav' },

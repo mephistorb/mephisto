@@ -9,10 +9,9 @@ module Typo
     newpass = 'mephistomigrator'
     # migrate users over, sorta ...
     Typo::User.find(:all).each do |user|
-      email = 'foo@bar.com' if user.email.nil?
-      u     = ::User.create \
-        :login                 => user.login, 
-        :email                 => email,
+      email = user.email || 'foo@bar.com'
+      ::User.create_or_create_by_email email,
+        :login                 => user.login,
         :password              => newpass,
         :password_confirmation => newpass
     end
@@ -31,7 +30,7 @@ module Typo
         :published_at => article.created_at,
         :updated_at   => article.updated_at
 
-      article.categories.each { |category| a.categorizations.create :category => ::Category.find_or_create_by_name(category.name) }
+      article.categories.each { |category| user.article.assigned_sections.create :section => ::Section.find_or_create_by_name(category.name) }
 
       Typo::Comment.find_all_by_article_id(article.id).each do |comment|
         user.article.comments.create \

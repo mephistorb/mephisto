@@ -2,10 +2,10 @@ class Article < Content
   validates_presence_of :title, :user_id
 
   before_create :create_permalink
-  after_save    :save_categorizations
+  after_save    :save_assigned_sections
 
-  has_many :categorizations
-  has_many :categories, :through => :categorizations, :order => 'categories.name'
+  has_many :assigned_sections
+  has_many :sections, :through => :assigned_sections, :order => 'sections.name'
   has_many :comments,   :order => 'created_at'
   
   class << self
@@ -47,17 +47,17 @@ class Article < Content
     :published
   end
 
-  def has_category?(category)
-    (new_record? and category.name == 'home') or categories.include? category
+  def has_section?(section)
+    (new_record? and section.name == 'home') or sections.include? section
   end
 
-  def category_ids=(new_categories)
-    categorizations.each do |categorization|
-      new_categories.include?(categorization.category_id.to_s) ?
-        new_categories.delete(new_categories.index(categorization.category_id.to_s)) :
-        categorization.destroy
+  def section_ids=(new_sections)
+    assigned_sections.each do |assigned_section|
+      new_sections.include?(assigned_section.section_id.to_s) ?
+        new_sections.delete(new_sections.index(assigned_section.section_id.to_s)) :
+        assigned_section.destroy
     end
-    @categories_to_save = Category.find(:all, :conditions => ['id in (?)', new_categories]) unless new_categories.blank?
+    @sections_to_save = Section.find(:all, :conditions => ['id in (?)', new_sections]) unless new_sections.blank?
   end
 
   def to_liquid(mode = :list)
@@ -89,8 +89,8 @@ class Article < Content
       .chomp('-').reverse.chomp('-').reverse
   end
 
-  def save_categorizations
-    @categories_to_save.each { |category| categorizations.create :category => category } if @categories_to_save
+  def save_assigned_sections
+    @sections_to_save.each { |section| assigned_sections.create :section => section } if @sections_to_save
   end
 
   def body_for_mode(mode = :list)

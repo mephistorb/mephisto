@@ -11,7 +11,7 @@ class TemplateTest < Test::Unit::TestCase
   def test_preferred_template_hierarchy_sanity
     assert_template_type :home,    :main
     assert_template_type :single,  :single
-    assert_template_type :category, :category
+    assert_template_type :section, :section
     #assert_template_type :page,    :page
     #assert_template_type :author,  :author
     assert_template_type :search,  :search
@@ -19,17 +19,17 @@ class TemplateTest < Test::Unit::TestCase
   end
 
   def test_fallback_templates
-    [:home, :single, :category, :page, :author, :search, :error].each { |n| attachments(n).destroy }
+    [:home, :single, :section, :page, :author, :search, :error].each { |n| attachments(n).destroy }
     assert_template_type :index,   :main
     assert_template_type :index,   :single
-    assert_template_type :archive, :category
+    assert_template_type :archive, :section
     #assert_template_type :index,   :page
     #assert_template_type :archive, :author
     assert_template_type :archive, :search
     #assert_template_type :index,   :error
 
     attachments(:archive).destroy
-    assert_template_type :index, :category
+    assert_template_type :index, :section
     assert_template_type :index, :search
     #assert_template_type :index, :author
   end

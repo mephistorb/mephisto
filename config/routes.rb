@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.feed    'feed/*categories', :controller => 'feed', :action => 'feed'
+  map.feed    'feed/*sections', :controller => 'feed', :action => 'feed'
 
   map.with_options :controller => 'assets', :action => 'show' do |m|
     m.css    'stylesheets/*path', :dir => 'stylesheets'
@@ -31,6 +31,6 @@ ActionController::Routing::Routes.draw do |map|
 
     m.paged_search 'search/:q/page/:page', :action => 'search'
     m.search       'search/:q',            :action => 'search', :q => nil
-    m.category     '*categories',          :action => 'list'
+    m.section     '*sections',          :action => 'list'
   end
 end

@@ -1,12 +1,12 @@
-<% form_remote_for :category, Category.new(:name => 'create category'), 
-     :url => { :action => 'create' }, :html => { :id => 'category_form' } do |f| %>
+<% form_remote_for :section, Section.new(:name => 'create section'), 
+     :url => { :action => 'create' }, :html => { :id => 'section_form' } do |f| %>
   <p>
     <%= f.text_field :name, :onclick => "Form.clear_default_text(this, 'default');", :class => 'default' %>
   </p>
 <% end -%>
 
-<div id="categories">
-<% home = @categories.shift -%>
+<div id="sections">
+<% home = @sections.shift -%>
 <div><%=h home.name %></div>
-<%= render :partial => 'category', :collection => @categories %>
+<%= render :partial => 'section', :collection => @sections %>
 </div>

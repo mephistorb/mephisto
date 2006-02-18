@@ -1,4 +1,4 @@
 <h3>
-  choose a paged category
-  <%= select_tag 'category', options_for_select([''] + Category.find_paged.collect { |t| t.name }), :onchange => "Navigate.to_paged_category(this)" %>
+  choose a paged section
+  <%= select_tag 'section', options_for_select([''] + Section.find_paged.collect { |t| t.name }), :onchange => "Navigate.to_paged_section(this)" %>
 </h3>

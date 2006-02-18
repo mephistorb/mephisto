@@ -48,9 +48,9 @@ single:
     </p>
     {% endcommentform %}
 
-category:
+section:
   id: 5
-  data: "<p>category</p>{% for article in articles %}<h2>{{ article | link_to_article }}</h2><p>{{ article.body }}</p>{% endfor %}"
+  data: "<p>section</p>{% for article in articles %}<h2>{{ article | link_to_article }}</h2><p>{{ article.body }}</p>{% endfor %}"
 archive:
   id: 6
   data: "<p>archive</p>{% for article in articles %}<h2>{{ article | link_to_article }}</h2><p>{{ article.body }}</p>{% endfor %}"

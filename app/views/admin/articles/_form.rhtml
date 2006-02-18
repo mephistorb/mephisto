@@ -9,14 +9,14 @@
     <dd id="x-body" style="display:none"><%= form.text_area :excerpt, :rows => '8', :class => 'fat'  %></dd>
     <dt><label for="article_body">Write your article</label> <span class="hint">(<%= link_to_function 'Add an excerpt', %(Element.toggle('x-lbl', 'x-body')) %>)</span></dt>
     <dd><%= form.text_area :body, :class => 'fat'  %></dd>
-    <dt><label for="article_category">Show article in these categories</label> </dt>
+    <dt><label for="article_section">Show article in these sections</label> </dt>
     <dd>
       <ul class="nobull">
-        <% @categories.each do |category| %>
+        <% @sections.each do |section| %>
           <li>
-            <%= check_box_tag 'article[category_ids][]', category.id, @article.has_category?(category), 
-                  :id => "article_category_ids_#{category.id}" %>
-            <label for="article_category_ids_<%= category.id %>"><%= category.name %></label>
+            <%= check_box_tag 'article[section_ids][]', section.id, @article.has_section?(section), 
+                  :id => "article_section_ids_#{section.id}" %>
+            <label for="article_section_ids_<%= section.id %>"><%= section.name %></label>
           </li>
         <% end %>
       </ul>

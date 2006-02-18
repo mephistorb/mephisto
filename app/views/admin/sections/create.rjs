@@ -1,6 +1,6 @@
-unless @category.new_record?
-  page.insert_html :bottom, 'categories', :partial => 'category'
-  page << "$('category_name').value = ''"
+unless @section.new_record?
+  page.insert_html :bottom, 'sections', :partial => 'section'
+  page << "$('section_name').value = ''"
 else
-  page.visual_effect :shake, 'category_name'
+  page.visual_effect :shake, 'section_name'
 end

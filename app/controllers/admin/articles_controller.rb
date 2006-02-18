@@ -1,12 +1,12 @@
 class Admin::ArticlesController < Admin::BaseController
   with_options :only => [:create, :update] do |c|
-    c.before_filter :set_default_category_ids
+    c.before_filter :set_default_section_ids
     c.before_filter :clear_published_at_fields!
     c.cache_sweeper :article_sweeper
-    c.cache_sweeper :category_sweeper
+    c.cache_sweeper :section_sweeper
   end
 
-  before_filter :load_categories, :only => [:new, :edit]
+  before_filter :load_sections, :only => [:new, :edit]
 
   def index
     @article_pages = Paginator.new self, Article.count, 30, params[:page]
@@ -23,7 +23,7 @@ class Admin::ArticlesController < Admin::BaseController
   def create
     @article = current_user.articles.create params[:article]
     if @article.new_record?
-      load_categories and render :action => 'new'
+      load_sections and render :action => 'new'
     else
       redirect_to :action => 'index'
     end
@@ -38,7 +38,7 @@ class Admin::ArticlesController < Admin::BaseController
     if @article.update_attributes(params[:article])
       redirect_to :action => 'index'
     else
-      @categories = Category.find :all
+      @sections = Section.find :all
       render :action => 'edit'
     end
   end
@@ -48,12 +48,12 @@ class Admin::ArticlesController < Admin::BaseController
   end
   
   protected
-  def load_categories
-    @categories = Category.find :all, :order => 'name'
+  def load_sections
+    @sections = Section.find :all, :order => 'name'
   end
 
-  def set_default_category_ids
-    params[:article][:category_ids] ||= []
+  def set_default_section_ids
+    params[:article][:section_ids] ||= []
   end
 
   def clear_published_at_fields!

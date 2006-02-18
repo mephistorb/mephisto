@@ -3,12 +3,12 @@ class MephistoController < ApplicationController
   caches_page_with_references :list, :search, :show, :date
 
   def list
-    if params[:categories].blank?
-      @category = Category.find_by_name('home')
-      list_category_articles_with(:main)
+    if params[:sections].blank?
+      @section = Section.find_by_name('home')
+      list_section_articles_with(:main)
     else
-      @category, page_name = Category.find_category_and_page_name(params[:categories])
-      @category.show_paged_articles? ? show_category_page_with(page_name, :page) : list_category_articles_with(:category)
+      @section, page_name = Section.find_section_and_page_name(params[:sections])
+      @section.show_paged_articles? ? show_section_page_with(page_name, :page) : list_section_articles_with(:section)
     end
   end
 
@@ -50,27 +50,27 @@ class MephistoController < ApplicationController
   end
 
   protected
-  def list_category_articles_with(template_type)
-    @article_pages = Paginator.new self, @category.articles.size, 15, params[:page]
-    @articles      = @category.articles.find_by_date(
+  def list_section_articles_with(template_type)
+    @article_pages = Paginator.new self, @section.articles.size, 15, params[:page]
+    @articles      = @section.articles.find_by_date(
                        :limit  =>  @article_pages.items_per_page,
                        :offset =>  @article_pages.current.offset)
 
-    self.cached_references << @category
-    render_liquid_template_for(template_type, 'category'           => @category.name, 
-                                              'category_title'     => @category.title,
+    self.cached_references << @section
+    render_liquid_template_for(template_type, 'section'           => @section.name, 
+                                              'section_title'     => @section.title,
                                               'articles'      => @articles,
-                                              'previous_page' => paged_category_url_for(@article_pages.current.previous),
-                                              'next_page'     => paged_category_url_for(@article_pages.current.next))
+                                              'previous_page' => paged_section_url_for(@article_pages.current.previous),
+                                              'next_page'     => paged_section_url_for(@article_pages.current.next))
   end
 
-  def show_category_page_with(page_name, template_type)
-    @article = page_name.nil? ? @category.articles.find_by_position : @category.articles.find_by_permalink(page_name)
+  def show_section_page_with(page_name, template_type)
+    @article = page_name.nil? ? @section.articles.find_by_position : @section.articles.find_by_permalink(page_name)
 
-    self.cached_references << @category << @article
-    render_liquid_template_for(template_type, 'category'       => @category.name, 
-                                              'category_title' => @category.title,
-                                              'pages'     => @category.articles.collect { |a| a.to_liquid },
+    self.cached_references << @section << @article
+    render_liquid_template_for(template_type, 'section'       => @section.name, 
+                                              'section_title' => @section.title,
+                                              'pages'     => @section.articles.collect { |a| a.to_liquid },
                                               'article'   => @article.to_liquid(:single))
   end
 
@@ -82,7 +82,7 @@ class MephistoController < ApplicationController
     page ? paged_monthly_url(:year => params[:year], :month => params[:month], :page => page) : ''
   end
 
-  def paged_category_url_for(page)
-    page ? category_url(:categories => @category.to_url << 'page' << page) : ''
+  def paged_section_url_for(page)
+    page ? section_url(:sections => @section.to_url << 'page' << page) : ''
   end
 end

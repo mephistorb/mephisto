@@ -8,7 +8,7 @@ class Template < Attachment
   @@hierarchy = {
     :main     => [:home,     :index],
     :single   => [:single,   :index],
-    :category => [:category, :archive, :index],
+    :section => [:section, :archive, :index],
     :archive  => [:archive,  :index],
     :page     => [:page,     :single, :index],
     :search   => [:search,   :archive, :index]

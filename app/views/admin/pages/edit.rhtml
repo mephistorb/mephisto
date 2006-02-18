@@ -1,7 +1,7 @@
 <%= render :partial => 'pages' %>
 
 <ul id="articles">
-<% @category.articles.each do |article| -%>
+<% @section.articles.each do |article| -%>
   <li id="article_<%= article.id %>"><%= article.title %></li>
 <% end -%>
 </ul>
