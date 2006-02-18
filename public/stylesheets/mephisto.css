@@ -572,6 +572,16 @@ input[type='text']:focus, textarea:focus {
   border-top: 1px solid #ccc;
 }
 
+dd.avatar {
+  margin: 8px 2px 5px 0;
+  float: left;
+}
+
+img.avatar {
+  padding: 3px;
+  background: #fff;
+  border: 1px solid #ccc;
+}
 
 /*
  *=MISC

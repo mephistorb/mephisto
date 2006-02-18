@@ -161,9 +161,7 @@ Control.Resizer.prototype = {
   onPress: function(event) {
     this.dragging = true;
     var handle = Event.element(event);
-    logger.info(this.leftElement);
     this.initialLeftWidth = Element.getStyle(this.leftElement, 'width');
-    logger.info('pressed' + this.initialLeftWidth);
   },
   
   // Fix dragging to left
@@ -173,7 +171,6 @@ Control.Resizer.prototype = {
       var currentX = Event.pointerX(event);
       var currentY = Event.pointerY(event);
       var offset = currentX - 20;
-      logger.info(currentX, false, true);
       Element.setStyle(this.rightElement, {marginLeft: currentX + "px"});
       Element.setStyle(this.leftElement, {width:  offset + "px"});
     }
@@ -182,7 +179,6 @@ Control.Resizer.prototype = {
   onBlur: function(event) {
     this.dragging = false;
     document.body.style.cursor = 'auto';
-    logger.info('Blurred');
   },
   
   onHover: function(event) {

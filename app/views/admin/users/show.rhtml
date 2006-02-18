@@ -13,7 +13,7 @@
     <dt><label for="user_email">Your email</label></dt>
     <dd><%= f.text_field :email %></dd>
     <% if @user.avatar -%>
-    <dd style="float:left;padding:2px;border:2px solid #000;margin:2px 5px 2px 2px"><%= image_tag "/#{@user.avatar.full_path}" %></dd>
+    <dd class="avatar"><%= avatar_for(@user) %></dd>
     <% end -%>
     <dt><label for="avatar">Your picture</label> <span class="hint">Should be no larger than 75x75 pixels (jpeg, gif, or png)</span></dt>
     <dd><%= file_field_tag :avatar %></dd>
