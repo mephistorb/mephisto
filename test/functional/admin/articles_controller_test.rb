@@ -67,6 +67,12 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_tag    :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:home).id.to_s}" }
     assert_no_tag :tag => 'input', :attributes => { :id => "article_category_ids_#{categories(:about).id.to_s}", :checked => 'checked' }
   end
+  
+  def test_edit_form_should_have_correct_post_action
+    get :edit, :id => contents(:welcome).id
+    assert_response :success
+    assert_tag :tag => 'form', :attributes => { :action => "/admin/articles/update/#{contents(:welcome).id}" }    
+  end
 
   def test_should_create_article_with_given_categories
     post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :category_ids => [categories(:home).id] }
