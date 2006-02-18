@@ -23,19 +23,18 @@ module Typo
         ::User.find(:first) : 
         ::User.find_by_login(Typo::User.find(article.user_id).login)
 
-      a = ::Article.create \
+      user.create_article \
         :title        => article.title, 
         :excerpt      => article.body,
         :body         => article.extended,
         :created_at   => article.created_at,
         :published_at => article.created_at,
-        :updated_at   => article.updated_at,
-        :user_id      => user
+        :updated_at   => article.updated_at
 
       article.categories.each { |category| a.categorizations.create :category => ::Category.find_or_create_by_name(category.name) }
 
       Typo::Comment.find_all_by_article_id(article.id).each do |comment|
-        a.comments << ::Comment.create \
+        user.article.comments.create \
           :body         => comment.body,
           :created_at   => comment.created_at,
           :updated_at   => comment.updated_at,
