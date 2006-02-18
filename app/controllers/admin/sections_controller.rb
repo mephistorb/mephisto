@@ -1,9 +1,9 @@
-class Admin::CategoriesController < Admin::BaseController
+class Admin::SectionsController < Admin::BaseController
   cache_sweeper :category_sweeper, :except => :index
 
   def index
-    @category   = Category.new
-    @categories = Category.find :all
+    @section   = Section.new
+    @sections = Section.find :all
   end
 
   def create
