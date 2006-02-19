@@ -45,6 +45,6 @@ class Admin::SectionsController < Admin::BaseController
 
   def preprocess_section_params
     params[:section][:template] = nil if params[:section][:template] == '0'
-    params[:section][:layout] = nil   if params[:section][:layout]   == '0'
+    params[:section][:layout]   = nil if params[:section][:layout]   == '0'
   end
 end

@@ -19,7 +19,7 @@
     <dt><label for="section_template">Section Template</label></dt>
     <dd>
       <select name="section[template]">
-        <%= options_from_sections_for_select(@templates, @section.template) %>
+        <%= options_from_templates_for_select(@templates, @section.template) %>
       </select>
     </dd>
     <% end -%>
@@ -27,7 +27,7 @@
     <dt><label for="section_layout">Section layout</label></dt>
     <dd>
       <select name="section[layout]">
-        <%= options_from_sections_for_select(@layouts, @section.layout) %>
+        <%= options_from_templates_for_select(@layouts, @section.layout) %>
       </select>
     </dd>
     <% end -%>
