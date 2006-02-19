@@ -33,7 +33,7 @@ class Admin::SectionsController < Admin::BaseController
 
   protected
   def find_and_sort_templates
-    @layouts, @templates = Attachment.find(:all, :conditions => ['type in (?)', %w(Template LayoutTemplate)]).partition { |t| t.layout? }
+    @layouts, @templates = Template.find_custom.partition { |t| t.layout? }
   end
 
   def find_and_reorder_sections

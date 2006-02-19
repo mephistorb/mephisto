@@ -15,18 +15,22 @@
               (@section.show_paged_articles? ? '1' : '0') %>
       </select>
     </dd>
+    <% if @templates.any? -%>
     <dt><label for="section_template">Section Template</label></dt>
     <dd>
       <select name="section[template]">
         <%= options_from_sections_for_select(@templates, @section.template) %>
       </select>
     </dd>
+    <% end -%>
+    <% if @layouts.any? -%>
     <dt><label for="section_layout">Section layout</label></dt>
     <dd>
       <select name="section[layout]">
         <%= options_from_sections_for_select(@layouts, @section.layout) %>
       </select>
     </dd>
+    <% end -%>
     
     <!-- begin blog options -->
     <div id="blog-options"<%= %( style="display:none;") if @section.show_paged_articles? %>>

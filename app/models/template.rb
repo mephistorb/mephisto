@@ -8,12 +8,12 @@ class Template < Attachment
   @@hierarchy = {
     :main    => [:home,     :index],
     :single  => [:single,   :index],
-    :section => [:section, :archive,  :index],
+    :section => [:section,  :archive, :index],
     :archive => [:archive,  :index],
     :page    => [:page,     :single,  :index],
-    :search  => [:search,   :archive, :index]
-    #:author => [:author, :archive, :index],
-    #:error  => [:error,  :index]
+    :search  => [:search,   :archive, :index],
+    :author  => [:author,   :archive, :index],
+    :error   => [:error,    :index]
   }
   @@template_types = @@hierarchy.values.flatten.uniq << :layout
   cattr_reader :hierarchy, :template_types
@@ -33,6 +33,10 @@ class Template < Attachment
       templates ||= templates_for(template_type)
       hierarchy[template_type].each { |name| return templates[name.to_s] if templates[name.to_s] }
       nil
+    end
+
+    def find_custom
+      Attachment.find(:all, :conditions => ['type IN (?) AND filename NOT IN (?)', %w(Template LayoutTemplate), template_types.map(&:to_s)])
     end
   end
 
