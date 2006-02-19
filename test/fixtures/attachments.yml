@@ -10,7 +10,7 @@
 layout:
   id: 1
   db_file_id: 1
-  type: Template
+  type: LayoutTemplate
   content_type: 'text/liquid'
   size: 1
   filename: layout

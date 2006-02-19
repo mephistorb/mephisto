@@ -6,14 +6,14 @@ class Template < Attachment
   before_validation :set_file_path_and_content_type
 
   @@hierarchy = {
-    :main     => [:home,     :index],
-    :single   => [:single,   :index],
-    :section => [:section, :archive, :index],
-    :archive  => [:archive,  :index],
-    :page     => [:page,     :single, :index],
-    :search   => [:search,   :archive, :index]
-    #:author  => [:author, :archive, :index],
-    #:error   => [:error,  :index]
+    :main    => [:home,     :index],
+    :single  => [:single,   :index],
+    :section => [:section, :archive,  :index],
+    :archive => [:archive,  :index],
+    :page    => [:page,     :single,  :index],
+    :search  => [:search,   :archive, :index]
+    #:author => [:author, :archive, :index],
+    #:error  => [:error,  :index]
   }
   @@template_types = @@hierarchy.values.flatten.uniq << :layout
   cattr_reader :hierarchy, :template_types
@@ -34,6 +34,14 @@ class Template < Attachment
       hierarchy[template_type].each { |name| return templates[name.to_s] if templates[name.to_s] }
       nil
     end
+  end
+
+  def system?
+    template_types.include? filename.to_sym
+  end
+
+  def layout?
+    false
   end
 
   def to_param

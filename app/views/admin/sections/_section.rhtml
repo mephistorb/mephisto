@@ -1,11 +1,8 @@
 <li id="section-<%= section.id %>">
   <%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {
-  :url => {
-    :controller => 'sections', 
-    :action => 'remove', 
-    :id => section}, 
-    :confirm => "Are you sure?"}, 
-    :class => 'aicon' %>
+        :url     => { :controller => 'sections', :action => 'destroy', :id => section }, 
+        :confirm => "Are you sure?"}, 
+        :class   => 'aicon' unless section.home? %>
     
-  <%= link_to h(section.name), :action => 'edit' %>
+  <%= link_to h(section.name), :action => 'edit', :id => section %>
 </li>

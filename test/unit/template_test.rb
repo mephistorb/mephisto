@@ -4,7 +4,7 @@ class TemplateTest < Test::Unit::TestCase
   fixtures :attachments, :db_files
 
   def test_should_ignore_resources_and_assets
-    assert_equal 10, Template.count
+    assert_equal 9, Template.count
   end
 
   # Replace this with your real tests.

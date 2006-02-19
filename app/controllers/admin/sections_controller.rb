@@ -1,11 +1,15 @@
 class Admin::SectionsController < Admin::BaseController
   cache_sweeper :section_sweeper, :except => :index
+  before_filter :find_and_sort_templates,   :only => [:index, :edit]
+  before_filter :find_and_reorder_sections, :only => [:index, :edit]
+  before_filter :preprocess_section_params, :only => [:create, :update]
 
   def index
     @section  = Section.new
-    @sections = Section.find :all
-    @home     = @sections.detect { |s| s.name.downcase == 'home' }
-    @sections.delete(@home)
+  end
+
+  def edit
+    @section = Section.find(params[:id])
   end
 
   def create
@@ -15,7 +19,7 @@ class Admin::SectionsController < Admin::BaseController
   def destroy
     Section.find(params[:id]).destroy
     render :update do |page|
-      page.visual_effect :drop_out, "section_#{params[:id]}"
+      page.visual_effect :drop_out, "section-#{params[:id]}"
     end
   end
 
@@ -25,5 +29,22 @@ class Admin::SectionsController < Admin::BaseController
       page.replace_html "section_#{params[:id]}", :partial => 'section'
       page.visual_effect :highlight, "section_#{params[:id]}"
     end
+  end
+
+  protected
+  def find_and_sort_templates
+    @layouts, @templates = Attachment.find(:all, :conditions => ['type in (?)', %w(Template LayoutTemplate)]).partition { |t| t.layout? }
+  end
+
+  def find_and_reorder_sections
+    @sections = Section.find :all
+    @home     = @sections.detect { |s| s.name.downcase == 'home' }
+    @sections.delete  @home
+    @sections.unshift @home
+  end
+
+  def preprocess_section_params
+    params[:section][:template] = nil if params[:section][:template] == '0'
+    params[:section][:layout] = nil   if params[:section][:layout]   == '0'
   end
 end

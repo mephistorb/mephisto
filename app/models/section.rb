@@ -50,7 +50,11 @@ class Section < ActiveRecord::Base
     { :sections => to_url }.merge(options)
   end
 
+  def home?
+    name == 'home'
+  end
+
   def to_url
-    ((name.nil? or name == 'home') ? '' : name).split('/')
+    ((name.nil? or home?) ? '' : name).split('/')
   end
 end

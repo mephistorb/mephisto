@@ -117,8 +117,9 @@ var ArticleForm = {
 }
 
 var SectionForm = {
-  toggle_for_section: function(section) {
-    new Element.toggle('section_' + section + '_name', 'section_' + section + '_form');
+  toggle_settings: function() {
+    Element.toggle('blog-options')
+    Element.toggle('paged-options')
   }
 }
 

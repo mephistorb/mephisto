@@ -16,39 +16,39 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
 
   def test_should_list_sections
     get :index
-    assert_equal 1, assigns(:sections).length # the home section is shifted off
+    assert_equal 2, assigns(:sections).length # the home section is shifted off
   end
 
-  def test_should_create_section
+  def test_should_create_paged_section
     assert_difference Section, :count do
-      post :create, :section => { :name => 'foo' }
+      xhr :post, :create, :section => { :name => 'foo', :show_paged_articles => '0', :template => 'foo', :layout => 'bar' }
       assert_response :success
+      assert             !assigns(:section).show_paged_articles?
+      assert_equal 'foo', assigns(:section).name
+      assert_equal 'foo', assigns(:section).template
+      assert_equal 'bar', assigns(:section).layout
     end
   end
 
-  def test_should_edit_name
-    xhr :post, :update, :id => sections(:home).id, :section => { :name => 'foo' }
-    sections(:home).reload
-    assert_equal 'foo', sections(:home).name
+  def test_should_create_paged_section
+    assert_difference Section, :count do
+      xhr :post, :create, :section => { :name => 'foo', :show_paged_articles => '1', :template => 'foo', :layout => 'bar' }
+      assert_response :success
+      assert assigns(:section).show_paged_articles?
+    end
+  end
+
+  def test_should_edit_section
+    xhr :post, :update, :id => sections(:about).id, :section => { :name => 'foo', :show_paged_articles => '1', :template => 'foo', :layout => 'bar' }
+    sections(:about).reload
+    assert              sections(:about).show_paged_articles?
+    assert_equal 'foo', sections(:about).name
+    assert_equal 'foo', sections(:about).template
+    assert_equal 'bar', sections(:about).layout
   end
 
   def test_should_destroy_section
     xhr :post, :destroy, :id => sections(:home).id
     assert_nil Section.find_by_id(sections(:home).id)
   end
-
-  #def test_should_require_ajax
-  #  get :create, :id => sections(:home).id, :section => { :name => 'gah' }
-  #  assert_redirected_to :action => 'index'
-  #  assert flash[:error]
-  #
-  #  post :create, :id => sections(:home).id, :section => { :name => 'gah' }
-  #  assert_redirected_to :action => 'index'
-  #  assert flash[:error]
-  #end
-  #
-  #def test_should_require_posted_template
-  #  xhr :post, :update, :id => sections(:layout).id
-  #  assert_equal '', @request.body
-  #end
 end

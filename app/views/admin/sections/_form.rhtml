@@ -1,0 +1,48 @@
+<% form_remote_for :section, @section, 
+     :url => { :action => (@section.new_record? ? 'create' : 'update'), :id => @section }, :html => { :id => 'section-form' } do |f| %>
+<div class="group">
+  <dl>
+    <dt><label for="section_name">Name</label></dt>
+    <dd><%= f.text_field :name, :class => 'big' %></dd>
+    <dt>
+      <label for="section_show_paged_articles">Type of Section</label>
+    </dt>
+    <dd>
+      <select id="section_show_paged_articles" name="section[show_paged_articles]" onchange="SectionForm.toggle_settings();">
+        <%= options_for_select [
+              ['Area with multiple articles (blog)', '0'], 
+              ['Area with multiple pages (one article per page)', '1']], 
+              (@section.show_paged_articles? ? '1' : '0') %>
+      </select>
+    </dd>
+    <dt><label for="section_template">Section Template</label></dt>
+    <dd>
+      <select name="section[template]">
+        <%= options_from_sections_for_select(@templates, @section.template) %>
+      </select>
+    </dd>
+    <dt><label for="section_layout">Section layout</label></dt>
+    <dd>
+      <select name="section[layout]">
+        <%= options_from_sections_for_select(@layouts, @section.layout) %>
+      </select>
+    </dd>
+    
+    <!-- begin blog options -->
+    <div id="blog-options"<%= %( style="display:none;") if @section.show_paged_articles? %>>
+      <dt><label for="section_articles_per_page">Articles per page</label></dt>
+      <dd><%= f.text_field :articles_per_page, :class => 'tiny' %></dd>
+    </div>
+    <!-- /end blog options -->
+    
+    <!-- begin paged options (someday we'll get options, i promise)
+    <div id="paged-options"<%= %( style="display:none;") unless @section.show_paged_articles? %>>
+      <dt><label for="section_stuff">Stuff for paged</label></dt>
+      <dd>wee</dd>
+    </div>
+     /end paged options -->
+    
+  </dl>
+</div>
+<p class="btns"><%= submit_tag 'Save Section' %></p>
+<% end -%>

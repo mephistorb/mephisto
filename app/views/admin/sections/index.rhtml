@@ -1,57 +1,9 @@
 <h2>Sections</h2>
-<div class="group">
-<% form_remote_for :section, Section.new, 
-     :url => { :action => 'create' }, :html => { :id => 'section-form' } do |f| %>
-  <dl>
-    <dt><label for="section_name">Name</label></dt>
-    <dd><%= f.text_field :name, :class => 'big' %></dd>
-    <dt>
-      <label for="section_type">Type of Section</label>
-    </dt>
-    <dd>
-      <select id="section-type" name="section[type]" onchange="Element.show($F('section-type') + '-options');">
-        <%= options_for_select [['Area with multiple articles (blog)', 'blog'], ['Area with multiple pages (one article per page)', 'paged']] %>
-      </select>
-    </dd>
-    <dt><label for="section_layout">Section layout</label></dt>
-    <dd>
-      <select name="section[layout]">
-        <%= options_for_select(%w(cool cooler coolest)) %>
-      </select>
-    </dd>
-    
-    <!-- begin blog options -->
-    <span id="blog-options" style="display:none;">
-      <dt><label for="section_article_count">Articles per page</label></dt>
-      <dd><%= f.text_field :name, :class => 'tiny' %></dd>
-    </span>
-    <!-- /end blog options -->
-    
-    <!-- begin paged options -->
-    <span id="paged-options" style="display:none;">
-      <dt><label for="section_stuff">Stuff for paged</label></dt>
-      <dd>wee</dd>
-    </span>
-    <!-- /end paged options -->
-    
-  </dl>
-<% end -%>
-</div>
-<p class="btns"><%= submit_tag 'Save Section' %></p>
-
+<%= render :partial => 'form' %>
 
 <% content_for :sidebar do %>
 <h3>Sections</h3>
 <ul id="sections">
   <%= render :partial => 'section', :collection => @sections %>
-</ul>
-
-<h3 class="tspace">Pages in #{section}</h3>
-<p class="hint">
-  Drag the icons to the left to reorder the way in which these 
-  pages show up in the menu for this section.
-</p>
-<ul id="pages">
-  <%= render :partial => 'page', :collection => %w(pages freakinga) %>
 </ul>
 <% end %>
