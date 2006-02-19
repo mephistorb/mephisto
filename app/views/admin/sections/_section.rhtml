@@ -1,18 +1,11 @@
-<% form_remote_for :section, section, :url => { :action => 'update', :id => section }, 
-  :html => { :class => 'section', :id => "section_#{section.id}"} do |f| -%>
-  <span id="section_<%=section.id%>_name">
-    <%=h section.name %>
-    <% unless section.name == 'home' -%>
-    <%= link_to_function 'Edit', "SectionForm.toggle_for_section('#{section.id}')" %>
-    <%= link_to_remote 'Delete', :url => { :action => 'destroy', :id => section }, 
-          :confirm => "Are you sure you want to delete #{section.name}?" %>
-    <% end -%>
-  </span>
-  <% unless section.name == 'home' -%>
-  <span id="section_<%=section.id%>_form" style="display:none">
-    <%= f.text_field 'name' %>
-    <label><%= f.check_box 'show_paged_articles' %> paged?</label>
-    <%= link_to_function 'cancel', "SectionForm.toggle_for_section('#{section.id}')" %>
-  </span>
-  <% end -%>
-<% end -%>
+<li id="section-<%= section.id %>">
+  <%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {
+  :url => {
+    :controller => 'sections', 
+    :action => 'remove', 
+    :id => section}, 
+    :confirm => "Are you sure?"}, 
+    :class => 'aicon' %>
+    
+  <%= link_to h(section.name), :action => 'edit' %>
+</li>

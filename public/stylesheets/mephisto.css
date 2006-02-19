@@ -74,6 +74,7 @@ a { color: #390; border-bottom: 1px dotted #ccc; text-decoration: none; }
  */
 
 img { border: 0;}
+.tspace { margin-top: 20px;}
 
 /*
  *=FORMS
@@ -305,7 +306,9 @@ input[type='text']:focus, textarea:focus {
   font-family: Helvetica, "Lucida Grande", sans-serif;
 }
 
-#revisions, #resources, #attachments {
+#revisions, #resources, 
+#attachments, #sections, 
+#pages {
   list-style: none;
   margin: 0 20px 0 5px;
 }
@@ -338,17 +341,17 @@ input[type='text']:focus, textarea:focus {
   font-style: normal;
 }
 
-#attachments li a {
+#attachments li a, #sections li a, #pages li a {
   color: #fff;
   border: 0;
   text-decoration: underline;
 }
 
-#attachments li a:hover {
+#attachments li a:hover, #sections li a:hover, #pages li a:hover {
   color: #ccc;
 }
 
-#attachments li {
+#attachments li, #sections li, #pages li {
   display: block;
   list-style: none;
   padding: 5px 8px;
@@ -357,11 +360,11 @@ input[type='text']:focus, textarea:focus {
   border-bottom: 1px dotted #333;
 }
 
-#attachments li img {
+#attachments li img, #sections li img, #pages li img {
   border: 0;
 }
 
-#attachments li a.aicon {
+#attachments li a.aicon, #sections li a.aicon, #pages li a.aicon {
   margin-right: 10px;
 }
 
