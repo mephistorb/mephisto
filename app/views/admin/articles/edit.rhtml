@@ -3,3 +3,36 @@
 <%= render :partial => 'form', :object => f %>
 <p class="btns"><%= submit_tag 'Apply changes' %> or <%= link_to "cancel", :controller => "articles" %></p>
 <% end -%>
+
+
+<% content_for :sidebar do %>
+  <div class="sgroup">
+    <h3>Revisions</h3>
+    <ul id="revisions">
+      <li>
+        <%= check_box_tag 'article', 'blah' %>
+        <%= link_to avatar_for(@article.user), '' %>
+        <h4>Justin Palmer</h4>
+        edited this about 5 minutes ago.
+        <span class="rev-num">3</span>
+        <p class="funct"><a href="#">What changed</a> | <a href="#">Edit</a></p>
+      </li>
+      <li>
+        <%= check_box_tag 'article', 'blah' %>
+        <%= link_to avatar_for(@article.user), '' %>
+        <h4>Rick Olson</h4>
+        edited this about 23 minutes ago.
+        <span class="rev-num">2</span>
+        <p class="funct"><a href="#">What changed</a> | <a href="#">Edit</a></p>
+      </li>
+      <li>
+        <%= check_box_tag 'article', 'blah' %>
+        <%= link_to avatar_for(@article.user), '' %>
+        <h4>Courteney Gasking</h4>
+        edited this about 1 hour ago.
+        <span class="rev-num">1</span>
+        <p class="funct"><a href="#">What changed</a> | <a href="#">Edit</a></p>
+      </li>
+    </ul>
+  </div>
+<% end %>

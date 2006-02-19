@@ -4,5 +4,6 @@
         :confirm => "Are you sure?"}, 
         :class   => 'aicon' unless section.home? %>
     
-  <%= link_to h(section.name), :action => 'edit', :id => section %>
+  <%= link_to h(section.name), {:action => 'edit', :id => section}, :id => "section-#{section.name}" %>
+  <% if section.home? %><span class="hint">(not deletable)</span><% end %>
 </li>

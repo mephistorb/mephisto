@@ -46,7 +46,7 @@ a { color: #390; border-bottom: 1px dotted #ccc; text-decoration: none; }
 
 #sbar {
   margin: 0 0 0 71%;
-  min-height: 400px;
+  height: 100%;
 }
 
 #sbar:after {
@@ -323,12 +323,23 @@ input[type='text']:focus, textarea:focus {
   border-bottom: 1px dotted #333;
 }
 
-#revisions li:hover, #resources li:hover {
+#resources li:hover {
   background: #222;
 }
 
 #revisions li img {
   vertical-align: text-top;
+}
+
+#revisions li {
+  line-height: 140%;
+  position: relative;
+}
+
+#revisions li input[type=checkbox] {
+  position: absolute;
+  top: 50%;
+  left: 0;
 }
 
 #revisions li a, #resources li a { border: none; text-decoration: none; color: #fff;}
@@ -368,6 +379,9 @@ input[type='text']:focus, textarea:focus {
   margin-right: 10px;
 }
 
+a#section-home {
+  margin-left: 29px;
+}
 
 #sbar p, #sbar p.hint {
   padding: 0 5px;
@@ -402,6 +416,43 @@ input[type='text']:focus, textarea:focus {
   margin: 5px 0 !important;
   
 }
+
+#sbar .avatar {
+  background: #111;
+  border: 1px solid #333;
+  float: left;
+  margin: 0 5px 0 15px;
+}
+
+#sbar .sgroup {
+  margin: 0 10px;
+}
+
+#sbar p.funct {
+  margin: 12px 0 0 0;
+  padding: 0;
+  font-style: normal;
+  color: #777;
+}
+
+#sbar p.funct a {
+  color: #9c3;
+}
+
+#sbar p.funct a:hover {
+  color: #fff;
+  background: #360;
+}
+
+.rev-num {
+  position: absolute;
+  top: 10px;
+  left: 100%;
+  font-size: 300%;
+  color: #333;
+  font-family: Georgia, "Times New Roman", sans-serif;
+}
+
 
 /*
  *=ARTICLES
@@ -586,6 +637,37 @@ img.avatar {
   border: 1px solid #ccc;
 }
 
+
+/*
+ *=OVERVIEW
+ */
+
+#quick-stats {
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+}
+
+#quick-stats li {
+  float: left;
+  margin-right: 10px;
+  color: #fff;
+}
+
+#quick-stats li div {
+  height: 70px;
+  text-align: center;
+  vertical-align: middle;
+  width: 75px;
+  padding: 10px;
+  font-size: 200%;
+  font-weight: bold;
+}
+
+#stat-comments {
+  background: #c30;
+}
+
 /*
  *=MISC
  */
@@ -634,6 +716,22 @@ ul.nobull li label {
   width: 25px;
   text-indent: -99999px;
 }
+
+.clear:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.clear {display: inline-table;}
+
+/* Hides from IE-mac \*/
+* html .clear {height: 1%;}
+.clear {display: block;}
+/* End hide from IE-mac */
+
 
 
 /*

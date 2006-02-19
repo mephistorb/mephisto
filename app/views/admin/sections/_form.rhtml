@@ -4,9 +4,7 @@
   <dl>
     <dt><label for="section_name">Name</label></dt>
     <dd><%= f.text_field :name, :class => 'big' %></dd>
-    <dt>
-      <label for="section_show_paged_articles">Type of Section</label>
-    </dt>
+    <dt><label for="section_show_paged_articles">Type of Section</label></dt>
     <dd>
       <select id="section_show_paged_articles" name="section[show_paged_articles]" onchange="SectionForm.toggle_settings();">
         <%= options_for_select [

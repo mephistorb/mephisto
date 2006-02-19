@@ -30,7 +30,7 @@
 <dl class="optional">
   <dt><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
   <dd><%= datetime_select 'article', 'published_at', :discard_year => true %></dd>
-  <dt><%= check_box_tag 'article_published', '1', (@article.new_record? or @article.published?) %> <label for="article_published">Published on live site</label></dt>
+  <dt><%= check_box_tag 'article_published', '1', (@article.new_record? or @article.published?) %> <label for="article_published">Published on live site</label> <span class="hint">(Uncheck to store draft)</span></dt>
   <dd></dd>
   <dt><label for="article_permalink">Permanent link</label></dt>
   <dd><%= form.text_field :permalink %></dd>
