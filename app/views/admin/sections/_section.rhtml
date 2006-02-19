@@ -2,9 +2,11 @@
   :html => { :class => 'section', :id => "section_#{section.id}"} do |f| -%>
   <span id="section_<%=section.id%>_name">
     <%=h section.name %>
+    <% unless section.name == 'home' -%>
     <%= link_to_function 'Edit', "SectionForm.toggle_for_section('#{section.id}')" %>
     <%= link_to_remote 'Delete', :url => { :action => 'destroy', :id => section }, 
           :confirm => "Are you sure you want to delete #{section.name}?" %>
+    <% end -%>
   </span>
   <% unless section.name == 'home' -%>
   <span id="section_<%=section.id%>_form" style="display:none">

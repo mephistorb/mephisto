@@ -6,7 +6,6 @@
 <% end -%>
 
 <div id="sections">
-<% home = @sections.shift -%>
-<div><%=h home.name %></div>
+<div><%=h @home.name %></div>
 <%= render :partial => 'section', :collection => @sections %>
 </div>

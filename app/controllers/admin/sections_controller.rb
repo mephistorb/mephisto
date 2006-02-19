@@ -2,8 +2,10 @@ class Admin::SectionsController < Admin::BaseController
   cache_sweeper :section_sweeper, :except => :index
 
   def index
-    @section   = Section.new
+    @section  = Section.new
     @sections = Section.find :all
+    @home     = @sections.detect { |s| s.name.downcase == 'home' }
+    @sections.delete(@home)
   end
 
   def create
