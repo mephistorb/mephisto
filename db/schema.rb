@@ -2,7 +2,13 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 11) do
+ActiveRecord::Schema.define(:version => 12) do
+
+  create_table "assigned_sections", :force => true do |t|
+    t.column "article_id", :integer
+    t.column "section_id", :integer
+    t.column "position", :integer, :default => 1
+  end
 
   create_table "attachments", :force => true do |t|
     t.column "type", :string, :limit => 15
@@ -22,17 +28,6 @@ ActiveRecord::Schema.define(:version => 11) do
     t.column "url", :string
     t.column "references", :text
     t.column "updated_at", :datetime
-  end
-
-  create_table "categories", :force => true do |t|
-    t.column "name", :string
-    t.column "show_paged_articles", :boolean, :default => false
-  end
-
-  create_table "categorizations", :force => true do |t|
-    t.column "article_id", :integer
-    t.column "category_id", :integer
-    t.column "position", :integer, :default => 1
   end
 
   create_table "contents", :force => true do |t|
@@ -58,6 +53,11 @@ ActiveRecord::Schema.define(:version => 11) do
 
   create_table "db_files", :force => true do |t|
     t.column "data", :binary
+  end
+
+  create_table "sections", :force => true do |t|
+    t.column "name", :string
+    t.column "show_paged_articles", :boolean, :default => false
   end
 
   create_table "sessions", :force => true do |t|

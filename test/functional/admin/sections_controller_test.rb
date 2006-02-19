@@ -2,13 +2,13 @@ require File.dirname(__FILE__) + '/../../test_helper'
 require 'admin/sections_controller'
 
 # Re-raise errors caught by the controller.
-class Admin::CategoriesController; def rescue_action(e) raise e end; end
+class Admin::SectionsController; def rescue_action(e) raise e end; end
 
-class Admin::CategoriesControllerTest < Test::Unit::TestCase
+class Admin::SectionsControllerTest < Test::Unit::TestCase
   fixtures :sections, :users
 
   def setup
-    @controller = Admin::CategoriesController.new
+    @controller = Admin::SectionsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     login_as :quentin
