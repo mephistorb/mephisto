@@ -5,7 +5,7 @@ require 'admin/design_controller'
 class Admin::DesignController; def rescue_action(e) raise e end; end
 
 class Admin::DesignControllerTest < Test::Unit::TestCase
-  fixtures :attachments, :db_files, :users
+  fixtures :attachments, :db_files, :users, :sections
   def setup
     @controller = Admin::DesignController.new
     @request    = ActionController::TestRequest.new
@@ -19,6 +19,14 @@ class Admin::DesignControllerTest < Test::Unit::TestCase
       t = Template.find :first, :order => 'id desc'
       assert_equal 'templates/my_little_pony', t.full_path
       assert_redirected_to :controller => 'admin/templates', :action => 'edit', :id => 'my_little_pony'
+    end
+  end
+
+  def test_should_create_template_and_not_sweep_caches
+    set_controller_url :index
+    create_cached_page_for sections(:home), section_url(:sections => [])
+    assert_not_expire_page_caches section_url(:sections => []) do
+      post :create, :resource => { :data => 'this is liquid', :filename => 'my_little_pony' }, :resource_type => 'template'
     end
   end
 

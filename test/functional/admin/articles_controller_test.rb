@@ -11,6 +11,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     @controller = Admin::ArticlesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    prepare_for_caching
     login_as :quentin
   end
 
@@ -36,6 +37,14 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
       assert_redirected_to :action => 'index'
       assert !assigns(:article).published?
+    end
+  end
+
+  def test_should_create_article_and_expire_cache
+    set_controller_url :new
+    create_cached_page_for sections(:home), section_url(:sections => [])
+    assert_expire_page_caches section_url(:sections => []) do
+      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
     end
   end
 

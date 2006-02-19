@@ -5,7 +5,7 @@ require 'admin/templates_controller'
 class Admin::TemplatesController; def rescue_action(e) raise e end; end
 
 class Admin::TemplatesControllerTest < Test::Unit::TestCase
-  fixtures :attachments, :db_files, :users
+  fixtures :attachments, :db_files, :users, :cached_pages, :sections
 
   def setup
     @controller = Admin::TemplatesController.new
@@ -45,5 +45,13 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
     assert_response :success
     attachments(:layout).reload
     assert_equal 'foo', attachments(:layout).filename
+  end
+
+  def test_should_save_template_and_sweep_caches
+    set_controller_url :index
+    create_cached_page_for sections(:home), section_url(:sections => [])
+    assert_expire_page_caches section_url(:sections => []) do
+      post :update, :id => attachments(:layout).filename, :template => { :filename => 'foo' }
+    end
   end
 end

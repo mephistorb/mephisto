@@ -11,6 +11,7 @@ class MephistoControllerTest < Test::Unit::TestCase
     @controller = MephistoController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    prepare_for_caching
   end
 
   def test_routing
@@ -30,6 +31,11 @@ class MephistoControllerTest < Test::Unit::TestCase
     get :list, :sections => []
     assert_equal sections(:home), assigns(:section)
     assert_equal [contents(:welcome), contents(:another)], assigns(:articles)
+  end
+
+  def test_should_cache_list
+    get :list, :sections => []
+    assert_page_cached section_url(:sections => [])
   end
 
   def test_should_show_correct_feed_url

@@ -16,7 +16,7 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
 
   def test_should_list_sections
     get :index
-    assert_equal 2, assigns(:sections).length # the home section is shifted off
+    assert_equal 2, assigns(:sections).length
   end
 
   def test_should_create_paged_section

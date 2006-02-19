@@ -31,6 +31,6 @@ ActionController::Routing::Routes.draw do |map|
 
     m.paged_search 'search/:q/page/:page', :action => 'search'
     m.search       'search/:q',            :action => 'search', :q => nil
-    m.section     '*sections',          :action => 'list'
+    m.section     '*sections',             :action => 'list'
   end
 end
