@@ -15,7 +15,7 @@
 <p class="hint">Select an image to use in your template.</p>
 <ul id="attachments">
   <% @images.each do |image| -%>
-    <li id="image-<%= image.id %>"><%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {:url => {:controller => 'resources', :action => 'remove', :id => image}}, :class => 'aicon' %> <%= link_to image.full_path, :controller => 'resources', :action => 'show', :id => image %></li>
+    <li id="image-<%= image.id %>"><%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {:url => {:controller => 'resources', :action => 'remove', :id => image}}, :class => 'aicon', :title => 'Delete image' %> <%= link_to image.full_path, :controller => 'resources', :action => 'show', :id => image %></li>
   <% end -%>
 </ul>
 
@@ -26,10 +26,11 @@
     <dt>
       <label for="resource_uploaded_data">Upload new image</label>
       <p class="hint">Upload images to use in your templates</p>
+      <span style="display:none;" id="upload-spinner"><img src="/images/icons/spinner-black.gif" /> uploading...</span>
     </dt>
     <dd>
       1. <%= f.file_field :uploaded_data %><br />
-      2. <%= submit_tag 'Upload' %>
+      2. <%= submit_tag 'Upload', :onclick => "Element.show('upload-spinner')" %>
     </dd>
   </dl>
   <% end -%>
