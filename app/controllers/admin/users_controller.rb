@@ -19,4 +19,9 @@ class Admin::UsersController < Admin::BaseController
       render :action => 'show'
     end
   end
+  
+  def new
+    @user = User.new
+  end
+  
 end

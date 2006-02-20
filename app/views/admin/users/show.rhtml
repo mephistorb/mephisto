@@ -1,34 +1,3 @@
 <h2>Hola, <%=h @user.login %>!</h2>
-<% form_for :user, @user, :action => 'update', :id => @user, :html => { :multipart => true } do |f| -%>
+<%= render :partial => 'form' %>
 
-<div class="setgroup">
-  <h3>All about you</h3>
-  <dl class="setform">
-    <dt><label for="user_filters">What markup type do you prefer?</label></dt>
-    <dd>
-      <select name="user[filters][]" id="user_filters">
-        <%= options_for_select(['Markdown', 'Textile', ['Markdown with Smarty Pants', 'smartypants'], ['Plain HTML', '']], (@user.filters || []).first) %>
-      </select>
-    </dd>
-    <dt><label for="user_email">Your email</label></dt>
-    <dd><%= f.text_field :email %></dd>
-    <% if @user.avatar -%>
-    <dd class="avatar"><%= avatar_for(@user) %></dd>
-    <% end -%>
-    <dt><label for="avatar">Your picture</label> <span class="hint">Should be no larger than 75x75 pixels (jpeg, gif, or png)</span></dt>
-    <dd><%= file_field_tag :avatar %></dd>
-  </dl>
-</div>
-
-<div class="setgroup">
-  <h3>Change your password</h3>
-  <p class="hint">Leave this blank if you don't want to change your password.</p>
-  <dl class="setform">
-    <dt><%= f.label_for  :password %></dt>
-    <dd><%= f.text_field :password %></dd>
-    <dt><%= f.label_for  :password_confirmation %></dt>
-    <dd><%= f.text_field :password_confirmation %></dd>
-  </dl>
-</div>
-<p class="btns"><%= submit_tag 'Save my profile' %></p>
-<% end -%>

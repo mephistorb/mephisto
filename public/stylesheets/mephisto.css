@@ -626,6 +626,11 @@ a#section-home {
   border-top: 1px solid #ccc;
 }
 
+#users li .avatar {
+  float: left;
+  margin-right: 5px;
+}
+
 dd.avatar {
   margin: 8px 2px 5px 0;
   float: left;

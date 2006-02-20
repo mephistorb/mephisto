@@ -1,8 +1,16 @@
 <h2>People on the inside</h2>
+<!-- begin action nav -->
+<ul id="act-nav">
+  <li><%= link_to "Add new user", :action => "new" %></li>
+</ul>
+<!-- /end action nav -->
+
 <ul id="users">
 <% @users.each do |user| -%>
   <li>
+    <%= avatar_for user %>
     <h3><%= link_to user.login, :action => 'show', :id => user %></h3>
+    <%= user.email %>
   </li>
 <% end -%>
 </ul>
