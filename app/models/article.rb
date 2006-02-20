@@ -6,7 +6,7 @@ class Article < Content
 
   has_many :assigned_sections
   has_many :sections, :through => :assigned_sections, :order => 'sections.name'
-  has_many :comments,   :order => 'created_at'
+  has_many :comments, :order   => 'created_at'
   
   class << self
     def find_by_permalink(year, month, day, permalink)
