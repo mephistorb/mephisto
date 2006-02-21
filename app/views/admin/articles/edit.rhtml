@@ -11,7 +11,7 @@
     <ul id="revisions">
       <li>
         <%= check_box_tag 'article', 'blah' %>
-        <%= link_to avatar_for(@article.user), '' %>
+        <%= link_to avatar_for(@article.user), '' if @article.user.avatar %>
         <h4>Justin Palmer</h4>
         edited this about 5 minutes ago.
         <span class="rev-num">3</span>
@@ -19,7 +19,7 @@
       </li>
       <li>
         <%= check_box_tag 'article', 'blah' %>
-        <%= link_to avatar_for(@article.user), '' %>
+        <%= link_to avatar_for(@article.user), '' if @article.user.avatar %>
         <h4>Rick Olson</h4>
         edited this about 23 minutes ago.
         <span class="rev-num">2</span>
@@ -27,7 +27,7 @@
       </li>
       <li>
         <%= check_box_tag 'article', 'blah' %>
-        <%= link_to avatar_for(@article.user), '' %>
+        <%= link_to avatar_for(@article.user), '' if @article.user.avatar %>
         <h4>Courteney Gasking</h4>
         edited this about 1 hour ago.
         <span class="rev-num">1</span>
