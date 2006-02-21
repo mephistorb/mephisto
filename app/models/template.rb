@@ -15,12 +15,13 @@ class Template < Attachment
     :author  => [:author,   :archive, :index],
     :error   => [:error,    :index]
   }
-  @@template_types = @@hierarchy.values.flatten.uniq << :layout
-  cattr_reader :hierarchy, :template_types
+  @@template_classes = %w(Template LayoutTemplate)
+  @@template_types   = @@hierarchy.values.flatten.uniq << :layout
+  cattr_reader :hierarchy, :template_types, :template_classes
 
   class << self
     def find_all_by_filename(template_type)
-      find_with_data(:all, :conditions => ['filename IN (?)', (hierarchy[template_type] + [:layout]).collect { |v| v.to_s }])
+      Attachment.find_with_data(:all, :conditions => ['filename IN (?) AND type IN (?)', (hierarchy[template_type] + [:layout]).collect { |v| v.to_s }, template_classes])
     end
 
     def templates_for(template_type)
@@ -36,7 +37,7 @@ class Template < Attachment
     end
 
     def find_custom
-      Attachment.find(:all, :conditions => ['type IN (?) AND filename NOT IN (?)', %w(Template LayoutTemplate), template_types.map(&:to_s)])
+      Attachment.find(:all, :conditions => ['type IN (?) AND filename NOT IN (?)', template_classes, template_types.map(&:to_s)])
     end
   end
 

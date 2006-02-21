@@ -7,7 +7,23 @@ class TemplateTest < Test::Unit::TestCase
     assert_equal 9, Template.count
   end
 
-  # Replace this with your real tests.
+  def test_should_select_correct_templates
+    {:main    => [:home, :index],
+     :single  => [:single, :index],
+     :section => [:section, :archive, :index],
+     :archive => [:archive, :index],
+     :page    => [:page, :single, :index],
+     :search  => [:search, :archive, :index],
+     :author  => [:author,  :archive, :index],
+     :error   => [:error, :index]}.each do |template_type, filenames|
+       templates = Template.templates_for(template_type)
+       (filenames << :layout).each do |filename|
+         assert templates[filename.to_s], "#{filename} does not exist for #{template_type}"
+       end
+    end
+  end
+
+
   def test_preferred_template_hierarchy_sanity
     assert_template_type :home,    :main
     assert_template_type :single,  :single
