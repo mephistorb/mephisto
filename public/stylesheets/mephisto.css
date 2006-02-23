@@ -494,6 +494,15 @@ a#section-home {
   color: #093;
 }
 
+#invite {
+  background: url(../images/icons/review.gif) 0 50% no-repeat;
+  padding: 5px 5px 5px 20px;
+  border: none;
+}
+
+#invite:hover {
+  color: #000;
+}
 
 /*
  *=LIVE PREVIEW
@@ -715,6 +724,13 @@ ul.nobull li {
 
 ul.nobull li label {
   font-weight: normal;
+}
+
+.indent-box {
+  margin-left: 20px;
+  border-left: 5px solid #ccc;
+  padding: 10px;
+  background: #eee;
 }
 
 .small-col {
