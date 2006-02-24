@@ -223,19 +223,28 @@ input[type='text']:focus, textarea:focus {
   text-shadow: none;
 }
 
+#page-nav {
+  background: #555;
+  margin: 20px 0;
+  color: #fff;
+}
+
 #act-nav {
   list-style: none;
-  margin: 10px 0 40px 0;
+  margin: 5px 10px;
 } 
 
 #act-nav li a {
-  color: #036;
+  color: #eee;
   padding: 2px 5px;
+  font-weight: bold;
+  text-shadow: 2px 2px #333;
+  border: 0;
 }
 
 #act-nav li a:hover {
-  background: #036;
   color: #fff;
+  text-shadow: 2px 2px #555;
 }
 
 /* Commented Backslash Hack
@@ -472,7 +481,7 @@ a#section-home {
 }
 
 #article-list td {
-  padding: 5px 10px;
+  padding: 8px 10px;
   border-bottom: 1px dotted #ccc;
 }
 
@@ -630,9 +639,7 @@ a#section-home {
 
 #users li {
   background: #eee;
-  padding: 10px;
   margin: 0 0 10px 0;
-  border-top: 1px solid #ccc;
 }
 
 #users li .avatar {

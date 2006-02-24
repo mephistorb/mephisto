@@ -1,13 +1,15 @@
 <h2>Your Articles</h2>
 
 <!-- begin action nav -->
-<ul id="act-nav">
-  <li><%= link_to "Create new article", :action => "new" %></li>
-</ul>
+<div class="round" id="page-nav">
+  <ul id="act-nav">
+    <li><%= link_to "Create new article", :action => "new" %></li>
+  </ul>
+</div>
 <!-- /end action nav -->
 
 <!-- begin article list -->
-<table id="article-list">
+<table id="article-list" cellspacing="0" cellpadding="0">
   <thead>
     <tr>
       <th scope="col" class="small-col">Status</th>

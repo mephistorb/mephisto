@@ -10,7 +10,7 @@ module Typo
     # migrate users over, sorta ...
     Typo::User.find(:all).each do |user|
       email = user.email || 'foo@bar.com'
-      ::User.create_or_create_by_email email,
+      ::User.find_or_create_by_email email,
         :login                 => user.login,
         :password              => newpass,
         :password_confirmation => newpass
@@ -24,8 +24,8 @@ module Typo
 
       user.create_article \
         :title        => article.title, 
-        :excerpt      => article.body,
-        :body         => article.extended,
+        :excerpt      => article.excerpt,
+        :body         => article.body,
         :created_at   => article.created_at,
         :published_at => article.created_at,
         :updated_at   => article.updated_at
