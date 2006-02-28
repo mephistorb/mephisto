@@ -13,6 +13,16 @@ class SectionTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_return_correct_url_paths
+    assert_equal [],        sections(:home).to_url
+    assert_equal ['about'], sections(:about).to_url
+  end
+
+  def test_should_return_correct_feed_url_paths
+    assert_equal ['atom.xml'],          sections(:home).to_feed_url
+    assert_equal ['about', 'atom.xml'], sections(:about).to_feed_url
+  end
+
   def test_articles_association_by_published_at
     assert_equal [contents(:welcome), contents(:another)], sections(:home).articles.find_by_date
   end
@@ -31,7 +41,7 @@ class SectionTest < Test::Unit::TestCase
   def test_should_find_section_with_permalink_extra
     assert_equal [sections(:about), nil],   Section.find_section_and_page_name(%w(about))
     assert_equal [sections(:about), 'foo'], Section.find_section_and_page_name(%w(about foo))
-    assert_equal [nil, 'foo'],                Section.find_section_and_page_name(%w(foo))
+    assert_equal [nil, 'foo'],              Section.find_section_and_page_name(%w(foo))
   end
 
   def test_should_include_home_section_by_default
@@ -59,7 +69,7 @@ class SectionTest < Test::Unit::TestCase
 
   def test_should_update_article_with_no_sections
     assert_equal [sections(:about), sections(:home)], contents(:welcome).sections
-    contents(:welcome).update_attribute :section_ids, []
+    contents(:welcome).update_attributes :section_ids => []
     assert_equal [], contents(:welcome).sections(true)
   end
 

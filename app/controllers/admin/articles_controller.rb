@@ -23,7 +23,8 @@ class Admin::ArticlesController < Admin::BaseController
   def create
     @article = current_user.articles.create params[:article]
     if @article.new_record?
-      load_sections and render :action => 'new'
+      load_sections
+      render :action => 'new'
     else
       redirect_to :action => 'index'
     end

@@ -57,4 +57,8 @@ class Section < ActiveRecord::Base
   def to_url
     ((name.nil? or home?) ? '' : name).split('/')
   end
+
+  def to_feed_url
+    to_url << 'atom.xml'
+  end
 end

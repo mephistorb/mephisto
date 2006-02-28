@@ -52,12 +52,7 @@ class Article < Content
   end
 
   def section_ids=(new_sections)
-    assigned_sections.each do |assigned_section|
-      new_sections.include?(assigned_section.section_id.to_s) ?
-        new_sections.delete(new_sections.index(assigned_section.section_id.to_s)) :
-        assigned_section.destroy
-    end
-    @sections_to_save = Section.find(:all, :conditions => ['id in (?)', new_sections]) unless new_sections.blank?
+    @new_sections = new_sections
   end
 
   def to_liquid(mode = :list)
@@ -90,7 +85,15 @@ class Article < Content
   end
 
   def save_assigned_sections
-    @sections_to_save.each { |section| assigned_sections.create :section => section } if @sections_to_save
+    return if @new_sections.nil?
+    assigned_sections.each do |assigned_section|
+      @new_sections.include?(assigned_section.section_id.to_s) ?
+        @new_sections.delete(@new_sections.index(assigned_section.section_id.to_s)) :
+        assigned_section.destroy
+    end
+    Section.find(:all, :conditions => ['id in (?)', @new_sections]).each { |section| assigned_sections.create :section => section }
+    sections.reset
+    @new_sections = nil
   end
 
   def body_for_mode(mode = :list)
