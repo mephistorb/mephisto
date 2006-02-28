@@ -2,7 +2,7 @@
 module ApplicationHelper
   
   def avatar_for(user, options = {})
-    image_tag "/#{user.avatar.full_path}", {:class => 'avatar'}.merge(options)
+    image_tag "/#{user.avatar.full_path}", {:class => 'avatar'}.merge(options) if user.avatar
   end
   
 end

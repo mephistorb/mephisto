@@ -13,6 +13,11 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     login_as :quentin
   end
 
+  def test_should_not_explode_on_index
+    get :index
+    assert_response :success
+  end
+
   def test_should_update_email_and_password
     post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }
     users(:quentin).reload
