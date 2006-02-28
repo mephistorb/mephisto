@@ -46,3 +46,41 @@ class Test::Unit::TestCase
     Technoweenie::FileUpload.new(options[:filename] || 'rails.png', options[:content_type] || 'image/png')
   end
 end
+
+class ActionController::IntegrationTest
+  undef :assert_redirected_to rescue nil
+  def login_as(user, session = @integration_session)
+    session.login_as users(user).login, users(user).login
+  end
+
+  def get_and_login_as(user, url, session = @integration_session)
+    session.get_and_login_as users(user).login, users(user).login, url
+  end
+end
+
+class ActionController::Integration::Session
+  def login_as(login, password)
+    post '/account/login', :login => login, :password => password
+    assert request.session[:user]
+    assert cookies['user']
+    assert redirect?
+    follow_redirect!
+  end
+
+  def get_and_login_as(login, password, url)
+    get url
+    assert_redirected_to! '/account/login'
+    login_as login, password
+    assert_equal url, path
+  end
+
+  def assert_redirected_to(url)
+    assert redirect?
+    assert_equal url, interpret_uri(headers["location"].first)
+  end
+
+  def assert_redirected_to!(url)
+    assert_redirected_to(url)
+    follow_redirect!
+  end
+end
