@@ -1,11 +1,11 @@
-<% form_for :user, @user, :action => 'update', :id => @user, :html => { :multipart => true } do |f| -%>
+<% form_for :user, @user, :url => { :action => 'update', :id => @user }, :html => { :multipart => true } do |f| -%>
 <div class="setgroup">
   <h3>All about you</h3>
   <dl class="setform">
     <dt><label for="user_filters">What markup type do you prefer?</label></dt>
     <dd>
       <select name="user[filters][]" id="user_filters">
-        <%= options_for_select(['Markdown', 'Textile', ['Markdown with Smarty Pants', 'smartypants'], ['Plain HTML', '']], (@user.filters || []).first) %>
+        <%= options_for_select([['Plain HTML', ''], 'markdown', 'textile', ['markdown with smarty pants', 'smartypants']], (@user.filters || []).first.to_s) %>
       </select>
     </dd>
     <dt><label for="user_email">Your email</label></dt>

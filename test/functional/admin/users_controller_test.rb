@@ -51,4 +51,23 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
       assert_redirected_to :action => 'show', :id => users(:quentin).login
     end
   end
+
+  def test_should_show_correct_form_action
+    get :show, :id => 'quentin'
+    assert_tag :tag => 'form', :attributes => { :action => '/admin/users/update/quentin' }
+  end
+
+  def test_should_highlight_correct_filter
+    get :show, :id => 'quentin'
+    assert_tag :tag => 'select', :attributes => { :id => 'user_filters' },
+      :descendant => { :tag => 'option', :attributes => { :selected => 'selected' }, :content => 'textile' }
+    get :show, :id => 'arthur'
+    assert_tag :tag => 'select', :attributes => { :id => 'user_filters' },
+      :descendant => { :tag => 'option', :attributes => { :selected => 'selected' }, :content => 'markdown' }
+  end
+
+  def test_should_save_new_filter
+    post :update, :id => 'quentin', :user => { :filters => ['markdown'] }
+    assert_equal 'textile', users(:quentin).filters.first
+  end
 end
