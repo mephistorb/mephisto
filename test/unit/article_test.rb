@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ArticleTest < Test::Unit::TestCase
-  fixtures :contents
+  fixtures :contents, :users
 
   def test_should_create_permalink
     a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :body => 'foo', :user_id => 1
@@ -35,5 +35,10 @@ class ArticleTest < Test::Unit::TestCase
     a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :user_id => 1, :excerpt => '*foo*', :body => '_bar_'
     assert_equal '<p><strong>foo</strong></p>', a.excerpt_html
     assert_equal '<p><em>bar</em></p>',         a.body_html
+  end
+
+  def test_should_save_filters_from_user
+    a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :user_id => 1, :excerpt => '*foo*', :body => '_bar_'
+    assert_equal :textile, a.filters.first
   end
 end

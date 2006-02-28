@@ -2,6 +2,7 @@ class Article < Content
   validates_presence_of :title, :user_id
 
   before_create :create_permalink
+  before_create :set_filter_from_user
   after_save    :save_assigned_sections
 
   has_many :assigned_sections
@@ -82,6 +83,10 @@ class Article < Content
       .gsub(/['"]/, '')                   \
       .gsub(/(\W|\ )+/, '-')              \
       .chomp('-').reverse.chomp('-').reverse
+  end
+
+  def set_filter_from_user
+    self.filters = user.filters if filters.nil?
   end
 
   def save_assigned_sections
