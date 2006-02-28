@@ -67,6 +67,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_show_default_checked_sections
     get :new
     assert_response :success
+    assert_tag    :tag => 'form',  :attributes => { :action => '/admin/articles/create' }
     assert_tag    :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
     assert_no_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
   end
