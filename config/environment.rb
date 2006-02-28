@@ -65,6 +65,8 @@ Liquid::Template.register_tag('commentform',    Mephisto::CommentForm)
 Liquid::Template.register_tag('pagenavigation', Mephisto::PageNavigation)
 Liquid::Template.register_tag('head',           Mephisto::Head)
 
+FilteredColumn.constant_filters << :macro_filter
+
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
   :standard => '%B %d, %Y @ %I:%M%p'
 

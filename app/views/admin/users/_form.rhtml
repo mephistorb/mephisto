@@ -5,7 +5,7 @@
     <dt><label for="user_filters">What markup type do you prefer?</label></dt>
     <dd>
       <select name="user[filters][]" id="user_filters">
-        <%= options_for_select([['Plain HTML', ''], 'markdown', 'textile', ['markdown with smarty pants', 'smartypants']], (@user.filters || []).first.to_s) %>
+        <%= options_for_select(filter_options, (@user.filters || []).first.to_s) %>
       </select>
     </dd>
     <dt><label for="user_email">Your email</label></dt>

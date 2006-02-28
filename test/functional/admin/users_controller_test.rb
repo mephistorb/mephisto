@@ -60,14 +60,15 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
   def test_should_highlight_correct_filter
     get :show, :id => 'quentin'
     assert_tag :tag => 'select', :attributes => { :id => 'user_filters' },
-      :descendant => { :tag => 'option', :attributes => { :selected => 'selected' }, :content => 'textile' }
+      :descendant => { :tag => 'option', :attributes => { :selected => 'selected', :value => 'textile_filter' } }
     get :show, :id => 'arthur'
     assert_tag :tag => 'select', :attributes => { :id => 'user_filters' },
-      :descendant => { :tag => 'option', :attributes => { :selected => 'selected' }, :content => 'markdown' }
+      :descendant => { :tag => 'option', :attributes => { :selected => 'selected', :value => 'markdown_filter' } }
   end
 
   def test_should_save_new_filter
-    post :update, :id => 'quentin', :user => { :filters => ['markdown'] }
-    assert_equal 'textile', users(:quentin).filters.first
+    post :update, :id => 'quentin', :user => { :filters => ['markdown_filter'] }
+    users(:quentin).reload
+    assert_equal :markdown_filter, users(:quentin).filters.first
   end
 end
