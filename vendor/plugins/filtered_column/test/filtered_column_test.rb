@@ -28,7 +28,7 @@ class FilteredColumnTest < Test::Unit::TestCase
   end
 
   def test_should_call_only_textile
-    assert_filters_called_on Article, :textile_filter do
+    assert_filters_called_on Article, :textile_filter, :macro_filter do
       Article.new(:textile_body => 'foo').valid?
     end
   end
@@ -40,7 +40,7 @@ class FilteredColumnTest < Test::Unit::TestCase
   end
 
   def test_should_call_only_textile_and_markdown
-    assert_filters_called_on Article, :textile_filter, :markdown_filter do
+    assert_filters_called_on Article, :textile_filter, :markdown_filter, :macro_filter do
       Article.new(:textile_and_macro_body => 'foo').valid?
     end
   end

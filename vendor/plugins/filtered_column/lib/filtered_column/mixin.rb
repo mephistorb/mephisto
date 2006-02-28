@@ -1,8 +1,9 @@
 module FilteredColumn
-  @@filters         = {}
-  @@default_filters = []
-  @@default_macros  = []
-  mattr_reader :filters, :default_filters, :default_macros
+  @@filters          = {}
+  @@default_filters  = []
+  @@default_macros   = []
+  @@constant_filters = []
+  mattr_reader :filters, :default_filters, :default_macros, :constant_filters
 
   module Mixin
     def self.included(base)

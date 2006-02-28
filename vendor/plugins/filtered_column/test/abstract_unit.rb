@@ -16,6 +16,7 @@ Test::Unit::TestCase.class_eval do
   end
 end
 
+FilteredColumn.constant_filters << :macro_filter
 class Article < ActiveRecord::Base
   @@called_filters = []
   cattr_accessor :called_filters
