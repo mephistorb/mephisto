@@ -88,4 +88,16 @@ class SectionTest < Test::Unit::TestCase
     assert_equal 'Home', sections(:home).title
     assert_equal 'Foo',  sections(:about).title
   end
+
+  def test_should_order_sections
+    assert_reorder_articles sections(:about),
+      [contents(:welcome), contents(:about), contents(:site_map)],
+      [contents(:about), contents(:site_map), contents(:welcome)]
+  end
+
+  def assert_reorder_articles(section, old_order, expected)
+    assert_equal old_order, section.articles
+    section.order! expected.collect(&:id)
+    assert_equal expected, section.articles(true)
+  end
 end

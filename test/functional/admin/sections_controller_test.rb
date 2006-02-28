@@ -5,7 +5,7 @@ require 'admin/sections_controller'
 class Admin::SectionsController; def rescue_action(e) raise e end; end
 
 class Admin::SectionsControllerTest < Test::Unit::TestCase
-  fixtures :sections, :users
+  fixtures :sections, :users, :contents
 
   def setup
     @controller = Admin::SectionsController.new
@@ -47,8 +47,20 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
     assert_equal 'bar', sections(:about).layout
   end
 
+  def test_should_reorder_articles
+    assert_reorder_articles sections(:about),
+      [contents(:welcome), contents(:about), contents(:site_map)],
+      [contents(:about), contents(:site_map), contents(:welcome)]
+  end
+
   def test_should_destroy_section
     xhr :post, :destroy, :id => sections(:home).id
     assert_nil Section.find_by_id(sections(:home).id)
+  end
+
+  def assert_reorder_articles(section, old_order, expected)
+    assert_equal old_order, section.articles
+    xhr :post, :order, :id => section.id, :article_ids => expected.collect(&:id)
+    assert_equal expected, section.articles(true)
   end
 end

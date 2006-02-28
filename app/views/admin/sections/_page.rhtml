@@ -1,8 +1,4 @@
 <li id="page-<%= page.id %>">
-  <%= link_to_remote image_tag('/images/icons/reorder.gif', :class => 'iconb orange'), {
-        :url     => { :controller => 'sections', :action => 'sort', :id => page }, 
-        :confirm => "Are you sure?" }, 
-        :class   => 'aicon' %>
-    
-  <%= link_to "A page", :controller => 'articles', :action => 'edit' %>
+  <%= image_tag('/images/icons/reorder.gif', :class => 'iconb orange handle') %>
+  <%= link_to page.title, :controller => 'articles', :action => 'edit', :id => page %>
 </li>

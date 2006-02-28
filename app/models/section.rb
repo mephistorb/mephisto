@@ -46,6 +46,15 @@ class Section < ActiveRecord::Base
     name.to_s.split('/').last.humanize
   end
 
+  def order!(*article_ids)
+    transaction do
+      article_ids.flatten.each_with_index do |article, pos|
+        assigned_sections.detect { |s| s.article_id.to_s == article.to_s }.update_attributes(:position => pos)
+      end
+      save
+    end
+  end
+
   def hash_for_url(options = {})
     { :sections => to_url }.merge(options)
   end

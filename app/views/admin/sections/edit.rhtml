@@ -14,7 +14,8 @@
   pages show up in the menu for this section.
 </p>
 <ul id="pages">
-  <%= render :partial => 'page', :collection => %w(pages freakinga) %>
+  <%= render :partial => 'page', :collection => @section.articles %>
 </ul>
+<p><%= link_to_function 'Reorder', "SectionForm.toggleSortable(this)" %></p>
 <% end -%>
 <% end %>

@@ -61,6 +61,13 @@ Object.extend(Form, {
 })
 
 var Navigate = {
+  _id: null,
+  currentId: function() {
+    if(this._id == null)
+      this._id = $A($A(location.href.split('/')).last().split('#')).first();
+    return this._id;
+  },
+
   to_template: function(select) {
     this.to_url(select, "/admin/templates/edit/");
   },
@@ -120,6 +127,28 @@ var SectionForm = {
   toggle_settings: function() {
     Element.toggle('blog-options')
     Element.toggle('paged-options')
+  },
+
+  sortable: null,
+  toggleSortable: function(link) {
+    if($('pages').className == 'sortable') {
+      Sortable.destroy('pages');
+      $('pages').className = '';
+      link.innerHTML = 'Reorder'
+      this.saveSortable();
+    } else {
+      this.sortable = Sortable.create('pages', {handle:'handle'});
+      $('pages').className = 'sortable';
+      link.innerHTML = 'Stop Reordering'
+    }
+  },
+
+  saveSortable: function() {
+    var query = $$('#pages li').inject([], function(qu, li) {
+      qu.push('article_ids[]=' + li.getAttribute('id').substr(5));
+      return qu;
+    }).join('&')
+    new Ajax.Request('/admin/sections/order/' + Navigate.currentId(), {asynchronous:true, evalScripts:true, parameters:query});
   }
 }
 
