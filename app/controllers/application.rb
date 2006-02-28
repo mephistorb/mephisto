@@ -15,7 +15,9 @@ class ApplicationController < ActionController::Base
       self.cached_references += assigns['articles']
       assigns['articles']     = assigns['articles'].collect { |a| a.to_liquid }
     end
-    assigns.merge! 'content_for_layout' => Liquid::Template.parse(@preferred_template).render(assigns)
+    
+    assigns.update 'site' => current_site.to_liquid
+    assigns['content_for_layout'] = Liquid::Template.parse(@preferred_template).render(assigns)
     render :text => Liquid::Template.parse(@layout_template).render(assigns)
   end
 end

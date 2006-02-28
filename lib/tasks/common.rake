@@ -6,9 +6,6 @@ task :init do
   cp "#{ENV['SHARED_PATH']}/database.yml",      'config'
   cp "#{ENV['SHARED_PATH']}/lighttpd.conf",     'config' rescue nil # not all of us have this you know
   cp "#{ENV['SHARED_PATH']}/dispatch.fcgi",     'public'
-  Dir.glob("#{ENV['SHARED_PATH']}/style/*").each do |file|
-    cp file, 'public/stylesheets'
-  end
 
   puts 'setting permissions...'
   chmod 0600, 'config/database.yml'
@@ -42,6 +39,8 @@ task :init do
   get_framework_for symlink_path do |framework|
     ln_s File.expand_path("#{export_path}/#{framework}/lib"), "#{symlink_path}/#{framework}/lib"
   end
+
+  touch "vendor/rails_#{ENV['REVISION']}"
 end
 
 def get_framework_for(*paths)

@@ -5,4 +5,11 @@ class Site < ActiveRecord::Base
   def filters=(value)
     write_attribute :filters, [value].flatten.collect(&:to_sym)
   end
+
+  def to_liquid
+    {
+      'title'    => title, 
+      'subtitle' => subtitle
+    }
+  end
 end
