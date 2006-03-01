@@ -697,7 +697,7 @@ img.avatar {
 }
 
 #overview h3 {
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid #999;
   margin-bottom: 20px;
 }
 
@@ -773,6 +773,18 @@ li.event-article  { background-image: url(../images/icons/articleb.gif);    }
 /*
  *=MISC
  */
+
+.feed {
+  background: url(../images/icons/feed-icon-12x12.gif) 0 50% no-repeat;
+  font-weight: bold;
+  padding-left: 16px;
+  border: 0;
+  color: #f60;
+}
+
+.feed:hover { color: #000; }
+
+.right { float: right; }
 
 .sb { margin-bottom: 10px !important; }
 .pad { padding: 5px;}
