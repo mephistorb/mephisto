@@ -108,12 +108,14 @@ class Article < Content
   def save_assigned_sections
     return if @new_sections.nil?
     assigned_sections.each do |assigned_section|
-      @new_sections.include?(assigned_section.section_id.to_s) ?
-        @new_sections.delete(@new_sections.index(assigned_section.section_id.to_s)) :
-        assigned_section.destroy
+      @new_sections.delete(assigned_section.section_id.to_s) || assigned_section.destroy
     end
-    Section.find(:all, :conditions => ['id in (?)', @new_sections]).each { |section| assigned_sections.create :section => section }
-    sections.reset
+    
+    if !@new_sections.blank?
+      Section.find(:all, :conditions => ['id in (?)', @new_sections]).each { |section| assigned_sections.create :section => section }
+      sections.reset
+    end
+
     @new_sections       = nil
     @recently_published = nil
   end

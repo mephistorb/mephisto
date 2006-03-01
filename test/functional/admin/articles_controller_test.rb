@@ -112,11 +112,18 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   end
   
   def test_should_update_article_with_no_sections
-    post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
+    post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [] }
     assert_redirected_to :action => 'index'
     assert_equal [], assigns(:article).sections
   end
-  
+
+  def test_should_update_article_with_the_same_sections
+    post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah",
+      :section_ids => [sections(:home), sections(:about)].map { |s| s.id.to_s } }
+    assert_redirected_to :action => 'index'
+    assert_equal [sections(:about), sections(:home)], assigns(:article).sections
+  end
+
   def test_should_create_edit_event
     assert_event_created_for :welcome, 'edit' do |article|
       post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => Time.now }
