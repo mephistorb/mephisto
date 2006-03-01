@@ -1,5 +1,5 @@
 <%= error_messages_for :article %>
-<% form_for :article, @article, :url => { :action => 'update', :id => @article } do |f| -%>
+<% form_for :article, @version, :url => { :action => 'update', :id => @article } do |f| -%>
 <%= render :partial => 'form', :object => f %>
 <p class="btns"><%= submit_tag 'Apply changes' %> or <%= link_to "cancel", :controller => "articles" %></p>
 <% end -%>
@@ -7,32 +7,23 @@
 
 <% content_for :sidebar do %>
   <div class="sgroup">
+    <% if @article.versions.any? -%>
     <h3>Revisions</h3>
     <ul id="revisions">
+    <% @article.versions.find(:all, :order => 'updated_at DESC', :limit => 10).each do |version| -%>
       <li>
         <%= check_box_tag 'article', 'blah' %>
-        <%= link_to avatar_for(@article.user), '' if @article.user.avatar %>
-        <h4>Justin Palmer</h4>
-        edited this about 5 minutes ago.
-        <span class="rev-num">3</span>
-        <p class="funct"><a href="#">What changed</a> | <a href="#">Edit</a></p>
+        <%= link_to avatar_for(version.updater), '' if version.updater.avatar %>
+        <h4><%=h version.updater.login %></h4>
+        edited this <%= time_ago_in_words version.updated_at %> ago.
+        <span class="rev-num"><%= version.version %></span>
+        <p class="funct">
+          <a href="#">What changed</a> | 
+          <%= link_to 'Edit', :action => 'edit', :id => @article, :version => version.version %>
+        </p>
       </li>
-      <li>
-        <%= check_box_tag 'article', 'blah' %>
-        <%= link_to avatar_for(@article.user), '' if @article.user.avatar %>
-        <h4>Rick Olson</h4>
-        edited this about 23 minutes ago.
-        <span class="rev-num">2</span>
-        <p class="funct"><a href="#">What changed</a> | <a href="#">Edit</a></p>
-      </li>
-      <li>
-        <%= check_box_tag 'article', 'blah' %>
-        <%= link_to avatar_for(@article.user), '' if @article.user.avatar %>
-        <h4>Courteney Gasking</h4>
-        edited this about 1 hour ago.
-        <span class="rev-num">1</span>
-        <p class="funct"><a href="#">What changed</a> | <a href="#">Edit</a></p>
-      </li>
+    <% end -%>
     </ul>
+    <% end -%>
   </div>
 <% end %>

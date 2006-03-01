@@ -5,9 +5,12 @@ class Article < Content
   before_create :set_filter_from_user
   after_save    :save_assigned_sections
 
-  acts_as_versioned :if_changed => [:title, :body, :excerpt]
+  acts_as_versioned :if_changed => [:title, :body, :excerpt] do
+    def self.included(base)
+      base.belongs_to :updater, :class_name => 'User', :foreign_key => 'updater_id'
+    end
+  end
 
-  belongs_to :updater, :class_name => 'User', :foreign_key => 'updater_id'
   has_many   :assigned_sections
   has_many   :sections, :through => :assigned_sections, :order => 'sections.name'
   has_many   :comments, :order   => 'created_at'

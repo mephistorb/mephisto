@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
     m.images 'images/*path',      :dir => 'images'
   end
 
-  map.connect ':controller/:action/:id'
+  map.connect ':controller/:action/:id/:version', :version => nil
   map.admin   'admin', :controller => 'admin/base', :action => 'index'
 
   map.comment ':year/:month/:day/:permalink/comment', :controller => 'comments', :action => 'create',    

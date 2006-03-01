@@ -32,6 +32,7 @@ class Admin::ArticlesController < Admin::BaseController
 
   def edit
     @article = Article.find(params[:id])
+    @version = params[:version] ? @article.find_version(params[:version]) : @article
   end
 
   def update
