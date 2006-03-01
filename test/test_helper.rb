@@ -28,11 +28,23 @@ class Test::Unit::TestCase
     assert_difference object, method, 0, &block
   end
 
-  def assert_creates_event(mode)
+  def assert_event_created(mode)
     assert_difference Event, :count do
       event = yield
       assert_equal mode, event.mode
     end
+  end
+
+  def assert_event_created_for(article, mode)
+    article = contents(article)
+    assert_event_created mode do
+      yield article
+      article.events.first
+    end
+  end
+
+  def assert_no_event_created
+    assert_no_difference(Event, :count) { yield }
   end
 
   def assert_attachment_created(num = 1)

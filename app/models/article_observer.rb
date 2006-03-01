@@ -9,6 +9,6 @@ class ArticleObserver < ActiveRecord::Observer
   end
 
   def after_save(article)
-    @event.update_attributes :user => article.updater, :article => article
+    @event.update_attributes :title => article.title, :body => article.body, :user => article.updater, :article => article
   end
 end

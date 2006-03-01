@@ -7,7 +7,7 @@ class Article < Content
 
   acts_as_versioned :if_changed => [:title, :body, :excerpt] do
     def self.included(base)
-      base.belongs_to :updater, :class_name => 'User', :foreign_key => 'updater_id'
+      base.belongs_to :updater, :class_name => '::User', :foreign_key => 'updater_id'
     end
   end
 
@@ -36,7 +36,7 @@ class Article < Content
   end
 
   def published_at=(new_published_at)
-    @recently_published = !new_published_at.nil?
+    @recently_published = published_at.nil? && !new_published_at.nil?
     write_attribute :published_at, new_published_at
   end
 

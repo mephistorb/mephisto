@@ -11,7 +11,6 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     @controller = Admin::ArticlesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-    prepare_for_caching
     login_as :quentin
   end
 
@@ -26,12 +25,12 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     get :index
     assert_response :success
   end
-
+  
   def test_should_show_articles
     get :index
     assert_equal 6, assigns(:articles).length
   end
-
+  
   def test_should_create_article
     assert_difference Article, :count do
       post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
@@ -40,7 +39,21 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       assert_equal users(:quentin), assigns(:article).updater
     end
   end
-
+  
+  def test_should_create_event
+    assert_event_created 'create' do
+      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
+      assigns(:article).events.first
+    end
+  end
+  
+  def test_should_create_publish_event
+    assert_event_created 'publish' do
+      post :create, :article_published => true, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => Time.now }
+      assigns(:article).events.first
+    end
+  end
+  
   # moving to integration tests
   #def test_should_create_article_and_expire_cache
   #  set_controller_url :new
@@ -55,7 +68,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   #    end
   #  end
   #end
-
+  
   def test_should_show_validation_error_on_invalid_create
     assert_no_difference Article, :count do
       post :create, :article => { :excerpt => "Blah Blah", :body => "Blah Blah" }
@@ -65,7 +78,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       assert !assigns(:article).published?
     end
   end
-
+  
   def test_should_show_default_checked_sections
     get :new
     assert_response :success
@@ -73,13 +86,13 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_tag    :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
     assert_no_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
   end
-
+  
   def test_should_show_checked_sections
     get :edit, :id => contents(:welcome).id
     assert_response :success
     assert_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
     assert_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}" }
-
+  
     get :edit, :id => contents(:another).id
     assert_response :success
     assert_tag    :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
@@ -91,19 +104,31 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_response :success
     assert_tag :tag => 'form', :attributes => { :action => "/admin/articles/update/#{contents(:welcome).id}" }    
   end
-
+  
   def test_should_create_article_with_given_sections
     post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id.to_s] }
     assert_redirected_to :action => 'index'
     assert_equal [sections(:home)], assigns(:article).sections
   end
-
+  
   def test_should_update_article_with_no_sections
     post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
     assert_redirected_to :action => 'index'
     assert_equal [], assigns(:article).sections
   end
-
+  
+  def test_should_create_edit_event
+    assert_event_created_for :welcome, 'edit' do |article|
+      post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => Time.now }
+    end
+  end
+  
+  def test_should_create_publish_event_when_updating
+    assert_event_created_for :unpublished, 'publish' do |article|
+      post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => Time.now }
+    end
+  end
+  
   def test_should_update_article_with_given_sections
     login_as :arthur
     assert_difference AssignedSection, :count, -1 do
@@ -113,7 +138,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       assert_equal users(:arthur),    assigns(:article).updater
     end
   end
-
+  
   def test_should_clear_published_date
     assert contents(:welcome).published?
     post :update, :id => contents(:welcome).id, :article => { :title => 'welcome' }

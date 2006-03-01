@@ -3,8 +3,6 @@ class Event < ActiveRecord::Base
   validate :require_title_or_body
   belongs_to :article, :foreign_key => 'article_id'
   belongs_to :user
-  delegate :title, :to => :article
-  delegate :body,  :to => :article
 
   protected
   def require_title_or_body
