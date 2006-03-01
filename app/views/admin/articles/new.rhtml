@@ -1,5 +1,5 @@
 <h2>Creating a new article</h2>
-<% form_for :article, @article, :action => 'create', :html => {:id => 'article-form'} do |f| -%>
+<% form_for :article, @article, :url => { :action => 'create' }, :html => {:id => 'article-form'} do |f| -%>
   <%= render :partial => 'form', :object => f %>
   
   <p class="btns">
