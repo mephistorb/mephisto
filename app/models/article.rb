@@ -11,9 +11,10 @@ class Article < Content
     end
   end
 
-  has_many   :assigned_sections
-  has_many   :sections, :through => :assigned_sections, :order => 'sections.name'
-  has_many   :comments, :order   => 'created_at'
+  has_many :assigned_sections
+  has_many :sections, :through => :assigned_sections, :order => 'sections.name'
+  has_many :comments, :order   => 'created_at'
+  has_many :events,   :order => 'created_at desc'
   
   class << self
     def find_by_permalink(year, month, day, permalink)
@@ -34,10 +35,13 @@ class Article < Content
     end
   end
 
-  # Follow Mark Pilgrim's rules on creating a good ID
-  # http://diveintomark.org/archives/2004/05/28/howto-atom-id
-  def guid
-    "/#{self.class.to_s.underscore}/#{published_at.year}/#{published_at.month}/#{published_at.day}/#{permalink}"
+  def published_at=(new_published_at)
+    @recently_published = !new_published_at.nil?
+    write_attribute :published_at, new_published_at
+  end
+
+  def recently_published?
+    @recently_published == true
   end
 
   def published?
@@ -52,6 +56,12 @@ class Article < Content
     return :unpublished unless published?
     return :pending     if     pending?
     :published
+  end
+
+  # Follow Mark Pilgrim's rules on creating a good ID
+  # http://diveintomark.org/archives/2004/05/28/howto-atom-id
+  def guid
+    "/#{self.class.to_s.underscore}/#{published_at.year}/#{published_at.month}/#{published_at.day}/#{permalink}"
   end
 
   def has_section?(section)
@@ -104,7 +114,8 @@ class Article < Content
     end
     Section.find(:all, :conditions => ['id in (?)', @new_sections]).each { |section| assigned_sections.create :section => section }
     sections.reset
-    @new_sections = nil
+    @new_sections       = nil
+    @recently_published = nil
   end
 
   def body_for_mode(mode = :list)
