@@ -68,7 +68,8 @@ Liquid::Template.register_tag('head',           Mephisto::Head)
 FilteredColumn.constant_filters << :macro_filter
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
-  :standard => '%B %d, %Y @ %I:%M%p'
+  :standard => '%B %d, %Y @ %I:%M%p',
+  :stub => '%B %d'
 
 # Time.now.to_ordinalized_s :long
 # => "February 28th, 2006 21:10"

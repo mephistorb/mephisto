@@ -1,3 +1,66 @@
-<ul id="quick-stats">
-<li id="stat-comments" class="round"><div>23</div></li>
-</ul>
+<h2>What's Up Yo</h2>
+
+<!-- begin quickstats -->
+<div id="stats">
+  <ul id="quick-stats" class="clear">
+    <li id="stat-comments" class="round"><div>23</div></li>
+  </ul>
+</div>
+<!-- /end quickstats -->
+
+
+<!-- begin overview -->
+<div id="overview">
+  <h3>Whats happening around <%= @current_site.title %></h3>
+  
+  <h4>Today <%= todays_short_date %></h4>
+  <ul class="events">
+    <li class="event-date"></li>
+    <li class="event-article">
+      <%= link_to "A Sweet New Article", :action => 'show' %>
+    </li>
+    <li class="event-comment shade">
+      This is the beginning of a comment&hellip;
+    </li>
+    <li class="event-comment">
+      This is the beginning of a comment&hellip;
+    </li>
+    <li class="event-comment shade">
+      This is the beginning of a comment&hellip;
+    </li>
+  </ul>
+  
+  <h4>Yesterday <%= yesterdays_short_date %></h4>
+  <ul class="events">
+    <li class="event-article">
+      <%= link_to "A Sweet New Article", :action => 'show' %>
+    </li>
+    <li class="shade event-revision ">
+      This is the beginning of a comment&hellip;
+    </li>
+    <li class="event-revision">
+      <%= link_to "A Sweet New Article", :action => 'show' %> revised by Justin Palmer.
+    </li>
+    <li class="event-comment shade">
+      This is the beginning of a comment&hellip;
+    </li>
+  </ul>
+  
+  <h4>Before <%= yesterdays_short_date %></h4>
+  <ul class="events">
+    <li class="event-article">
+      <%= link_to "A Sweet New Article", :action => 'show' %>
+    </li>
+    <li class="event-comment shade">
+      This is the beginning of a comment&hellip;
+    </li>
+    <li class="event-comment">
+      This is the beginning of a comment&hellip;
+    </li>
+    <li class="event-comment shade">
+      This is the beginning of a comment&hellip;
+    </li>
+  </ul>
+  
+</div>
+<!-- /end overview -->

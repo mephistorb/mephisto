@@ -5,4 +5,12 @@ module ApplicationHelper
     image_tag "/#{user.avatar.full_path}", {:class => 'avatar'}.merge(options) if user.avatar
   end
   
+  def todays_short_date
+    Time.now.to_s(:stub)
+  end
+  
+  def yesterdays_short_date
+    Time.now.yesterday.to_s(:stub)
+  end
+  
 end

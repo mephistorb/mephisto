@@ -75,6 +75,9 @@ a { color: #390; border-bottom: 1px dotted #ccc; text-decoration: none; }
 
 img { border: 0;}
 .tspace { margin-top: 20px;}
+h1, h2, h3, h4, h5, h6 {
+  font-family: Helvatica, "Lucida Grande", Arial, sans-serif;
+}
 
 /*
  *=FORMS
@@ -688,6 +691,57 @@ img.avatar {
 #stat-comments {
   background: #c30;
 }
+
+#overview {
+  margin: 20px 0;
+}
+
+#overview h3 {
+  border-bottom: 1px solid #555;
+  margin-bottom: 20px;
+}
+
+.events {
+  margin: 0 0 30px 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.events li {
+  color: #444;
+  padding: 5px 10px 10px 50px;
+}
+
+.events li a {
+  border: 0;
+}
+
+#overview h4 {
+  margin: 0;
+  padding: 0;
+  font-size: 130%;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+li.event-date {
+  border: 0;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+li.event-revision, li.event-comment,
+li.event-article {
+  background-repeat: no-repeat;
+  background-position: 2% 50%;
+}
+
+li.event-revision { background-image: url(../images/icons/review.gif);   }
+li.event-comment  { background-image: url(../images/icons/commentb.gif); }
+li.event-article  { background-image: url(../images/icons/articleb.gif);    }
+
+ 
+.shade { background-color: #eee; }
 
 /*
  *=MISC
