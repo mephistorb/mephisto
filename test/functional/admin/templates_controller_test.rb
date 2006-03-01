@@ -47,11 +47,11 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
     assert_equal 'foo', attachments(:layout).filename
   end
 
-  def test_should_save_template_and_sweep_caches
-    set_controller_url :index
-    create_cached_page_for sections(:home), section_url(:sections => [])
-    assert_expire_page_caches section_url(:sections => []) do
-      post :update, :id => attachments(:layout).filename, :template => { :filename => 'foo' }
-    end
-  end
+  #def test_should_save_template_and_sweep_caches
+  #  set_controller_url :index
+  #  create_cached_page_for sections(:home), section_url(:sections => [])
+  #  assert_expire_page_caches section_url(:sections => []) do
+  #    post :update, :id => attachments(:layout).filename, :template => { :filename => 'foo' }
+  #  end
+  #end
 end

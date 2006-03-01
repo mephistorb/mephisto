@@ -33,10 +33,10 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal [contents(:welcome), contents(:another)], assigns(:articles)
   end
 
-  def test_should_cache_list
-    get :list, :sections => []
-    assert_page_cached section_url(:sections => [])
-  end
+  #def test_should_cache_list
+  #  get :list, :sections => []
+  #  assert_page_cached section_url(:sections => [])
+  #end
 
   def test_should_show_correct_feed_url
     get :list, :sections => []

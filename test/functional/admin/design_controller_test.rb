@@ -22,13 +22,13 @@ class Admin::DesignControllerTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_create_template_and_not_sweep_caches
-    set_controller_url :index
-    create_cached_page_for sections(:home), section_url(:sections => [])
-    assert_not_expire_page_caches section_url(:sections => []) do
-      post :create, :resource => { :data => 'this is liquid', :filename => 'my_little_pony' }, :resource_type => 'template'
-    end
-  end
+  #def test_should_create_template_and_not_sweep_caches
+  #  set_controller_url :index
+  #  create_cached_page_for sections(:home), section_url(:sections => [])
+  #  assert_not_expire_page_caches section_url(:sections => []) do
+  #    post :create, :resource => { :data => 'this is liquid', :filename => 'my_little_pony' }, :resource_type => 'template'
+  #  end
+  #end
 
   def test_should_create_css
     assert_difference Resource, :count do

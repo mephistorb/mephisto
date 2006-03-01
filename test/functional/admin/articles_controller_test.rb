@@ -37,22 +37,24 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
       assert_redirected_to :action => 'index'
       assert !assigns(:article).published?
+      assert_equal users(:quentin), assigns(:article).updater
     end
   end
 
-  def test_should_create_article_and_expire_cache
-    set_controller_url :new
-    create_cached_page_for sections(:home),    section_url(:sections => [])
-    create_cached_page_for sections(:about),   section_url(:sections => ['about'])
-    create_cached_page_for contents(:welcome), feed_url(:sections => ['atom.xml'])
-    create_cached_page_for contents(:welcome), feed_url(:sections => ['about', 'atom.xml'])
-
-    assert_expire_page_caches section_url(:sections => []), feed_url(:sections => ['atom.xml']) do
-      assert_not_expire_page_caches section_url(:sections => ['about']), feed_url(:sections => ['about', 'atom.xml']) do
-        test_should_create_article_with_given_sections
-      end
-    end
-  end
+  # moving to integration tests
+  #def test_should_create_article_and_expire_cache
+  #  set_controller_url :new
+  #  create_cached_page_for sections(:home),    section_url(:sections => [])
+  #  create_cached_page_for sections(:about),   section_url(:sections => ['about'])
+  #  create_cached_page_for contents(:welcome), feed_url(:sections => ['atom.xml'])
+  #  create_cached_page_for contents(:welcome), feed_url(:sections => ['about', 'atom.xml'])
+  #
+  #  assert_expire_page_caches section_url(:sections => []), feed_url(:sections => ['atom.xml']) do
+  #    assert_not_expire_page_caches section_url(:sections => ['about']), feed_url(:sections => ['about', 'atom.xml']) do
+  #      test_should_create_article_with_given_sections
+  #    end
+  #  end
+  #end
 
   def test_should_show_validation_error_on_invalid_create
     assert_no_difference Article, :count do
@@ -103,10 +105,12 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_update_article_with_given_sections
+    login_as :arthur
     assert_difference AssignedSection, :count, -1 do
       post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id] }
       assert_redirected_to :action => 'index'
       assert_equal [sections(:home)], assigns(:article).sections
+      assert_equal users(:arthur),    assigns(:article).updater
     end
   end
 

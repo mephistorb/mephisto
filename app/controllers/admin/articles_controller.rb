@@ -21,7 +21,7 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def create
-    @article = current_user.articles.create params[:article]
+    @article = current_user.articles.create params[:article].merge(:updater => current_user)
     if @article.new_record?
       load_sections
       render :action => 'new'
@@ -36,7 +36,7 @@ class Admin::ArticlesController < Admin::BaseController
 
   def update
     @article = Article.find(params[:id])
-    if @article.update_attributes(params[:article])
+    if @article.update_attributes(params[:article].merge(:updater => current_user))
       redirect_to :action => 'index'
     else
       @sections = Section.find :all

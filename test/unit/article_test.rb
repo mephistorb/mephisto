@@ -46,4 +46,17 @@ class ArticleTest < Test::Unit::TestCase
     a = Article.create :title => 'simple Title', :user => users(:arthur), :body => "# bar\n\nfoo", :filters => [:markdown_filter]
     assert_equal "<h1>bar</h1>\n\n<p>foo</p>", a.body_html
   end
+
+  def test_should_create_article_version
+    assert_difference Article::Version, :count, 2 do
+      Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :body => 'foo', :user_id => 1
+      contents(:welcome).update_attributes :title => 'whoo!'
+    end
+  end
+
+  def test_should_not_create_article_version_for_useless_changes
+    assert_no_difference Article::Version, :count do
+      contents(:welcome).update_attributes :body_html => 'nope'
+    end
+  end
 end
