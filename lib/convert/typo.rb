@@ -6,43 +6,54 @@ require 'convert/typo/tag'
 require 'convert/typo/user'
 module Typo
   def self.convert
+    totals = { :users => 0, :articles => 0, :comments => 0 }
     newpass = 'mephistomigrator'
     # migrate users over, sorta ...
-    Typo::User.find(:all).each do |user|
-      email = user.email || 'foo@bar.com'
-      ::User.find_or_create_by_email email,
-        :login                 => user.login,
-        :password              => newpass,
-        :password_confirmation => newpass
+    Typo::User.find(:all).each do |typo_user|
+      ::User.find_or_create_by_email typo_user.email || 'foo@bar.com',
+        :login                    => typo_user.login,
+        :password                 => newpass,
+        :password_confirmation    => newpass
+      totals[:users] += 1
     end
+    
+    puts "migrated #{totals[:users]} user(s)..."
 
-    Typo::Article.find_all_by_type('Article').each do |article|
+    default_user = ::User.find(:first)
+    Typo::Article.find_all_by_type('Article').each do |typo_article|
+      user = typo_article.user_id.nil? ? 
+        default_user : 
+        ::User.find_by_login(Typo::User.find(typo_article.user_id).login)
 
-      user = article.user_id.nil? ? 
-        ::User.find(:first) : 
-        ::User.find_by_login(Typo::User.find(article.user_id).login)
+      
+      article = ::Article.create \
+        :title        => typo_article.title, 
+        :excerpt      => typo_article.excerpt,
+        :body         => typo_article.body,
+        :created_at   => typo_article.created_at,
+        :published_at => typo_article.created_at,
+        :updated_at   => typo_article.updated_at,
+        :user         => user
 
-      user.create_article \
-        :title        => article.title, 
-        :excerpt      => article.excerpt,
-        :body         => article.body,
-        :created_at   => article.created_at,
-        :published_at => article.created_at,
-        :updated_at   => article.updated_at
+      totals[:articles] += 1
 
-      article.categories.each { |category| user.article.assigned_sections.create :section => ::Section.find_or_create_by_name(category.name) }
+      typo_article.tags.each { |typo_tag| article.assigned_sections.create :section => ::Section.find_or_create_by_name(typo_tag.name) }
 
-      Typo::Comment.find_all_by_article_id(article.id).each do |comment|
-        user.article.comments.create \
-          :body         => comment.body,
-          :created_at   => comment.created_at,
-          :updated_at   => comment.updated_at,
-          :published_at => comment.created_at,
-          :author       => comment.author,
-          :author_url   => comment.url,
-          :author_email => comment.email,
-          :author_ip    => comment.ip
+      typo_article.comments.each do |typo_comment|
+        article.comments.create \
+          :body         => typo_comment.body,
+          :created_at   => typo_comment.created_at,
+          :updated_at   => typo_comment.updated_at,
+          :published_at => typo_comment.created_at,
+          :author       => typo_comment.author,
+          :author_url   => typo_comment.url,
+          :author_email => typo_comment.email,
+          :author_ip    => typo_comment.ip
+
+        totals[:comments] += 1
       end
     end
+
+    puts "migrated #{totals[:articles]} article(s) and #{totals[:comments]} comment(s)..."
   end
 end
