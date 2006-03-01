@@ -6,6 +6,7 @@ class Admin::ArticlesController < Admin::BaseController
     c.cache_sweeper :section_sweeper
   end
 
+  observer      :article_observer
   before_filter :load_sections, :only => [:new, :edit]
 
   def index

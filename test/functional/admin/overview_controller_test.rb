@@ -5,14 +5,16 @@ require 'admin/overview_controller'
 class Admin::OverviewController; def rescue_action(e) raise e end; end
 
 class Admin::OverviewControllerTest < Test::Unit::TestCase
+  fixtures :users, :contents, :events
   def setup
     @controller = Admin::OverviewController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    login_as :quentin
   end
 
-  # Replace this with your real tests.
   def test_truth
-    assert true
+    get :index
+    assert_response :success
   end
 end

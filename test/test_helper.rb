@@ -28,6 +28,13 @@ class Test::Unit::TestCase
     assert_difference object, method, 0, &block
   end
 
+  def assert_creates_event(mode)
+    assert_difference Event, :count do
+      event = yield
+      assert_equal mode, event.mode
+    end
+  end
+
   def assert_attachment_created(num = 1)
     assert_difference Attachment, :count, num do
       assert_difference DbFile, :count, num do

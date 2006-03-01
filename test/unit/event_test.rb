@@ -37,8 +37,6 @@ class EventTest < Test::Unit::TestCase
   def test_should_should_require_title_or_body_for_edit_article_event
     assert_no_difference Event, :count do
       contents(:welcome).update_attributes :body_html => 'bar', :updater => users(:quentin)
-      contents(:welcome).reload
-      assert_nil contents(:welcome).events.first
     end
   end
 end
