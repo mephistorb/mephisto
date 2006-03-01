@@ -25,7 +25,6 @@ module Typo
         default_user : 
         ::User.find_by_login(Typo::User.find(typo_article.user_id).login)
 
-      
       article = ::Article.create \
         :title        => typo_article.title, 
         :excerpt      => typo_article.excerpt,

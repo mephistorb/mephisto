@@ -70,6 +70,16 @@ FilteredColumn.constant_filters << :macro_filter
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
   :standard => '%B %d, %Y @ %I:%M%p'
 
+# Time.now.to_ordinalized_s :long
+# => "February 28th, 2006 21:10"
+module ActiveSupport::CoreExtensions::Time::Conversions
+  def to_ordinalized_s(format = :default)
+    format = ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS[format] 
+    return to_default_s if format.nil?
+    strftime(format.gsub(/%d/, '_%d_')).gsub(/_(\d+)_/) { |s| s.to_i.ordinalize }
+  end
+end
+
 # http://rails.techno-weenie.net/tip/2005/12/23/make_fixtures
 ActiveRecord::Base.class_eval do
   # Write a fixture file for testing
