@@ -2,12 +2,13 @@ require 'convert/typo/content'
 require 'convert/typo/page'
 require 'convert/typo/article'
 require 'convert/typo/comment'
-require 'convert/typo/tag'
+require 'convert/typo/category'
 require 'convert/typo/user'
 module Typo
   def self.convert
-    totals = { :users => 0, :articles => 0, :comments => 0 }
-    newpass = 'mephistomigrator'
+    totals       = { :users => 0, :articles => 0, :comments => 0 }
+    home_section = Section.find_by_name 'home'
+    newpass      = 'mephistomigrator'
     # migrate users over, sorta ...
     Typo::User.find(:all).each do |typo_user|
       ::User.find_or_create_by_email typo_user.email || 'foo@bar.com',
@@ -25,18 +26,18 @@ module Typo
         default_user : 
         ::User.find_by_login(Typo::User.find(typo_article.user_id).login)
 
-      article = ::Article.create \
+      section_ids = typo_article.categories.inject([home_section.id]) { |a, c| a << ::Section.find_or_create_by_name(c.name).id }
+      article     = ::Article.create \
         :title        => typo_article.title, 
         :excerpt      => typo_article.excerpt,
         :body         => typo_article.body,
         :created_at   => typo_article.created_at,
         :published_at => typo_article.created_at,
         :updated_at   => typo_article.updated_at,
-        :user         => user
+        :user         => user,
+        :section_ids  => section_ids
 
       totals[:articles] += 1
-
-      typo_article.tags.each { |typo_tag| article.assigned_sections.create :section => ::Section.find_or_create_by_name(typo_tag.name) }
 
       typo_article.comments.each do |typo_comment|
         article.comments.create \
