@@ -2,7 +2,8 @@ require File.join(File.dirname(__FILE__), 'abstract_unit')
 
 class FilteredColumnTest < Test::Unit::TestCase
   {
-    :textile => { :input => '*foo*', :output => '<p><strong>foo</strong></p>' }
+    :textile  => { :input => '*foo*',        :output => '<p><strong>foo</strong></p>' },
+    :markdown => { :input => "# bar\n\nfoo", :output => "<h1>bar</h1>\n\n<p>foo</p>" }
   }.each do |filter_name, values|
     define_method "test_should_filter_with_#{filter_name}" do
       assert_equal values[:output], Article.filter_text("#{filter_name}_filter", values[:input])
