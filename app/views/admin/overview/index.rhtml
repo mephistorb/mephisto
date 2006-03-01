@@ -15,50 +15,63 @@
   
   <h4>Today <%= todays_short_date %></h4>
   <ul class="events">
-    <li class="event-date"></li>
     <li class="event-article">
-      <%= link_to "A Sweet New Article", :action => 'show' %>
+      <span class="event-time"><%= Time.now.to_s(:time_only) %></span>
+      <%= link_to "A Sweet New Article", :action => 'show' %> was published.
+      <span class="meta">by <%= link_to 'Justin Palmer', :action => 'show' %></span>
     </li>
-    <li class="event-comment shade">
-      This is the beginning of a comment&hellip;
+    <li class="event-revision shade">
+      <span class="event-time"><%= Time.now.to_s(:time_only) %></span>
+      <%= link_to "A Sweet New Article", :action => 'show' %> was revised.
+      <span class="meta">by <%= link_to 'Rick Olson', :action => 'show' %></span>
     </li>
     <li class="event-comment">
-      This is the beginning of a comment&hellip;
-    </li>
-    <li class="event-comment shade">
-      This is the beginning of a comment&hellip;
+      <span class="event-time"><%= Time.now.to_s(:time_only) %></span>
+      <blockquote><p>OMG this dashboard rocks, it sweeter than ev4r!&hellip;</p></blockquote>
+      <span class="meta">by <%= link_to 'Rick Olson', :action => 'show' %> on <%= link_to "A Sweet New Article", :action => 'show' %></span>
     </li>
   </ul>
   
   <h4>Yesterday <%= yesterdays_short_date %></h4>
   <ul class="events">
     <li class="event-article">
-      <%= link_to "A Sweet New Article", :action => 'show' %>
+      <span class="event-time"><%= Time.now.to_s(:time_only) %></span>
+      <%= link_to "A Sweet New Article", :action => 'show' %> was published.
+      <span class="meta">by <%= link_to 'Justin Palmer', :action => 'show' %></span>
     </li>
-    <li class="shade event-revision ">
-      This is the beginning of a comment&hellip;
+    <li class="shade event-revision">
+      <span class="event-time"><%= Time.now.to_s(:time_only) %></span>
+      A revision
+      <span class="meta">by <%= link_to 'Justin Palmer', :action => 'show' %></span>
     </li>
     <li class="event-revision">
+      <span class="event-time"><%= Time.now.to_s(:time_only) %></span>
       <%= link_to "A Sweet New Article", :action => 'show' %> revised by Justin Palmer.
+      <span class="meta">by <%= link_to 'Rick Olson', :action => 'show' %></span>
     </li>
     <li class="event-comment shade">
-      This is the beginning of a comment&hellip;
+      <span class="event-time"><%= Time.now.to_s(:time_only) %></span>
+      <blockquote><p>OMG this dashboard rocks, it sweeter than ev4r!&hellip;</p></blockquote>
+      <span class="meta">by <%= link_to 'Rick Olson', :action => 'show' %></span>
     </li>
   </ul>
   
   <h4>Before <%= yesterdays_short_date %></h4>
   <ul class="events">
     <li class="event-article">
-      <%= link_to "A Sweet New Article", :action => 'show' %>
+      <span class="event-time"><%= Time.now.to_s(:time_only) %></span>
+      <%= link_to "A Sweet New Article", :action => 'show' %> was published.
+      <span class="meta">by <%= link_to 'Justin Palmer', :action => 'show' %></span>
     </li>
-    <li class="event-comment shade">
-      This is the beginning of a comment&hellip;
+    <li class="event-revision shade">
+      <span class="event-time"><%= Time.now.to_s(:time_only) %></span>
+      <%= link_to "A Sweet New Article", :action => 'show' %> was revised.
+      <span class="meta">by <%= link_to 'Rick Olson', :action => 'show' %></span>
     </li>
     <li class="event-comment">
-      This is the beginning of a comment&hellip;
-    </li>
-    <li class="event-comment shade">
-      This is the beginning of a comment&hellip;
+      <span class="event-time"><%= Time.now.to_s(:time_only) %></span>
+      <blockquote><p>OMG this dashboard rocks, it sweeter than ev4r!&hellip;</p></blockquote>
+      <span class="meta">by <%= link_to 'Rick Olson', :action => 'show' %></span>
     </li>
   </ul>
   

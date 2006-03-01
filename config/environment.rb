@@ -69,7 +69,8 @@ FilteredColumn.constant_filters << :macro_filter
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
   :standard => '%B %d, %Y @ %I:%M%p',
-  :stub => '%B %d'
+  :stub => '%B %d',
+  :time_only => '%I:%M %p'
 
 # Time.now.to_ordinalized_s :long
 # => "February 28th, 2006 21:10"

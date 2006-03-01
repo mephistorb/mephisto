@@ -711,10 +711,14 @@ img.avatar {
 .events li {
   color: #444;
   padding: 5px 10px 10px 50px;
+  line-height: 160%;
 }
 
-.events li a {
-  border: 0;
+.events li a { border: 0; }
+
+.events li a:hover {
+  background: #000;
+  color: #fff;
 }
 
 #overview h4 {
@@ -740,8 +744,31 @@ li.event-revision { background-image: url(../images/icons/review.gif);   }
 li.event-comment  { background-image: url(../images/icons/commentb.gif); }
 li.event-article  { background-image: url(../images/icons/articleb.gif);    }
 
- 
 .shade { background-color: #eee; }
+
+.events li blockquote {
+  font-size: 90%;
+  color: #888;
+  margin: 0;
+  padding: 0;
+}
+
+.events li blockquote p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.events .meta {
+  display: block;
+  font-size: 90%;
+  color: #888;
+}
+
+.events .event-time {
+  float: right;
+  font-size: 90%;
+  font-style: italic;
+}
 
 /*
  *=MISC

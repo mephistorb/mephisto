@@ -6,11 +6,11 @@ module ApplicationHelper
   end
   
   def todays_short_date
-    Time.now.to_s(:stub)
+    Time.now.to_ordinalized_s(:stub)
   end
   
   def yesterdays_short_date
-    Time.now.yesterday.to_s(:stub)
+    Time.now.yesterday.to_ordinalized_s(:stub)
   end
   
 end
