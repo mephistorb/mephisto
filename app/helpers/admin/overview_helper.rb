@@ -1,10 +1,12 @@
 module Admin::OverviewHelper
   def render_events(events, later = false)
+    text = []
     if events.any?
-      text = []
       events.each_with_index { |evt, i| text << render(:partial => "#{evt.mode}_event", :locals => { :event => evt, :shaded => (i % 2 > 0), :later => later }) }
-      %(<ul class="events">#{text.join}</ul>)
+    else
+      text << %(<li class="event-none shade">Nothing happening</li>)
     end
+      %(<ul class="events">#{text.join}</ul>)
   end
 
   def event_time_for(event, long = false)

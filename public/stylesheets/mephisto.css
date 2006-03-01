@@ -755,14 +755,15 @@ li.event-date {
 }
 
 li.event-revision, li.event-comment,
-li.event-article {
+li.event-article, li.event-none {
   background-repeat: no-repeat;
   background-position: 2% 50%;
 }
 
 li.event-revision { background-image: url(../images/icons/review.gif);   }
 li.event-comment  { background-image: url(../images/icons/commentb.gif); }
-li.event-article  { background-image: url(../images/icons/articleb.gif);    }
+li.event-article  { background-image: url(../images/icons/articleb.gif); }
+li.event-none     { background-image: url(../images/icons/minusb.gif); }
 
 .shade { background-color: #eee; }
 
@@ -790,9 +791,25 @@ li.event-article  { background-image: url(../images/icons/articleb.gif);    }
   font-style: italic;
 }
 
+
+/*
+ *=PAGINATION
+ */
+
+#pagination {
+  background: #eee;
+  margin: 20px 0;
+  text-align: center;
+  border-top: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+
+
 /*
  *=MISC
  */
+
 
 .feed {
   background: url(../images/icons/feed-icon-12x12.gif) 0 50% no-repeat;
