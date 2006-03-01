@@ -48,30 +48,74 @@ class Test::Unit::TestCase
 end
 
 class ActionController::IntegrationTest
-  undef :assert_redirected_to rescue nil
-  def login_as(user, session = @integration_session)
-    session.login_as users(user).login, users(user).login
+  def open_writer
+    open_session do |sess|
+      sess.extend Mephisto::Actors::Writer
+      yield sess if block_given?
+    end
   end
 
-  def get_and_login_as(user, url, session = @integration_session)
-    session.get_and_login_as users(user).login, users(user).login, url
+  def open_visitor
+    open_session do |sess|
+      sess.extend Mephisto::Actors::Visitor
+      yield sess if block_given?
+    end
   end
+
+  # Prepares a caching directory for use.  Put this in your test case's #setup method.
+  def prepare_for_caching!
+    dir = File.join(RAILS_ROOT, 'test/cache')
+    ActionController::Base.page_cache_directory = dir
+    FileUtils.rm_rf dir rescue nil
+    FileUtils.mkdir_p dir
+  end
+
+  def assert_caches_pages(*urls)
+    yield if block_given?
+    urls.map { |url| assert_page_cached url }
+  end
+
+  def assert_expires_pages(*urls)
+    yield if block_given?
+    urls.map { |url| assert_not_cached url }
+  end
+
+  # Asserts a page was cached.
+  def assert_cached(url)
+    assert page_cache_exists?(url), "#{url} is not cached"
+  end
+
+  # Asserts a page was not cached.
+  def assert_not_cached(url)
+    assert !page_cache_exists?(url), "#{url} is cached"
+  end
+
+  alias assert_caches_page  assert_caches_pages
+  alias assert_expires_page assert_expires_pages
+
+  private
+    # Gets the page cache filename given a relative URL like /blah
+    def page_cache_file(url)
+      ActionController::Base.send :page_cache_file, url
+    end
+
+    # Gets a test page cache filename given a relative URL like /blah
+    def page_cache_test_file(url)
+      File.join ActionController::Base.page_cache_directory, page_cache_file(url)[1..-1]
+    end
+
+    # Returns true/false whether the page cache file exists.
+    def page_cache_exists?(url)
+      File.exists? page_cache_test_file(url)
+    end
 end
 
 class ActionController::Integration::Session
-  def login_as(login, password)
-    post '/account/login', :login => login, :password => password
+  def login_as(login)
+    post '/account/login', :login => login, :password => login
     assert request.session[:user]
     assert cookies['user']
     assert redirect?
-    follow_redirect!
-  end
-
-  def get_and_login_as(login, password, url)
-    get url
-    assert_redirected_to! '/account/login'
-    login_as login, password
-    assert_equal url, path
   end
 
   def assert_redirected_to(url)
@@ -82,5 +126,26 @@ class ActionController::Integration::Session
   def assert_redirected_to!(url)
     assert_redirected_to(url)
     follow_redirect!
+  end
+end
+
+module Mephisto::Actors
+  module Visitor
+    def read(article)
+      get article.full_permalink
+      assert_equal 200, status
+    end
+
+    def syndicate(section)
+      get "/feed/#{section.to_feed_url * '/'}"
+      assert_equal 200, status
+    end
+  end
+
+  module Writer
+    def revise(article, contents)
+      post "/admin/articles/update/#{article.id}", 'article[body]' => contents, 'article_published' => '1'
+      assert_redirected_to "/admin/articles/index"
+    end
   end
 end
