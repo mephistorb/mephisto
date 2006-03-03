@@ -69,6 +69,7 @@ a { color: #390; border-bottom: 1px dotted #ccc; text-decoration: none; }
   text-align: center;
 }
 
+
 /*
  *=UTILS
  */
@@ -584,6 +585,32 @@ a#section-home {
   height: 8px;
   background: white;
   background: transparent url(../images/corners/br.png) scroll no-repeat bottom right ;
+  padding: 0;
+}
+
+/* Black backgrounds */
+.bround:before {
+  background: transparent url(../images/corners/btr.png) scroll no-repeat top right;
+  margin-bottom: -20px;
+  height: 30px;
+  display: block;
+  border: none;
+  content: url(../images/corners/btl.png);
+  padding: 0;
+  line-height: 0.1em;
+  font-size: 1px;
+}
+
+
+.bround:after {
+  display: block;
+  line-height: 0.1;
+  font-size: 1px;
+  content:  url(../images/corners/bbl.png);
+  margin: 0 0 -1px 0;
+  height: 8px;
+  background: white;
+  background: transparent url(../images/corners/bbr.png) scroll no-repeat bottom right ;
   padding: 0;
 }
 

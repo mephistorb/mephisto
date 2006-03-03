@@ -1,11 +1,21 @@
 
-<!-- begin quickstats -->
+<!-- begin action nav -->
+<div class="round" id="page-nav">
+  <ul id="act-nav">
+    <li><%= link_to "Create new article", :controller => 'articles', :action => "new" %></li>
+    <li><%= link_to "Create new section", :controller => 'sections' %></li>
+    <li><%= link_to "Update your account", :controller => 'users', :action => 'show', :id => current_user %></li>
+  </ul>
+</div>
+<!-- /end action nav -->
+
+<!-- begin quickstats 
 <div id="stats">
   <ul id="quick-stats" class="clear">
     <li id="stat-comments" class="round"><div>23</div></li>
   </ul>
 </div>
-<!-- /end quickstats -->
+ /end quickstats -->
 
 
 <!-- begin overview -->

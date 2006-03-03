@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />		
+		<title>Mephisto: <%= controller.controller_name %> Admin</title>
+		<%= stylesheet_link_tag 'fullscreen' %>
+		<%= javascript_include_tag :defaults %>
+		<%= javascript_include_tag 'logger', 'mephisto' %>
+	</head>
+	<body id="body-<%= controller.controller_name %>">
+	
+	  <% unless controller.controller_name == 'account' %>
+    	<!-- div.header -->
+    	<div id="header">
+    	  <h1><a href="/" title="ArticleCast">Mephisto: Admin</a></h1>
+    	</div>
+    	<!-- /div.header -->
+    <% end %>
+      	
+	  <div id="container">  	
+      
+      <!-- div.content -->
+    	<div id="fullscreen">
+    	  
+    	  <!-- div.left -->
+    	  <div id="main">
+    	    <div id="flash-errors" style="display:none"></div>
+    	    <% if flash[:notice] %>
+    	    <div id="flash-notice">
+    	      <%= @flash[:notice] %>  
+    	    </div>
+    	    <% end %>
+    	    
+    	    <%= yield %>
+    	  </div>
+    	  <!-- /div.left -->
+
+    	</div>
+    	<!-- /div.content -->
+    	
+  	</div>
+	</body>
+</html>

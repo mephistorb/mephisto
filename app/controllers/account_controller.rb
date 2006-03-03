@@ -1,5 +1,6 @@
 class AccountController < ApplicationController
   include AuthenticatedSystem
+  layout 'simple'
   # Be sure to include AuthenticationSystem in Application Controller instead
   # To require logins, use:
   #

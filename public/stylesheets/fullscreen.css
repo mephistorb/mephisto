@@ -1,0 +1,46 @@
+@import 'mephisto.css';
+
+#fullscreen {
+  float: none;
+  margin: 0 auto;
+  text-align: center;  
+}
+
+#fullscreen #main {
+  width: 80%;
+  float: none;
+  margin: 0 auto !important;
+  text-align: left;
+}
+
+
+/*
+ *=FORMS
+ */
+
+
+
+/*
+ *=ACCOUNT/LOGIN
+ */
+ 
+#body-account {
+  background: #fff;
+  color: #333;
+}
+
+#body-account .btns {
+  background: transparent;
+  text-align: right;
+}
+
+/*
+ *=MISC BOXES
+ */
+
+.little-box {
+  width: 300px;
+  margin: 50px auto;
+  background: #eee;
+  text-shadow: 2px 2px #fff;
+}
