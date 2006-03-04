@@ -43,13 +43,19 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     assert_redirected_to :action => 'show', :id => users(:quentin).login
   end
 
-  def test_should_show_error
+  def test_should_show_error_while_updating
     post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'tea', :password_confirmation => '' }
     users(:quentin).reload
     assert_equal 'quentin@example.com', users(:quentin).email
     assert_equal users(:quentin), User.authenticate('quentin', 'quentin')
     assert_response :success
     assert_template 'show'
+  end
+
+  def test_should_show_error_while_creating
+    post :create, :user => { :email => 'foo', :password => 'tea', :password_confirmation => '' }
+    assert_response :success
+    assert_template 'new'
   end
 
   def test_should_not_upload_nonexistent_file

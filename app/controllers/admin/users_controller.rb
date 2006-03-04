@@ -14,7 +14,7 @@ class Admin::UsersController < Admin::BaseController
       redirect_to :action => 'index'
     else
       flash[:error] = "Save failed."
-      render :action => 'show'
+      render :action => 'new'
     end
   end
 

@@ -23,10 +23,10 @@
   <h3>Change your password</h3>
   <p class="hint">Leave this blank if you don't want to change your password.</p>
   <dl class="setform">
-    <dt><%= f.label_for  :password %></dt>
-    <dd><%= f.text_field :password %></dd>
-    <dt><%= f.label_for  :password_confirmation %></dt>
-    <dd><%= f.text_field :password_confirmation %></dd>
+    <dt><%= f.label_for      :password %></dt>
+    <dd><%= f.password_field :password %></dd>
+    <dt><%= f.label_for      :password_confirmation %></dt>
+    <dd><%= f.password_field :password_confirmation %></dd>
   </dl>
 </div>
 <p class="btns"><%= submit_tag 'Save my profile' %></p>
