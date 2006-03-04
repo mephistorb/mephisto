@@ -1,3 +1,4 @@
 <h2>Creating a new User</h2>
-<%= render :partial => 'form' %>
-
+<% form_for :user, @user, :url => { :action => 'create' }, :html => { :multipart => true } do |f| -%>
+<%= render :partial => 'form', :locals => { :f => f } %>
+<% end -%>

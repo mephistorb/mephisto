@@ -1,3 +1,5 @@
 <h2>Hola, <%=h @user.login %>!</h2>
-<%= render :partial => 'form' %>
+<% form_for :user, @user, :url => { :action => 'update', :id => @user }, :html => { :multipart => true } do |f| -%>
+<%= render :partial => 'form', :locals => { :f => f } %>
+<% end -%>
 
