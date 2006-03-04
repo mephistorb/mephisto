@@ -5,7 +5,7 @@ require 'admin/overview_controller'
 class Admin::OverviewController; def rescue_action(e) raise e end; end
 
 class Admin::OverviewControllerTest < Test::Unit::TestCase
-  fixtures :users, :contents, :events
+  fixtures :users, :contents, :events, :sites
   def setup
     @controller = Admin::OverviewController.new
     @request    = ActionController::TestRequest.new
