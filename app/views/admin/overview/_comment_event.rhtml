@@ -1,6 +1,6 @@
 <li class="event-comment<%= " shade" if shaded %>">
   <span class="event-time"><%= event_time_for event, later %></span>
   <blockquote><p><%= truncate event.body, 100 %></p></blockquote>
-  <%= link_to event.title, :controller => 'articles', :action => 'show', :id => event.article_id %> was created.
+  <%= link_to event.title, :controller => 'articles', :action => 'show', :id => event.article_id %> was commented on.
   <span class="meta">by <%= author_link_for event %></span>
 </li>

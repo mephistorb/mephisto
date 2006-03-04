@@ -13,8 +13,20 @@ class Admin::OverviewControllerTest < Test::Unit::TestCase
     login_as :quentin
   end
 
-  def test_truth
+  def test_routing
+    with_options :controller => 'admin/overview' do |test|
+      test.assert_routing 'admin/overview',     :action => 'index'
+      test.assert_routing 'admin/overview.xml', :action => 'feed'
+    end
+  end
+
+  def test_should_not_explode_on_home_page
     get :index
+    assert_response :success
+  end
+
+  def test_should_not_explode_on_feed
+    get :feed
     assert_response :success
   end
 end

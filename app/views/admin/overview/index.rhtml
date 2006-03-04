@@ -2,8 +2,8 @@
 <!-- begin action nav -->
 <div class="round" id="page-nav">
   <ul id="act-nav">
-    <li><%= link_to "Create new article", :controller => 'articles', :action => "new" %></li>
-    <li><%= link_to "Create new section", :controller => 'sections' %></li>
+    <li><%= link_to "Create new article",  :controller => 'articles', :action => "new" %></li>
+    <li><%= link_to "Create new section",  :controller => 'sections' %></li>
     <li><%= link_to "Update your account", :controller => 'users', :action => 'show', :id => current_user %></li>
   </ul>
 </div>
@@ -20,7 +20,7 @@
 
 <!-- begin overview -->
 <div id="overview">
-  <a href="#" class="feed right">Subscribe via RSS</a>
+  <%= link_to 'Subscribe via RSS', overview_url, :class => 'feed right' %>
   <h3>Whats happening around <%= current_site.title %></h3>
   
   <h4>Today <%= todays_short_date %></h4>

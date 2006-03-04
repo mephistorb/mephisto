@@ -13,5 +13,9 @@ class Admin::OverviewController < Admin::BaseController
       end << event
     end
   end
-  
+
+  def feed
+    @events = Event.find(:all, :order => 'events.created_at DESC', :include => [:article, :user])
+    render :layout => false
+  end
 end

@@ -7,6 +7,8 @@ ActionController::Routing::Routes.draw do |map|
     m.images 'images/*path',      :dir => 'images'
   end
 
+  map.overview 'admin/overview.xml', :controller => 'admin/overview', :action => 'feed'
+
   map.connect ':controller/:action/:id/:version', :version => nil, 
       :requirements => { :controller => /account|(admin\/\w+)/ }
 
