@@ -1,6 +1,6 @@
 class Admin::BaseController < ApplicationController
   include AuthenticatedSystem
-  before_filter :login_required
+  before_filter :login_required, :except => :feed
 
   def find_templates_and_resources!
     @resources, @templates = Attachment.find(:all, :conditions => ['type in (?)', %w(Resource Template LayoutTemplate)], :order => 'filename').partition do |asset|

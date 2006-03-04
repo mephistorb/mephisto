@@ -25,7 +25,13 @@ class Admin::OverviewControllerTest < Test::Unit::TestCase
     assert_response :success
   end
 
-  def test_should_not_explode_on_feed
+  def test_should_require_http_auth_on_feed
+    get :feed
+    assert_response 401
+  end
+
+  def test_should_require_http_auth_on_feed
+    @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("quentin:quentin")}"
     get :feed
     assert_response :success
   end

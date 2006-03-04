@@ -1,5 +1,6 @@
 class Admin::OverviewController < Admin::BaseController
   before_filter :current_site
+  before_filter :basic_auth_required, :only => :feed
   
   def index
     @users = User.find(:all)
