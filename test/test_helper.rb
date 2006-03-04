@@ -4,19 +4,9 @@ require 'test_help'
 
 class Test::Unit::TestCase
   include AuthenticatedTestHelper
-  include Caboose::Caching::ReferencedCachingTestHelper
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
 
-  # http://project.ioni.st/post/217#post-217
-  #
-  #  def test_new_publication
-  #    assert_difference(Publication, :count) do
-  #      post :create, :publication => {...}
-  #      # ...
-  #    end
-  #  end
-  # 
   def assert_difference(object, method = nil, difference = 1)
     initial_value = object.send(method)
     yield
@@ -67,6 +57,7 @@ class Test::Unit::TestCase
 end
 
 class ActionController::IntegrationTest
+  include Caboose::Caching::ReferencedCachingTestHelper
   def login_as(login)
     visit do |sess|
       sess.login_as login
@@ -83,53 +74,6 @@ class ActionController::IntegrationTest
   def feed_url_for(section)
     "/feed/#{sections(section).to_feed_url * '/'}"
   end
-
-  # Prepares a caching directory for use.  Put this in your test case's #setup method.
-  def prepare_for_caching!
-    dir = File.join(RAILS_ROOT, 'test/cache')
-    ActionController::Base.page_cache_directory = dir
-    FileUtils.rm_rf dir rescue nil
-    FileUtils.mkdir_p dir
-  end
-
-  def assert_caches_pages(*urls)
-    yield if block_given?
-    urls.map { |url| assert_page_cached url }
-  end
-
-  def assert_expires_pages(*urls)
-    yield if block_given?
-    urls.map { |url| assert_not_cached url }
-  end
-
-  # Asserts a page was cached.
-  def assert_cached(url)
-    assert page_cache_exists?(url), "#{url} is not cached"
-  end
-
-  # Asserts a page was not cached.
-  def assert_not_cached(url)
-    assert !page_cache_exists?(url), "#{url} is cached"
-  end
-
-  alias assert_caches_page  assert_caches_pages
-  alias assert_expires_page assert_expires_pages
-
-  private
-    # Gets the page cache filename given a relative URL like /blah
-    def page_cache_file(url)
-      ActionController::Base.send :page_cache_file, url
-    end
-
-    # Gets a test page cache filename given a relative URL like /blah
-    def page_cache_test_file(url)
-      File.join ActionController::Base.page_cache_directory, page_cache_file(url)[1..-1]
-    end
-
-    # Returns true/false whether the page cache file exists.
-    def page_cache_exists?(url)
-      File.exists? page_cache_test_file(url)
-    end
 end
 
 class ActionController::Integration::Session
@@ -138,6 +82,10 @@ class ActionController::Integration::Session
     assert request.session[:user]
     assert cookies['user']
     assert redirect?
+  end
+
+  def get_with_basic(url, options = {})
+    get url, nil, 'authorization' => "Basic #{Base64.encode64("#{options[:login]}:#{options[:login]}")}"
   end
 
   def assert_redirected_to(url)

@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
-class ArticlesTest < ActionController::IntegrationTest
+class CachingTest < ActionController::IntegrationTest
   fixtures :contents, :users, :sections, :assigned_sections, :sites
 
   def setup
@@ -19,6 +19,19 @@ class ArticlesTest < ActionController::IntegrationTest
     end
 
     assert_expires_pages contents(:welcome).full_permalink, feed_url_for(:home) do
+      writer.revise contents(:welcome), 'new welcome description'
+    end
+  end
+
+  def test_should_cache_and_expires_overview_feed_on_edited_article
+    rss = visit
+    writer  = login_as :quentin
+
+    assert_caches_page overview_url do
+      rss.get_with_basic 'admin/overview.xml', :login => :quentin
+    end
+
+    assert_expires_page overview_url do
       writer.revise contents(:welcome), 'new welcome description'
     end
   end
