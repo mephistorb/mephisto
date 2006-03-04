@@ -11,7 +11,7 @@
     <dd><%= form.text_area :body, :class => 'fat'  %></dd>
     <dt><label for="article_section">Show article in these sections</label> </dt>
     <dd>
-      <ul class="nobull">
+      <ul id="section-options" class="nobull clear">
         <% @sections.each do |section| %>
           <li>
             <%= check_box_tag 'article[section_ids][]', section.id, @article.has_section?(section), 

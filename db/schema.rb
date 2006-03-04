@@ -73,8 +73,8 @@ ActiveRecord::Schema.define(:version => 18) do
     t.column "author_ip", :string, :limit => 100
     t.column "comments_count", :integer, :default => 0
     t.column "filters", :text
-    t.column "version", :integer
     t.column "updater_id", :integer
+    t.column "version", :integer
   end
 
   create_table "db_files", :force => true do |t|

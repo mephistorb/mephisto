@@ -634,6 +634,11 @@ a#section-home {
   margin-top: 1px;
 }
 
+#section-options li {
+  float: left;
+  width: 25%;
+}
+
 
 /*
  *=SETTINGS

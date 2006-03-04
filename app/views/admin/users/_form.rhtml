@@ -1,7 +1,6 @@
 <div class="setgroup">
-  <h3>All about you</h3>
   <dl class="setform">
-    <dt><label for="user_login">Your Login</label></dt>
+    <dt><label for="user_login">Login</label></dt>
     <dd><%= f.text_field :login %></dd>
     <dt><label for="user_filters">What markup type do you prefer?</label></dt>
     <dd>
@@ -9,7 +8,7 @@
         <%= options_for_select(filter_options, (@user.filters || []).first.to_s) %>
       </select>
     </dd>
-    <dt><label for="user_email">Your email</label></dt>
+    <dt><label for="user_email">Email address</label></dt>
     <dd><%= f.text_field :email %></dd>
     <% if @user.avatar -%>
     <dd class="avatar"><%= avatar_for(@user) %></dd>
@@ -20,8 +19,10 @@
 </div>
 
 <div class="setgroup">
+  <% unless create %>
   <h3>Change your password</h3>
   <p class="hint">Leave this blank if you don't want to change your password.</p>
+  <% end %>
   <dl class="setform">
     <dt><%= f.label_for      :password %></dt>
     <dd><%= f.password_field :password %></dd>
