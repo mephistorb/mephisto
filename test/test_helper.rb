@@ -67,18 +67,21 @@ class Test::Unit::TestCase
 end
 
 class ActionController::IntegrationTest
-  def open_writer
+  def login_as(login)
+    visit do |sess|
+      sess.login_as login
+    end
+  end
+
+  def visit
     open_session do |sess|
-      sess.extend Mephisto::Actors::Writer
+      sess.extend Mephisto::Actor
       yield sess if block_given?
     end
   end
 
-  def open_visitor
-    open_session do |sess|
-      sess.extend Mephisto::Actors::Visitor
-      yield sess if block_given?
-    end
+  def feed_url_for(section)
+    "/feed/#{sections(section).to_feed_url * '/'}"
   end
 
   # Prepares a caching directory for use.  Put this in your test case's #setup method.
@@ -148,23 +151,19 @@ class ActionController::Integration::Session
   end
 end
 
-module Mephisto::Actors
-  module Visitor
-    def read(article)
-      get article.full_permalink
-      assert_equal 200, status
-    end
-
-    def syndicate(section)
-      get "/feed/#{section.to_feed_url * '/'}"
-      assert_equal 200, status
-    end
+module Mephisto::Actor
+  def read(article)
+    get article.full_permalink
+    assert_equal 200, status
   end
 
-  module Writer
-    def revise(article, contents)
-      post "/admin/articles/update/#{article.id}", 'article[body]' => contents, 'article_published' => '1'
-      assert_redirected_to "/admin/articles/index"
-    end
+  def syndicate(section)
+    get "/feed/#{section.to_feed_url * '/'}"
+    assert_equal 200, status
+  end
+
+  def revise(article, contents)
+    post "/admin/articles/update/#{article.id}", 'article[body]' => contents, 'article_published' => '1'
+    assert_redirected_to "/admin/articles/index"
   end
 end
