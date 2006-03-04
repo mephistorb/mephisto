@@ -2,6 +2,8 @@
 <div class="setgroup">
   <h3>All about you</h3>
   <dl class="setform">
+    <dt><label for="user_login">Your Login</label></dt>
+    <dd><%= f.text_field :login %></dd>
     <dt><label for="user_filters">What markup type do you prefer?</label></dt>
     <dd>
       <select name="user[filters][]" id="user_filters">
@@ -14,7 +16,7 @@
     <dd class="avatar"><%= avatar_for(@user) %></dd>
     <% end -%>
     <dt><label for="avatar">Your picture</label> <span class="hint">Should be no larger than 75x75 pixels (jpeg, gif, or png)</span></dt>
-    <dd><%= file_field_tag :avatar %></dd>
+    <dd><%= file_field_tag 'user[uploaded_avatar]', :id => 'user_uploaded_avatar' %></dd>
   </dl>
 </div>
 

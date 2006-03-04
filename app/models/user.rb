@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   validates_length_of       :email,    :within => 3..100
   validates_uniqueness_of   :login, :email, :salt
   before_save :encrypt_password
+  after_save  :save_uploaded_avatar
   serialize   :filters, Array
   
   has_many :articles
@@ -51,6 +52,10 @@ class User < ActiveRecord::Base
     login
   end
 
+  def uploaded_avatar=(uploaded_data)
+    @uploaded_avatar = uploaded_data
+  end
+
   # Uncomment these methods for user activation  These also help let the mailer know precisely when the user is activated.
   # There's also a commented-out before hook above and a protected method below.
   #
@@ -68,6 +73,10 @@ class User < ActiveRecord::Base
   # end
 
   protected
+  def save_uploaded_avatar
+    build_avatar :uploaded_data => @uploaded_avatar if @uploaded_avatar && @uploaded_avatar.size > 0
+  end
+
   def encrypt_password
     return if password.blank?
     self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?

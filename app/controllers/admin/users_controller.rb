@@ -7,11 +7,20 @@ class Admin::UsersController < Admin::BaseController
     @user = User.find_by_login params[:id]
   end
 
-  def update
-    @user            = User.find_by_login params[:id]
-    @user.attributes = params[:user]
-    @user.build_avatar :uploaded_data => params[:avatar]
+  def create
+    @user = User.new params[:user]
     if @user.save
+      flash[:notice] = "User created."
+      redirect_to :action => 'index'
+    else
+      flash[:error] = "Save failed."
+      render :action => 'show'
+    end
+  end
+
+  def update
+    @user = User.find_by_login params[:id]
+    if @user.update_attributes params[:user]
       flash[:notice] = "Profile updated."
       redirect_to :action => 'show', :id => @user
     else

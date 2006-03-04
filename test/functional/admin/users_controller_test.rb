@@ -18,6 +18,15 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     assert_response :success
   end
 
+  def test_should_create_user
+    assert_difference User, :count do
+      post :create, :user => { :login => 'bob', :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }
+      assert_equal assigns(:user), User.authenticate('bob', 'testy')
+      assert_redirected_to :action => 'index'
+      assert flash[:notice]
+    end
+  end
+
   def test_should_update_email_and_password
     post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }
     users(:quentin).reload
@@ -49,7 +58,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
 
   def test_should_upload_avatar
     assert_attachment_created do
-      post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }, :avatar => file_upload
+      post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy', :uploaded_avatar => file_upload }
       users(:quentin).reload
       assert_equal 'foo', users(:quentin).email
       assert_equal users(:quentin), User.authenticate('quentin', 'testy')
