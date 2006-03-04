@@ -5,5 +5,5 @@
         :class   => 'aicon' unless section.home? %>
     
   <%= link_to h(section.name), {:action => 'edit', :id => section}, :id => "section-#{section.name}" %>
-  <% if section.home? %><span class="hint">(not deletable)</span><% end %>
+  <span class="hint">(<%= pluralize_articles_count_for section %><% if section.home? -%>, not deletable<% end -%>)</span>
 </li>

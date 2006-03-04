@@ -1,4 +1,5 @@
 class Section < ActiveRecord::Base
+  ARTICLES_COUNT_SQL = 'INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id INNER JOIN sections ON sections.id = assigned_sections.section_id' unless defined?(ARTICLES_COUNT)
   validates_presence_of :name
   has_many :assigned_sections, :dependent => :delete_all
   has_many :articles, :order => 'assigned_sections.position', :through => :assigned_sections do
@@ -40,6 +41,10 @@ class Section < ActiveRecord::Base
       end
       [section, page_name.any? ? page_name.join('/') : nil]
     end
+
+    def articles_count
+      Article.count :all, :group => :section_id, :joins => ARTICLES_COUNT_SQL
+    end
   end
 
   def title
@@ -53,6 +58,10 @@ class Section < ActiveRecord::Base
       end
       save
     end
+  end
+
+  def articles_count
+    @articles_count ||= Article.count :all, :joins => ARTICLES_COUNT_SQL
   end
 
   def hash_for_url(options = {})

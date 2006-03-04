@@ -39,7 +39,8 @@ class Admin::SectionsController < Admin::BaseController
   end
 
   def find_and_reorder_sections
-    @sections = Section.find :all
+    @article_count = Section.articles_count
+    @sections      = Section.find :all
     @sections.each do |s|
       @home    = s if s.name.downcase == 'home'
       @section = s if params[:id].to_s == s.id.to_s
