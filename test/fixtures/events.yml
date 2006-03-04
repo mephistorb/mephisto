@@ -20,7 +20,6 @@ welcome_comment:
   body: This blogging tool rocks.
   created_at: <%= 3.days.ago.to_s(:db) %>
   mode: comment
-  author: rico
 unpublished:
   id: 4
   title: Unpublished Article
