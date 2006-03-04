@@ -1,6 +1,16 @@
 class ArticleSweeper < ActionController::Caching::Sweeper
   observe Article
 
+  def before_save(record)
+    @event = Event.new 
+    @event.mode = case
+      when record.is_a?(Comment)      then 'comment'
+      when record.recently_published? then 'publish'
+      when record.new_record?         then 'create'
+      else 'edit'
+    end
+  end
+
   def after_create(record)
     return if controller.nil?
     record.send :save_assigned_sections
@@ -11,6 +21,11 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   end
 
   def after_save(record)
+    if record.is_a?(Article)
+      @event.update_attributes :title => record.title, :body => record.body, :article => record, :user => record.updater
+      expire_overview_feed!
+    end
+
     return if controller.nil?
     pages = CachedPage.find_by_reference(record)
     controller.class.benchmark "Expired pages referenced by #{record.class} ##{record.id}" do
@@ -20,4 +35,9 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   end
 
   alias after_destroy after_save
+
+  protected
+  def expire_overview_feed!
+    controller.class.expire_page overview_url(:only_path => true, :skip_relative_url_root => true) if controller
+  end
 end

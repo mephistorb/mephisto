@@ -11,7 +11,6 @@ class MephistoControllerTest < Test::Unit::TestCase
     @controller = MephistoController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-    prepare_for_caching
   end
 
   def test_routing

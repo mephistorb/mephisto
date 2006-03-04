@@ -4,7 +4,8 @@ class EventTest < Test::Unit::TestCase
   fixtures :events, :contents, :users
 
   def setup
-    ArticleObserver.instance
+    ArticleSweeper.instance
+    CommentSweeper.instance
   end
 
   def test_should_create_new_article_event

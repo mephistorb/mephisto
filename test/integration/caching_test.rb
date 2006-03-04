@@ -24,7 +24,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_cache_and_expires_overview_feed_on_edited_article
-    rss = visit
+    rss     = visit
     writer  = login_as :quentin
 
     assert_caches_page overview_url do
