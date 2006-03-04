@@ -17,13 +17,15 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_routing
     with_options :controller => 'mephisto' do |test|
       test.assert_routing '',               :action => 'list',   :sections => []
-      test.assert_routing 'about',          :action => 'list',   :sections => ['about']
+      test.assert_routing 'about',          :action => 'list',   :sections => %w(about)
       test.assert_routing 'search/foo',     :action => 'search', :q => 'foo'
       test.assert_routing '2006',           :action => 'yearly', :year => '2006'
       test.assert_routing '2006/01',        :action => 'month',  :year => '2006', :month => '01'
       test.assert_routing '2006/01/page/1', :action => 'month',  :year => '2006', :month => '01', :page => '1'
       test.assert_routing '2006/01/01',     :action => 'day',    :year => '2006', :month => '01', :day => '01'
       test.assert_routing '2006/01/01/foo', :action => 'show',   :year => '2006', :month => '01', :day => '01', :permalink => 'foo'
+      test.assert_routing 'mephisto',       :action => 'list', :sections => %w(mephisto)
+      test.assert_routing 'stuff/mephisto', :action => 'list', :sections => %w(stuff mephisto)
     end
   end
 
