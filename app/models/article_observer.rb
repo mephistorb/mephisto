@@ -13,7 +13,7 @@ class ArticleObserver < ActiveRecord::Observer
 
   def after_save(record)
     if record.is_a?(Comment)
-      @event.update_attributes :title => record.article.title, :body => record.article.body, :article => record.article,
+      @event.update_attributes :title => record.article.title, :body => record.body, :article => record.article,
         :author => record.author, :author_url => record.author_url, :author_email => record.author_email, :author_ip => record.author_ip
     else
       @event.update_attributes :title => record.title, :body => record.body, :user => record.updater, :article => record

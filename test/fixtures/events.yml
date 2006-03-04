@@ -14,16 +14,13 @@ another:
   user_id: 1
   article_id: 2
   mode: publish
-#welcome_comment:
-#  id: 3
-#  article_id: 1
-#  body: This blogging tool rocks.
-#  body_html: This blogging tool rocks.
-#  created_at: <%= 3.days.ago.to_s(:db) %>
-#  updated_at: <%= 3.days.ago.to_s(:db) %>
-#  published_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
-#  type: Comment
-#  author: rico
+welcome_comment:
+  id: 3
+  article_id: 1
+  body: This blogging tool rocks.
+  created_at: <%= 3.days.ago.to_s(:db) %>
+  mode: comment
+  author: rico
 unpublished:
   id: 4
   title: Unpublished Article
