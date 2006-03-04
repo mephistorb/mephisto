@@ -36,6 +36,13 @@ class Template < Attachment
       nil
     end
 
+    def render_liquid_for(template_type, assigns = {})
+      templates                     = templates_for(template_type)
+      preferred_template            = find_preferred(template_type, templates)
+      assigns['content_for_layout'] = Liquid::Template.parse(preferred_template).render(assigns)
+      Liquid::Template.parse(templates['layout']).render(assigns)
+    end
+
     def find_custom
       Attachment.find(:all, :conditions => ['type IN (?) AND filename NOT IN (?)', template_classes, template_types.map(&:to_s)])
     end
