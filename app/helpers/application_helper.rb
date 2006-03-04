@@ -2,7 +2,7 @@
 module ApplicationHelper
   
   def avatar_for(user, options = {})
-    image_tag "/#{user.avatar.full_path}", {:class => 'avatar'}.merge(options) if user.avatar
+    image_tag "/#{user.avatar.full_path}", {:class => 'avatar'}.merge(options) if user.avatar && !user.avatar.full_path.blank?
   end
   
   def todays_short_date
