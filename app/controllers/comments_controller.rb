@@ -16,9 +16,9 @@ class CommentsController < ApplicationController
       @comments = @article.comments.select { |c| not c.new_record? }.collect { |c| c.to_liquid }
       @article  = @article.to_liquid(:single)
       render_liquid_template_for(:single, 'articles' => [@article], 
-                                          'article' => @article, 
+                                          'article'  => @article, 
                                           'comments' => @comments, 
-                                          'errors' => @comment.errors.full_messages)
+                                          'errors'   => @comment.errors.full_messages)
     else
       redirect_to article_url(@article.hash_for_permalink(:anchor => "comment_#{@comment.id}"))
     end
