@@ -13,6 +13,12 @@ class Admin::DesignControllerTest < Test::Unit::TestCase
     login_as :quentin
   end
 
+  def test_should_show_all_templates
+    get :index
+    assert_equal 10, assigns(:templates).length
+    assert assigns(:templates).include?(attachments(:layout))
+  end
+
   def test_should_create_template
     assert_difference Template, :count do
       post :create, :resource => { :data => 'this is liquid', :filename => 'my_little_pony' }, :resource_type => 'template'
