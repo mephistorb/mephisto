@@ -31,4 +31,10 @@ class EventTest < Test::Unit::TestCase
       contents(:welcome).update_attributes :body_html => 'bar', :updater => users(:quentin)
     end
   end
+
+  def test_should_create_comment_article_event
+    assert_event_created_for :welcome, 'comment' do |article|
+      article.comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1'
+    end
+  end
 end

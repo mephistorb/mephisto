@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   cache_sweeper :comment_sweeper
   verify :params => [:year, :month, :day, :permalink], :redirect_to => { :controller => 'mephisto', :action => 'list', :sections => [] }
+  observer :article_observer
 
   def create
     @article  = Article.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])

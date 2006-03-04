@@ -35,6 +35,12 @@ class CommentsControllerTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_add_comment_article_event
+    assert_event_created_for :welcome, 'comment' do
+      post :create, contents(:welcome).hash_for_permalink.merge(:comment => { :body   => 'test comment', :author => 'bob' })
+    end
+  end
+
   def test_should_show_article_page_on_invalid_comment
     assert_no_difference Comment, :count do
       assert_no_difference contents(:welcome), :comments_count do

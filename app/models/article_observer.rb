@@ -1,14 +1,22 @@
 class ArticleObserver < ActiveRecord::Observer
-  def before_save(article)
+  observe Article, Comment
+
+  def before_save(record)
     @event = Event.new 
     @event.mode = case
-      when article.recently_published? then 'publish'
-      when article.new_record?         then 'create'
+      when record.is_a?(Comment)      then 'comment'
+      when record.recently_published? then 'publish'
+      when record.new_record?         then 'create'
       else 'edit'
     end
   end
 
-  def after_save(article)
-    @event.update_attributes :title => article.title, :body => article.body, :user => article.updater, :article => article
+  def after_save(record)
+    if record.is_a?(Comment)
+      @event.update_attributes :title => record.article.title, :body => record.article.body, :article => record.article,
+        :author => record.author, :author_url => record.author_url, :author_email => record.author_email, :author_ip => record.author_ip
+    else
+      @event.update_attributes :title => record.title, :body => record.body, :user => record.updater, :article => record
+    end
   end
 end

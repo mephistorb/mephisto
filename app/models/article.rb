@@ -45,11 +45,11 @@ class Article < Content
   end
 
   def published?
-    not published_at.nil?
+    !published_at.nil?
   end
   
   def pending?
-    published? and Time.now.utc < published_at
+    published? && Time.now.utc < published_at
   end
 
   def status
