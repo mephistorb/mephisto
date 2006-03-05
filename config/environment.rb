@@ -59,6 +59,8 @@ end
 
 # Include your application configuration below
 require 'time_ext'
+require 'rubygems'
+require 'zip/zipfilesystem'
 Liquid::Template.register_filter(Mephisto::Filter)
 Liquid::Template.register_tag('textile',        Mephisto::Textile)
 Liquid::Template.register_tag('commentform',    Mephisto::CommentForm)
