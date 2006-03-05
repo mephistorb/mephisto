@@ -21,7 +21,7 @@
 
 
 <div class="sbar-group box">
-  <% form_for :resource, @resource, :controller => 'resources', :action => 'upload', :id => nil, :html => { :multipart => true } do |f| -%>
+  <% form_for :resource, @resource, :url => { :controller => 'resources', :action => 'upload', :id => nil }, :html => { :multipart => true } do |f| -%>
   <dl class="sbar-form">
     <dt>
       <label for="resource_uploaded_data">Upload new image</label>

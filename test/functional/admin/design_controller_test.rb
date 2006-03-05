@@ -17,6 +17,7 @@ class Admin::DesignControllerTest < Test::Unit::TestCase
     get :index
     assert_equal 10, assigns(:templates).length
     assert assigns(:templates).include?(attachments(:layout))
+    assert_tag :tag => 'form', :attributes => { :action => '/admin/resources/upload' }
   end
 
   def test_should_create_template
