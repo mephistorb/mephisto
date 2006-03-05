@@ -2,7 +2,7 @@ class CommentSweeper < ArticleSweeper
   observe Comment
 
   def after_save(record)
-    @event.update_attributes :title => record.article.title, :body => record.body, :article => record.article
+    @event.update_attributes :title => record.article.title, :body => record.body, :article => record.article, :author => record.author
     expire_overview_feed!
 
     return if controller.nil?
