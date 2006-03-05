@@ -23,7 +23,6 @@ class TemplateTest < Test::Unit::TestCase
     end
   end
 
-
   def test_preferred_template_hierarchy_sanity
     assert_template_type :home,    :main
     assert_template_type :single,  :single
