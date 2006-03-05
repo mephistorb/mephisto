@@ -12,12 +12,7 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   end
 
   def after_create(record)
-    return if controller.nil?
-    record.send :save_assigned_sections
-    record.sections.each do |section|
-      controller.expire_page :sections => section.to_url,      :controller => '/mephisto', :action => 'list'
-      controller.expire_page :sections => section.to_feed_url, :controller => '/feed',     :action => 'feed'
-    end
+    expire_assigned_sections!(record) unless controller.nil? || record.status != :published
   end
 
   def after_save(record)
@@ -27,6 +22,7 @@ class ArticleSweeper < ActionController::Caching::Sweeper
     end
 
     return if controller.nil?
+    expire_assigned_sections!(record) if record.is_a?(Article) && record.recently_published?
     pages = CachedPage.find_by_reference(record)
     controller.class.benchmark "Expired pages referenced by #{record.class} ##{record.id}" do
       pages.each { |p| controller.class.expire_page(p.url) }
@@ -39,5 +35,13 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   protected
   def expire_overview_feed!
     controller.class.expire_page overview_url(:only_path => true, :skip_relative_url_root => true) if controller
+  end
+
+  def expire_assigned_sections!(record)
+    record.send :save_assigned_sections
+    record.sections.each do |section|
+      controller.expire_page :sections => section.to_url,      :controller => '/mephisto', :action => 'list'
+      controller.expire_page :sections => section.to_feed_url, :controller => '/feed',     :action => 'feed'
+    end
   end
 end

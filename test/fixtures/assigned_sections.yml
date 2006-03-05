@@ -26,4 +26,8 @@ site_map_about:
   article_id: 7
   section_id: 2
   position: 3
-
+unpublished_home:
+  id: 6
+  article_id: 4
+  section_id: 1
+  position: 1
