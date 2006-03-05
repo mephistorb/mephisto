@@ -21,7 +21,7 @@ class AccountControllerTest < Test::Unit::TestCase
     post :login, :login => 'quentin', :password => 'quentin'
     assert session[:user]
     assert cookies['user']
-    assert_response :redirect
+    assert_redirected_to :controller => 'admin/overview', :action => 'index'
   end
 
   def test_should_fail_login_and_not_redirect
@@ -35,6 +35,7 @@ class AccountControllerTest < Test::Unit::TestCase
     login_as :quentin
     get :logout
     assert_nil session[:user]
+    assert_redirected_to section_url(:sections => [])
     assert_response :redirect
   end
 

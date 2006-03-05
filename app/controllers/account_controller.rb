@@ -20,7 +20,7 @@ class AccountController < ApplicationController
     return unless request.post?
     self.current_user = User.authenticate(params[:login], params[:password])
     if current_user
-      redirect_back_or_default(:controller => '/account', :action => 'index')
+      redirect_back_or_default(:controller => '/admin/overview', :action => 'index')
       flash[:notice] = "Logged in successfully"
     end
   end
@@ -38,6 +38,6 @@ class AccountController < ApplicationController
   def logout
     self.current_user = nil
     flash[:notice] = "You have been logged out."
-    redirect_back_or_default(:controller => '/account', :action => 'index')
+    redirect_back_or_default(:controller => 'mephisto', :action => 'list', :sections => [])
   end
 end
