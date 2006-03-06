@@ -39,15 +39,34 @@ module ActsAsDraftable
       # create the dynamic draft model
       const_set(draft_class_name, Class.new(ActiveRecord::Base)).class_eval do
         class << self
+          def draft_parent_name
+            @draft_parent_name ||= parent.to_s.underscore
+          end
+          
           def reloadable? ; false ; end
           def find_new(options = {})
             find :all, options.merge(:conditions => "#{parent.draft_table_name}.#{parent.draft_foreign_key} IS NULL")
           end
         end
+        
+        def draft_parent_name
+          self.class.draft_parent_name
+        end
+        
+        def drafted_fields_with_values
+          self.class.parent.drafted_fields.inject({}) { |params, field| params.merge field => send(field) }
+        end
+
+        define_method "to_#{draft_parent_name}" do
+          send("#{draft_parent_name}=", self.class.parent.new) if send(draft_parent_name).nil?
+          send(draft_parent_name).attributes = drafted_fields_with_values
+          send(draft_parent_name)
+        end
       end
-    
-      draft_class.set_table_name draft_table_name
-      draft_class.send :include, options[:extend]       if options[:extend].is_a?(Module)
+
+      draft_class.belongs_to        self.to_s.underscore.to_sym, :class_name => "::#{self.to_s}", :foreign_key => draft_foreign_key
+      draft_class.set_table_name    draft_table_name
+      draft_class.send :include,    options[:extend]    if options[:extend].is_a?(Module)
       draft_class.set_sequence_name draft_sequence_name if draft_sequence_name
     end
   end
@@ -58,7 +77,11 @@ module ActsAsDraftable
     end
 
     def save_draft
-      (draft || build_draft).update_attributes drafted_fields.inject({}) { |params, field| params.merge field => send(field) }
+      (draft || build_draft).update_attributes drafted_fields_with_values
+    end
+
+    def drafted_fields_with_values
+      drafted_fields.inject({}) { |params, field| params.merge field => send(field) }
     end
 
     module ClassMethods # :nodoc:

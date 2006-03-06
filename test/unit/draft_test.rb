@@ -11,12 +11,26 @@ class DraftTest < Test::Unit::TestCase
 
   def test_should_retrieve_current_draft
     assert_equal content_drafts(:welcome), contents(:welcome).draft
+    assert_equal contents(:welcome),       content_drafts(:welcome).article
   end
 
   def test_should_find_new_drafts
     assert_equal [content_drafts(:first)], Article::Draft.find_new
     Article.new(:title => 'foo').save_draft
     assert_equal 2, Article::Draft.find_new.length
+  end
+
+  def test_should_change_draft_to_unsaved_article
+    article = Article::Draft.new(:title => 'foo').to_article
+    assert article.new_record?
+    assert_equal 'foo', article.title
+  end
+
+  def test_should_change_article_draft_to_article
+    drafted_article = content_drafts(:welcome).to_article
+    assert_equal contents(:welcome), drafted_article
+    assert_equal 'Welcome to Mephisto',    contents(:welcome).title
+    assert_equal 'Welcome to ArticleCast', content_drafts(:welcome).to_article.title
   end
 
   def test_should_save_draft_of_new_article
