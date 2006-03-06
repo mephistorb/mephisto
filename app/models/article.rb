@@ -11,6 +11,8 @@ class Article < Content
     end
   end
 
+  acts_as_draftable :fields => [:title, :body, :excerpt]
+
   has_many :assigned_sections
   has_many :sections, :through => :assigned_sections, :order => 'sections.name'
   has_many :comments, :order   => 'created_at'

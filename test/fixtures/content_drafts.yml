@@ -1,0 +1,11 @@
+first:
+  id: 1
+  title: test article
+  body: this is a test draft
+  updated_at: <%= 15.minutes.ago.to_s :db %>
+welcome:
+  id: 2
+  article_id: 1
+  title: Welcome to ArticleCast
+  body: welcome description
+  updated_at: <%= 5.minutes.ago.to_s :db %>

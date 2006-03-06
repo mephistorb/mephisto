@@ -61,6 +61,7 @@ end
 require 'time_ext'
 require 'rubygems'
 require 'zip/zipfilesystem'
+ActiveRecord::Base.send :include, ActsAsDraftable
 Liquid::Template.register_filter(Mephisto::Liquid::Filters)
 Liquid::Template.register_tag('textile',        Mephisto::Liquid::Textile)
 Liquid::Template.register_tag('commentform',    Mephisto::Liquid::CommentForm)
@@ -70,10 +71,10 @@ Liquid::Template.register_tag('head',           Mephisto::Liquid::Head)
 FilteredColumn.constant_filters << :macro_filter
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
-  :standard => '%B %d, %Y @ %I:%M%p',
-  :stub => '%B %d',
+  :standard  => '%B %d, %Y @ %I:%M%p',
+  :stub      => '%B %d',
   :time_only => '%I:%M %p',
-  :plain => '%B %d %I:%M %p'
+  :plain     => '%B %d %I:%M %p'
 
 # Time.now.to_ordinalized_s :long
 # => "February 28th, 2006 21:10"
