@@ -31,6 +31,11 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_equal 6, assigns(:articles).length
   end
   
+  def test_should_show_home_section_first
+    get :new
+    assert_equal sections(:home), assigns(:sections).first
+  end
+  
   def test_should_create_article
     assert_difference Article, :count do
       post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }

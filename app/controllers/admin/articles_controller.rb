@@ -52,6 +52,9 @@ class Admin::ArticlesController < Admin::BaseController
   protected
   def load_sections
     @sections = Section.find :all, :order => 'name'
+    home = @sections.find { |s| s.name == 'home' }
+    @sections.delete  home
+    @sections.unshift home
   end
 
   def set_default_section_ids
