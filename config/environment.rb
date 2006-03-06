@@ -61,11 +61,11 @@ end
 require 'time_ext'
 require 'rubygems'
 require 'zip/zipfilesystem'
-Liquid::Template.register_filter(Mephisto::Filter)
-Liquid::Template.register_tag('textile',        Mephisto::Textile)
-Liquid::Template.register_tag('commentform',    Mephisto::CommentForm)
-Liquid::Template.register_tag('pagenavigation', Mephisto::PageNavigation)
-Liquid::Template.register_tag('head',           Mephisto::Head)
+Liquid::Template.register_filter(Mephisto::Liquid::Filters)
+Liquid::Template.register_tag('textile',        Mephisto::Liquid::Textile)
+Liquid::Template.register_tag('commentform',    Mephisto::Liquid::CommentForm)
+Liquid::Template.register_tag('pagenavigation', Mephisto::Liquid::PageNavigation)
+Liquid::Template.register_tag('head',           Mephisto::Liquid::Head)
 
 FilteredColumn.constant_filters << :macro_filter
 
