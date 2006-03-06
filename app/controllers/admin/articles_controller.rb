@@ -30,6 +30,13 @@ class Admin::ArticlesController < Admin::BaseController
     end
   end
 
+  def show
+    @article  = Article.find_by_id(params[:id], :include => :comments)
+    @comments = @article.comments.collect { |c| c.to_liquid }
+    @article  = @article.to_liquid(:single)
+    render :text => Template.render_liquid_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => current_site.to_liquid)
+  end
+
   def edit
     @article = Article.find(params[:id])
     @version = params[:version] ? @article.find_version(params[:version]) : @article
@@ -43,10 +50,6 @@ class Admin::ArticlesController < Admin::BaseController
       @sections = Section.find :all
       render :action => 'edit'
     end
-  end
-  
-  def live_preview
-    @article = Article.new params[:article]
   end
   
   protected

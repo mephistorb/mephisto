@@ -17,21 +17,21 @@ class Article < Content
   has_many :events,   :order => 'created_at desc'
   
   class << self
-    def find_by_permalink(year, month, day, permalink)
+    def find_by_permalink(year, month, day, permalink, options = {})
       from, to = Time.delta(year, month, day)
-      find :first, :conditions => ["published_at <= ? AND permalink = ? AND published_at BETWEEN ? AND ?", 
-        Time.now.utc, permalink, from, to]
+      find :first, options.merge(:conditions => ["contents.published_at <= ? AND contents.permalink = ? AND contents.published_at BETWEEN ? AND ?", 
+        Time.now.utc, permalink, from, to])
     end
     
     def find_all_by_published_date(year, month, day = nil, options = {})
       from, to = Time.delta(year, month, day)
-      find(:all, options.merge(:order => 'published_at DESC', :conditions => ["published_at <= ? AND published_at BETWEEN ? AND ?", 
+      find(:all, options.merge(:order => 'contents.published_at DESC', :conditions => ["contents.published_at <= ? AND contents.published_at BETWEEN ? AND ?", 
         Time.now.utc, from, to]))
     end
 
     def count_by_published_date(year, month, day = nil)
       from, to = Time.delta(year, month, day)
-      count ["published_at <= ? AND published_at BETWEEN ? AND ?", Time.now.utc, from, to]
+      count :all, :conditions => ["published_at <= ? AND published_at BETWEEN ? AND ?", Time.now.utc, from, to]
     end
   end
 
