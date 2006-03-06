@@ -85,6 +85,12 @@ Element.childrenWithClassName = function(element, className) {
     function(c) { return Element.hasClassName(c, className) });
 }
 
+Element.forceRerendering = function(element) {
+  var n = document.createTextNode(' ');
+  $(element).appendChild(n);
+  Element.remove(n);
+}
+
 Array.prototype.call = function() {
   var args = arguments;
   this.each(function(f){ f.apply(this, args) });
@@ -545,6 +551,10 @@ Effect.Appear = function(element) {
   var options = Object.extend({
   from: (Element.getStyle(element, 'display') == 'none' ? 0.0 : Element.getOpacity(element) || 0.0),
   to:   1.0,
+  // force Safari to render floated elements properly
+  afterFinishInternal: function(effect) {
+    Element.forceRerendering(effect.element);
+  },
   beforeSetup: function(effect) { with(Element) {
     setOpacity(effect.element, effect.options.from);
     show(effect.element); }}
@@ -907,4 +917,10 @@ Effect.Fold = function(element) {
         setStyle(effect.element, oldStyle);
       }} });
   }}, arguments[1] || {}));
+}
+
+if(Element.Methods) {
+  Element.Methods.visualEffect = function(element, effect, options) {
+    new Effect[effect.camelize()](element, options);
+  }
 }
