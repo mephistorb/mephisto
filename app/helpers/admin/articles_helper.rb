@@ -14,4 +14,10 @@ module Admin::ArticlesHelper
   def published_at_for(article)
     article.published? ? article.published_at.to_s(:long) : "not published"
   end
+
+  [:draft, :save, :create].each do |button|
+    define_method "#{button}_button_tag" do
+      submit_tag send("#{button}_button"), :name => 'submit'
+    end
+  end
 end

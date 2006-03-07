@@ -3,6 +3,8 @@
   <%= render :partial => 'form', :object => f %>
   
   <p class="btns">
-    <%= submit_tag "Save article" %> or <%= link_to "cancel", :controller => "articles" %>
+    <%= create_button_tag %>
+    <%= draft_button_tag %> or 
+    <%= link_to "cancel", :controller => "articles" %>
   </p>
 <% end -%>

@@ -51,7 +51,7 @@ class Admin::ArticlesController < Admin::BaseController
       render :action => 'edit'
     end
   end
-  
+
   protected
   def load_sections
     @sections = Section.find :all, :order => 'name'
@@ -70,4 +70,18 @@ class Admin::ArticlesController < Admin::BaseController
     params[:article][:published_at] = nil
     true
   end
+
+  def save_button
+    'Apply Changes'
+  end
+
+  def create_button
+    'Save Article'
+  end
+
+  def draft_button
+    'Save as Draft'
+  end
+
+  helper_method :save_button, :create_button, :draft_button
 end
