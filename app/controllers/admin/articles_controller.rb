@@ -78,6 +78,7 @@ class Admin::ArticlesController < Admin::BaseController
 
   def create_draft
     @article = Article.new(params[:article])
+    @article.draft = Article::Draft.find(params[:draft]) if params[:draft]
   end
 
   def load_sections

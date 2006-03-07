@@ -155,6 +155,27 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_save_over_existing_draft_for_new_article
+    assert_no_difference Article, :count do
+      assert_no_difference Article::Draft, :count do
+        post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }, :submit => :draft, :draft => content_drafts(:first).id
+        assert_redirected_to :action => 'index'
+        assert assigns(:article).new_record?
+      end
+    end
+  end
+
+  def test_should_save_over_existing_draft_for_existing_article
+    assert_no_difference Article, :count do
+      assert_no_difference Article::Draft, :count do
+        post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }, :submit => :draft
+        contents(:welcome).reload
+        assert_redirected_to :action => 'index'
+        assert_equal contents(:welcome), assigns(:draft).article
+      end
+    end
+  end
+
   def test_should_create_article_and_clear_draft
     assert_difference Article, :count do
       assert_difference Article::Draft, :count, -1 do
