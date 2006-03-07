@@ -6,5 +6,6 @@
     <%= create_button_tag %>
     <%= draft_button_tag %> or 
     <%= link_to "cancel", :controller => "articles" %>
+    <%= hidden_field_tag 'draft', @draft.id if @draft %>
   </p>
 <% end -%>

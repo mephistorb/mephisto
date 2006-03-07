@@ -35,7 +35,7 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def create
-    @article = current_user.articles.create params[:article].merge(:updater => current_user)
+    @article = current_user.articles.create params[:article].merge(:updater => current_user, :draft => Article::Draft.find_by_id(params[:draft]))
     if @article.new_record?
       load_sections
       render :action => 'new'

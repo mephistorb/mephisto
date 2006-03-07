@@ -5,7 +5,8 @@ require 'admin/articles_controller'
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
 class Admin::ArticlesControllerTest < Test::Unit::TestCase
-  fixtures :contents, :sections, :assigned_sections, :users
+  fixtures :contents, :sections, :assigned_sections, :users, :content_drafts
+  set_fixture_class :content_drafts => Article::Draft
 
   def setup
     @controller = Admin::ArticlesController.new
@@ -33,6 +34,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   
   def test_should_show_home_section_first
     get :new
+    assert_no_tag :tag => 'input', :attributes => { :id => 'draft' }
     assert_equal sections(:home), assigns(:sections).first
   end
   
@@ -145,6 +147,11 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert !contents(:welcome).published?
   end
 
+  def test_should_show_article_draft
+    get :draft, :id => content_drafts(:first).id
+    assert_tag :tag => 'input', :attributes => { :id => 'draft', :value => content_drafts(:first).id.to_s }
+  end
+
   def test_should_create_article_draft
     assert_no_difference Article, :count do
       assert_difference Article::Draft, :count_new do
@@ -156,7 +163,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_update_article_with_no_sections
+  def test_should_create_article_draft_from_existing_article
     assert_no_difference Article, :count do
       assert_no_difference Article::Draft, :count_new do # this is not a new draft since it belongs to this article
         assert_difference Article::Draft, :count do
@@ -166,6 +173,25 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
           assert_equal contents(:another), assigns(:draft).article
         end
       end
+    end
+  end
+
+  def test_should_create_article_and_clear_draft
+    assert_difference Article, :count do
+      assert_difference Article::Draft, :count, -1 do
+        post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }, :submit => :save, :draft => content_drafts(:first).id
+        assert_redirected_to :action => 'index'
+        assert !assigns(:article).published?
+        assert !assigns(:article).new_record?
+        assert_equal users(:quentin), assigns(:article).updater
+        assert_raises(ActiveRecord::RecordNotFound) { content_drafts(:first).reload }
+      end
+    end
+  end
+
+  def test_should_clear_draft_upon_updating_article
+    assert_difference Article::Draft, :count, -1 do
+      post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
     end
   end
 end
