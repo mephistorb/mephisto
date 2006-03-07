@@ -17,8 +17,9 @@ class MephistoController < ApplicationController
                      { :now => Time.now.utc, :q => "%#{params[:q]}%" }]
     @article_pages = Paginator.new self, Article.count(conditions), 15, params[:page]
     @articles      = Article.find(:all, :conditions => conditions, :order => 'published_at DESC',
-                       :limit  =>  @article_pages.items_per_page,
-                       :offset =>  @article_pages.current.offset)
+                       :include => [:user, :sections],
+                       :limit   =>  @article_pages.items_per_page,
+                       :offset  =>  @article_pages.current.offset)
 
     render_liquid_template_for(:search, 'articles'      => @articles,
                                         'previous_page' => paged_search_url_for(@article_pages.current.previous),
@@ -26,7 +27,7 @@ class MephistoController < ApplicationController
   end
 
   def show
-    @article  = Article.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink], :include => :comments)
+    @article  = Article.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
     @comments = @article.comments.collect { |c| c.to_liquid }
     self.cached_references << @article
     @article  = @article.to_liquid(:single)
@@ -34,7 +35,7 @@ class MephistoController < ApplicationController
   end
 
   def day
-    @articles = Article.find_all_by_published_date(params[:year], params[:month], params[:day])
+    @articles = Article.find_all_by_published_date(params[:year], params[:month], params[:day], :include => [:user, :sections])
     render_liquid_template_for(:archive, 'articles' => @articles)
   end
 
@@ -42,8 +43,9 @@ class MephistoController < ApplicationController
     count = Article.count_by_published_date(params[:year], params[:month], params[:day])
     @article_pages = Paginator.new self, count, 15, params[:page]
     @articles = Article.find_all_by_published_date(params[:year], params[:month], params[:day],
-                  :limit  =>  @article_pages.items_per_page,
-                  :offset =>  @article_pages.current.offset)
+                  :include => [:user, :sections],
+                  :limit   =>  @article_pages.items_per_page,
+                  :offset  =>  @article_pages.current.offset)
     render_liquid_template_for(:archive, 'articles'      => @articles,
                                          'previous_page' => paged_monthly_url_for(@article_pages.current.previous),
                                          'next_page'     => paged_monthly_url_for(@article_pages.current.next))
@@ -53,12 +55,13 @@ class MephistoController < ApplicationController
   def list_section_articles_with(template_type)
     @article_pages = Paginator.new self, @section.articles.size, 15, params[:page]
     @articles      = @section.articles.find_by_date(
-                       :limit  =>  @article_pages.items_per_page,
-                       :offset =>  @article_pages.current.offset)
+                       #:include => [:user, :sections],
+                       :limit   =>  @article_pages.items_per_page,
+                       :offset  =>  @article_pages.current.offset)
 
     self.cached_references << @section
-    render_liquid_template_for(template_type, 'section'           => @section.name, 
-                                              'section_title'     => @section.title,
+    render_liquid_template_for(template_type, 'section'       => @section.name, 
+                                              'section_title' => @section.title,
                                               'articles'      => @articles,
                                               'previous_page' => paged_section_url_for(@article_pages.current.previous),
                                               'next_page'     => paged_section_url_for(@article_pages.current.next))
@@ -70,8 +73,8 @@ class MephistoController < ApplicationController
     self.cached_references << @section << @article
     render_liquid_template_for(template_type, 'section'       => @section.name, 
                                               'section_title' => @section.title,
-                                              'pages'     => @section.articles.collect { |a| a.to_liquid },
-                                              'article'   => @article.to_liquid(:single))
+                                              'pages'         => @section.articles.collect { |a| a.to_liquid },
+                                              'article'       => @article.to_liquid(:single))
   end
 
   def paged_search_url_for(page)

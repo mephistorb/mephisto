@@ -52,6 +52,10 @@ class User < ActiveRecord::Base
     login
   end
 
+  def to_liquid
+    [:login, :email].inject({}) { |hsh, attr_name| hsh.merge attr_name.to_s => send(attr_name) }
+  end
+
   def uploaded_avatar=(uploaded_data)
     @uploaded_avatar = uploaded_data
   end

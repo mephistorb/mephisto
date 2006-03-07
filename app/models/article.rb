@@ -70,7 +70,9 @@ class Article < Content
       'url'            => full_permalink,
       'body'           => body_for_mode(mode),
       'published_at'   => published_at,
-      'comments_count' => comments_count }
+      'comments_count' => comments_count,
+      'sections'       => sections.collect(&:to_liquid),
+      'author'         => user.to_liquid }
   end
 
   def hash_for_permalink(options = {})

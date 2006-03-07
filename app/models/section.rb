@@ -2,22 +2,20 @@ class Section < ActiveRecord::Base
   ARTICLES_COUNT_SQL = 'INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id INNER JOIN sections ON sections.id = assigned_sections.section_id' unless defined?(ARTICLES_COUNT)
   validates_presence_of :name
   has_many :assigned_sections, :dependent => :delete_all
-  has_many :articles, :order => 'assigned_sections.position', :through => :assigned_sections do
+  has_many :articles, :order => 'position', :through => :assigned_sections do
     def find_by_date(options = {})
       find(:all, { :order => 'contents.published_at desc', 
-                   :conditions => ['published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } \
+                   :conditions => ['contents.published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } \
         .merge(options))
     end
 
     def find_by_position(options = {})
-      find(:first, { :order => 'assigned_sections.position',
-                   :conditions => ['published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } \
+      find(:first, { :conditions => ['contents.published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } \
         .merge(options))
     end
 
     def find_by_permalink(permalink, options = {})
-      find(:first, { :order => 'assigned_sections.position',
-                   :conditions => ['contents.permalink = ? AND published_at <= ? AND contents.published_at IS NOT NULL',
+      find(:first, { :conditions => ['contents.permalink = ? AND published_at <= ? AND contents.published_at IS NOT NULL',
                                    permalink, Time.now.utc] }.merge(options))
     end
   end
@@ -49,6 +47,15 @@ class Section < ActiveRecord::Base
 
   def title
     name.to_s.split('/').last.humanize
+  end
+
+  def to_liquid
+    url = '/' + to_url.join('/')
+    {
+      'name' => name,
+      'url'  => url,
+      'link' => %(<a href="#{url}">#{name}</a>)
+    }
   end
 
   def order!(*article_ids)
