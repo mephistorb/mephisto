@@ -55,7 +55,7 @@ class MephistoController < ApplicationController
   def list_section_articles_with(template_type)
     @article_pages = Paginator.new self, @section.articles.size, 15, params[:page]
     @articles      = @section.articles.find_by_date(
-                       #:include => [:user, :sections],
+                       :include => [:user],
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)
 
