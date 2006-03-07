@@ -71,7 +71,7 @@ class Article < Content
       'body'           => body_for_mode(mode),
       'published_at'   => published_at,
       'comments_count' => comments_count,
-      'sections'       => sections.inject([]) { |all, s| s.home? ? all : all << s.to_liquid },
+      'sections'       => sections.inject([]) { |all, s| s.home? ? all : all << s.to_liquid }, # your days are numbered, home section!
       'author'         => user.to_liquid }
   end
 
