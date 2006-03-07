@@ -38,30 +38,31 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   
   def test_should_create_article
     assert_difference Article, :count do
-      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
+      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }, :submit => :save
       assert_redirected_to :action => 'index'
       assert !assigns(:article).published?
+      assert !assigns(:article).new_record?
       assert_equal users(:quentin), assigns(:article).updater
     end
   end
   
   def test_should_create_event
     assert_event_created 'create' do
-      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }
+      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }, :submit => :save
       assigns(:article).events.first
     end
   end
   
   def test_should_create_publish_event
     assert_event_created 'publish' do
-      post :create, :article_published => true, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => Time.now }
+      post :create, :article_published => true, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => Time.now }, :submit => :save
       assigns(:article).events.first
     end
   end
   
   def test_should_show_validation_error_on_invalid_create
     assert_no_difference Article, :count do
-      post :create, :article => { :excerpt => "Blah Blah", :body => "Blah Blah" }
+      post :create, :article => { :excerpt => "Blah Blah", :body => "Blah Blah" }, :submit => :save
       assert_response :success
       assert assigns(:article).new_record?
       assert assigns(:article).errors.on(:title)
@@ -96,40 +97,40 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   end
   
   def test_should_create_article_with_given_sections
-    post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id.to_s] }
+    post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id.to_s] }, :submit => :save
     assert_redirected_to :action => 'index'
     assert_equal [sections(:home)], assigns(:article).sections
   end
   
   def test_should_update_article_with_no_sections
-    post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [] }
+    post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [] }, :submit => :save
     assert_redirected_to :action => 'index'
     assert_equal [], assigns(:article).sections
   end
 
   def test_should_update_article_with_the_same_sections
     post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah",
-      :section_ids => [sections(:home), sections(:about)].map { |s| s.id.to_s } }
+      :section_ids => [sections(:home), sections(:about)].map { |s| s.id.to_s } }, :submit => :save
     assert_redirected_to :action => 'index'
     assert_equal [sections(:about), sections(:home)], assigns(:article).sections
   end
 
   def test_should_create_edit_event
     assert_event_created_for :welcome, 'edit' do |article|
-      post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => Time.now }
+      post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => Time.now }, :submit => :save
     end
   end
   
   def test_should_create_publish_event_when_updating
     assert_event_created_for :unpublished, 'publish' do |article|
-      post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => Time.now }
+      post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => Time.now }, :submit => :save
     end
   end
   
   def test_should_update_article_with_given_sections
     login_as :arthur
     assert_difference AssignedSection, :count, -1 do
-      post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id] }
+      post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id] }, :submit => :save
       assert_redirected_to :action => 'index'
       assert_equal [sections(:home)], assigns(:article).sections
       assert_equal users(:arthur),    assigns(:article).updater
@@ -138,9 +139,33 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   
   def test_should_clear_published_date
     assert contents(:welcome).published?
-    post :update, :id => contents(:welcome).id, :article => { :title => 'welcome' }
+    post :update, :id => contents(:welcome).id, :article => { :title => 'welcome' }, :submit => :save
     assert_redirected_to :action => 'index'
     contents(:welcome).reload
     assert !contents(:welcome).published?
+  end
+
+  def test_should_create_article_draft
+    assert_no_difference Article, :count do
+      assert_difference Article::Draft, :count_new do
+        post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }, :submit => :draft
+        assert_redirected_to :action => 'index'
+        assert assigns(:article).new_record?
+        assert !assigns(:article).published?
+      end
+    end
+  end
+
+  def test_should_update_article_with_no_sections
+    assert_no_difference Article, :count do
+      assert_no_difference Article::Draft, :count_new do # this is not a new draft since it belongs to this article
+        assert_difference Article::Draft, :count do
+          post :update, :id => contents(:another).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }, :submit => :draft
+          contents(:another).reload
+          assert_redirected_to :action => 'index'
+          assert_equal contents(:another), assigns(:draft).article
+        end
+      end
+    end
   end
 end

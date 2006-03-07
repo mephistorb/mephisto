@@ -15,6 +15,8 @@ module Admin::ArticlesHelper
     article.published? ? article.published_at.to_s(:long) : "not published"
   end
 
+  # Buttons like draft_button_tag, save_button_tag
+  # set the name attr of the submit so we can tell which one they clicked on.
   [:draft, :save, :create].each do |button|
     define_method "#{button}_button_tag" do
       submit_tag send("#{button}_button"), :name => 'submit'

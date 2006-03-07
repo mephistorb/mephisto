@@ -2,6 +2,7 @@ class Admin::ArticlesController < Admin::BaseController
   with_options :only => [:create, :update] do |c|
     c.before_filter :set_default_section_ids
     c.before_filter :clear_published_at_fields!
+    c.before_filter :save_or_draft
     c.cache_sweeper :article_sweeper
     c.cache_sweeper :section_sweeper
   end
@@ -15,9 +16,21 @@ class Admin::ArticlesController < Admin::BaseController
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)
   end
-  
+
+  def show
+    @article  = Article.find_by_id(params[:id], :include => :comments)
+    @comments = @article.comments.collect { |c| c.to_liquid }
+    @article  = @article.to_liquid(:single)
+    render :text => Template.render_liquid_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => current_site.to_liquid)
+  end
+
   def new
     @article = Article.new
+  end
+
+  def edit
+    @article = Article.find(params[:id])
+    @version = params[:version] ? @article.find_version(params[:version]) : @article
   end
 
   def create
@@ -29,19 +42,7 @@ class Admin::ArticlesController < Admin::BaseController
       redirect_to :action => 'index'
     end
   end
-
-  def show
-    @article  = Article.find_by_id(params[:id], :include => :comments)
-    @comments = @article.comments.collect { |c| c.to_liquid }
-    @article  = @article.to_liquid(:single)
-    render :text => Template.render_liquid_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => current_site.to_liquid)
-  end
-
-  def edit
-    @article = Article.find(params[:id])
-    @version = params[:version] ? @article.find_version(params[:version]) : @article
-  end
-
+  
   def update
     @article = Article.find(params[:id])
     if @article.update_attributes(params[:article].merge(:updater => current_user))
@@ -53,6 +54,26 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   protected
+  def save_or_draft
+    if draft?(params[:submit])
+      params[:id] ? update_draft : create_draft
+      @article.save_draft
+      @draft = @article.draft
+      flash[:notice] = "Your draft has been created"
+      redirect_to :action => 'index'
+      return false
+    end
+  end
+
+  def update_draft
+    @article = Article.find(params[:id])
+    @article.attributes = params[:article]
+  end
+
+  def create_draft
+    @article = Article.new(params[:article])
+  end
+
   def load_sections
     @sections = Section.find :all, :order => 'name'
     home = @sections.find { |s| s.name == 'home' }
@@ -72,15 +93,19 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def save_button
-    'Apply Changes'
+    @save_button ||= 'Apply Changes'
   end
 
   def create_button
-    'Save Article'
+    @create_button ||= 'Save Article'
   end
 
   def draft_button
-    'Save as Draft'
+    @draft_button ||= 'Save as Draft'
+  end
+
+  def draft?(value)
+    (@draft_options ||= [draft_button, :draft]).include? value
   end
 
   helper_method :save_button, :create_button, :draft_button

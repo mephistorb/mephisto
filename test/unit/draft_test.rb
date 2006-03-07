@@ -14,6 +14,12 @@ class DraftTest < Test::Unit::TestCase
     assert_equal contents(:welcome),       content_drafts(:welcome).article
   end
 
+  def test_should_count_new_drafts
+    assert_difference Article::Draft, :count_new do
+      Article.new(:title => 'foo').save_draft
+    end
+  end
+
   def test_should_find_new_drafts
     assert_equal [content_drafts(:first)], Article::Draft.find_new
     Article.new(:title => 'foo').save_draft

@@ -44,8 +44,13 @@ module ActsAsDraftable
           end
           
           def reloadable? ; false ; end
+
           def find_new(options = {})
             find :all, options.merge(:conditions => "#{parent.draft_table_name}.#{parent.draft_foreign_key} IS NULL")
+          end
+  
+          def count_new(options = {})
+            count :all, options.merge(:conditions => "#{parent.draft_table_name}.#{parent.draft_foreign_key} IS NULL")
           end
         end
 
