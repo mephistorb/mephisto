@@ -15,7 +15,7 @@ class Admin::OverviewControllerTest < Test::Unit::TestCase
 
   def test_routing
     with_options :controller => 'admin/overview' do |test|
-      test.assert_routing 'admin/overview',     :action => 'index'
+      test.assert_routing 'admin',     :action => 'index'
       test.assert_routing 'admin/overview.xml', :action => 'feed'
     end
   end

@@ -9,10 +9,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.overview 'admin/overview.xml', :controller => 'admin/overview', :action => 'feed'
 
+  map.admin   'admin', :controller => 'admin/overview', :action => 'index'
+
   map.connect ':controller/:action/:id/:version', :version => nil, 
       :requirements => { :controller => /account|(admin\/\w+)/ }
-
-  map.admin   'admin', :controller => 'admin/base', :action => 'index'
 
   map.comment ':year/:month/:day/:permalink/comment', :controller => 'comments', :action => 'create',    
       :requirements => { :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/ }
