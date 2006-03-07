@@ -54,4 +54,20 @@ class DraftTest < Test::Unit::TestCase
       end
     end
   end
+
+  def test_should_remove_draft_when_creating_article
+    assert_difference Article, :count do
+      assert_difference Article::Draft, :count, -1 do
+        article = content_drafts(:first).to_article
+        article.attributes = { :user => users(:quentin) }
+        assert article.save
+      end
+    end
+  end
+
+  def test_should_remove_draft_when_saving_article
+    assert_difference Article::Draft, :count, -1 do
+      assert contents(:welcome).save
+    end
+  end
 end

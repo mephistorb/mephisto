@@ -35,6 +35,7 @@ module ActsAsDraftable
       end
       
       has_one :draft, :class_name => "#{self.to_s}::#{draft_class_name}", :foreign_key => draft_foreign_key
+      after_save { |record| record.draft.destroy if record.draft }
       
       # create the dynamic draft model
       const_set(draft_class_name, Class.new(ActiveRecord::Base)).class_eval do
