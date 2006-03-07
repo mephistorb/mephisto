@@ -8,6 +8,14 @@
 </div>
 <!-- /end action nav -->
 
+<% if @drafts.any? -%>
+<ul id="drafts">
+<% @drafts.each do |draft| -%>
+  <li><%= link_to draft.title, :action => :draft, :id => draft %></li>
+<% end -%>
+</ul>
+<% end -%>
+
 <!-- begin article list -->
 <table id="article-list" cellspacing="0" cellpadding="0">
   <thead>

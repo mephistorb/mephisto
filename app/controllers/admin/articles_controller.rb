@@ -7,12 +7,13 @@ class Admin::ArticlesController < Admin::BaseController
     c.cache_sweeper :section_sweeper
   end
 
-  before_filter :load_sections, :only => [:new, :edit]
+  before_filter :load_sections, :only => [:new, :edit, :draft]
 
   def index
+    @drafts        = Article::Draft.find_new
     @article_pages = Paginator.new self, Article.count, 30, params[:page]
     @articles      = Article.find(:all, :order => 'contents.created_at DESC',
-                       :include => :user,
+                       :include => [:user, :draft],
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)
   end
@@ -29,7 +30,7 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def edit
-    @article = Article.find(params[:id])
+    @article = Article.find(params[:id], :include => :draft)
     @version = params[:version] ? @article.find_version(params[:version]) : @article
   end
 
@@ -51,6 +52,12 @@ class Admin::ArticlesController < Admin::BaseController
       @sections = Section.find :all
       render :action => 'edit'
     end
+  end
+
+  def draft
+    @draft   = Article::Draft.find(params[:id], :include => :article)
+    @article = @draft.to_article
+    render :action => (@article.new_record? ? :new : :edit)
   end
 
   protected

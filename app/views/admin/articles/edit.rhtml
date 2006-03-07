@@ -1,4 +1,9 @@
 <%= error_messages_for :article %>
+
+<% if @article.draft -%>
+<p><%= link_to 'Draft!', :action => :draft, :id => @article.draft %></p>
+<% end -%>
+
 <% form_for :article, @version, :url => { :action => 'update', :id => @article } do |f| -%>
 <%= render :partial => 'form', :object => f %>
 <p class="btns">
