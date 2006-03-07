@@ -18,6 +18,11 @@ class FilteredColumnTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_not_bomb_on_nil_filters
+    a = Article.new :filters => nil
+    assert_equal [], a.filters
+  end
+
   def test_should_call_no_filters_with_no_data
     assert_no_filters_called_on(Article) { Article.new.valid? }
   end
