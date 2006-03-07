@@ -33,6 +33,12 @@ class DraftTest < Test::Unit::TestCase
     assert_equal 'Welcome to ArticleCast', content_drafts(:welcome).to_article.title
   end
 
+  def test_should_load_article_from_draft
+    assert_equal 'Welcome to Mephisto',    contents(:welcome).title
+    contents(:welcome).load_from_draft
+    assert_equal 'Welcome to ArticleCast', content_drafts(:welcome).to_article.title
+  end
+
   def test_should_save_draft_of_new_article
     assert_no_difference Article, :count do
       assert_difference Article::Draft, :count do

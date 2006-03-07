@@ -48,42 +48,71 @@ module ActsAsDraftable
             find :all, options.merge(:conditions => "#{parent.draft_table_name}.#{parent.draft_foreign_key} IS NULL")
           end
         end
+
+        belongs_to        draft_parent_name.to_sym, :class_name => "::#{parent.to_s}", :foreign_key => parent.draft_foreign_key
+        set_table_name    parent.draft_table_name
+        set_sequence_name parent.draft_sequence_name if parent.draft_sequence_name
         
         def draft_parent_name
           self.class.draft_parent_name
         end
         
-        def drafted_fields_with_values
+        def drafted_field_values
           self.class.parent.drafted_fields.inject({}) { |params, field| params.merge field => send(field) }
         end
 
         define_method "to_#{draft_parent_name}" do
           send("#{draft_parent_name}=", self.class.parent.new) if send(draft_parent_name).nil?
-          send(draft_parent_name).attributes = drafted_fields_with_values
+          send(draft_parent_name).draft = self
+          send(draft_parent_name).load_from_draft
           send(draft_parent_name)
         end
       end
 
-      draft_class.belongs_to        self.to_s.underscore.to_sym, :class_name => "::#{self.to_s}", :foreign_key => draft_foreign_key
-      draft_class.set_table_name    draft_table_name
       draft_class.send :include,    options[:extend]    if options[:extend].is_a?(Module)
-      draft_class.set_sequence_name draft_sequence_name if draft_sequence_name
     end
   end
 
+  # These Act Methods are the methods added to the model class.  The methods directly under ActMethods are instance methods.
   module ActMethods
     def self.included(base) # :nodoc:
       base.extend ClassMethods
     end
 
+    # Saves this record's drafted fields in a new draft
     def save_draft
-      (draft || build_draft).update_attributes drafted_fields_with_values
+      (draft || build_draft).update_attributes drafted_field_values
     end
 
-    def drafted_fields_with_values
+    # Saves the record's drafted fields in a new draft with #save!
+    def save_draft!
+      (draft || build_draft).attributes = drafted_field_values
+      draft.save!
+    end
+
+    # Loads the latest drafted field values from the record's draft
+    def load_from_draft
+      self.attributes = draft.drafted_field_values if draft
+    end
+
+    # Loads the latest drafted field values and saves the current record
+    def save_from_draft
+      load_from_draft
+      save
+    end
+
+    # Same as #save_from_draft, only it calls #save! instead.
+    def save_from_draft!
+      load_from_draft
+      save!
+    end
+
+    # A hash of the current drafted field values of this model
+    def drafted_field_values
       drafted_fields.inject({}) { |params, field| params.merge field => send(field) }
     end
 
+    # These are class methods that are mixed in with the model class.
     module ClassMethods # :nodoc:
       # Returns an array of columns that are versioned.  See non_versioned_fields
       def draft_columns
@@ -92,7 +121,7 @@ module ActsAsDraftable
 
       # Returns an instance of the dynamic versioned model
       def draft_class
-        const_get draft_class_name
+        @draft_class ||= const_get(draft_class_name)
       end
 
       # Rake migration task to create the draft table using options passed to acts_as_draftable

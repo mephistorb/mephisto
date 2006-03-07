@@ -19,6 +19,7 @@ class Admin::TemplatesController < Admin::BaseController
   def update
     render :update do |page|
       page.call 'Flash.notice', 'Template updated successfully' if @tmpl.update_attributes(params[:template])
+      page['flash-notice'].visual_effect(:highlight).visual_effect(:shake)
     end
   end
 
