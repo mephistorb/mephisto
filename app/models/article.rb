@@ -37,15 +37,6 @@ class Article < Content
     end
   end
 
-  def published_at=(new_published_at)
-    @recently_published = published_at.nil? && !new_published_at.nil?
-    write_attribute :published_at, new_published_at
-  end
-
-  def recently_published?
-    @recently_published == true
-  end
-
   def published?
     !published_at.nil?
   end
@@ -55,9 +46,7 @@ class Article < Content
   end
 
   def status
-    return :unpublished unless published?
-    return :pending     if     pending?
-    :published
+    pending? ? :pending : :published
   end
 
   # Follow Mark Pilgrim's rules on creating a good ID
@@ -118,8 +107,7 @@ class Article < Content
       sections.reset
     end
 
-    @new_sections       = nil
-    @recently_published = nil
+    @new_sections = nil
   end
 
   def body_for_mode(mode = :list)

@@ -9,7 +9,7 @@ class EventTest < Test::Unit::TestCase
   end
 
   def test_should_create_new_article_event
-    assert_event_created 'create' do
+    assert_event_created 'publish' do
       article = users(:quentin).articles.create :title => 'foo', :body => 'bar', :updater => users(:quentin)
       article.events.first
     end
@@ -18,12 +18,6 @@ class EventTest < Test::Unit::TestCase
   def test_should_create_edit_article_event
     assert_event_created_for :welcome, 'edit' do |article|
       article.update_attributes :title => 'foo', :body => 'bar', :updater => users(:quentin)
-    end
-  end
-
-  def test_should_create_published_article_event
-    assert_event_created_for :unpublished, 'publish' do |article|
-      article.update_attributes :published_at => 5.minutes.ago, :updater => users(:quentin)
     end
   end
 

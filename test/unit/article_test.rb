@@ -16,19 +16,16 @@ class ArticleTest < Test::Unit::TestCase
   def test_should_show_published_status
     assert contents(:welcome).published?
     assert contents(:future).published?
-    assert !contents(:unpublished).published?
   end
 
   def test_should_show_pending_status
     assert !contents(:welcome).pending?
     assert contents(:future).pending?
-    assert !contents(:unpublished).pending?
   end
 
   def test_should_show_status
     assert_equal :published,   contents(:welcome).status
     assert_equal :pending,     contents(:future).status
-    assert_equal :unpublished, contents(:unpublished).status
   end
 
   def test_should_cache_redcloth

@@ -29,7 +29,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   
   def test_should_show_articles
     get :index
-    assert_equal 6, assigns(:articles).length
+    assert_equal 5, assigns(:articles).length
   end
   
   def test_should_show_home_section_first
@@ -48,16 +48,9 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     end
   end
   
-  def test_should_create_event
-    assert_event_created 'create' do
-      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }, :submit => :save
-      assigns(:article).events.first
-    end
-  end
-  
   def test_should_create_publish_event
     assert_event_created 'publish' do
-      post :create, :article_published => true, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => Time.now }, :submit => :save
+      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => Time.now }, :submit => :save
       assigns(:article).events.first
     end
   end
@@ -123,12 +116,6 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     end
   end
   
-  def test_should_create_publish_event_when_updating
-    assert_event_created_for :unpublished, 'publish' do |article|
-      post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => Time.now }, :submit => :save
-    end
-  end
-  
   def test_should_update_article_with_given_sections
     login_as :arthur
     assert_difference AssignedSection, :count, -1 do
@@ -137,14 +124,6 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       assert_equal [sections(:home)], assigns(:article).sections
       assert_equal users(:arthur),    assigns(:article).updater
     end
-  end
-  
-  def test_should_clear_published_date
-    assert contents(:welcome).published?
-    post :update, :id => contents(:welcome).id, :article => { :title => 'welcome' }, :submit => :save
-    assert_redirected_to :action => 'index'
-    contents(:welcome).reload
-    assert !contents(:welcome).published?
   end
 
   def test_should_show_article_draft

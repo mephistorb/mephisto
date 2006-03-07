@@ -17,7 +17,7 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
   def test_should_list_sections
     get :index
     assert_equal 2, assigns(:sections).length
-    assert_equal 3, assigns(:article_count)['1']
+    assert_equal 2, assigns(:article_count)['1']
     assert_equal 3, assigns(:article_count)['2']
   end
 

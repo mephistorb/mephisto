@@ -12,8 +12,11 @@ class CachingTest < ActionController::IntegrationTest
     
     visit_sections_and_feeds_with visitor
 
-    assert_difference Article, :count do
-      writer.create :title => 'This is a new article & title', :body => 'this is a new article body', :sections => [sections(:home)]
+    assert_no_difference Article, :count do
+      assert_difference Article::Draft, :count do
+        writer.create :title => 'This is a new article & title', :body => 'this is a new article body', 
+          :sections => [sections(:home)], :submit => :draft
+      end
     end
     
     assert_cached section_url_for(:home)
@@ -51,21 +54,6 @@ class CachingTest < ActionController::IntegrationTest
         writer.create :title => 'This is a new article & title', :body => 'this is a new article body', :sections => [sections(:home), sections(:about)], :published_at => Time.now
       end
     end
-  end
-
-  def test_should_expire_necessary_feeds_and_sections_when_publishing_current_article
-    visitor = visit
-    writer  = login_as :quentin
-    
-    visit_sections_and_feeds_with visitor
-
-    assert_expires_pages section_url_for(:home),
-                         feed_url_for(:home) do
-      writer.revise contents(:unpublished), :published_at => Time.now
-    end
-    
-    assert_cached section_url_for(:about)
-    assert_cached feed_url_for(:about)
   end
 
   def test_should_expire_articles_after_editing

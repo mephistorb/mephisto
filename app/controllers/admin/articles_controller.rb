@@ -1,7 +1,6 @@
 class Admin::ArticlesController < Admin::BaseController
   with_options :only => [:create, :update] do |c|
     c.before_filter :set_default_section_ids
-    c.before_filter :clear_published_at_fields!
     c.before_filter :save_or_draft
     c.cache_sweeper :article_sweeper
     c.cache_sweeper :section_sweeper
@@ -90,13 +89,6 @@ class Admin::ArticlesController < Admin::BaseController
 
   def set_default_section_ids
     params[:article][:section_ids] ||= []
-  end
-
-  def clear_published_at_fields!
-    return if params[:article_published]
-    params[:article].keys.select { |k| k =~ /^published_at/ }.each { |k| params[:article].delete(k) }
-    params[:article][:published_at] = nil
-    true
   end
 
   def save_button

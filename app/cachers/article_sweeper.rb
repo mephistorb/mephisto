@@ -5,8 +5,7 @@ class ArticleSweeper < ActionController::Caching::Sweeper
     @event = Event.new 
     @event.mode = case
       when record.is_a?(Comment)      then 'comment'
-      when record.recently_published? then 'publish'
-      when record.new_record?         then 'create'
+      when record.new_record?         then 'publish'
       else 'edit'
     end
   end
@@ -22,7 +21,6 @@ class ArticleSweeper < ActionController::Caching::Sweeper
     end
 
     return if controller.nil?
-    expire_assigned_sections!(record) if record.is_a?(Article) && record.recently_published?
     pages = CachedPage.find_by_reference(record)
     controller.class.benchmark "Expired pages referenced by #{record.class} ##{record.id}" do
       pages.each { |p| controller.class.expire_page(p.url) }
