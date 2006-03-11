@@ -1,8 +1,4 @@
 class AddArticleDraft < ActiveRecord::Migration
-  class Article < ::Content
-    acts_as_draftable :fields => [:title, :body, :excerpt]
-  end
-  
   def self.up
     Article.create_drafted_table
   end
