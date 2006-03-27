@@ -64,11 +64,12 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
 
   def test_should_upload_avatar
     assert_attachment_created do
-      post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy', :uploaded_avatar => file_upload }
-      users(:quentin).reload
-      assert_equal 'foo', users(:quentin).email
-      assert_equal users(:quentin), User.authenticate('quentin', 'testy')
-      assert_redirected_to :action => 'show', :id => users(:quentin).login
+      post :update, :id => users(:arthur).login, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy', 
+        :uploaded_avatar => fixture_file_upload('/files/rails.png', 'image/png') }
+      users(:arthur).reload
+      assert_equal 'foo', users(:arthur).email
+      assert_equal users(:arthur), User.authenticate('arthur', 'testy')
+      assert_redirected_to :action => 'show', :id => users(:arthur).login
     end
   end
 

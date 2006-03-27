@@ -78,7 +78,8 @@ class User < ActiveRecord::Base
 
   protected
   def save_uploaded_avatar
-    build_avatar :uploaded_data => @uploaded_avatar if @uploaded_avatar && @uploaded_avatar.size > 0
+    return unless @uploaded_avatar && @uploaded_avatar.size > 0
+    (self.avatar ||= build_avatar).update_attributes :uploaded_data => @uploaded_avatar, :attachable => self
   end
 
   def encrypt_password

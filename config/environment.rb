@@ -36,7 +36,7 @@ Rails::Initializer.run do |config|
   # config.action_controller.fragment_cache_store = :file_store, "#{RAILS_ROOT}/cache"
 
   # Activate observers that should always be running
-  # config.active_record.observers = :cacher, :garbage_collector
+  # config.active_record.observers = [:article_observer]
 
   # Make Active Record use UTC-base instead of local time
   config.active_record.default_timezone = :utc
@@ -67,7 +67,6 @@ Liquid::Template.register_tag('textile',        Mephisto::Liquid::Textile)
 Liquid::Template.register_tag('commentform',    Mephisto::Liquid::CommentForm)
 Liquid::Template.register_tag('pagenavigation', Mephisto::Liquid::PageNavigation)
 Liquid::Template.register_tag('head',           Mephisto::Liquid::Head)
-
 FilteredColumn.constant_filters << :macro_filter
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \

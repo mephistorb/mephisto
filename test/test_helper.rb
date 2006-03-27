@@ -49,10 +49,6 @@ class Test::Unit::TestCase
       yield
     end
   end
-
-  def file_upload(options = {})
-    Technoweenie::FileUpload.new(options[:filename] || 'rails.png', options[:content_type] || 'image/png')
-  end
 end
 
 class ActionController::IntegrationTest

@@ -49,7 +49,7 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
 
   def test_should_upload_resource
     assert_attachment_created do
-      post :upload, :resource => { :uploaded_data => file_upload }
+      post :upload, :resource => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png') }
     end
     
     assert_redirected_to :controller => 'admin/design', :action => 'index'
