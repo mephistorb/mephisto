@@ -55,7 +55,7 @@ module ActsAsDraftable
           end
         end
 
-        belongs_to        draft_parent_name.to_sym, :class_name => "::#{parent.to_s}", :foreign_key => parent.draft_foreign_key
+        belongs_to        draft_parent_name.to_sym, :class_name => parent.to_s, :foreign_key => parent.draft_foreign_key
         set_table_name    parent.draft_table_name
         set_sequence_name parent.draft_sequence_name if parent.draft_sequence_name
         
