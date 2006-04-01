@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class EventTest < Test::Unit::TestCase
-  fixtures :events, :contents, :users
+  fixtures :events, :contents, :users, :content_drafts
 
   def setup
     ArticleSweeper.instance
