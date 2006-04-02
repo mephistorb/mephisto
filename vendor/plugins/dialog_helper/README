@@ -1,0 +1,32 @@
+DIALOG HELPER
+
+Dialog is a simple script for displaying styled dialog windows in browsers.  It builds on the excellent Prototype and 
+Scriptaculous libraries.  The look and feel is CSS driven, and it's easy to create your own custom dialogs.  
+Be sure to include dialog.js and add the appropriate styles.
+  
+  Project Page - http://weblog.techno-weenie.net/projects/dialog
+  Javascript Subversion Location - http://techno-weenie.net/svn/projects/javascripts/dialog
+  Rails Helper Plugin - http://techno-weenie.net/svn/projects/plugins/dialog_helper
+
+If install.rb did not copy the latest dialog.js, use the rake task:
+
+  rake update_dialog_helper
+
+Here are some examples from the docs:
+
+  <%= create_dialog(:confirm, 
+        :message => 'Are you sure?', 
+        :okay_test => 'Sure!', 
+        :on_okay => "function() { alert('whoa'); }") %>
+ 
+  new Dialog.Confirm({message:'Are you sure?', okayTest:'Sure!', onOkay:function() { alert('whoa'); }});
+
+  <%= link_to_dialog('Open', {:confirm, 
+        :message => 'Are you sure?', 
+        :on_okay => "function() { alert('whoa'); }"},
+       {:title => 'Click to open dialog'}) %>
+  
+  <a href="#" title="Click to open dialog"
+    onclick="new Dialog.Confirm({message:'Are you sure?', onOkay:function() { alert('whoa'); }});; return false;">
+    Open
+  </a>

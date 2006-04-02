@@ -1,0 +1,6 @@
+Acts as Attachment
+=====================
+
+Acts as Attachment allows you to specify that a model accepts file uploads and stores the necessary meta info (filename, size, etc).
+
+This is still under heavy development, so look at test/fixtures/attachment.rb for example usage.
