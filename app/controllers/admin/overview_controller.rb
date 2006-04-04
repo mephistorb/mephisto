@@ -1,6 +1,5 @@
 class Admin::OverviewController < Admin::BaseController
   session :off, :only => :feed
-  before_filter :current_site
   before_filter :basic_auth_required, :only => :feed
   caches_page :feed
   

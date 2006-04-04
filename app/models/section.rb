@@ -1,6 +1,7 @@
 class Section < ActiveRecord::Base
   ARTICLES_COUNT_SQL = 'INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id INNER JOIN sections ON sections.id = assigned_sections.section_id' unless defined?(ARTICLES_COUNT)
   validates_presence_of :name
+  belongs_to :site
   has_many :assigned_sections, :dependent => :delete_all
   has_many :articles, :order => 'position', :through => :assigned_sections do
     def find_by_date(options = {})

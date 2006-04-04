@@ -1,9 +1,12 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
-  helper_method :current_site
-  def current_site
-    @current_site ||= Site.find :first
+  before_filter :set_cache_root
+  helper_method :site
+  
+  def site
+    # Redefine this method if you wish to fail on host without a site
+    @site ||= Site.find_by_host(request.host) || Site.find(:first)
   end
 
   def render_liquid_template_for(template_type, assigns = {})
@@ -14,7 +17,12 @@ class ApplicationController < ActionController::Base
       assigns['articles']     = assigns['articles'].collect { |a| a.to_liquid }
     end
     
-    assigns.update 'site' => current_site.to_liquid
-    render :text => Template.render_liquid_for(template_type, assigns)
+    assigns.update 'site' => site.to_liquid
+    render :text => site.templates.render_liquid_for(template_type, assigns)
   end
+  
+  protected
+    def set_cache_root
+      self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'cache', site.host].compact)
+    end
 end

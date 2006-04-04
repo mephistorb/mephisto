@@ -21,7 +21,7 @@
 <!-- begin overview -->
 <div id="overview">
   <%= link_to 'Subscribe via RSS', overview_url, :class => 'feed right' %>
-  <h3>Whats happening around <%= current_site.title %></h3>
+  <h3>Whats happening around <%= site.title %></h3>
   
   <h4>Today <%= todays_short_date %></h4>
   <%= render_events @todays_events %>

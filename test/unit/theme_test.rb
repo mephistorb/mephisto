@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ThemeTest < Test::Unit::TestCase
-  fixtures :attachments, :db_files
+  fixtures :attachments, :db_files, :sites
   THEME_ROOT = File.join(RAILS_ROOT, 'tmp/themes')
   THEME_FILES = [
     'images',
@@ -25,13 +25,13 @@ class ThemeTest < Test::Unit::TestCase
   end
 
   def test_should_select_theme_files
-    files = Theme.find_current
+    files = sites(:first).attachments.find_theme_files
     assert_equal 12, files.length
     assert files.include?(attachments(:layout))
   end
 
   def test_should_export_files
-    Theme.export 'foo', :to => THEME_ROOT
+    sites(:first).attachments.export 'foo', :to => THEME_ROOT
     
     THEME_FILES.each do |path|
       assert File.exists?(File.join(THEME_ROOT, 'foo', path)), "#{path} does not exist"
@@ -39,7 +39,7 @@ class ThemeTest < Test::Unit::TestCase
   end
 
   def test_should_export_files_as_zip
-    Theme.export_as_zip 'foo', :to => THEME_ROOT
+    sites(:first).attachments.export_as_zip 'foo', :to => THEME_ROOT
     
     assert File.exists?(File.join(THEME_ROOT, 'foo.zip'))
     

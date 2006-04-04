@@ -1,8 +1,19 @@
 # title, :string, :limit => 255
 home:
   id: 1
+  site_id: 1
   name: home
 about:
   id: 2
+  site_id: 1
+  name: about
+  show_paged_articles: true
+cupcake_home:
+  id: 3
+  site_id: 2
+  name: home
+cupcake_about:
+  id: 4
+  site_id: 2
   name: about
   show_paged_articles: true

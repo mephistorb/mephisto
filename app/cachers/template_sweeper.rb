@@ -1,5 +1,5 @@
 class TemplateSweeper < ActionController::Caching::Sweeper
-  observe Template, LayoutTemplate
+  observe Template
 
   # only sweep updates, not creations
   # tagged 'lame hack'

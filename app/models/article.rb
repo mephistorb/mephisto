@@ -56,7 +56,7 @@ class Article < Content
   end
 
   def has_section?(section)
-    (new_record? and section.name == 'home') or sections.include? section
+    (new_record? && section.name == 'home') || sections.include?(section)
   end
 
   def section_ids=(new_sections)

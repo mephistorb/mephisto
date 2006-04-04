@@ -4,17 +4,17 @@ class Admin::DesignController < Admin::BaseController
   before_filter :find_templates_and_resources!
 
   def index
-    @resource = Resource.new
+    @resource = site.resources.build
   end
 
   def create
     @resource = case params[:resource_type]
       when /css/i
-        Resource.create params[:resource].merge(:content_type => 'text/css')
+        site.resources.create params[:resource].merge(:content_type => 'text/css')
       when /javascript/i
-        Resource.create params[:resource].merge(:content_type => 'text/javascript')
+        site.resources.create params[:resource].merge(:content_type => 'text/javascript')
       else
-        Template.create params[:resource]
+        site.templates.create params[:resource]
     end
 
     if @resource.new_record?

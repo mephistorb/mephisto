@@ -3,7 +3,7 @@ class CommentsController < ApplicationController
   verify :params => [:year, :month, :day, :permalink], :redirect_to => { :controller => 'mephisto', :action => 'list', :sections => [] }
 
   def create
-    @article  = Article.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
+    @article  = site.articles.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
     
     redirect_to(section_url(:sections => [])) and return unless @article
     if request.get? or params[:comment].blank?

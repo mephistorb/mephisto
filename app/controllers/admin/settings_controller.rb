@@ -1,7 +1,8 @@
 class Admin::SettingsController < Admin::BaseController
-  before_filter :current_site
+  before_filter :site
+  
   def update
-    if current_site.update_attributes params[:current_site]
+    if site.update_attributes params[:site]
       redirect_to :action => 'index'
     else
       render :action => 'index'

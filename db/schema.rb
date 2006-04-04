@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 21) do
+ActiveRecord::Schema.define(:version => 23) do
 
   create_table "assigned_sections", :force => true do |t|
     t.column "article_id", :integer
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 21) do
     t.column "height", :integer
     t.column "attachable_id", :integer
     t.column "attachable_type", :string, :limit => 20
+    t.column "site_id", :integer
   end
 
   create_table "cached_pages", :force => true do |t|
@@ -36,6 +37,7 @@ ActiveRecord::Schema.define(:version => 21) do
     t.column "title", :string
     t.column "body", :text
     t.column "excerpt", :text
+    t.column "site_id", :integer
   end
 
   create_table "content_versions", :force => true do |t|
@@ -60,6 +62,7 @@ ActiveRecord::Schema.define(:version => 21) do
     t.column "filters", :text
     t.column "updater_id", :integer
     t.column "versioned_type", :string, :limit => 20
+    t.column "site_id", :integer
   end
 
   create_table "contents", :force => true do |t|
@@ -83,6 +86,7 @@ ActiveRecord::Schema.define(:version => 21) do
     t.column "filters", :text
     t.column "version", :integer
     t.column "updater_id", :integer
+    t.column "site_id", :integer
   end
 
   create_table "db_files", :force => true do |t|
@@ -105,6 +109,7 @@ ActiveRecord::Schema.define(:version => 21) do
     t.column "articles_per_page", :integer, :default => 15
     t.column "layout", :string
     t.column "template", :string
+    t.column "site_id", :integer
   end
 
   create_table "sessions", :force => true do |t|
@@ -122,6 +127,7 @@ ActiveRecord::Schema.define(:version => 21) do
     t.column "ping_urls", :text
     t.column "filters", :text
     t.column "articles_per_page", :integer, :default => 15
+    t.column "host", :string
   end
 
   create_table "users", :force => true do |t|

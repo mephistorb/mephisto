@@ -1,10 +1,23 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TemplateTest < Test::Unit::TestCase
-  fixtures :attachments, :db_files
+  fixtures :attachments, :db_files, :sites
+  
+  def test_should_require_site
+    assert_equal true, (t = sites(:first).templates.first).valid?
+    t.update_attribute(:site, nil)
+    assert_equal false, t.valid?
+  end
+  
+  def test_should_only_find_templates_in_site
+    assert_equal 10, sites(:first).templates.count
+    assert_equal 1, sites(:hostess).templates.count
+    assert_equal attachments(:home), sites(:first).templates.find_by_filename('home')
+    assert_equal attachments(:hostess_home), sites(:hostess).templates.find_by_filename('home')
+  end
 
   def test_should_ignore_resources_and_assets
-    assert_equal 10, Template.count
+    assert_equal 11, Template.count
   end
 
   def test_should_select_correct_templates
@@ -16,7 +29,7 @@ class TemplateTest < Test::Unit::TestCase
      :search  => [:search, :archive, :index],
      :author  => [:author,  :archive, :index],
      :error   => [:error, :index]}.each do |template_type, filenames|
-       templates = Template.templates_for(template_type)
+       templates = sites(:first).templates.templates_for(template_type)
        (filenames << :layout).each do |filename|
          assert templates[filename.to_s], "#{filename} does not exist for #{template_type}"
        end
@@ -50,7 +63,7 @@ class TemplateTest < Test::Unit::TestCase
   end
 
   protected
-  def assert_template_type(expected_template_name, template_type)
-    assert_equal(attachments(expected_template_name).data, Template.find_preferred(template_type))
+  def assert_template_type(expected_template_name, template_type, site=sites(:first))
+    assert_equal(attachments(expected_template_name).data, site.templates.find_preferred(template_type))
   end
 end

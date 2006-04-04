@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class SectionTest < Test::Unit::TestCase
-  fixtures :sections, :contents, :assigned_sections
+  fixtures :sections, :contents, :assigned_sections, :sites
 
   def test_find_or_create_sanity_check
     assert_no_difference Section, :count do
@@ -79,8 +79,8 @@ class SectionTest < Test::Unit::TestCase
   end
 
   def test_should_return_correct_sections
-    assert_equal [sections(:about), sections(:home)], Section.find(:all, :order => 'name')
-    assert_equal [sections(:about)], Section.find_paged
+    assert_equal [sections(:about), sections(:home)], sites(:first).sections.find(:all, :order => 'name')
+    assert_equal [sections(:about)], sites(:first).sections.find_paged
   end
 
   def test_should_show_correct_titles

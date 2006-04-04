@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class DraftTest < Test::Unit::TestCase
-  fixtures :contents, :users, :content_drafts
+  fixtures :contents, :users, :content_drafts, :sites
   set_fixture_class :content_drafts => Article::Draft
 
   def test_should_set_correct_defaults
@@ -21,9 +21,16 @@ class DraftTest < Test::Unit::TestCase
   end
 
   def test_should_find_new_drafts
-    assert_equal [content_drafts(:first)], Article::Draft.find_new
+    assert_equal [content_drafts(:first), content_drafts(:cupcake_unfinished)], Article::Draft.find_new
+    assert_equal [content_drafts(:first)], sites(:first).drafts.find_new
+    assert_equal [content_drafts(:cupcake_unfinished)], sites(:hostess).drafts.find_new
+    
     Article.new(:title => 'foo').save_draft
-    assert_equal 2, Article::Draft.find_new.length
+    sites(:first).articles.create(:title => 'bar').save_draft
+    
+    # XXX (streadway) is this correct behavior? Should we be having many drafts through articles?
+    assert_equal 1, sites(:first).drafts(true).find_new.length    
+    assert_equal 4, Article::Draft.find_new.length
   end
 
   def test_should_change_draft_to_unsaved_article

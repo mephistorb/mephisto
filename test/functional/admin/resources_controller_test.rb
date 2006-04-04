@@ -5,7 +5,7 @@ require 'admin/resources_controller'
 class Admin::ResourcesController; def rescue_action(e) raise e end; end
 
 class Admin::ResourcesControllerTest < Test::Unit::TestCase
-  fixtures :attachments, :db_files, :users
+  fixtures :attachments, :db_files, :users, :sites
   def setup
     @controller = Admin::ResourcesController.new
     @request    = ActionController::TestRequest.new

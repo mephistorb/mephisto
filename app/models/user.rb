@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   serialize   :filters, Array
   
   has_many :articles
-  has_one  :avatar, :as => :attachable
+  has_one  :avatar, :as => :attachable, :dependent => :destroy
   
   # Uncomment this to use activation
   # before_create :make_activation_code
@@ -78,8 +78,12 @@ class User < ActiveRecord::Base
 
   protected
   def save_uploaded_avatar
-    return unless @uploaded_avatar && @uploaded_avatar.size > 0
-    (self.avatar ||= build_avatar).update_attributes :uploaded_data => @uploaded_avatar, :attachable => self
+    if @uploaded_avatar && @uploaded_avatar.size > 0
+      # XXX (streadway) the next line is necessary because has_one is prematurely saving the association
+      # and not destroying the previous association, even if :dependent => :destroy is set.
+      avatar.destroy && avatar.reset unless avatar.nil?
+      build_avatar(:uploaded_data => @uploaded_avatar)
+    end
   end
 
   def encrypt_password
@@ -89,6 +93,6 @@ class User < ActiveRecord::Base
   end
 
   def password_required?
-    crypted_password.nil? or not password.blank?
+    crypted_password.nil? || !password.blank?
   end
 end

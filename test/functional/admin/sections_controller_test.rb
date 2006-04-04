@@ -5,7 +5,7 @@ require 'admin/sections_controller'
 class Admin::SectionsController; def rescue_action(e) raise e end; end
 
 class Admin::SectionsControllerTest < Test::Unit::TestCase
-  fixtures :sections, :users, :contents, :assigned_sections
+  fixtures :sections, :users, :contents, :assigned_sections, :sites
 
   def setup
     @controller = Admin::SectionsController.new
@@ -16,7 +16,9 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
 
   def test_should_list_sections
     get :index
-    assert_equal 2, assigns(:sections).length
+    assert_equal sites(:first), assigns(:site)
+    assert_equal sections(:home), assigns(:home)
+    assert_equal 2, assigns(:sections).length, "Sections: #{assigns(:sections).inspect}"
     assert_equal 2, assigns(:article_count)['1']
     assert_equal 3, assigns(:article_count)['2']
   end

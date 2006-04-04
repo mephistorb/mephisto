@@ -16,11 +16,11 @@ class Admin::SettingsControllerTest < Test::Unit::TestCase
   # Replace this with your real tests.
   def test_should_show_settings
     get :index
-    assert_tag :tag => 'input', :attributes => { :id => 'current_site_title', :value => sites(:first).title }
+    assert_tag :tag => 'input', :attributes => { :id => 'site_title', :value => sites(:first).title }
   end
 
   def test_should_update_settings
-    post :update, :current_site => { :title => 'foo' }
+    post :update, :site => { :title => 'foo' }
     assert_equal 'foo', sites(:first).title
     assert_redirected_to :action => 'index'
   end

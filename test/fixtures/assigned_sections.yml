@@ -31,3 +31,13 @@ unpublished_home:
   article_id: 4
   section_id: 1
   position: 1
+cupcake_welcome_home:
+  id: 7
+  article_id: 8
+  section_id: 3
+  position: 1
+cupcake_welcome_about:
+  id: 8
+  article_id: 8
+  section_id: 4
+  position: 1

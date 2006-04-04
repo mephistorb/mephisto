@@ -5,7 +5,7 @@ require 'admin/users_controller'
 class Admin::UsersController; def rescue_action(e) raise e end; end
 
 class Admin::UsersControllerTest < Test::Unit::TestCase
-  fixtures :users, :attachments, :db_files
+  fixtures :users, :attachments, :db_files, :sites
   def setup
     @controller = Admin::UsersController.new
     @request    = ActionController::TestRequest.new

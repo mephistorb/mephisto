@@ -1,7 +1,7 @@
 # Base file attachment method
 class Attachment < ActiveRecord::Base  
   before_validation :sanitize_path_if_available
-  validates_uniqueness_of :filename, :scope => :path
+  validates_uniqueness_of :filename, :scope => [:path, :site_id]
   acts_as_attachment
 
   class << self    
@@ -33,7 +33,9 @@ class Attachment < ActiveRecord::Base
 
   module TemplateAndResourceMixin
     def self.included(base)
-      base.validate :path_exists_and_valid?
+      base.belongs_to             :site
+      base.validates_presence_of  :site
+      base.validate               :path_exists_and_valid?
     end
 
     protected

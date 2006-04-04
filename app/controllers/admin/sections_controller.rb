@@ -6,11 +6,11 @@ class Admin::SectionsController < Admin::BaseController
   before_filter :preprocess_section_params, :only => [:create, :update]
 
   def index
-    @section  = Section.new
+    @section = site.sections.build
   end
 
   def create
-    @section = Section.create(params[:section])
+    @section = site.sections.create(params[:section])
   end
 
   def destroy
@@ -35,12 +35,12 @@ class Admin::SectionsController < Admin::BaseController
 
   protected
   def find_and_sort_templates
-    @layouts, @templates = Template.find_custom.partition { |t| t.layout? }
+    @layouts, @templates = site.templates.find_custom.partition { |t| t.layout? }
   end
 
   def find_and_reorder_sections
-    @article_count = Section.articles_count
-    @sections      = Section.find :all
+    @article_count = site.sections.articles_count
+    @sections      = site.sections.find :all
     @sections.each do |s|
       @home    = s if s.name.downcase == 'home'
       @section = s if params[:id].to_s == s.id.to_s
@@ -50,7 +50,7 @@ class Admin::SectionsController < Admin::BaseController
   end
 
   def find_section
-    @section = Section.find params[:id]
+    @section = site.sections.find params[:id]
   end
 
   def preprocess_section_params

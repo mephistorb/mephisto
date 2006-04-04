@@ -4,7 +4,9 @@ class AssetTest < Test::Unit::TestCase
   fixtures :attachments, :db_files, :users, :sites
 
   def test_should_count_correct_assets
-    assert_equal 1, Asset.count
+    assert_equal 1, Asset.count, Asset.find(:all).inspect
+    assert_equal 1, sites(:first).assets.count
+    assert_equal 0, sites(:hostess).assets.count
   end
 
   def test_should_show_user_avatar

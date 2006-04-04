@@ -4,10 +4,10 @@ class MephistoController < ApplicationController
 
   def list
     if params[:sections].blank?
-      @section = Section.find_by_name('home')
+      @section = site.sections.find_by_name('home')
       list_section_articles_with(:main)
-    else
-      @section, page_name = Section.find_section_and_page_name(params[:sections])
+    else 
+      @section, page_name = site.sections.find_section_and_page_name(params[:sections])
       @section.show_paged_articles? ? show_section_page_with(page_name, :page) : list_section_articles_with(:section)
     end
   end
@@ -15,8 +15,8 @@ class MephistoController < ApplicationController
   def search
     conditions     = ['published_at <= :now AND title LIKE :q OR excerpt LIKE :q OR body LIKE :q', 
                      { :now => Time.now.utc, :q => "%#{params[:q]}%" }]
-    @article_pages = Paginator.new self, Article.count(conditions), 15, params[:page]
-    @articles      = Article.find(:all, :conditions => conditions, :order => 'published_at DESC',
+    @article_pages = Paginator.new self, site.articles.count(conditions), 15, params[:page]
+    @articles      = site.articles.find(:all, :conditions => conditions, :order => 'published_at DESC',
                        :include => [:user, :sections],
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)
@@ -27,7 +27,7 @@ class MephistoController < ApplicationController
   end
 
   def show
-    @article  = Article.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
+    @article  = site.articles.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])    
     @comments = @article.comments.collect { |c| c.to_liquid }
     self.cached_references << @article
     @article  = @article.to_liquid(:single)
@@ -35,14 +35,14 @@ class MephistoController < ApplicationController
   end
 
   def day
-    @articles = Article.find_all_by_published_date(params[:year], params[:month], params[:day], :include => [:user, :sections])
+    @articles = site.articles.find_all_by_published_date(params[:year], params[:month], params[:day], :include => [:user, :sections])
     render_liquid_template_for(:archive, 'articles' => @articles)
   end
 
   def month
-    count = Article.count_by_published_date(params[:year], params[:month], params[:day])
+    count = site.articles.count_by_published_date(params[:year], params[:month], params[:day])
     @article_pages = Paginator.new self, count, 15, params[:page]
-    @articles = Article.find_all_by_published_date(params[:year], params[:month], params[:day],
+    @articles = site.articles.find_all_by_published_date(params[:year], params[:month], params[:day],
                   :include => [:user, :sections],
                   :limit   =>  @article_pages.items_per_page,
                   :offset  =>  @article_pages.current.offset)

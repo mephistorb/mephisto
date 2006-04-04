@@ -26,7 +26,7 @@ class Admin::ResourcesController < Admin::BaseController
   end
 
   def upload
-    @resource = Resource.new params[:resource]
+    @resource = site.resources.build params[:resource]
     if @resource.image? and @resource.save
       flash[:notice] = "'#{@resource.filename}' was uploaded successfully."
     else

@@ -1,5 +1,5 @@
 <h2>Manage your Assets and Resources</h2>
-<% form_for :resource, @resource, :action => 'create' do |f| -%>
+<% form_for :resource, @resource, :url => { :action => 'create' } do |f| -%>
 <%= render :partial => 'form', :object => @resource, :locals => { 
   :title  => 'Create a new template',
   :hint   => 'You can use HTML and Liquid in your template.',

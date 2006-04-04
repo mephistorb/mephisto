@@ -5,12 +5,13 @@ require_dependency 'mephisto_controller'
 class MephistoController; def rescue_action(e) raise e end; end
 
 class MephistoControllerTest < Test::Unit::TestCase
-  fixtures :contents, :sections, :assigned_sections, :attachments
+  fixtures :contents, :sections, :assigned_sections, :attachments, :db_files, :sites, :users
 
   def setup
     @controller = MephistoController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    host! 'test.host'
   end
 
   def test_routing
@@ -30,6 +31,7 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_list_on_home
     get :list, :sections => []
+    assert_equal sites(:first), assigns(:site)
     assert_equal sections(:home), assigns(:section)
     assert_equal [contents(:welcome), contents(:another)], assigns(:articles)
   end
@@ -46,8 +48,17 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_list_by_sections
     get :list, :sections => %w(about)
+    assert_equal sites(:first), assigns(:site)
     assert_equal sections(:about), assigns(:section)
     assert_equal contents(:welcome), assigns(:article)
+  end
+  
+  def test_list_by_site_sections
+    host! 'cupcake.host'
+    get :list, :sections => %w(about)
+    assert_equal sites(:hostess), assigns(:site)
+    assert_equal sections(:cupcake_about), assigns(:section)
+    assert_equal contents(:cupcake_welcome), assigns(:article)
   end
 
   def test_should_show_page
@@ -81,7 +92,14 @@ class MephistoControllerTest < Test::Unit::TestCase
     get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto'
     assert_equal contents(:welcome).to_liquid['id'], assigns(:article)['id']
   end
-
+  
+  def test_should_show_site_entry
+    host! 'cupcake.host'
+    date = 3.days.ago
+    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-cupcake'
+    assert_equal contents(:cupcake_welcome).to_liquid['id'], assigns(:article)['id']
+  end
+  
   def test_should_show_navigation_on_paged_sections
     get :list, :sections => %w(about)
     assert_tag :tag => 'ul', :attributes => { :id => 'nav' },

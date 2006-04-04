@@ -9,32 +9,36 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :load_sections, :only => [:new, :edit, :draft]
 
   def index
-    @drafts        = Article::Draft.find_new
-    @article_pages = Paginator.new self, Article.count, 30, params[:page]
-    @articles      = Article.find(:all, :order => 'contents.created_at DESC',
+    @drafts        = site.drafts.find_new
+    @article_pages = Paginator.new self, site.articles.count, 30, params[:page]
+    @articles      = site.articles.find(:all, :order => 'contents.created_at DESC',
                        :include => [:user, :draft],
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)
   end
 
   def show
-    @article  = Article.find_by_id(params[:id], :include => :comments)
+    @article  = site.articles.find_by_id(params[:id], :include => :comments)
     @comments = @article.comments.collect { |c| c.to_liquid }
     @article  = @article.to_liquid(:single)
-    render :text => Template.render_liquid_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => current_site.to_liquid)
+    render :text => Template.render_liquid_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => site.to_liquid)
   end
 
   def new
-    @article = Article.new
+    @article = site.articles.build
   end
 
   def edit
-    @article = Article.find(params[:id], :include => :draft)
+    @article = site.articles.find(params[:id], :include => :draft)
     @version = params[:version] ? @article.find_version(params[:version]) : @article
   end
 
   def create
-    @article = current_user.articles.create params[:article].merge(:updater => current_user, :draft => Article::Draft.find_by_id(params[:draft]))
+    @article = current_user.articles.create params[:article].merge(
+      :updater => current_user, 
+      :draft => Article::Draft.find_by_id(params[:draft]),
+      :site => site)
+      
     if @article.new_record?
       load_sections
       render :action => 'new'
@@ -44,17 +48,17 @@ class Admin::ArticlesController < Admin::BaseController
   end
   
   def update
-    @article = Article.find(params[:id])
+    @article = site.articles.find(params[:id])
     if @article.update_attributes(params[:article].merge(:updater => current_user))
       redirect_to :action => 'index'
     else
-      @sections = Section.find :all
+      @sections = site.sections
       render :action => 'edit'
     end
   end
 
   def draft
-    @draft   = Article::Draft.find(params[:id], :include => :article)
+    @draft   = site.drafts.find(params[:id], :include => :article)
     @article = @draft.to_article
     render :action => (@article.new_record? ? :new : :edit)
   end
@@ -72,23 +76,24 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def update_draft
-    @article = Article.find(params[:id])
+    @article = site.articles.find(params[:id])
     @article.attributes = params[:article]
   end
 
   def create_draft
-    @article = Article.new(params[:article])
-    @article.draft = Article::Draft.find(params[:draft]) if params[:draft]
+    @article = site.articles.build(params[:article])
+    @article.draft = site.drafts.find(params[:draft]) if params[:draft]
   end
 
   def load_sections
-    @sections = Section.find :all, :order => 'name'
+    @sections = site.sections.find :all, :order => 'name'
     home = @sections.find { |s| s.name == 'home' }
     @sections.delete  home
     @sections.unshift home
   end
 
   def set_default_section_ids
+    params[:article] ||= {}
     params[:article][:section_ids] ||= []
   end
 

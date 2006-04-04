@@ -7,4 +7,12 @@
 first:
   id: 1
   title: Mephisto
+  host: test.host
   filters: "--- \n- :foo\n- :bar\n"
+
+hostess:
+  id: 2
+  title: Cupcake
+  subtitle: Your hostess
+  filters: "--- \n- :foo\n- :bar\n"
+  host: cupcake.host

@@ -1,10 +1,4 @@
 class SetDefaultFilters < ActiveRecord::Migration
-  class Content < ActiveRecord::Base
-    belongs_to :user
-  end
-  class Article < Content ; end
-  class User    < ActiveRecord::Base ; end
-  
   def self.up
     Article.transaction do
       User.find(:all, :conditions => ['filters IS NULL']).each do |user|

@@ -74,15 +74,15 @@ class CachingTest < ActionController::IntegrationTest
     end
   end
 
-  def test_should_cache_and_expires_overview_feed_on_edited_article
+  def test_should_cache_and_expire_overview_feed_on_edited_article
     rss     = visit
     writer  = login_as :quentin
 
-    assert_caches_page overview_url do
+    assert_caches_page overview_url(:only_path => true, :skip_relative_url_root => true) do
       rss.get_with_basic 'admin/overview.xml', :login => :quentin
     end
 
-    assert_expires_page overview_url do
+    assert_expires_page overview_url(:only_path => true, :skip_relative_url_root => true) do
       writer.revise contents(:welcome), 'new welcome description'
     end
   end
