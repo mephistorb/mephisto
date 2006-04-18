@@ -59,7 +59,6 @@ end
 
 # Include your application configuration below
 require 'time_ext'
-require 'rubygems'
 require 'zip/zipfilesystem'
 ActiveRecord::Base.send :include, ActsAsDraftable
 Liquid::Template.register_filter(Mephisto::Liquid::Filters)
