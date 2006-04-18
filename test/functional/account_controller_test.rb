@@ -5,7 +5,7 @@ require_dependency 'account_controller'
 class AccountController; def rescue_action(e) raise e end; end
 
 class AccountControllerTest < Test::Unit::TestCase
-  fixtures :users
+  fixtures :users, :sites
 
   def setup
     @controller = AccountController.new
