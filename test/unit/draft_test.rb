@@ -21,16 +21,16 @@ class DraftTest < Test::Unit::TestCase
   end
 
   def test_should_find_new_drafts
-    assert_equal [content_drafts(:first), content_drafts(:cupcake_unfinished)], Article::Draft.find_new
-    assert_equal [content_drafts(:first)], sites(:first).drafts.find_new
-    assert_equal [content_drafts(:cupcake_unfinished)], sites(:hostess).drafts.find_new
+    assert_equal [content_drafts(:first), content_drafts(:cupcake_unfinished)], Article::Draft.find_new(:all, :order => 'id')
+    assert_equal [content_drafts(:first)], sites(:first).drafts.find_new(:all)
+    assert_equal [content_drafts(:cupcake_unfinished)], sites(:hostess).drafts.find_new(:all)
     
     Article.new(:title => 'foo').save_draft
     sites(:first).articles.create(:title => 'bar').save_draft
     
     # XXX (streadway) is this correct behavior? Should we be having many drafts through articles?
-    assert_equal 1, sites(:first).drafts(true).find_new.length    
-    assert_equal 4, Article::Draft.find_new.length
+    assert_equal 1, sites(:first).drafts(true).count_new
+    assert_equal 4, Article::Draft.count_new
   end
 
   def test_should_change_draft_to_unsaved_article
@@ -40,8 +40,8 @@ class DraftTest < Test::Unit::TestCase
   end
 
   def test_should_change_article_draft_to_article
-    drafted_article = content_drafts(:welcome).to_article
-    assert_equal contents(:welcome), drafted_article
+    draft_article = content_drafts(:welcome).to_article
+    assert_equal contents(:welcome), draft_article
     assert_equal 'Welcome to Mephisto',    contents(:welcome).title
     assert_equal 'Welcome to ArticleCast', content_drafts(:welcome).to_article.title
   end

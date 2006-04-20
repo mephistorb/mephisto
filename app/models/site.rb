@@ -1,7 +1,7 @@
 class Site < ActiveRecord::Base
   has_many  :sections
   has_many  :articles
-  has_many  :drafts, :class_name => 'Article::Draft'
+  has_many  :drafts, :class_name => 'Article::Draft', :order => 'content_drafts.updated_at'
   
   has_many  :assets, :as => :attachable
   has_many  :templates

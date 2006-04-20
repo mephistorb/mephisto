@@ -5,11 +5,12 @@ class SectionTest < Test::Unit::TestCase
 
   def test_find_or_create_sanity_check
     assert_no_difference Section, :count do
-      assert_equal sections(:home), Section.find_or_create_by_name('home')
+      assert_equal sections(:home), sites(:first).sections.find_or_create_by_name('home')
     end
     
     assert_difference Section, :count do 
-      Section.find_or_create_by_name('foo')
+      section = sites(:first).sections.find_or_create_by_name('foo')
+      assert_equal sites(:first), section.site
     end
   end
 
@@ -39,9 +40,9 @@ class SectionTest < Test::Unit::TestCase
   end
 
   def test_should_find_section_with_permalink_extra
-    assert_equal [sections(:about), nil],   Section.find_section_and_page_name(%w(about))
-    assert_equal [sections(:about), 'foo'], Section.find_section_and_page_name(%w(about foo))
-    assert_equal [nil, 'foo'],              Section.find_section_and_page_name(%w(foo))
+    assert_equal [sections(:about), nil],   sites(:first).sections.find_section_and_page_name(%w(about))
+    assert_equal [sections(:about), 'foo'], sites(:first).sections.find_section_and_page_name(%w(about foo))
+    assert_equal [nil, 'foo'],              sites(:first).sections.find_section_and_page_name(%w(foo))
   end
 
   def test_should_include_home_section_by_default

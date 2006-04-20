@@ -9,7 +9,7 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :load_sections, :only => [:new, :edit, :draft]
 
   def index
-    @drafts        = site.drafts.find_new
+    @drafts        = site.drafts.find_new(:all)
     @article_pages = Paginator.new self, site.articles.count, 30, params[:page]
     @articles      = site.articles.find(:all, :order => 'contents.created_at DESC',
                        :include => [:user, :draft],

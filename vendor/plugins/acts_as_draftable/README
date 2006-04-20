@@ -1,0 +1,5 @@
+Acts as Draftable
+=====================
+
+Allows a model to save certain attributes into a smaller drafts table.  These are meant to be
+temporary modifications until the actual model is saved.  This is very similar to Acts as Versioned.

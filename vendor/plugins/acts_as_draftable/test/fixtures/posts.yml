@@ -1,0 +1,8 @@
+welcome:
+  id: 1
+  title: Welcome to Mephisto
+  body: welcome description
+cupcake:
+  id: 2
+  title: Welcome to Cupcake
+  body: welcome description

@@ -60,7 +60,6 @@ end
 # Include your application configuration below
 require 'time_ext'
 require 'zip/zipfilesystem'
-ActiveRecord::Base.send :include, ActsAsDraftable
 Liquid::Template.register_filter(Mephisto::Liquid::Filters)
 Liquid::Template.register_tag('textile',        Mephisto::Liquid::Textile)
 Liquid::Template.register_tag('commentform',    Mephisto::Liquid::CommentForm)
