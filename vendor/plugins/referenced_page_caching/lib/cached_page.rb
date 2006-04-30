@@ -16,7 +16,7 @@ class CachedPage < ActiveRecord::Base
     #   CachedPage.find_by_reference  Foo.find(15)
     #   CachedPage.find_by_references *Foo.find(15,16,17)
     def find_by_references(*references)
-      find :all, :conditions => [references.collect { |r| '"references" LIKE ?' }.join(' OR '), references.collect { |r| "%#{r.referenced_cache_key}%" }]
+      find_by_reference_keys *references.collect { |r| [r.class.name, r.id] }
     end
     alias find_by_reference find_by_references
 
@@ -25,8 +25,7 @@ class CachedPage < ActiveRecord::Base
     #   CachedPage.find_by_reference_keys ['Foo', 15], ['Bar', 17]
     #
     def find_by_reference_keys(*array_of_keys)
-      find :all, :conditions => [references.collect { |r| '"references" LIKE ?' }.join(' OR '), references.collect { |r| "%[#{[r.last, r.first].join(':')}]%" }]
-      find :all, :conditions => ['"references" LIKE ?', "%[#{[record_id, class_name].join(':')}]%"]
+      find :all, :conditions => [array_of_keys.collect { |r| "#{self.connection.quote_column_name('references')} LIKE ?" } * ' OR ', array_of_keys.collect { |r| "%[#{[r.last, r.first] * ':'}]%" }]
     end
 
     # Finds all pages that this record refers to
@@ -34,7 +33,7 @@ class CachedPage < ActiveRecord::Base
     #   CachedPage.find_by_reference_key 'Foo', 15
     #
     def find_by_reference_key(class_name, record_id)
-      find_all_by_reference_keys [class_name, record_id]
+      find_by_reference_keys [class_name, record_id]
     end
 
     # Clears all references from this page
