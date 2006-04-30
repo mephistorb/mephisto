@@ -38,7 +38,7 @@ class CachedPage < ActiveRecord::Base
 
     # Clears all references from this page
     def expire_pages(pages)
-      delete_all "id IN (#{pages.collect { |p| quote(p.id) }.join(', ')})" unless pages.empty?
+      delete_all "id IN (#{pages.collect { |p| quote(p.id) } * ', '})" unless pages.empty?
     end
     
     def create_by_url(url, references)
