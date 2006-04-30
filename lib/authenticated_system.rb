@@ -115,7 +115,7 @@ module AuthenticatedSystem
       headers["WWW-Authenticate"] = "Basic realm=\"#{realm}\""
       render :text => error_message, :status => '401 Unauthorized'
     end 
-  end 
+  end
 
   # adds ActionView helper methods
   def self.included(base)

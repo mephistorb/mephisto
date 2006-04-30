@@ -14,6 +14,7 @@ Rails::Initializer.class_eval do
   end
 end
 
+require 'vendor/RedCloth-3.0.4/lib/redcloth'
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
   

@@ -6,7 +6,7 @@ module Mephisto
 
       def render(context)
         collection = context['pages']
-        @section       = context['section']
+        @section   = context['section']
         @page      = context['article']
         result     = []
         context.stack do
