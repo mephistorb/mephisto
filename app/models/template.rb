@@ -15,6 +15,7 @@ class Template < Attachment
     :author  => [:author,   :archive, :index],
     :error   => [:error,    :index]
   }
+  
   @@template_types   = @@hierarchy.values.flatten.uniq << :layout
   cattr_reader :hierarchy, :template_types
 
@@ -35,11 +36,11 @@ class Template < Attachment
       nil
     end
 
-    def render_liquid_for(template_type, assigns = {})
+    def render_liquid_for(template_type, assigns = {}, controller = nil)      
       templates                     = templates_for(template_type)
       preferred_template            = find_preferred(template_type, templates)
-      assigns['content_for_layout'] = Liquid::Template.parse(preferred_template).render(assigns)
-      Liquid::Template.parse(templates['layout']).render(assigns)
+      assigns['content_for_layout'] = Liquid::Template.parse(preferred_template).render(assigns, :registers => {:controller => controller})
+      Liquid::Template.parse(templates['layout']).render(assigns, :registers => {:controller => controller})
     end
 
     def find_custom
