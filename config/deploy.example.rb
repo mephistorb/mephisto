@@ -11,7 +11,7 @@
 # form the root of the application path.
 
 set :application, "mephisto"
-set :repository, "http://techno-weenie.net/svn/projects/mephisto"
+set :repository, "http://svn.techno-weenie.net/projects/mephisto"
 
 # =============================================================================
 # RAILS VERSION
@@ -19,7 +19,7 @@ set :repository, "http://techno-weenie.net/svn/projects/mephisto"
 # Use this to freeze your deployment to a specific rails version.  Uses the rake
 # init task run in after_symlink below.
 
-set :rails_version, 3567
+set :rails_version, 4371
 
 # TODO: test this works and I can remove the restart task and use the cleanup task
 # set :use_sudo, false
