@@ -22,7 +22,7 @@ class CommentsController < ApplicationController
         :comment_author_url   => @comment.author_url, 
         :comment_content      => @comment.body
     end
-    @article.save
+    @comment.save
     
     if @comment.new_record?
       @comments = @article.comments.select { |c| not c.new_record? }.collect { |c| c.to_liquid }
