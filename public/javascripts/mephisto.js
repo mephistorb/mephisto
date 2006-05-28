@@ -135,6 +135,7 @@ var Flash = {
 //
 //
 
+/*
 if (!window.Control) {
   var Control = new Object();
 }
@@ -184,4 +185,4 @@ Control.Resizer.prototype = {
   onHover: function(event) {
     Element.setStyle(this.handle, {cursor: 'move'});
   }
-}
+}*/
