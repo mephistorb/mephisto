@@ -1,0 +1,1 @@
+page["comment-#{@comment.id}"].visual_effect :drop_out

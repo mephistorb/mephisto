@@ -63,6 +63,18 @@ class Admin::ArticlesController < Admin::BaseController
     render :action => (@article.new_record? ? :new : :edit)
   end
 
+  def comments
+    @article = site.articles.find(params[:id], :include => :unapproved_comments)
+  end
+
+  # xhr baby
+  def approve
+    @article = site.articles.find(params[:id])
+    @comment = @article.unapproved_comments.find(params[:comment])
+    @comment.approved = true
+    @comment.save
+  end
+
   protected
   def save_or_draft
     if draft?(params[:submit])
