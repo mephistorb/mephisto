@@ -15,7 +15,8 @@ class Article < Content
 
   has_many :assigned_sections
   has_many :sections, :through => :assigned_sections, :order => 'sections.name'
-  has_many :comments, :order   => 'created_at'
+  has_many :comments, :order   => 'created_at', :conditions => ['contents.approved = ?', true]
+  has_many :unapproved_comments, :order   => 'created_at', :conditions => ['contents.approved = ?', false], :class_name => 'Comment'
   has_many :events,   :order => 'created_at desc'
   
   class << self

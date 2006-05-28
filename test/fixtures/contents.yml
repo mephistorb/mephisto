@@ -43,6 +43,7 @@ welcome_comment:
   published_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
   type: Comment
   author: rico
+  approved: true
 future:
   id: 5
   site_id: 1
@@ -108,5 +109,17 @@ cupcake_welcome_comment:
   created_at: <%= 3.days.ago.to_s(:db) %>
   updated_at: <%= 3.days.ago.to_s(:db) %>
   published_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
+  type: Comment
+  author: rico
+  approved: true
+unwelcome_comment:
+  id: 10
+  site_id: 1
+  article_id: 1
+  body: This blogging tool sucks.
+  body_html: This blogging tool sucks.
+  created_at: <%= 2.days.ago.to_s(:db) %>
+  updated_at: <%= 2.days.ago.to_s(:db) %>
+  published_at: <%= (2.days + 55.minutes).ago.to_s(:db) %>
   type: Comment
   author: rico

@@ -1,6 +1,7 @@
 class Comment < Content
   validates_presence_of :author, :author_ip
   belongs_to :article, :counter_cache => true
+  attr_protected :approved
 
   def to_liquid
     { 'id'         => id,
