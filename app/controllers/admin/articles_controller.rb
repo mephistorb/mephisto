@@ -75,6 +75,14 @@ class Admin::ArticlesController < Admin::BaseController
     @comment.save
   end
 
+  def set_akismet
+    Akismet.api_key = params[:api_key]
+    Akismet.blog    = params[:blog]
+    render :update do |page|
+      page[:akismet].visual_effect :drop_out
+    end
+  end
+
   protected
   def save_or_draft
     if draft?(params[:submit])

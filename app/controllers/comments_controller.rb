@@ -11,6 +11,19 @@ class CommentsController < ApplicationController
     end
 
     @comment = @article.comments.create(params[:comment].merge(:author_ip => request.remote_ip))
+    if @comment.valid? && Akismet.api_key && Akismet.blog
+      ak = Akismet.new(Akismet.api_key, Akismet.blog)
+      @comment.approved = ak.comment_check \
+        :user_ip              => @comment.author_ip, 
+        :user_agent           => request.user_agent, 
+        :referrer             => request.referer,
+        :permalink            => article_url(@article.hash_for_permalink), 
+        :comment_author       => @comment.author, 
+        :comment_author_email => @comment.author_email, 
+        :comment_author_url   => @comment.author_url, 
+        :comment_content      => @comment.body
+    end
+    
     if @comment.new_record?
       @comments = @article.comments.select { |c| not c.new_record? }.collect { |c| c.to_liquid }
       @article  = @article.to_liquid(:single)

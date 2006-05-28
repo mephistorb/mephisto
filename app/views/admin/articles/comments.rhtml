@@ -1,3 +1,28 @@
+<% unless Akismet.api_key && Akismet.blog -%>
+<%= form_remote_tag :url => { :action => 'set_akismet' }, :html => { :id => 'akismet' } %>
+  <p>
+    Set an <%= link_to 'Akismet', 'http://akismet.com' %> to automatically approve spam.
+    <%= link_to_function 'How?', "Effect.toggle('akismet-how', 'blind')" %>
+  </p>
+  <pre id="akismet-how" style="display:none">
+# database.yml
+production:
+  adapter: postgresql
+  database: mephisto_dev
+  host: localhost
+  username: USERNAME
+  password: PASSWORD
+  min_messages: warning
+  akismet_api_key: APIKEY
+  akismet_blog: BLOG
+</pre>
+  <p><label>API Key</label> <%= text_field_tag :api_key, Akismet.api_key %></p>
+  <p><label>Blog</label> <%= text_field_tag :blog, Akismet.blog %></p>
+  <p><%= submit_tag :Save %> without restarting.</p>
+</form>
+<% end -%>
+  <%= request.referer %>
+
 <h1>Unapproved Comments for '<%=h @article.title %>'</h1>
 
 <% @article.unapproved_comments.each do |comment| -%>

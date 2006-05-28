@@ -93,3 +93,8 @@ ActiveRecord::Base.class_eval do
     end
   end
 end
+
+Akismet.class_eval do
+  cattr_accessor :api_key
+  cattr_accessor :blog
+end
