@@ -75,6 +75,12 @@ class Admin::ArticlesController < Admin::BaseController
     @comment.save
   end
 
+  def unapprove
+    @article = site.articles.find(params[:id])
+    @comment = @article.unapproved_comments.find(params[:comment]).destroy
+    render :action => 'approve'
+  end
+
   def set_akismet
     Akismet.api_key = params[:api_key]
     Akismet.blog    = params[:blog]

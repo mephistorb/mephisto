@@ -28,6 +28,9 @@ production:
 <div id="comment-<%= comment.id %>">
   <p><%= truncate comment.body, 255 %></p>
   <p>By <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %></p>
-  <p><%= link_to_remote 'Approve!', :url => { :action => 'approve', :id => @article, :comment => comment } %></p>
+  <p>
+    <%= link_to_remote 'Approve!', :url => { :action => 'approve',   :id => @article, :comment => comment } %>
+    <%= link_to_remote 'Delete!',  :url => { :action => 'unapprove', :id => @article, :comment => comment } %>
+  </p>
 </div>
 <% end -%>
