@@ -10,10 +10,9 @@ class CommentsController < ApplicationController
       redirect_to(article_url(@article.hash_for_permalink)) and return
     end
 
-    @comment = @article.comments.create(params[:comment].merge(:author_ip => request.remote_ip))
+    @comment = Comment.build(params[:comment].merge(:author_ip => request.remote_ip, :article_id => @article.id))
     if @comment.valid? && Akismet.api_key && Akismet.blog
-      ak = Akismet.new(Akismet.api_key, Akismet.blog)
-      @comment.approved = ak.comment_check \
+      @comment.approved = Akismet.new(Akismet.api_key, Akismet.blog).comment_check \
         :user_ip              => @comment.author_ip, 
         :user_agent           => request.user_agent, 
         :referrer             => request.referer,
@@ -23,6 +22,7 @@ class CommentsController < ApplicationController
         :comment_author_url   => @comment.author_url, 
         :comment_content      => @comment.body
     end
+    @article.save
     
     if @comment.new_record?
       @comments = @article.comments.select { |c| not c.new_record? }.collect { |c| c.to_liquid }
