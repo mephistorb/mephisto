@@ -1,3 +1,9 @@
+class ContextDrop < Liquid::Drop
+  def before_method(method)
+    return @context[method]
+  end
+end
+
 class ProductDrop < Liquid::Drop
 
   class TextDrop < Liquid::Drop
@@ -27,6 +33,15 @@ class ProductDrop < Liquid::Drop
   def catchall
     CatchallDrop.new
   end
+  
+  def context
+    ContextDrop.new
+  end
+  
+  protected
+    def callmenot
+      "protected"
+    end
 end
 
 
@@ -65,5 +80,18 @@ class DropsTest < Test::Unit::TestCase
     assert_equal ' text1  text2 ', output
   end
   
+  def test_context_drop
+    output = Liquid::Template.parse( ' {{ context.bar }} '  ).render('context' => ContextDrop.new, 'bar' => "carrot")
+    assert_equal ' carrot ', output
+  end
   
+  def test_nested_context_drop
+    output = Liquid::Template.parse( ' {{ product.context.foo }} '  ).render('product' => ProductDrop.new, 'foo' => "monkey")
+    assert_equal ' monkey ', output
+  end  
+
+  def test_protected
+    output = Liquid::Template.parse( ' {{ product.callmenot }} '  ).render('product' => ProductDrop.new)
+    assert_equal '  ', output    
+  end
 end

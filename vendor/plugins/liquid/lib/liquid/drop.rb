@@ -20,6 +20,7 @@ module Liquid
   # Your drop can either implement the methods sans any parameters or implement the before_method(name) method which is a 
   # catch all
   class Drop
+    attr_writer :context
 
     # Catch all for the method 
     def before_method(method)
@@ -29,7 +30,7 @@ module Liquid
     # called by liquid to invoke a drop
     def invoke_drop(method)      
       result = before_method(method)
-      result ||= send(method.to_sym) if respond_to?(method.to_sym)
+      result ||= send(method.to_sym) if self.class.public_instance_methods.include?(method.to_s)
       result
     end
     

@@ -9,12 +9,12 @@ module Liquid
     
     # convert a input string to DOWNCASE
     def downcase(input)
-      input.downcase
+      input.downcase rescue input
     end         
 
     # convert a input string to UPCASE
     def upcase(input)
-      input.upcase
+      input.upcase rescue input
     end
     
     # Truncate a string down to x characters
@@ -28,7 +28,7 @@ module Liquid
 
     # Truncate string down to x words
     def truncatewords(input, words = 15)    
-      wordlist = [input.split].flatten
+      wordlist = [input.to_s.split].flatten
       if wordlist.size > words.to_i
         wordlist[0..words.to_i].join(' ') + '&hellip;'
       else
@@ -68,6 +68,8 @@ module Liquid
       date = input
       date = Time.parse(input) if input.is_a?(String)
       date.strftime(format)      
+    rescue => e 
+      input
     end
     
     # Get the first element of the passed in array 

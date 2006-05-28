@@ -31,7 +31,7 @@ module Liquid
   VariableStart               = /\{\{/
   VariableEnd                 = /\}\}/
   AllowedVariableCharacters   = /[a-zA-Z_.-]/
-  QuotedFragment              = /"[^"]+"|'[^']+'|[^\s,]+/
+  QuotedFragment              = /"[^"]+"|'[^']+'|[^\s,|]+/
   TagAttributes             = /(\w+)\s*\:\s*(#{QuotedFragment})/
   TokenizationRegexp          = /(#{TagStart}.*?#{TagEnd}|#{VariableStart}.*?#{VariableEnd})/
 end
@@ -44,6 +44,7 @@ require 'liquid/tag'
 require 'liquid/block'
 require 'liquid/document'
 require 'liquid/variable'
+require 'liquid/file_system'
 require 'liquid/template'
 require 'liquid/standardtags'
 require 'liquid/htmltags'

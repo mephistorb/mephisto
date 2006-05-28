@@ -5,7 +5,7 @@ class StrainerTest < Test::Unit::TestCase
   include Liquid
 
   def test_strainer
-    strainer = Strainer.create
+    strainer = Strainer.create(nil)
     assert_equal false, strainer.respond_to?('__test__')
     assert_equal false, strainer.respond_to?('test')
     assert_equal false, strainer.respond_to?('instance_eval')

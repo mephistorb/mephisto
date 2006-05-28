@@ -122,4 +122,12 @@ end
     assert_equal "hello!", @context['"hello!"']
     assert_equal "hello!", @context["'hello!'"]
   end  
+  
+  def test_merge
+    @context.merge({ "test" => "test" })
+    assert_equal 'test', @context['test']
+    @context.merge({ "test" => "newvalue", "foo" => "bar" })
+    assert_equal 'newvalue', @context['test']
+    assert_equal 'bar', @context['foo']    
+  end
 end

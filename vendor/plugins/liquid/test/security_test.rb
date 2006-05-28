@@ -29,6 +29,6 @@ class SecurityTest < Test::Unit::TestCase
     text = %( {{ '1+1' | add_one | instance_eval }} )
     expected = %| 1+1 + 1 |
   
-    assert_equal expected, Template.parse(text).render(@assigns, SecurityFilter)
+    assert_equal expected, Template.parse(text).render(@assigns, :filters => SecurityFilter)
   end
 end

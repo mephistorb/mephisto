@@ -19,7 +19,7 @@ class LiquidServlet < WEBrick::HTTPServlet::AbstractServlet
 
     @response['Content-Type'] = "text/html"
     @response.status = 200
-    @response.body = Liquid::Template.parse(read_template).render(@assigns, [ProductsFilter])      
+    @response.body = Liquid::Template.parse(read_template).render(@assigns, :filters => [ProductsFilter])      
   end
   
   def read_template(filename = @action)

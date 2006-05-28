@@ -51,6 +51,16 @@ class VariableTest < Test::Unit::TestCase
     assert_equal [[:things,["\"%Y, okay?\"","'the other one'"]]], var.filters
   end
   
+  def test_filters_without_whitespace
+    var = Variable.new('hello | textileze | paragraph')
+    assert_equal 'hello', var.name
+    assert_equal [[:textileze,[]], [:paragraph,[]]], var.filters
+
+    var = Variable.new('hello|textileze|paragraph')
+    assert_equal 'hello', var.name
+    assert_equal [[:textileze,[]], [:paragraph,[]]], var.filters
+  end
+  
   def test_symbol
     var = Variable.new("http://disney.com/logo.gif | image: 'med' ")
     assert_equal 'http://disney.com/logo.gif', var.name
@@ -112,44 +122,6 @@ class VariableResolutionTest < Test::Unit::TestCase
   def test_hash_scoping
     template = Template.parse(%|{{ test.test }}|)
     assert_equal 'worked', template.render('test' => {'test' => 'worked'})
-  end
-
-end
-
-class VariableWithFiltersTest < Test::Unit::TestCase
-  include Liquid
-  
-  module Filters
-    def money(input)
-      sprintf(' %d$ ', input)
-    end
-    
-    def money_with_underscore(input)
-      sprintf(' %d$ ', input)
-    end
-  end
-  
-  def test_local_filter
-    context = Context.new
-    context['var'] = 1000
-    context.add_filters(Filters)
-    
-    assert_equal ' 1000$ ', Variable.new("var | money").render(context)
-  end  
-  
-  def test_underscore_in_filter_name
-    context = Context.new
-    context['var'] = 1000
-    context.add_filters(Filters)
-    
-    assert_equal ' 1000$ ', Variable.new("var | money_with_underscore").render(context)
-  end
-
-  def test_global_filter                                                             
-    context = Context.new
-    context['var'] = 1000
-    
-    assert_equal 4, Variable.new("var | size").render(context)
   end
 
 end

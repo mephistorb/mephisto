@@ -19,9 +19,9 @@ module Liquid
     attr_reader :assigns
     attr_accessor :registers
     
-    def initialize(assigns = {})
+    def initialize(assigns = {}, registers = nil)
       @assigns = [assigns]
-      @registers = {}
+      @registers = registers || {}
     end
            
     def strainer
@@ -29,7 +29,7 @@ module Liquid
     end
                
     # adds filters to this context. 
-    # this does not register the filters with the main Template object. see <tt>Template.register_filters</tt> 
+    # this does not register the filters with the main Template object. see <tt>Template.register_filter</tt> 
     # for that
     def add_filters(filter)
       return unless filter.is_a?(Module)
@@ -51,7 +51,7 @@ module Liquid
     
     # merge a hash of variables in the current local scope
     def merge(new_assigns)
-      @assigns[0].merge(new_assigns)
+      @assigns[0].merge!(new_assigns)
     end
   
     # pop from the stack. use <tt>Context#stack</tt> instead
@@ -144,10 +144,16 @@ module Liquid
     def fetch(key)
       begin
         for scope in @assigns
-          return scope[key] if scope.has_key?(key)
+          if scope.has_key?(key)
+            obj = scope[key]
+            if obj.is_a?(Liquid::Drop)
+              obj.context = self 
+            end
+            return obj
+          end
         end
       rescue => e
-	raise ContextError, "Could not fetch key #{key} from context: " + e.message
+        raise ContextError, "Could not fetch key #{key} from context: " + e.message
       end 
       nil
     end
@@ -170,6 +176,7 @@ module Liquid
           return nil if not object.respond_to?(:has_key?)
           return nil if not object.has_key?(next_part)
           object = object[next_part]
+          object.context = self if object.is_a?(Liquid::Drop)
         end
         return object
       end

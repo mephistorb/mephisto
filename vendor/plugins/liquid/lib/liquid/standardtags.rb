@@ -19,6 +19,25 @@ module Liquid
     
   end  
   
+  class Capture < Block
+    Syntax = /(\w+)/
+
+    def initialize(markup, tokens)
+      if markup =~ Syntax
+        @to = $1
+        super 
+      else
+        raise SyntaxError.new("Syntax Error in 'capture' - Valid syntax: capture [var]")
+      end
+    end
+
+    def render(context)
+      output = super
+      context[@to] = output.to_s
+      ''
+    end
+  end
+ 
   class Cycle < Tag
     SimpleSyntax = /#{QuotedFragment}/        
     NamedSyntax = /(#{QuotedFragment})\s*\:\s*(.*)/
@@ -357,13 +376,65 @@ module Liquid
     end       
   end
   
+  class Include < Tag
+    Syntax = /("[^"]+"|'[^']+')(\s+(with|for)\s+(#{QuotedFragment}+))?/
+    
+    def initialize(markup, tokens)
+      if markup =~ Syntax
+        @template_name = $1[1...-1]
+        if $2
+          @collection = ($3 == "for")
+          @variable = $4
+        end
+        @attributes = {}
+        markup.scan(TagAttributes) do |key, value|
+          @attributes[key] = value
+        end
+      else
+        raise SyntaxError.new("Error in tag 'include' - Valid syntax: include '[template]' (with|for) [object|collection]")
+      end
+
+      super
+    end
+    
+    def parse(tokens)      
+      source = Liquid::Template.file_system.read_template_file(@template_name)
+      tokens = Liquid::Template.tokenize(source)
+      @document = Document.new(tokens)
+    end
+    
+    def render(context)
+      result = ''
+      variable = context[@variable]
+      context.stack do
+        @attributes.each do |key, value|
+          context[key] = context[value]
+        end
+        if @collection 
+          variable.each do |item|
+            context[@template_name] = item
+            result << @document.render(context).to_s
+          end
+        else 
+          if @variable          
+            context[@template_name] = variable
+          end
+          result << @document.render(context).to_s
+        end
+      end
+      result
+    end
+  end
+
   
   
   
   Template.register_tag('assign', Assign)
+  Template.register_tag('capture', Capture)
   Template.register_tag('comment', Comment)
   Template.register_tag('for', For)
   Template.register_tag('if', If)
   Template.register_tag('case', Case)
   Template.register_tag('cycle', Cycle)
+  Template.register_tag('include', Include)  
 end 

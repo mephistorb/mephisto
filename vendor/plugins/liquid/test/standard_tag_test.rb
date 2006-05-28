@@ -1,5 +1,14 @@
 require File.dirname(__FILE__) + '/test_helper'
 
+class TestFileSystem 
+  def read_template_file(template_path)
+    case template_path
+    when "inner"
+      "Inner: {{ inner }}{{ other }}"
+    end
+  end
+end
+
 class TemplateTest < Test::Unit::TestCase
   include Liquid
   
@@ -199,7 +208,12 @@ HERE
     assert_template_result('var2:  var2:content','var2:{{var2}} {%assign var2 = var%} var2:{{var2}}',assigns)
     
   end
-  
+
+  def test_capture
+    assigns = {'var' => 'content' }
+    assert_template_result('content foo content foo ','{{ var2 }}{% capture var2 %}{{ var }} foo {% endcapture %}{{ var2 }}{{ var2 }}', assigns)
+  end
+
   def test_case
     assigns = {'condition' => 2 }    
     assert_template_result(' its 2 ','{% case condition %}{% when 1 %} its 1 {% when 2 %} its 2 {% endcase %}', assigns)
@@ -263,5 +277,16 @@ HERE
     assert_template_result('hash has 5000 elements', "hash has {{ hash.size }} elements", assigns) 
   end
   
+  def test_include_tag
+    Liquid::Template.file_system = TestFileSystem.new
+    assert_equal "Outer-Inner: value23-OuterInner: 1loopInner: 2loopInner: 3loop", 
+                 Template.parse("Outer-{% include 'inner' with 'value' other:23 %}-Outer{% include 'inner' for var other:'loop' %}").render({"var" => [1,2,3]})
+  end
 
+  def test_include_tag_no_with
+    Liquid::Template.file_system = TestFileSystem.new
+    assert_equal "Outer-Inner: orig-Outer-Inner: orig23", 
+                 Template.parse("Outer-{% include 'inner' %}-Outer-{% include 'inner' other:'23' %}").render({"inner" => "orig", "var" => [1,2,3]})
+
+  end
 end

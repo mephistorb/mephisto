@@ -15,6 +15,15 @@ module Liquid
   #
   class Template
     attr_accessor :root
+    @@file_system = BlankFileSystem.new
+    
+    def self.file_system
+      @@file_system
+    end
+    
+    def self.file_system=(obj)
+      @@file_system = obj
+    end
           
     def self.register_tag(name, klass)      
       tags[name.to_s] = klass
@@ -51,16 +60,26 @@ module Liquid
       @root = Document.new(tokens)
     end
     
-    # Render takes a hash with local variables. additionally you can pass it 
-    # an array with local filters. 
+    # Render takes a hash with local variables.
     #
     # if you use the same filters over and over again consider registering them globally 
-    # with <tt>Template.register_filters</tt>
-    def render(assigns = {}, filters = [])
-      context = Context.new(assigns)
+    # with <tt>Template.register_filter</tt>
+    # 
+    # Following options can be passed:
+    #  
+    #  * <tt>filters</tt> : array with local filters
+    #  * <tt>registers</tt> : hash with register variables. Those can be accessed from 
+    #    filters and tags and might be useful to integrate liquid more with its host application  
+    #
+    def render(assigns = {}, options = nil)
+      options = { :filters => options } unless options.is_a?(Hash)
+      context = Context.new(assigns, options[:registers])
       
-      [filters].flatten.each { |filter| context.add_filters(filter) }
-      
+      # Apply all filters 
+      [options[:filters]].flatten.each do |filter|         
+        context.add_filters(filter) 
+      end
+            
       # render the nodelist.
       # for performance reasons we get a array back here. to_s will make a string out of it
       @root.render(context).to_s
