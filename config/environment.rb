@@ -98,3 +98,6 @@ Akismet.class_eval do
   cattr_accessor :api_key
   cattr_accessor :blog
 end
+
+Akismet.api_key = ActiveRecord::Base.configurations[RAILS_ENV]['akismet_api_key']
+Akismet.blog    = ActiveRecord::Base.configurations[RAILS_ENV]['akismet_blog']
