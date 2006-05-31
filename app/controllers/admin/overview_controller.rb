@@ -3,6 +3,8 @@ class Admin::OverviewController < Admin::BaseController
   before_filter :basic_auth_required, :only => :feed
   caches_page :feed
   
+  helper Admin::ArticlesHelper
+  
   def index
     @users = User.find(:all)
     @events, @todays_events, @yesterdays_events = [], [], []

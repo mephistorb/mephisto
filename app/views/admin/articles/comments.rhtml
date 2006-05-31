@@ -1,5 +1,8 @@
+<h2>Unapproved Comments for '<%=h @article.title %>'</h2>
+
+<% if @article.unapproved_comments.any? -%>
 <% unless Akismet.api_key && Akismet.blog -%>
-<%= form_remote_tag :url => { :action => 'set_akismet' }, :html => { :id => 'akismet' } %>
+<%= form_remote_tag :url => { :action => 'set_akismet' }, :html => { :id => 'akismet', :class => 'btns' } %>
   <p>
     Set an <%= link_to 'Akismet', 'http://akismet.com' %> to automatically approve spam.
     <%= link_to_function 'How?', "Effect.toggle('akismet-how', 'blind')" %>
@@ -22,15 +25,16 @@ production:
 </form>
 <% end -%>
 
-<h1>Unapproved Comments for '<%=h @article.title %>'</h1>
-
 <% @article.unapproved_comments.each do |comment| -%>
 <div id="comment-<%= comment.id %>">
-  <p><%= truncate comment.body, 255 %></p>
+  <p><%= truncate strip_tags(comment.body), 255 %></p>
   <p>By <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %></p>
   <p>
     <%= link_to_remote 'Approve!', :url => { :action => 'approve',   :id => @article, :comment => comment } %>
     <%= link_to_remote 'Delete!',  :url => { :action => 'unapprove', :id => @article, :comment => comment } %>
   </p>
 </div>
+<% end -%>
+<% else -%>
+<p class="section">No unapproved comments for '<%=h @article.title %>'</p>
 <% end -%>
