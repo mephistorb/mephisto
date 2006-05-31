@@ -5,7 +5,8 @@ class Admin::ArticlesController < Admin::BaseController
     c.cache_sweeper :article_sweeper
     c.cache_sweeper :section_sweeper
   end
-
+  
+  before_filter :find_site_article, :only => [:update, :comment, :approve, :unapprove]
   before_filter :load_sections, :only => [:new, :edit, :draft]
 
   def index
@@ -48,7 +49,6 @@ class Admin::ArticlesController < Admin::BaseController
   end
   
   def update
-    @article = site.articles.find(params[:id])
     if @article.update_attributes(params[:article].merge(:updater => current_user))
       redirect_to :action => 'index'
     else
@@ -63,20 +63,14 @@ class Admin::ArticlesController < Admin::BaseController
     render :action => (@article.new_record? ? :new : :edit)
   end
 
-  def comments
-    @article = site.articles.find(params[:id], :include => :unapproved_comments)
-  end
-
   # xhr baby
   def approve
-    @article = site.articles.find(params[:id])
     @comment = @article.unapproved_comments.find(params[:comment])
     @comment.approved = true
     @comment.save
   end
 
   def unapprove
-    @article = site.articles.find(params[:id])
     @comment = @article.unapproved_comments.find(params[:comment]).destroy
     render :action => 'approve'
   end
@@ -90,54 +84,58 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   protected
-  def save_or_draft
-    if draft?(params[:submit])
-      params[:id] ? update_draft : create_draft
-      @article.save_draft
-      @draft = @article.draft
-      flash[:notice] = "Your draft has been created"
-      redirect_to :action => 'index'
-      return false
+    def save_or_draft
+      if draft?(params[:submit])
+        params[:id] ? update_draft : create_draft
+        @article.save_draft
+        @draft = @article.draft
+        flash[:notice] = "Your draft has been created"
+        redirect_to :action => 'index'
+        return false
+      end
     end
-  end
+    
+    def update_draft
+      @article = site.articles.find(params[:id])
+      @article.attributes = params[:article]
+    end
+    
+    def create_draft
+      @article = site.articles.build(params[:article])
+      @article.draft = site.drafts.find(params[:draft]) if params[:draft]
+    end
+    
+    def load_sections
+      @sections = site.sections.find :all, :order => 'name'
+      home = @sections.find { |s| s.name == 'home' }
+      @sections.delete  home
+      @sections.unshift home
+    end
 
-  def update_draft
-    @article = site.articles.find(params[:id])
-    @article.attributes = params[:article]
-  end
+    def find_site_article
+      @article = site.articles.find(params[:id])
+    end
 
-  def create_draft
-    @article = site.articles.build(params[:article])
-    @article.draft = site.drafts.find(params[:draft]) if params[:draft]
-  end
-
-  def load_sections
-    @sections = site.sections.find :all, :order => 'name'
-    home = @sections.find { |s| s.name == 'home' }
-    @sections.delete  home
-    @sections.unshift home
-  end
-
-  def set_default_section_ids
-    params[:article] ||= {}
-    params[:article][:section_ids] ||= []
-  end
-
-  def save_button
-    @save_button ||= 'Apply Changes'
-  end
-
-  def create_button
-    @create_button ||= 'Save Article'
-  end
-
-  def draft_button
-    @draft_button ||= 'Save as Draft'
-  end
-
-  def draft?(value)
-    (@draft_options ||= [draft_button, :draft]).include? value
-  end
-
-  helper_method :save_button, :create_button, :draft_button
+    def set_default_section_ids
+      params[:article] ||= {}
+      params[:article][:section_ids] ||= []
+    end
+    
+    def save_button
+      @save_button ||= 'Apply Changes'
+    end
+    
+    def create_button
+      @create_button ||= 'Save Article'
+    end
+    
+    def draft_button
+      @draft_button ||= 'Save as Draft'
+    end
+    
+    def draft?(value)
+      (@draft_options ||= [draft_button, :draft]).include? value
+    end
+    
+    helper_method :save_button, :create_button, :draft_button
 end
