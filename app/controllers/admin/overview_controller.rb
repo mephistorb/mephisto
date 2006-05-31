@@ -22,4 +22,11 @@ class Admin::OverviewController < Admin::BaseController
     @events = Event.find(:all, :order => 'events.created_at DESC', :include => [:article, :user], :limit => 25)
     render :layout => false
   end
+  
+  def delete
+    Event.find(params[:id]).destroy
+    render :update do |page|
+      page["event-#{params[:id]}"].visual_effect :drop_out
+    end
+  end
 end
