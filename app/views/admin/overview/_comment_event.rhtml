@@ -6,8 +6,8 @@
   <span class="meta">
     <strong>Article:</strong>
     <%= article.link_to 'Comments', :action => 'comments' %> |
-    <%= article.link_to 'Preview',  :action => 'edit' %> |
-    <%= article.link_to_image('page_edit', { :action => 'edit' }, { :size => '16x16' }) %> |
+    <%= article.link_to 'Preview',  :action => 'show' %> |
+    <%= link_to_image('page_edit', { :controller => 'articles', :action => 'edit', :id => event.article_id }, { :size => '16x16' }) %> |
     by <%=h event.author %>
   </span>
 </li>
