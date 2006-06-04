@@ -27,7 +27,7 @@ class MephistoController < ApplicationController
   end
 
   def show
-    @article  = site.articles.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])    
+    @article  = site.articles.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
     @comments = @article.comments.collect { |c| c.to_liquid }
     self.cached_references << @article
     @article  = @article.to_liquid(:single)

@@ -21,11 +21,12 @@ class CommentsController < ApplicationController
         :comment_author_email => @comment.author_email, 
         :comment_author_url   => @comment.author_url, 
         :comment_content      => @comment.body
+      logger.info "Checking Akismet (#{Akismet.api_key}) for new comment on Article #{@article.id}.  #{@comment.approved ? 'Approved' : 'Blocked'}"
     end
     @comment.save
     
     if @comment.new_record?
-      @comments = @article.comments.select { |c| not c.new_record? }.collect { |c| c.to_liquid }
+      @comments = @article.comments.reject(&:new_record?).collect(&:to_liquid)
       @article  = @article.to_liquid(:single)
       render_liquid_template_for(:single, 'articles' => [@article], 
                                           'article'  => @article, 
