@@ -82,6 +82,12 @@ var Navigate = {
   }
 };
 
+Object.extend(Array.prototype, {
+  toQueryString: function(name) {
+    return this.collect(function(item) { return name + "[]=" + encodeURIComponent(item) }).join('&');
+  }
+});
+
 var ArticleForm = {
   show: function() {
     new Effect.BlindDown('article_form', {duration: 0.25});
@@ -120,6 +126,10 @@ var ArticleForm = {
     $A(section_li.getElementsByTagName('input')).each(function(input) {
       section_li.removeChild(input)
     })
+  },
+
+  getAvailableComments: function() {
+    return $$('#main div').reject(function(div) { return !(div.visible() && div.id.match(/^comment-/)); }).collect(function(div) { return div.id.match(/comment-(\d+)/)[1] });
   }
 }
 

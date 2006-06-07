@@ -1,0 +1,3 @@
+@comments.each do |comment|
+  page["comment-#{comment.id}"].visual_effect :fade
+end

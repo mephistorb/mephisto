@@ -89,8 +89,8 @@ class Admin::ArticlesController < Admin::BaseController
   end
   
   def destroy_comment
-    @comment = @article.all_comments.find(params[:comment]).destroy
-    render :action => 'approve'
+    @comments = @article.all_comments.find :all, :conditions => ['id in (?)', [params[:comment]].flatten] rescue []
+    Comment.transaction { @comments.each(&:destroy) } if @comments.any?
   end
 
   def set_akismet

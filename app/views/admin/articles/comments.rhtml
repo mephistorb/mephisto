@@ -4,6 +4,9 @@
     <li><%= link_to 'All Comments',        :filter => nil %></li>
     <li><%= link_to 'Unapproved Comments', :filter => :unapproved %></li>
     <li><%= link_to 'Approved Comments',   :filter => :approved %></li>
+    <li><%= link_to_remote 'Delete Visible', :confirm => "Are you sure you wish to delete all visible comments?",
+      :url => { :action => 'destroy_comment', :id => @article }, :with => "ArticleForm.getAvailableComments().toQueryString('comment')"
+    %></li>
   </ul>
 </div>
 <!-- /end action nav -->
