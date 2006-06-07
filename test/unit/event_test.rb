@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class EventTest < Test::Unit::TestCase
-  fixtures :events, :contents, :users, :content_drafts
+  fixtures :events, :contents, :users, :content_drafts, :sites
 
   def setup
     ArticleSweeper.instance
@@ -10,7 +10,7 @@ class EventTest < Test::Unit::TestCase
 
   def test_should_create_new_article_event
     assert_event_created 'publish' do
-      article = users(:quentin).articles.create :title => 'foo', :body => 'bar', :updater => users(:quentin)
+      article = users(:quentin).articles.create :title => 'foo', :body => 'bar', :updater => users(:quentin), :site => sites(:first)
       article.events.first
     end
   end

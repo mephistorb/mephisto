@@ -1,5 +1,6 @@
 welcome:
   id: 1
+  site_id: 1
   title: Welcome to Mephisto
   body: welcome description
   created_at: <%= 5.days.ago.to_s(:db) %>
@@ -8,6 +9,7 @@ welcome:
   mode: publish
 another:
   id: 2
+  site_id: 1
   title: Another Welcome to Mephisto
   body: another description
   created_at: <%= 4.days.ago.to_s(:db) %>
@@ -16,12 +18,14 @@ another:
   mode: publish
 welcome_comment:
   id: 3
+  site_id: 1
   article_id: 1
   body: This blogging tool rocks.
   created_at: <%= 3.days.ago.to_s(:db) %>
   mode: comment
 unpublished:
   id: 4
+  site_id: 1
   title: Unpublished Article
   body: unpublished
   created_at: <%= (4.days - 30.minutes).ago.to_s(:db) %>
@@ -30,6 +34,7 @@ unpublished:
   mode: create
 future:
   id: 5
+  site_id: 1
   title: Article in the Future
   body: future
   created_at: <%= (4.days - 15.minutes).ago.to_s(:db) %>
@@ -38,6 +43,7 @@ future:
   mode: publish
 about:
   id: 6
+  site_id: 1
   title: About this page
   body: This is my own about page
   created_at: <%= (4.days - 13.minutes).ago.to_s(:db) %>
@@ -46,6 +52,7 @@ about:
   mode: publish
 site_map:
   id: 7
+  site_id: 1
   title: The Site Map
   body: This is my own site map
   created_at: <%= (4.days - 5.minutes).ago.to_s(:db) %>
@@ -54,7 +61,7 @@ site_map:
   mode: publish
 unwelcome_comment:
   id: 8
-  #site_id: 1
+  site_id: 1
   article_id: 1
   comment_id: 10
   body: This blogging tool sucks.

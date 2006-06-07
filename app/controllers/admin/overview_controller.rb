@@ -9,7 +9,7 @@ class Admin::OverviewController < Admin::BaseController
     @users = User.find(:all)
     @events, @todays_events, @yesterdays_events = [], [], []
     today, yesterday = Time.now.to_date, 1.day.ago.to_date
-    Event.find(:all, :order => 'events.created_at DESC', :include => [:article, :user], :limit => 50).each do |event|
+    @site.events.find(:all, :order => 'events.created_at DESC', :include => [:article, :user], :limit => 50).each do |event|
       case event.created_at.to_date
         when today     then @todays_events
         when yesterday then @yesterdays_events
@@ -19,12 +19,12 @@ class Admin::OverviewController < Admin::BaseController
   end
 
   def feed
-    @events = Event.find(:all, :order => 'events.created_at DESC', :include => [:article, :user], :limit => 25)
+    @events = @site.events.find(:all, :order => 'events.created_at DESC', :include => [:article, :user], :limit => 25)
     render :layout => false
   end
   
   def delete
-    Event.find(params[:id]).destroy
+    @site.events.find(params[:id]).destroy
     render :update do |page|
       page["event-#{params[:id]}"].visual_effect :drop_out
     end

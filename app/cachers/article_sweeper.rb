@@ -16,7 +16,7 @@ class ArticleSweeper < ActionController::Caching::Sweeper
 
   def after_save(record)
     if record.is_a?(Article)
-      @event.update_attributes :title => record.title, :body => record.body, :article => record, :user => record.updater
+      @event.update_attributes :title => record.title, :body => record.body, :article => record, :user => record.updater, :site => record.site
       expire_overview_feed!
     end
 

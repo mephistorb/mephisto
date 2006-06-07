@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-  validates_presence_of :article_id
+  validates_presence_of :article_id, :site_id
   validate :content_and_user_added
 
   # article being updated
@@ -9,6 +9,7 @@ class Event < ActiveRecord::Base
   belongs_to :user
   
   belongs_to :comment
+  belongs_to :site
 
   protected
     def content_and_user_added
