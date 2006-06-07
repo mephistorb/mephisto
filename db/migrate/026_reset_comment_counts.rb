@@ -8,8 +8,8 @@ class ResetCommentCounts < ActiveRecord::Migration
   end
 
   def self.up
-    Comment.count(:all, :group => :article, :conditions => ['approved = ?', true]).each do |article, count|
-      article.update_attributes :comments_count => count
+    Comment.count(:all, :group => :article_id, :conditions => ['approved = ?', true]).each do |article, count|
+      Article.update_all ['comments_count = ?', count], ['id = ?', article]
     end
   end
 
