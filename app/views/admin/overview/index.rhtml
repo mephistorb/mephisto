@@ -37,6 +37,17 @@
 
 
 <% content_for :sidebar do %>
+  <% if @articles.any? -%>
+  <div class="sgroup">
+    <h3>Comments Needing Moderation</h3>
+    <ul class="slist">
+    <% @articles.each do |article| -%>
+      <li><%= link_to "<strong>(#{article.comments.size})</strong> #{h(article.title)}", :controller => 'articles', :action => 'comments', :id => article.id, :filter => :unapproved %></li>
+    <% end -%>
+    </ul>
+  </div>
+  <% end -%>
+
   <div class="sgroup">
     <h3>Who done it</h3>
     <ul class="slist" id="activity">
