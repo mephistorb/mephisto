@@ -63,7 +63,18 @@ class Admin::ArticlesController < Admin::BaseController
     render :action => (@article.new_record? ? :new : :edit)
   end
 
+  def comments
+    @comments = 
+      case params[:filter]
+        when 'approved'   then :comments
+        when 'unapproved' then :unapproved_comments
+        else                   :all_comments
+      end
+    @comments = @article.send @comments
+  end
+
   # xhr baby
+  # needs some restful lovin'
   def approve
     @comment = @article.unapproved_comments.find(params[:comment])
     @comment.approved = true
@@ -71,7 +82,14 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def unapprove
-    @comment = @article.unapproved_comments.find(params[:comment]).destroy
+    @comment = @article.comments.find(params[:comment])
+    @comment.approved = false
+    @comment.save
+    render :action => 'approve'
+  end
+  
+  def destroy_comment
+    @comment = @article.all_comments.find(params[:comment]).destroy
     render :action => 'approve'
   end
 

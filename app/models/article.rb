@@ -15,9 +15,12 @@ class Article < Content
 
   has_many :assigned_sections
   has_many :sections, :through => :assigned_sections, :order => 'sections.name'
-  has_many :comments, :order   => 'created_at', :conditions => ['contents.approved = ?', true]
-  has_many :unapproved_comments, :order   => 'created_at', :conditions => ['contents.approved = ?', false], :class_name => 'Comment'
   has_many :events,   :order => 'created_at desc'
+  with_options :order => 'created_at',:class_name => 'Comment' do |comment|
+    comment.has_many :comments,            :conditions => ['contents.approved = ?', true]
+    comment.has_many :unapproved_comments, :conditions => ['contents.approved = ?', false]
+    comment.has_many :all_comments
+  end
   
   class << self
     def find_by_permalink(year, month, day, permalink, options = {})

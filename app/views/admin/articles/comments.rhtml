@@ -1,40 +1,54 @@
-<h2>Unapproved Comments for '<%=h @article.title %>'</h2>
+<!-- begin action nav -->
+<div class="round" id="page-nav">
+  <ul id="act-nav">
+    <li><%= link_to 'All Comments',        :filter => nil %></li>
+    <li><%= link_to 'Unapproved Comments', :filter => :unapproved %></li>
+    <li><%= link_to 'Approved Comments',   :filter => :approved %></li>
+  </ul>
+</div>
+<!-- /end action nav -->
 
-<% if @article.unapproved_comments.any? -%>
-<% unless Akismet.api_key && Akismet.blog -%>
-<%= form_remote_tag :url => { :action => 'set_akismet' }, :html => { :id => 'akismet', :class => 'btns' } %>
-  <p>
-    Set an <%= link_to 'Akismet', 'http://akismet.com' %> to automatically approve spam.
-    <%= link_to_function 'How?', "Effect.toggle('akismet-how', 'blind')" %>
-  </p>
-  <pre id="akismet-how" style="display:none">
-# database.yml
-production:
-  adapter: postgresql
-  database: mephisto_dev
-  host: localhost
-  username: USERNAME
-  password: PASSWORD
-  min_messages: warning
-  akismet_api_key: APIKEY
-  akismet_blog: BLOG
-</pre>
-  <p><label>API Key</label> <%= text_field_tag :api_key, Akismet.api_key %></p>
-  <p><label>Blog</label> <%= text_field_tag :blog, Akismet.blog %></p>
-  <p><%= submit_tag :Save %> without restarting.</p>
-</form>
-<% end -%>
+<h2>Comments for '<%=h @article.title %>'</h2>
 
-<% @article.unapproved_comments.each do |comment| -%>
+<% @comments.each do |comment| -%>
 <div id="comment-<%= comment.id %>">
   <p><%= truncate strip_tags(comment.body), 255 %></p>
   <p>By <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %></p>
   <p>
-    <%= link_to_remote 'Approve!', :url => { :action => 'approve',   :id => @article, :comment => comment } %>
-    <%= link_to_remote 'Delete!',  :url => { :action => 'unapprove', :id => @article, :comment => comment } %>
+  <% if comment.approved? -%>
+    <%= link_to_remote 'Unapprove!', :url => { :action => 'unapprove',       :id => @article, :comment => comment } %>
+  <% else -%>
+    <%= link_to_remote 'Approve!',   :url => { :action => 'approve',         :id => @article, :comment => comment } %>
+  <% end -%>
+    <%= link_to_remote 'Delete!',    :url => { :action => 'destroy_comment', :id => @article, :comment => comment } %>
   </p>
 </div>
 <% end -%>
-<% else -%>
-<p class="section">No unapproved comments for '<%=h @article.title %>'</p>
+
+<% content_for :sidebar do %>
+  <div class="sgroup">
+    <% unless Akismet.api_key && Akismet.blog -%>
+    <%= form_remote_tag :url => { :action => 'set_akismet' }, :html => { :id => 'akismet' } %>
+      <p>
+        Set an <%= link_to 'Akismet', 'http://akismet.com' %> to automatically approve spam.
+        <%= link_to_function 'How?', "Effect.toggle('akismet-how', 'blind')" %>
+      </p>
+      <pre id="akismet-how" style="display:none">
+    # database.yml
+    production:
+      adapter: postgresql
+      database: mephisto_dev
+      host: localhost
+      username: USERNAME
+      password: PASSWORD
+      min_messages: warning
+      akismet_api_key: APIKEY
+      akismet_blog: BLOG
+    </pre>
+      <p><label>API Key</label> <%= text_field_tag :api_key, Akismet.api_key %></p>
+      <p><label>Blog</label> <%= text_field_tag :blog, Akismet.blog %></p>
+      <p><%= submit_tag :Save %> without restarting.</p>
+    </form>
+    <% end -%>
+  </div>
 <% end -%>

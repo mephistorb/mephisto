@@ -30,6 +30,6 @@ class Comment < Content
     end
     
     def decrement_counter_cache
-      Article.decrement_count 'comments_count', article_id
+      Article.decrement_counter 'comments_count', article_id if approved?
     end
 end

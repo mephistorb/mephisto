@@ -38,4 +38,10 @@ class EventTest < Test::Unit::TestCase
       article.comments.create :body => 'test comment', :author => 'approved bob', :author_ip => '127.0.0.1'
     end
   end
+
+  def test_should_delete_event_when_deleting_comment
+    assert_difference Event, :count, -1 do
+      contents(:unwelcome_comment).destroy
+    end
+  end
 end

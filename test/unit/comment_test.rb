@@ -29,4 +29,20 @@ class CommentTest < Test::Unit::TestCase
     contents(:welcome_comment).author_url = 'https://abc'
     assert_equal %Q{<a href="https://abc">rico</a>}, contents(:welcome_comment).author_link
   end
+
+  def test_should_increment_comment_count_upon_approval
+    assert_difference contents(:welcome), :comments_count do
+      contents(:unwelcome_comment).author = 'approved rico' # test method of setting approved comment
+      assert contents(:unwelcome_comment).save
+      assert contents(:unwelcome_comment).approved?
+      contents(:welcome).reload
+    end
+  end
+  
+  def test_should_not_decrement_unapproved_comment_count
+    assert_no_difference contents(:welcome), :comments_count do
+      contents(:unwelcome_comment).destroy
+      contents(:welcome).reload
+    end
+  end
 end

@@ -14,5 +14,9 @@ class CommentSweeper < ArticleSweeper
     end if pages.any?
   end
 
+  def after_destroy(record)
+    Event.destroy_all ['comment_id = ?', record.id]
+  end
+
   undef :after_create
 end

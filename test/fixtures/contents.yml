@@ -123,3 +123,4 @@ unwelcome_comment:
   published_at: <%= (2.days + 55.minutes).ago.to_s(:db) %>
   type: Comment
   author: rico
+  author_ip: '127.0.0.1'
