@@ -6,7 +6,7 @@ class Admin::ArticlesController < Admin::BaseController
     c.cache_sweeper :section_sweeper
   end
   
-  before_filter :find_site_article, :only => [:update, :comments, :approve, :unapprove]
+  before_filter :find_site_article, :only => [:update, :comments, :approve, :unapprove, :destroy_comment]
   before_filter :load_sections, :only => [:new, :edit, :draft]
 
   def index
