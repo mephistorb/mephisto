@@ -7,10 +7,12 @@ class Event < ActiveRecord::Base
 
   # updater of the article at the time of the event
   belongs_to :user
+  
+  belongs_to :comment
 
   protected
-  def content_and_user_added
-    errors.add_to_base "Title or Body must be changed" unless %w(publish comment).include?(mode) || article.changed?(:title) || article.changed?(:body)
-    errors.add_to_base "User must be provided for Article events"   unless (mode == 'comment' && author) || user_id
-  end
+    def content_and_user_added
+      errors.add_to_base "Title or Body must be changed" unless %w(publish comment).include?(mode) || article.changed?(:title) || article.changed?(:body)
+      errors.add_to_base "User must be provided for Article events"   unless (mode == 'comment' && author) || user_id
+    end
 end

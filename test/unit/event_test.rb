@@ -27,9 +27,15 @@ class EventTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_not_create_comment_article_event_for_unnaproved
+    assert_no_event_created do
+      contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1'
+    end
+  end
+
   def test_should_create_comment_article_event
     assert_event_created_for :welcome, 'comment' do |article|
-      article.comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1'
+      article.comments.create :body => 'test comment', :author => 'approved bob', :author_ip => '127.0.0.1'
     end
   end
 end

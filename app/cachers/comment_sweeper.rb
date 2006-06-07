@@ -2,8 +2,9 @@ class CommentSweeper < ArticleSweeper
   observe Comment
 
   def after_save(record)
-    @event.update_attributes :title => record.article.title, :body => record.body, :article => record.article, :author => record.author
-    expire_overview_feed!
+    @event.update_attributes :title => record.article.title, :body => record.body, 
+      :article => record.article, :author => record.author, :comment => record if record.approved?
+    expire_overview_feed! if record.approved?
 
     return if controller.nil?
     pages = CachedPage.find_by_reference(record.article)

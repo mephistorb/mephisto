@@ -24,8 +24,9 @@ class CommentsControllerTest < Test::Unit::TestCase
     assert_difference Comment, :count do
       assert_difference contents(:welcome), :comments_count do
         post :create, contents(:welcome).hash_for_permalink.merge(:comment => {
-          :body   => 'test comment', 
-          :author => 'bob'
+          :body      => 'test comment', 
+          :author    => 'approved bob',
+          :author_ip => '127.0.0.1'
         })
         assert_response :redirect
         assert_redirected_to @controller.url_for(contents(:welcome).hash_for_permalink(:controller => 'mephisto', 
@@ -41,8 +42,9 @@ class CommentsControllerTest < Test::Unit::TestCase
     assert_difference Comment, :count do
       assert_difference contents(:cupcake_welcome), :comments_count do
         post :create, contents(:cupcake_welcome).hash_for_permalink.merge(:comment => {
-          :body   => 'test comment', 
-          :author => 'bob'
+          :body      => 'test comment', 
+          :author    => 'approved bob',
+          :author_ip => '127.0.0.1'
         })
         assert_redirected_to @controller.url_for(contents(:cupcake_welcome).hash_for_permalink(:controller => 'mephisto', 
                                                                                        :action     => 'show', 
@@ -69,9 +71,15 @@ class CommentsControllerTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_not_add_comment_article_event_for_unapproved
+    assert_no_event_created do
+      post :create, contents(:welcome).hash_for_permalink.merge(:comment => { :body   => 'test comment', :author => 'bob' })
+    end
+  end
+
   def test_should_add_comment_article_event
     assert_event_created_for :welcome, 'comment' do
-      post :create, contents(:welcome).hash_for_permalink.merge(:comment => { :body   => 'test comment', :author => 'bob' })
+      post :create, contents(:welcome).hash_for_permalink.merge(:comment => { :body   => 'test comment', :author => 'approved bob' })
     end
   end
 

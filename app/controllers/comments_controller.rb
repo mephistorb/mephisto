@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
       redirect_to(article_url(@article.hash_for_permalink)) and return
     end
 
-    @comment = Comment.new(params[:comment].merge(:author_ip => request.remote_ip, :article_id => @article.id))
+    @comment = @article.comments.build(params[:comment].merge(:author_ip => request.remote_ip))
     if @comment.valid? && Akismet.api_key && Akismet.blog
       @comment.approved = Akismet.new(Akismet.api_key, Akismet.blog).comment_check \
         :user_ip              => @comment.author_ip, 
