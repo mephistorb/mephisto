@@ -1,0 +1,79 @@
+archive:
+  id: 1
+  site_id: 1
+  content_type: text/liquid
+  filename: archive
+  db_file_id: 1
+  path: templates
+  type: Template
+  size: 99
+
+home:
+  id: 2
+  site_id: 2
+  content_type: text/liquid
+  filename: home
+  db_file_id: 1
+  path: templates
+  type: Template
+  size: 96
+  
+index:
+  id: 3
+  site_id: 3
+  content_type: text/liquid
+  filename: index
+  db_file_id: 1
+  path: templates
+  type: Template
+  size: 97
+
+layout: 
+  id: 4
+  site_id: 1
+  content_type: text/liquid
+  filename: layout
+  db_file_id: 4
+  path: templates
+  type: Template
+  size: 85
+
+page: 
+  id: 5
+  site_id: 1
+  content_type: text/liquid
+  filename: page
+  db_file_id: 5
+  path: templates
+  type: Template
+  size: 223
+
+search: 
+  id: 6
+  site_id: 1
+  content_type: text/liquid
+  filename: search
+  db_file_id: 6
+  path: templates
+  type: Template
+  size: 98
+
+section: 
+  id: 7
+  site_id: 1
+  content_type: text/liquid
+  filename: section
+  db_file_id: 7
+  path: templates
+  type: Template
+  size: 99
+
+single: 
+  id: 8
+  site_id: 1
+  content_type: text/liquid
+  filename: single
+  db_file_id: 8
+  path: templates
+  type: Template
+  size: 98

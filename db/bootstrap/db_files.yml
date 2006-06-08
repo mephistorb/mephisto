@@ -1,0 +1,81 @@
+archive:
+  id: 1
+  data: |-
+    <p>archive</p>
+    
+    {% for article in articles %}
+      <p>{{ article | link_to_article }}</p>
+    {% endfor %}
+
+home:
+  id: 2
+  data: |-
+    <p>home</p>
+    
+    {% for article in articles %}
+      <p>{{ article | link_to_article }}</p>
+    {% endfor %}
+
+index:
+  id: 3
+  data: |-
+    <p>index</p>
+    
+    {% for article in articles %}
+      <p>{{ article | link_to_article }}</p>
+    {% endfor %}
+  
+layout: 
+  id: 4
+  data: |-
+    <html>
+    <body>
+    
+    <h1>This is the layout</h1>
+    
+    {{ content_for_layout }}
+    
+    </body>
+    </html>
+  
+page: 
+  id: 5
+  data: |-
+    <h1>{{ article.title }}</h1>
+    <div class="article">
+      <h2>{{ article.published_at | format_date: 'standard' }}</h2>
+      {{ article.body }}
+    </div>
+    <ul>
+    {% pagenavigation %}
+    <li>{{ page.link }}</li>
+    {% endpagenavigation %}
+    </ul>
+  
+search: 
+  id: 6
+  data: |-
+    <p>search</p>
+    
+    {% for article in articles %}
+      <p>{{ article | link_to_article }}</p>
+    {% endfor %}
+  
+section: 
+  id: 7
+  data: |-
+    <p>section</p>
+    
+    {% for article in articles %}
+      <p>{{ article | link_to_article }}</p>
+    {% endfor %}
+  
+single: 
+  id: 8
+  data: |-
+    <p>single</p>
+    
+    {% for article in articles %}
+      <p>{{ article | link_to_article }}</p>
+    {% endfor %}
+  
