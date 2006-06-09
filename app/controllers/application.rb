@@ -21,8 +21,8 @@ class ApplicationController < ActionController::Base
     render :text => site.templates.render_liquid_for(template_type, assigns, self)
   end
   
-  protected
-    def set_cache_root
-      self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'cache', site.host].compact)
-    end
+  #protected
+  #  def set_cache_root
+  #    self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'cache', site.host].compact)
+  #  end
 end
