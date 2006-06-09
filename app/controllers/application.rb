@@ -2,13 +2,10 @@
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
   # wait until we have multiple sites before we deal with changing the cache root
+  before_filter :load_site
   #before_filter :set_cache_root
   helper_method :site
-  
-  def site
-    # Redefine this method if you wish to fail on host without a site
-    @site ||= Site.find_by_host(request.host) || Site.find(:first)
-  end
+  attr_reader :site
 
   def render_liquid_template_for(template_type, assigns = {})
     headers["Content-Type"] ||= 'text/html; charset=utf-8'
@@ -22,7 +19,12 @@ class ApplicationController < ActionController::Base
     render :text => site.templates.render_liquid_for(template_type, assigns, self)
   end
   
-  #protected
+  protected
+    def load_site
+      # Redefine this method if you wish to fail on host without a site
+      @site ||= Site.find_by_host(request.host) || Site.find(:first)
+    end
+
   #  def set_cache_root
   #    self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'cache', site.host].compact)
   #  end
