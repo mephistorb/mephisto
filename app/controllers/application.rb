@@ -1,7 +1,8 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
-  before_filter :set_cache_root
+  # wait until we have multiple sites before we deal with changing the cache root
+  #before_filter :set_cache_root
   helper_method :site
   
   def site
