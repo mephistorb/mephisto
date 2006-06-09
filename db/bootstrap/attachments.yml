@@ -10,7 +10,7 @@ archive:
 
 home:
   id: 2
-  site_id: 2
+  site_id: 1
   content_type: text/liquid
   filename: home
   db_file_id: 1
@@ -20,7 +20,7 @@ home:
   
 index:
   id: 3
-  site_id: 3
+  site_id: 1
   content_type: text/liquid
   filename: index
   db_file_id: 1
