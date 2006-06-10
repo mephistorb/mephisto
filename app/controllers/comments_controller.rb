@@ -23,17 +23,16 @@ class CommentsController < ApplicationController
         :comment_content      => @comment.body
       logger.info "Checking Akismet (#{Akismet.api_key}) for new comment on Article #{@article.id}.  #{@comment.approved ? 'Approved' : 'Blocked'}"
     end
-    @comment.save
+
+    assigns = @comment.save ?
+      { 'message'  => 'Thank you for comment.  Your comment requires approval from the blog author before showing up.' } :
+      { 'errors'   => @comment.errors.full_messages }
+
+    @comments = @article.comments.reject(&:new_record?).collect(&:to_liquid)
+    @article  = @article.to_liquid(:single)
+    render_liquid_template_for(:single, assigns.merge('articles' => [@article], 
+                                        'article'  => @article, 
+                                        'comments' => @comments))
     
-    if @comment.new_record?
-      @comments = @article.comments.reject(&:new_record?).collect(&:to_liquid)
-      @article  = @article.to_liquid(:single)
-      render_liquid_template_for(:single, 'articles' => [@article], 
-                                          'article'  => @article, 
-                                          'comments' => @comments, 
-                                          'errors'   => @comment.errors.full_messages)
-    else
-      redirect_to article_url(@article.hash_for_permalink(:anchor => "comment_#{@comment.id}"))
-    end
   end
 end
