@@ -1,4 +1,6 @@
 module Admin::ArticlesHelper
+  FILTER_TYPES = %w(approved unapproved) unless const_defined?(:FILTER_TYPES)
+
   def status_icon
     @status_icon ||= { :unpublished => %w(orange bstop.gif),
                        :pending     => %w(yellow document.gif),
@@ -13,6 +15,10 @@ module Admin::ArticlesHelper
 
   def published_at_for(article)
     article.published? ? article.published_at.to_s(:long) : "not published"
+  end
+
+  def valid_filter?(filter = params[:filter])
+    FILTER_TYPES.include? filter
   end
 
   # Buttons like draft_button_tag, save_button_tag

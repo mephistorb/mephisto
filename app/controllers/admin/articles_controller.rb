@@ -76,15 +76,11 @@ class Admin::ArticlesController < Admin::BaseController
   # xhr baby
   # needs some restful lovin'
   def approve
-    @comment = @article.unapproved_comments.find(params[:comment])
-    @comment.approved = true
-    @comment.save
+    @comment = @article.unapproved_comments.approve(params[:comment])
   end
 
   def unapprove
-    @comment = @article.comments.find(params[:comment])
-    @comment.approved = false
-    @comment.save
+    @comment = @article.comments.unapprove(params[:comment])
     render :action => 'approve'
   end
   

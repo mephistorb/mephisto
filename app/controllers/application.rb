@@ -5,14 +5,14 @@ class ApplicationController < ActionController::Base
   before_filter :load_site
   #before_filter :set_cache_root
   helper_method :site
-  attr_reader :site
+  attr_reader   :site
 
   def render_liquid_template_for(template_type, assigns = {})
     headers["Content-Type"] ||= 'text/html; charset=utf-8'
 
     unless assigns['article']
       self.cached_references += assigns['articles']
-      assigns['articles']     = assigns['articles'].collect { |a| a.to_liquid }
+      assigns['articles']     = assigns['articles'].collect &:to_liquid
     end
     
     assigns.update 'site' => site.to_liquid

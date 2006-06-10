@@ -42,7 +42,7 @@
     <h3>Comments Needing Moderation</h3>
     <ul class="slist">
     <% @articles.each do |article| -%>
-      <li><%= link_to "<strong>(#{article.comments.size})</strong> #{h(article.title)}", :controller => 'articles', :action => 'comments', :id => article.id, :filter => :unapproved %></li>
+      <li><%= link_to "<strong>(#{article.unapproved_comments.size})</strong> #{h(article.title)}", :controller => 'articles', :action => 'comments', :id => article.id, :filter => :unapproved %></li>
     <% end -%>
     </ul>
   </div>

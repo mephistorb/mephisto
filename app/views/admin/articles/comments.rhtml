@@ -1,6 +1,7 @@
 <!-- begin action nav -->
 <div class="round" id="page-nav">
   <ul id="act-nav">
+    <li><%= link_to 'Edit',                :id => @article, :action => 'edit' %></li>
     <li><%= link_to 'All Comments',        :filter => nil %></li>
     <li><%= link_to 'Unapproved Comments', :filter => :unapproved %></li>
     <li><%= link_to 'Approved Comments',   :filter => :approved %></li>
@@ -11,7 +12,7 @@
 </div>
 <!-- /end action nav -->
 
-<h2>Comments for '<%=h @article.title %>'</h2>
+<h2><%= "#{params[:filter].humanize} " if valid_filter? %>Comments for '<%=h @article.title %>'</h2>
 
 <% @comments.each do |comment| -%>
 <div id="comment-<%= comment.id %>">

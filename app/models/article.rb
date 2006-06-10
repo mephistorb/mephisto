@@ -17,11 +17,39 @@ class Article < Content
   has_many :sections, :through => :assigned_sections, :order => 'sections.name'
   has_many :events,   :order => 'created_at desc'
   with_options :order => 'created_at',:class_name => 'Comment' do |comment|
-    comment.has_many :comments,            :conditions => ['contents.approved = ?', true]
-    comment.has_many :unapproved_comments, :conditions => ['contents.approved = ?', false]
+    comment.has_many :comments,            :conditions => ['contents.approved = ?', true]  do
+      def unapprove(id)
+        returning find(id) do |comment|
+          comment.approved = false
+          comment.save
+        end
+      end
+    end
+    comment.has_many :unapproved_comments, :conditions => ['contents.approved = ?', false] do
+      def approve(id)
+        returning find(id) do |comment|
+          comment.approved = true
+          comment.save
+        end
+      end
+    end
     comment.has_many :all_comments
   end
-  
+
+  class << self
+    def approve
+      comment = @article.unapproved_comments.find(params[:comment])
+      comment.approved = true
+      comment.save
+    end
+    
+    def unapprove
+      comment = @article.comments.find(params[:comment])
+      comment.approved = false
+      comment.save
+    end
+  end
+
   class << self
     def find_by_permalink(year, month, day, permalink, options = {})
       from, to = Time.delta(year, month, day)
