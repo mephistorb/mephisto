@@ -7,11 +7,7 @@ module Technoweenie # :nodoc:
       base.extend ActMethods
     end
     
-    module ActMethods # :nodoc:
-      def self.content_types
-        Technoweenie::ActsAsAttachment.content_types
-      end
-
+    module ActMethods
       # Options: 
       #   <tt>:content_type</tt> - Allowed content types.  Allows all by default.  Use :image to allow all standard image types.
       #   <tt>:min_size</tt> - Minimum size allowed.  1 byte is the default.
@@ -68,20 +64,20 @@ module Technoweenie # :nodoc:
           include InstanceMethods
         end
         
-        options[:content_type] = [options[:content_type]].flatten.collect { |t| t == :image ? content_types : t }.flatten unless options[:content_type].nil?
+        options[:content_type] = [options[:content_type]].flatten.collect { |t| t == :image ? Technoweenie::ActsAsAttachment.content_types : t }.flatten unless options[:content_type].nil?
         self.attachment_options = options
       end
     end
 
     module ClassMethods
-      def content_types
-        Technoweenie::ActsAsAttachment.content_types
-      end
+      delegate :content_types, :to => Technoweenie::ActsAsAttachment
 
+      # Returns true or false if the given content type is recognized as an image.
       def image?(content_type)
         content_types.include?(content_type)
       end
 
+      # Yields a block containing an RMagick Image for the given binary data.
       def with_image(binary_data, &block)
         binary_data = Magick::Image::from_blob(binary_data).first unless !Object.const_defined?(:Magick) || binary_data.is_a?(Magick::Image)
         block.call binary_data if block && binary_data
@@ -119,6 +115,8 @@ module Technoweenie # :nodoc:
         write_inheritable_array(:after_attachment_saved, [block])
       end
 
+      # Get the thumbnail class, which is the current attachment class by default.
+      # Configure this with the :thumbnail_class option.
       def thumbnail_class
         attachment_options[:thumbnail_class] = attachment_options[:thumbnail_class].constantize unless attachment_options[:thumbnail_class].is_a?(Class)
         attachment_options[:thumbnail_class]
@@ -138,6 +136,7 @@ module Technoweenie # :nodoc:
         "#{basename}_#{thumbnail}.#{ext}"
       end
 
+      # Creates or updates the thumbnail for the current attachment.
       def create_or_update_thumbnail(file_name_suffix, *size)
         thumb = thumbnail_class.find_or_create_by_thumbnail_and_parent_id file_name_suffix.to_s, id
         thumb.attributes = {
@@ -149,6 +148,15 @@ module Technoweenie # :nodoc:
         thumb
       end
 
+      # This method handles the uploaded file object.  If you set the field name to uploaded_data, you don't need
+      # any special code in your controller.
+      #
+      #   <% form_for :attachment, :html => { :multipart => true } do |f| -%>
+      #     <p><%= f.file_field :uploaded_data %></p>
+      #     <p><%= submit_tag :Save %>
+      #   <% end -%>
+      #
+      #   @attachment = Attachment.create! params[:attachment]
       def uploaded_data=(file_data)
         return nil if file_data.nil? || file_data.size == 0 
         self.content_type    = file_data.content_type.strip
@@ -156,6 +164,8 @@ module Technoweenie # :nodoc:
         self.attachment_data = file_data.read
       end
 
+      # Sets the actual binary data.  This is typically called by uploaded_data=, but you can call this
+      # manually if you're creating from the console.  This is also where the resizing occurs.
       def attachment_data=(data)
         if data.nil?
           @attachment_data = nil
@@ -175,6 +185,7 @@ module Technoweenie # :nodoc:
         @save_attachment = true
       end
 
+      # Resizes a thumbnail.
       def resize_image_to(size)
         thumb = nil
         with_image do |img|
@@ -198,6 +209,7 @@ module Technoweenie # :nodoc:
       end
 
       protected
+       # Performs the actual resizing operation for a thumbnail
         def thumbnail_for_image(img, size)
           size = size.first if size.is_a?(Array) && size.length == 1 && !size.first.is_a?(Fixnum)
           if size.is_a?(Fixnum) || (size.is_a?(Array) && size.first.is_a?(Fixnum))
