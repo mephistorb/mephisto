@@ -16,7 +16,6 @@ class ApplicationController < ActionController::Base
     end
     
     assigns.update 'site' => site.to_liquid
-  logger.warn "ASSIGNS: #{assigns.inspect}"
     render :text => site.templates.render_liquid_for(template_type, assigns, self)
   end
   
