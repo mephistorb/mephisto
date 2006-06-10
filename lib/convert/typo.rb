@@ -13,12 +13,14 @@ module Typo
 
       Typo::User.find(:all).each do |typo_user|
         ActiveRecord::Base.logger.info "Creating new user for #{typo_user.login}"
-        unless ::User.find_by_email(typo_user.email)
+        unless ::User.find_by_login(typo_user.login)
+          typo_user.email = nil if typo_user.email.blank?
           new_user = ::User.create(
-            :email => typo_user.email || 'foo@bar.com',
+            :email => typo_user.email || "#{typo_user.login}@notfound.com",
             :login                    => typo_user.login,
             :password                 => newpass,
-            :password_confirmation    => newpass
+            :password_confirmation    => newpass,
+            :filters                  => [:textile_filter]
           )
           unless new_user.valid?
             ActiveRecord::Base.logger.info "New user errors: #{new_user.errors.to_yaml}"
@@ -32,7 +34,7 @@ module Typo
 
     def find_or_create_sections(typo_article)
       home_section = Section.find_by_name 'home'
-      section_ids = typo_article.categories.inject([home_section.id]) { |a, c| a << ::Section.find_or_create_by_name(c.name).id }
+      section_ids = typo_article.categories.inject([home_section.id]) { |a, c| a << ::Section.find_or_create_by_name(c.name, :site_id => 1).id }
     end
 
     def create_article(site, typo_article)
@@ -54,7 +56,8 @@ module Typo
         :updated_at   => typo_article.updated_at,
         :user         => user,
         :updater      => user,
-        :section_ids  => section_ids
+        :section_ids  => section_ids,
+        :filters      => [:textile_filter]
     end
 
     def create_comment(article, typo_comment)
@@ -66,7 +69,8 @@ module Typo
         :author       => typo_comment.author,
         :author_url   => typo_comment.url,
         :author_email => typo_comment.email,
-        :author_ip    => typo_comment.ip
+        :author_ip    => typo_comment.ip,
+        :filters      => [:textile_filter]
       comment.approved = true
       comment.save
     end
@@ -76,6 +80,8 @@ module Typo
       comments = 0
 
       Typo::Article.find_all_by_type('Article').each do |typo_article|
+        next if typo_article.body.blank? or typo_article.title.blank?
+        
         article = create_article(site, typo_article)
         articles += 1
 
