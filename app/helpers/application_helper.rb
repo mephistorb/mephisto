@@ -17,5 +17,9 @@ module ApplicationHelper
   def yesterdays_short_date
     Time.now.utc.yesterday.to_ordinalized_s(:stub)
   end
-  
+
+  def filter_options
+    [['Plain HTML', ''], ['Textile', 'textile_filter'], ['Markdown', 'markdown_filter'], ['Markdown with Smarty Pants', 'smartypants']]
+  end
+
 end

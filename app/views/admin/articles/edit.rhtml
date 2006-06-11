@@ -14,8 +14,8 @@
 
 
 <% content_for :sidebar do %>
+  <% if @article.versions.any? -%>
   <div class="sgroup">
-    <% if @article.versions.any? -%>
     <h3>Revisions</h3>
     <ul id="revisions">
     <% @article.versions.find(:all, :order => 'updated_at DESC', :limit => 10).each do |version| -%>
@@ -32,6 +32,6 @@
       </li>
     <% end -%>
     </ul>
-    <% end -%>
   </div>
+  <% end -%>
 <% end %>
