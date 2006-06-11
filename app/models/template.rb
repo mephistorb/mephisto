@@ -36,11 +36,12 @@ class Template < Attachment
       nil
     end
 
-    def render_liquid_for(template_type, assigns = {}, controller = nil)      
-      templates                     = templates_for(template_type)
-      preferred_template            = find_preferred(template_type, templates)
+    def render_liquid_for(section, template_type, assigns = {}, controller = nil)      
+      templates          = (section && section.template && section.layout) ? [] : templates_for(template_type)
+      preferred_template = (section && section.template) || find_preferred(template_type, templates)
+      layout_template    = (section && section.layout)   || templates['layout']
       assigns['content_for_layout'] = Liquid::Template.parse(preferred_template).render(assigns, :registers => {:controller => controller})
-      Liquid::Template.parse(templates['layout']).render(assigns, :registers => {:controller => controller})
+      Liquid::Template.parse(layout_template).render(assigns, :registers => {:controller => controller})
     end
 
     def find_custom

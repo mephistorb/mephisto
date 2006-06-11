@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     end
     
     assigns.update 'site' => site.to_liquid
-    render :text => site.templates.render_liquid_for(template_type, assigns, self)
+    render :text => site.templates.render_liquid_for(@section, template_type, assigns, self)
   end
   
   protected
