@@ -34,7 +34,7 @@ class Section < ActiveRecord::Base
     def find_section_and_page_name(section_path)
       page_name = []
       section       = nil
-      while section.nil? and section_path.any?
+      while section.nil? && section_path.any?
         section       = find_by_name(section_path.join('/'))
         page_name << section_path.pop if section.nil?
       end
@@ -81,7 +81,7 @@ class Section < ActiveRecord::Base
   end
 
   def to_url
-    ((name.nil? or home?) ? '' : name).split('/')
+    ((name.nil? || home?) ? '' : name).split('/')
   end
 
   def to_feed_url
