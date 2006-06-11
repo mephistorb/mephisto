@@ -6,6 +6,7 @@ module Mephisto
 
       def render(context)
         collection = context['pages']
+        return if collection.blank?
         @section   = context['section']
         @page      = context['article']
         result     = []
@@ -28,7 +29,9 @@ module Mephisto
       end
     
       def page_url(page, index)
-        index.zero? && @section == 'home' ? '/' : "/#{@section}#{'/' + page['permalink'] unless index.zero?}"
+        path = @section == 'home' ? '' : "/#{@section}"
+        path << ('/' + page['permalink']) unless index.zero?
+        path.blank? ? '/' : path
       end
 
       def page_anchor_options(page, index)

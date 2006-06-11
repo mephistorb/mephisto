@@ -8,6 +8,7 @@ class MephistoController < ApplicationController
       @section.show_paged_articles? ? show_section_page_with(nil, :main) : list_section_articles_with(:main)
     else 
       @section, page_name = site.sections.find_section_and_page_name(params[:sections])
+      @section ||= site.sections.find_by_name('home')
       @section.show_paged_articles? ? show_section_page_with(page_name, :page) : list_section_articles_with(:section)
     end
   end
