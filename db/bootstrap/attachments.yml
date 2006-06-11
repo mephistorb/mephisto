@@ -13,7 +13,7 @@ home:
   site_id: 1
   content_type: text/liquid
   filename: home
-  db_file_id: 1
+  db_file_id: 2
   path: templates
   type: Template
   size: 96
@@ -23,7 +23,7 @@ index:
   site_id: 1
   content_type: text/liquid
   filename: index
-  db_file_id: 1
+  db_file_id: 3
   path: templates
   type: Template
   size: 97
