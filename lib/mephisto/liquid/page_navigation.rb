@@ -28,7 +28,7 @@ module Mephisto
       end
     
       def page_url(page, index)
-        "/#{@section}#{'/' + page['permalink'] unless index.zero?}"
+        index.zero? && @section == 'home' ? '/' : "/#{@section}#{'/' + page['permalink'] unless index.zero?}"
       end
 
       def page_anchor_options(page, index)
