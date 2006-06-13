@@ -6,7 +6,7 @@ class Admin::OverviewController < Admin::BaseController
   helper Admin::ArticlesHelper
   
   def index
-    @users = User.find(:all)
+    @users = User.find(:all, :order => 'updated_at desc')
     @events, @todays_events, @yesterdays_events = [], [], []
     today, yesterday = Time.now.to_date, 1.day.ago.to_date
     @articles = @site.articles.find(:all, :include => :unapproved_comments, :conditions => ['unapproved_comments_contents.id is not null and unapproved_comments_contents.approved = ?', false])
