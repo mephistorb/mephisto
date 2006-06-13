@@ -22,7 +22,7 @@ class Comment < Content
     @old_approved ||= approved? ? :true : :false
     write_attribute :approved, value
   end
-  
+
   protected
     def increment_counter_cache
       Article.increment_counter 'comments_count', article_id if approved? && @old_approved == :false

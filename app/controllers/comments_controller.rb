@@ -1,5 +1,4 @@
 class CommentsController < ApplicationController
-  cache_sweeper :comment_sweeper
   verify :params => [:year, :month, :day, :permalink], :redirect_to => { :controller => 'mephisto', :action => 'list', :sections => [] }
 
   def create

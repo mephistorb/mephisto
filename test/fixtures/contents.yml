@@ -43,6 +43,7 @@ welcome_comment:
   published_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
   type: Comment
   author: rico
+  author_ip: 1dfasd
   approved: true
 future:
   id: 5

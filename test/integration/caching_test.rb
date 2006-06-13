@@ -87,6 +87,45 @@ class CachingTest < ActionController::IntegrationTest
     end
   end
 
+  def test_should_not_expire_cache_on_new_comment
+    visitor = visit
+    assert_caches_page contents(:welcome).full_permalink do
+      visitor.read contents(:welcome)
+    end
+    
+    visitor.comment_on contents(:welcome), :author => 'bob', :body => 'what a wonderful post.'
+    
+    assert_cached contents(:welcome).full_permalink
+  end
+
+  def test_should_expire_cache_when_comment_is_approved
+    visitor = visit
+    assert_caches_page contents(:welcome).full_permalink do
+      visitor.read contents(:welcome)
+    end
+
+    login_as :quentin do |writer|
+      writer.approve_comment contents(:unwelcome_comment)
+      assert contents(:unwelcome_comment).reload.approved?
+    end
+
+    assert_not_cached contents(:welcome).full_permalink
+  end
+
+  def test_should_expire_cache_when_comment_is_unapproved
+    visitor = visit
+    assert_caches_page contents(:welcome).full_permalink do
+      visitor.read contents(:welcome)
+    end
+
+    login_as :quentin do |writer|
+      writer.unapprove_comment contents(:welcome_comment)
+      assert !contents(:welcome_comment).reload.approved?
+    end
+
+    assert_not_cached contents(:welcome).full_permalink
+  end
+
   protected
     def visit_sections_and_feeds_with(visitor)
       assert_caches_page section_url_for(:home) do

@@ -84,7 +84,11 @@ class Article < Content
   # Follow Mark Pilgrim's rules on creating a good ID
   # http://diveintomark.org/archives/2004/05/28/howto-atom-id
   def guid
-    "/#{self.class.to_s.underscore}/#{published_at.year}/#{published_at.month}/#{published_at.day}/#{permalink}"
+    "/#{self.class.to_s.underscore}#{full_permalink}"
+  end
+
+  def full_permalink
+    ['', published_at.year, published_at.month, published_at.day, permalink] * '/'
   end
 
   def has_section?(section)
@@ -112,10 +116,6 @@ class Article < Content
       :month     => published_at.month, 
       :day       => published_at.day, 
       :permalink => permalink }.merge(options)
-  end
-
-  def full_permalink
-    ['', published_at.year, published_at.month, published_at.day, permalink].join('/')
   end
 
   protected

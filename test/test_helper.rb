@@ -62,6 +62,7 @@ class ActionController::IntegrationTest
   def login_as(login)
     visit do |sess|
       sess.login_as login
+      yield sess if block_given?
     end
   end
 
@@ -72,7 +73,6 @@ class ActionController::IntegrationTest
       yield sess if block_given?
     end
   end
-  
 
   def section_url_for(section)
     sections(section).to_url * '/'

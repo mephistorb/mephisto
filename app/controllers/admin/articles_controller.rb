@@ -4,6 +4,7 @@ class Admin::ArticlesController < Admin::BaseController
     c.before_filter :save_or_draft
     c.cache_sweeper :article_sweeper
     c.cache_sweeper :section_sweeper
+    cache_sweeper :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
   end
   
   before_filter :find_site_article, :only => [:update, :comments, :approve, :unapprove, :destroy_comment]

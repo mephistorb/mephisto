@@ -24,19 +24,19 @@ module Mephisto
       end
     
       private
-      def page_title(page, index)
-        index.zero? ? 'Home' : page['title']
-      end
+        def page_title(page, index)
+          index.zero? ? 'Home' : page['title']
+        end
     
-      def page_url(page, index)
-        path = @section == 'home' ? '' : "/#{@section}"
-        path << ('/' + page['permalink']) unless index.zero?
-        path.blank? ? '/' : path
-      end
+        def page_url(page, index)
+          path = @section == 'home' ? '' : "/#{@section}"
+          path << ('/' + page['permalink']) unless index.zero?
+          path.blank? ? '/' : path
+        end
 
-      def page_anchor_options(page, index)
-        options = {:href => page_url(page, index)}
-        @page['id'] == page['id'] ? options.merge(:class => 'selected') : options
+        def page_anchor_options(page, index)
+          options = {:href => page_url(page, index)}
+          @page['id'] == page['id'] ? options.merge(:class => 'selected') : options
       end
     end
   end

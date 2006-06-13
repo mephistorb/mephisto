@@ -41,6 +41,10 @@ module Mephisto
       def format_date(date, format)
         date ? date.to_s(format.to_sym) : nil
       end
+      
+      def month_list
+        earliest = controller.site.articles.find(:first, :order => 'published_at').published_at.beginning_of_month
+      end
     end
   end
 end

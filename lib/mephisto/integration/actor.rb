@@ -16,6 +16,18 @@ module Mephisto
         assert_equal 200, status
       end
 
+      def comment_on(article, comment)
+        post "#{article.full_permalink}/comment", :comment => comment
+      end
+
+      def approve_comment(comment)
+        manage_comment :approve, comment
+      end
+
+      def unapprove_comment(comment)
+        manage_comment :unapprove, comment
+      end
+
       def revise(article, contents)
         post "/admin/articles/update/#{article.id}", to_article_params(article, contents.is_a?(Hash) ? contents : {:body => contents})
         assert_redirected_to "/admin/articles/index"
@@ -27,6 +39,10 @@ module Mephisto
       end
 
       private
+        def manage_comment(action, comment)
+          post "/admin/articles/#{action}/#{comment.article_id}", :comment => comment.id
+        end
+
         def to_article_params(*args)
           options = args.pop
           article = args.first
