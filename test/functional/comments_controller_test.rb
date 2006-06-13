@@ -29,9 +29,7 @@ class CommentsControllerTest < Test::Unit::TestCase
           :author_ip => '127.0.0.1'
         })
         assert_response :redirect
-        assert_redirected_to @controller.url_for(contents(:welcome).hash_for_permalink(:controller => 'mephisto', 
-                                                                                       :action     => 'show', 
-                                                                                       :anchor     => "comment_#{assigns(:comment).id}"))
+        assert_redirected_to comment_preview_url(contents(:welcome).hash_for_permalink(:comment => assigns(:comment)))
         contents(:welcome).reload
       end
     end
@@ -46,9 +44,7 @@ class CommentsControllerTest < Test::Unit::TestCase
           :author    => 'approved bob',
           :author_ip => '127.0.0.1'
         })
-        assert_redirected_to @controller.url_for(contents(:cupcake_welcome).hash_for_permalink(:controller => 'mephisto', 
-                                                                                       :action     => 'show', 
-                                                                                       :anchor     => "comment_#{assigns(:comment).id}"))
+        assert_redirected_to comment_preview_url(contents(:cupcake_welcome).hash_for_permalink(:comment => assigns(:comment)))
         contents(:cupcake_welcome).reload
       end
     end

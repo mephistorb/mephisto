@@ -14,9 +14,12 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action/:id/:version', :version => nil, 
       :controller => /account|(admin\/\w+)/
   
-  map.comment ':year/:month/:day/:permalink/comment', :controller => 'comments', :action => 'create',    
+  map.comment ':year/:month/:day/:permalink/comment', :controller => 'comments', :action => 'create',
       :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/
-  
+
+  map.comment_preview ':year/:month/:day/:permalink/comment/:comment', :controller => 'comments', :action => 'show',
+      :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/
+
   map.with_options :controller => 'mephisto' do |m|
     m.article ':year/:month/:day/:permalink', :action => 'show',    
       :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/
