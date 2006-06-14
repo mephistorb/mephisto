@@ -7,10 +7,12 @@
     <li><%= link_to "Update your account", :controller => 'users', :action => 'show', :id => current_user %></li>
     <li id="select">
       <a class="trigger" id="cog" href="#">&nbsp;</a>
-      <ul id="options" style="display:none;">
-        <li><a href="#" title="title">Test option</a></li>
-        <li><a href="#" title="title">Other option</a></li>
-      </ul>
+      <div id="optgroup" style="display: none">
+        <ul id="options">
+          <li><%= check_box_tag 'show_todays_comments' %> Show only todays comments</li>
+          <li><a href="#" title="title">Other option</a></li>
+        </ul>
+      </div>
     </li>
   </ul>
 </div>

@@ -307,37 +307,38 @@ input[type='text']:focus, textarea:focus {
   outline: none;
 }
 
-#select #options {
+#select #optgroup {
   position: absolute;
   top: 38px;
   left: 2px;
-  width: 200px;
-  background: #eee;
+  width: 240px;
   z-index: 9999;
-  padding: 0;
+  padding: 0 5px 5px 0;
   margin: 0;
+  background: url(../images/shadow.png) bottom right no-repeat;
+}
+
+#select #options {
+  background: #eee;
   border: 5px solid #fff;
 }
 
 #select #options li {
   display: block;
   margin: 0;
+  padding: 5px;
+  border-bottom: 1px dotted #ccc;
+  color: #333;
 }
 
 #select #options a {
   float: none !important;
-  display: block;
-  padding: 5px;
   margin: 0;
   border: none;
-  border-bottom: 1px dotted #ccc;
+  display: inline;
+  padding: 0;
 }
 
-#select #options a:hover {
-  background: #E9F7F8;
-  color: #333;
-  text-shadow: 2px 2px #fff;
-}
 
 
 /*

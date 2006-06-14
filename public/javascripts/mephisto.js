@@ -4,7 +4,7 @@ DropMenu.prototype = {
   initialize: function(element) {
     this.menu = $(element);
     this.trigger = document.getElementsByClassName('trigger', this.menu)[0];
-    this.options = $('options');
+    this.options = $('optgroup');
     this.focused = false;
     
     Event.observe(this.trigger, 'click', this.onTriggerClick.bindAsEventListener(this));
@@ -13,6 +13,8 @@ DropMenu.prototype = {
   },
   
   onTriggerClick: function() {
+    clearTimeout(this.timeout);
+    this.options.setStyle({opacity: 1});
     Element.toggle(this.options);
   },
   
@@ -22,7 +24,7 @@ DropMenu.prototype = {
   
   onMenuBlur: function() {
     this.focused = false;
-    setTimeout(this.fadeMenu.bind(this), 400);
+    this.timeout = setTimeout(this.fadeMenu.bind(this), 400);
   },
   
   fadeMenu: function() {
