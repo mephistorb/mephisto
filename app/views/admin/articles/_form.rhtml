@@ -25,19 +25,13 @@
 </div>
 <!-- /end required fields -->
 
-
 <!-- begin optional fields -->
 <dl class="optional">
   <dt><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
   <dd><%= datetime_select 'article', 'published_at', :discard_year => true %></dd>
   <dt><label for="article_permalink">Permanent link</label></dt>
   <dd><%= form.text_field :permalink %></dd>
-  <dt><label for="article_filters">Article Markup</label></dt>
-  <dd>
-    <select name="article[filters][]" id="article_filters">
-      <%= options_for_select(filter_options, (@article.filters || []).first.to_s) %>
-    </select>
-  </dd>
+
 <% if false -%>
   <dt><strong><%= link_to_function("Invite people to review and revise this article&hellip;", "Element.toggle('invites');", :id => 'invite') %></strong></dt>
   <dd id="invites" class="indent-box" style="display:none;">
@@ -53,7 +47,23 @@
 <!-- /end optional fields -->
 
 <% content_for :sidebar do %>
-
+  <div class="sgroup">
+    <h3>Publish in these sections (FIXME)</h3>
+    <ul class="slist">
+      <% @sections.each do |section| %>
+        <li>
+          <%= check_box_tag 'article[section_ids][]', section.id, @article.has_section?(section), 
+                :id => "article_section_ids_#{section.id}" %>
+          <label for="article_section_ids_<%= section.id %>"><%= section.name %></label>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  
+  <div class="sgroup">
+    <h3>Comments</h3>
+    <p><%= check_box_tag 'allow_comments' %> Allow comments</p>
+  </div>
 <% end %>
 
 <%# observe_form "article-form", :frequency => 2, :with => %(Form.serialize('article-form')), :url => { :action => "live_preview" } %>      

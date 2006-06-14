@@ -10,6 +10,7 @@ body {
   font: normal 12px/1.5em "Lucida Grande", Lucida, Helvetica, sans-serif;
   background: #99D3D5;
   color: #333;
+  min-width: 950px;
 }
 
 ul, li, form, dt, dl, dd, ol, div, p, 
@@ -24,6 +25,12 @@ blockquote, h1, h2, h3, h4, h5, h6, a {
   margin: 0;
   text-align: left;
   padding-top: 1px;
+}
+
+#search {
+  position: absolute;
+  right: 10px;
+  top: 115px;
 }
 
 #container {
@@ -68,8 +75,10 @@ a:hover {
   margin: 0 0;
   padding: 4px;
   min-height: 40px;
-  color: #cfc;
+  font-size: 90%;
   text-align: center;
+  width: 68%;
+  color: #366;
 }
 
 
@@ -917,8 +926,8 @@ h3.withcontrol {
 }
 
 .group {
-  background: #eee;
-  border: 1px solid #ccc;
+  background: #f3f3f3;
+  border-top: 4px solid #ccc;
   padding: 10px;
   margin: 20px 0;
 }

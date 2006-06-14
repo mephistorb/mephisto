@@ -1,1 +1,1 @@
-page["comment-#{@comment.id}"].visual_effect :drop_out
+page["comment-#{@comment.id}"].visual_effect :fade

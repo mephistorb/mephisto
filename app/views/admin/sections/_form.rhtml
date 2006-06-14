@@ -2,14 +2,14 @@
      :url => { :action => (@section.new_record? ? 'create' : 'update'), :id => @section }, :html => { :id => 'section-form' } do |f| %>
 <div class="group">
   <dl>
-    <dt><label for="section_name">Name</label></dt>
+    <dt><label for="section_name">Section name</label></dt>
     <dd><%= f.text_field :name, :class => 'big' %></dd>
-    <dt><label for="section_show_paged_articles">Type of Section</label></dt>
+    <dt><label for="section_show_paged_articles">Type of section</label></dt>
     <dd>
       <select id="section_show_paged_articles" name="section[show_paged_articles]" onchange="SectionForm.toggle_settings();">
         <%= options_for_select [
-              ['Area with multiple articles (blog)', '0'], 
-              ['Area with multiple pages (one article per page)', '1']], 
+              ['Section with multiple articles (blog)', '0'], 
+              ['Section with multiple pages (one article per page)', '1']], 
               (@section.show_paged_articles? ? '1' : '0') %>
       </select>
     </dd>

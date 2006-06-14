@@ -1,4 +1,4 @@
-<h2>Creating a new article</h2>
+<!-- FIXME:  Closing tag for form needs to be after the sidebar content in order to add options to sidebar -->
 <% form_for :article, @article, :url => { :action => 'create' }, :html => {:id => 'article-form'} do |f| -%>
   <%= render :partial => 'form', :object => f %>
   
@@ -8,4 +8,5 @@
     <%= link_to "cancel", :controller => "articles" %>
     <%= hidden_field_tag 'draft', @draft.id if @draft %>
   </p>
+  
 <% end -%>

@@ -47,6 +47,8 @@
     <dd><%= text_field_tag :blog, Akismet.blog %></dd>
     <dt><label>Allow comments?</label></dt>
     <dd><%= check_box_tag 'allow_comments' %> Yes, I would like to accept comments.</dd>
+    <dt><label for="moderate_comments">Will you approve comments?</label></dt>
+    <dd><%= check_box_tag 'moderate_comments' %> Yes, All comments require approval before being published.</dd>
     <dt><label for="comment_lifetime">Close comments</label></dt>
     <dd>
       <select name="comment_lifetime">
