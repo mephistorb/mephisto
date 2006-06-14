@@ -5,7 +5,8 @@
   <span class="event-time"><%= event_time_for event, later %></span>
   <blockquote><p>&quot;<%= truncate strip_tags(event.body), 100 %>&quot;</p></blockquote>
   <span class="meta">
-    by <%=h event.author %>
+    &mdash; <%=h event.author %>
+
   </span>
 </li>
 <% end -%>
