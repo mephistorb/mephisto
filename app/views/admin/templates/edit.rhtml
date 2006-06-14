@@ -1,4 +1,11 @@
-<div id="flash-notice" style="display:none"></div>
+<% content_for :action_nav do %>
+  <div id="page-nav">
+    <ul id="act-nav" class="clear">
+      <li><%= link_to "New template", :controller => 'design' %></li>
+    </ul>
+  </div>
+<% end %>
+
 <div id="template-container">
 <% form_remote_for :template, @tmpl, :url => { :action => 'update', :id => @tmpl }, 
      :html     => { :id => 'template-form' } do |f| -%>
@@ -6,7 +13,7 @@
   :title  => @tmpl.filename,
   :hint   => 'You can use HTML and Liquid in your template.',
   :f      => f,
-  :labels => { :data     => 'Template source code',
+  :labels => { :data     => "Edit #{@tmpl.filename} source code",
                :filename => 'Title of your template' }
  } %>
 <p class="btns">

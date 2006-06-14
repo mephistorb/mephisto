@@ -811,7 +811,7 @@ li.event-comment  { background-image: url(../images/icons/commentb.gif); }
 li.event-article  { background-image: url(../images/icons/articleb.gif); }
 li.event-none     { background-image: url(../images/icons/minusb.gif); }
 
-.shade { background-color: #DFF4F5; }
+.shade { background-color: #eee; }
 
 .events li blockquote {
 }
@@ -819,10 +819,13 @@ li.event-none     { background-image: url(../images/icons/minusb.gif); }
 .events li blockquote p {
   margin: 0 !important;
   padding: 0 !important;
-  font-style: italic;
-  font-size: 95%;
+  color: #000;
+  font: italic 100% "Times New Roman", serif;
 }
 
+.events textarea {
+  width: 100%;
+}
 
 .events .meta {
   display: block;
@@ -834,6 +837,27 @@ li.event-none     { background-image: url(../images/icons/minusb.gif); }
   font-size: 90%;
 }
 
+.response {
+  margin: 5px 0 20px 20px;
+  border-left: 7px solid #333;
+  padding: 5px;
+}
+
+.response blockquote {
+  padding: 20px;
+}
+
+.response blockquote p {
+  font-family: "Times New Roman", serif;
+  font-size: 110% !important;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+.response p.btns {
+  margin: 0;
+  background: #eee;
+}
 
 /*
  *=PAGINATION
@@ -853,6 +877,7 @@ li.event-none     { background-image: url(../images/icons/minusb.gif); }
  *=MISC
  */
 
+a.adds { color: #017CA2;}
 
 .feed {
   background: url(../images/icons/feed-icon-12x12.gif) 0 50% no-repeat;
@@ -884,7 +909,7 @@ li.event-none     { background-image: url(../images/icons/minusb.gif); }
 }
 
 .hint { 
-  color: #888; 
+  color: #555; 
   font-size: 90%;
 }
 
