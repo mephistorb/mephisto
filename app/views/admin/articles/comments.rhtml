@@ -1,5 +1,6 @@
 <% content_for :action_nav do %>
 <!-- begin action nav -->
+<!-- FIXME:  Remove view-style links and replace with select box.  Action links should be write only -->
 <div id="page-nav">
   <ul id="act-nav" class="clear">
     <li><%= link_to 'All',        :filter => nil %></li>
@@ -13,19 +14,30 @@
 <!-- /end action nav -->
 <% end %>
 
-<% @comments.each do |comment| -%>
-<div id="comment-<%= comment.id %>">
-  <p><%= truncate strip_tags(comment.body), 255 %></p>
-  <p>By <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %></p>
-  <p>
-  <% if comment.approved? -%>
-    <%= link_to_remote 'Unapprove!', :url => { :action => 'unapprove',       :id => @article, :comment => comment } %>
-  <% else -%>
-    <%= link_to_remote 'Approve!',   :url => { :action => 'approve',         :id => @article, :comment => comment } %>
-  <% end -%>
-    <%= link_to_remote 'Delete!',    :url => { :action => 'destroy_comment', :id => @article, :comment => comment } %>
-  </p>
-</div>
-<% end -%>
+ <h3 class="withcontrol">
+   Show comments:
+   <select id="comments-view">
+     <%= options_for_select ['All', 'Unapproved', 'Approved'] %>
+   </select>
+  </h3>
+  <ul class="pagelist">
+    <% @comments.each_with_index do |comment, i| -%>
+    <li class="event-comment<%= " shade" if (i % 2 > 0) %>" id="comment-<%= comment.id %>">
+      <blockquote><p>"<%= truncate strip_tags(comment.body), 255 %>"</p></blockquote>
+      <span class="meta">
+        <cite>&mdash; <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %></cite>
+        
+      <% if comment.approved? -%>
+        <%= link_to_remote 'Unapprove', :url => { :action => 'unapprove',       :id => @article, :comment => comment } %> | 
+      <% else -%>
+        <%= link_to_remote 'Approve',   :url => { :action => 'approve',         :id => @article, :comment => comment } %> | 
+      <% end -%>
+        <%= link_to_remote 'Delete',    :url => { :action => 'destroy_comment', :id => @article, :comment => comment } %>
+      </span>
+    </li>
+    <% end -%>
+  </ul>
+  
+  
 
 

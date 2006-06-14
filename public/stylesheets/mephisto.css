@@ -263,14 +263,14 @@ input[type='text']:focus, textarea:focus {
 #act-nav {
   list-style: none;
   margin: 0 20px;
-  border-left: 1px solid #6fb4b6;
+  border-left: 1px solid #98CED0;
 } 
 
 #act-nav li a {
   color: #005d60;
   padding: 11px 8px;
   border: 0;
-  border-right: 1px solid #6fb4b6;
+  border-right: 1px solid #98CED0;
   border-left: 1px solid #fff;
   display: block;
   float: left;
@@ -765,22 +765,21 @@ img.avatar {
   font-size: 100%;
 }
 
-.events {
+.events, .pagelist {
   margin: 0 0 30px 0;
   padding: 0;
   list-style: none;
   width: 100%;
-
 }
 
-.events li {
+.events li, .pagelist li {
   padding: 5px 10px 10px 50px;
   line-height: 160%;
 }
 
-.events li a { border: 0; }
+.events li a, .pagelist li a { border: 0; }
 
-.events li a:hover {
+.events li a:hover, .pagelist li a:hover {
   color: #d30;
   background: #f7f7f7;
 }
@@ -827,10 +826,11 @@ li.event-none     { background-image: url(../images/icons/minusb.gif); }
   width: 100%;
 }
 
-.events .meta {
+.events .meta,  .pagelist .meta {
   display: block;
   font-size: 90%;
 }
+
 
 .events .event-time {
   float: right;
@@ -877,7 +877,22 @@ li.event-none     { background-image: url(../images/icons/minusb.gif); }
  *=MISC
  */
 
+cite {
+  font-style: normal;
+}
+
+cite a {
+  color: #277 !important;
+}
+
 a.adds { color: #017CA2;}
+
+h3.withcontrol {
+  border-bottom: 2px solid #999;
+  margin-bottom: 10px;
+  padding: 5px 0;
+  text-align: right;
+}
 
 .feed {
   background: url(../images/icons/feed-icon-12x12.gif) 0 50% no-repeat;
@@ -941,6 +956,13 @@ ul.nobull li label {
 .small-col {
   width: 25px;
   text-indent: -99999px;
+}
+
+blockquote p {
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #000;
+  font: italic 110% "Times New Roman", serif;
 }
 
 .clear:after {

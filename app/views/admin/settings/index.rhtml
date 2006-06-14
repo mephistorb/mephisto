@@ -45,6 +45,14 @@
     <dd><%= text_field_tag :api_key, Akismet.api_key %></dd>
     <dt><label>Blog url</label></dt> 
     <dd><%= text_field_tag :blog, Akismet.blog %></dd>
+    <dt><label>Allow comments?</label></dt>
+    <dd><%= check_box_tag 'allow_comments' %> Yes, I would like to accept comments.</dd>
+    <dt><label for="comment_lifetime">Close comments</label></dt>
+    <dd>
+      <select name="comment_lifetime">
+        <%= options_for_select ['Never', '24 hours after publishing', '1 week after publishing', '2 weeks after publishing', '1 month after publishing', '3 months after publishing', '6 months after publishing', '1 year after publishing'] %>
+      </select>
+    </dd>
   </dl>
 </div>
 
