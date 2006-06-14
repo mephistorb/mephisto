@@ -5,14 +5,8 @@
   <span class="event-time"><%= event_time_for event, later %></span>
   <blockquote><p>&quot;<%= truncate strip_tags(event.body), 100 %>&quot;</p></blockquote>
   <span class="meta">
-    &mdash; <%=h event.author %> | <%= link_to_function 'Respond', %(Element.toggle('respond-#{event.id}')), :class => 'adds' %>
+    &mdash; <%=h event.author %>
   </span>
-  <div id="respond-<%= event.id %>" style="display:none" class="response">
-    <blockquote><p>&quot;<%= strip_tags(event.body)%>&quot;</p></blockquote>
-    
-    <textarea rows="4" cols="50">
-    </textarea>
-    <p class="btns"><%= submit_tag 'Post comment' %></p>
-  </div>
+
 </li>
 <% end -%>

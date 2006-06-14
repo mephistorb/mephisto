@@ -194,7 +194,7 @@ input[type='text']:focus, textarea:focus {
 #nav a {
   float:left;
   display:block;
-  background: #3B8100 url(../images/tab-bg.gif) repeat-x left top;
+  background: #997 url(../images/tab-bg.gif) repeat-x left top;
   padding: 9px 20px;
   text-decoration: none;
   border: none;
@@ -271,8 +271,9 @@ input[type='text']:focus, textarea:focus {
 
 #act-nav {
   list-style: none;
-  margin: 0 20px;
+  margin: 0 0 0 20px;
   border-left: 1px solid #98CED0;
+  position: relative;
 } 
 
 #act-nav li a {
@@ -291,6 +292,52 @@ input[type='text']:focus, textarea:focus {
   background-color: transparent;
 }
 
+#select {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#select a#cog {
+  border-right: none;
+  border-left: 1px solid #98CED0;
+  display: block;
+  background: url(../images/cog.gif) no-repeat;
+  padding: 11px 18px;
+  outline: none;
+}
+
+#select #options {
+  position: absolute;
+  top: 38px;
+  left: 2px;
+  width: 200px;
+  background: #eee;
+  z-index: 9999;
+  padding: 0;
+  margin: 0;
+  border: 5px solid #fff;
+}
+
+#select #options li {
+  display: block;
+  margin: 0;
+}
+
+#select #options a {
+  float: none !important;
+  display: block;
+  padding: 5px;
+  margin: 0;
+  border: none;
+  border-bottom: 1px dotted #ccc;
+}
+
+#select #options a:hover {
+  background: #E9F7F8;
+  color: #333;
+  text-shadow: 2px 2px #fff;
+}
 
 
 /*

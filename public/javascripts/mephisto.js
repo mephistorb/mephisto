@@ -1,3 +1,36 @@
+// TODO:  Fix buggles
+var DropMenu = Class.create();
+DropMenu.prototype = {
+  initialize: function(element) {
+    this.menu = $(element);
+    this.trigger = document.getElementsByClassName('trigger', this.menu)[0];
+    this.options = $('options');
+    this.focused = false;
+    
+    Event.observe(this.trigger, 'click', this.onTriggerClick.bindAsEventListener(this));
+    Event.observe(this.menu, 'mouseover', this.onMenuFocus.bindAsEventListener(this));
+    Event.observe(this.menu, 'mouseout', this.onMenuBlur.bindAsEventListener(this));
+  },
+  
+  onTriggerClick: function() {
+    Element.toggle(this.options);
+  },
+  
+  onMenuFocus: function() {
+    this.focused = true;
+  },
+  
+  onMenuBlur: function() {
+    this.focused = false;
+    setTimeout(this.fadeMenu.bind(this), 400);
+  },
+  
+  fadeMenu: function() {
+    if(!this.focused)
+      new Effect.Fade(this.options, {duration: 0.2});
+  }
+}
+
 // @name      The Fade Anything Technique
 // @namespace http://www.axentric.com/aside/fat/
 // @version   1.0-RC1
@@ -128,61 +161,7 @@ var Flash = {
   }
 }
 
+Event.observe(window, 'load', function() {
+  new DropMenu('select');
+});
 
-//
-//  Resizer.js
-//  Resize two divs proportial to each other
-//
-//
-
-/*
-if (!window.Control) {
-  var Control = new Object();
-}
-
-Control.Resizer = Class.create();
-Control.Resizer.prototype = {
-  initialize: function(element1, element2, options) {
-    // logger.info("Intitialized Resizer");
-    
-    this.leftElement  = $(element1);
-    this.rightElement = $(element2);
-    this.dragging     = false;
-    this.handle       = $(options.handle);
-    if (!this.handle) return;
-    Element.makePositioned(this.leftElement);
-    Element.makePositioned(this.rightElement);
-
-    Event.observe(this.handle, 'mousedown', this.onPress.bindAsEventListener(this));
-    Event.observe(this.handle, 'mouseover', this.onHover.bindAsEventListener(this));
-    Event.observe(document, 'mousemove', this.onDrag.bindAsEventListener(this));
-    Event.observe(document, 'mouseup', this.onBlur.bindAsEventListener(this));
-  },
-  
-  onPress: function(event) {
-    this.dragging = true;
-    var handle = Event.element(event);
-    this.initialLeftWidth = Element.getStyle(this.leftElement, 'width');
-  },
-  
-  // Fix dragging to left
-  onDrag: function(event) {
-    if(this.dragging) {
-      document.body.style.cursor = 'move';
-      var currentX = Event.pointerX(event);
-      var currentY = Event.pointerY(event);
-      var offset = currentX - 20;
-      Element.setStyle(this.rightElement, {marginLeft: currentX + "px"});
-      Element.setStyle(this.leftElement, {width:  offset + "px"});
-    }
-  },
-  
-  onBlur: function(event) {
-    this.dragging = false;
-    document.body.style.cursor = 'auto';
-  },
-  
-  onHover: function(event) {
-    Element.setStyle(this.handle, {cursor: 'move'});
-  }
-}*/
