@@ -18,7 +18,7 @@
   	    <li><%= link_to 'logout', :controller => '/account', :action => 'logout' %></li>
   	  </ul>
 
-  	  <h1><a href="/" title="ArticleCast">Mephisto: Admin</a></h1>
+  	  <h1><a href="/" title="Mephisto">Mephisto: Admin</a></h1>
 
   	  <!-- div.nav -->	
   	  <div id="nav">
@@ -45,16 +45,21 @@
     	  
     	  <!-- div.left -->
     	  <div id="main">
-    	    <div id="flash-errors" style="display:none">
-    	    </div>
+    	    <div id="flashes">
+      	    <div id="flash-errors" style="display: none;"></div>
     	    
-    	    <% if flash[:notice] %>
-    	    <div id="flash-notice">
-    	      <%= @flash[:notice] %>  
+      	    <% if flash[:notice] %>
+      	    <div id="flash-notice">
+      	      <%= @flash[:notice] %>  
+      	    </div>
+      	    <% end %>
     	    </div>
-    	    <% end %>
+    	    <!-- begin action nav -->
+          <%= yield :action_nav %>
+          <!-- /end action nav -->
     	    
-    	    <%= yield %>
+    	    <div id="main-content"><%= yield %></div>
+    	    <div id="shadow"></div>
     	  </div>
     	  <!-- /div.left -->
     	  
@@ -68,19 +73,7 @@
     	
     	<!-- begin div.footer -->
     	<div id="footer">
-    	  <p>Mephisto</p>
     	</div>
   	</div>
-  	<div id="log-panel">
-      <ul id="log-panel-list">
-        
-      </ul>
-    </div>
-    <script type="text/javascript" language="javascript" charset="utf-8">
-    // <![CDATA[
-     //new Asset.Manager();
-    //new Control.Resizer('main', 'sbar', {handle: 'sbar-handle'});
-    // ]]>
-    </script>
 	</body>
 </html>
