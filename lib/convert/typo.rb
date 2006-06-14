@@ -45,12 +45,16 @@ module Typo
         ::User.find_by_login(Typo::User.find(typo_article.user_id).login)
 
       section_ids = find_or_create_sections(typo_article)
+      
+      excerpt, body = !typo_article.extended.blank? ?
+        [typo_article.body, typo_article.extended] :
+        [nil, typo_article.body]
 
       ::Article.create! \
         :site         => site,
         :title        => typo_article.title, 
-        :excerpt      => typo_article.excerpt,
-        :body         => typo_article.body,
+        :excerpt      => excerpt,
+        :body         => body,
         :created_at   => typo_article.created_at,
         :published_at => typo_article.created_at,
         :updated_at   => typo_article.updated_at,

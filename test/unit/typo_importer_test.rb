@@ -37,8 +37,20 @@ class TypoImporterTest < Test::Unit::TestCase
     typo_article = Typo::Article.find(1)
     assert_difference Article, :count do
       article = Typo.create_article(sites(:first), typo_article)
+      assert_equal typo_article.body, article.excerpt
+      assert_equal typo_article.extended, article.body
       assert_equal sites(:first), article.site
       assert_equal User.find_by_login(Typo::User.find(typo_article.user_id).login), article.updater
+    end
+  end
+  
+  def test_should_set_typo_body_to_mephisto_body_if_no_extended
+    Typo.import_users
+    typo_article = Typo::Article.find(3)
+    assert_difference Article, :count do
+      article = Typo.create_article(sites(:first), typo_article)
+      assert_equal typo_article.body, article.body
+      assert_nil article.excerpt
     end
   end
   

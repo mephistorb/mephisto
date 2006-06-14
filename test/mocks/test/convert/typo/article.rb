@@ -6,8 +6,8 @@ module Typo
       OpenStruct.new(
         'user_id' => 1,
         'title' => 'article one',
-        'excerpt' => 'This is the short bit',
-        'body' => 'This is the long bit',
+        'body' => 'This is the short bit',
+        'extended' => 'This is the long bit',
         'created_at' => Time.now,
         'updated_at' => Time.now,
         'published_at' => Time.now,
@@ -16,13 +16,23 @@ module Typo
       OpenStruct.new(
         'user_id' => 2,
         'title' => 'article two',
-        'excerpt' => 'This is the short bit 2',
-        'body' => 'This is the long bit 2',
+        'body' => 'This is the short bit 2',
+        'extended' => 'This is the long bit 2',
         'created_at' => Time.now,
         'updated_at' => Time.now,
         'published_at' => Time.now,
         'categories' => [OpenStruct.new(:name => 'foo')]
-      )      
+      ),
+      OpenStruct.new(
+        'user_id' => 2,
+        'title' => 'article three',
+        'body' => 'This is an article without a short bit',
+        'extended' => '',
+        'created_at' => Time.now,
+        'updated_at' => Time.now,
+        'published_at' => Time.now,
+        'categories' => [OpenStruct.new(:name => 'foo')]
+      )
     ]
     
     def self.find(arg)
