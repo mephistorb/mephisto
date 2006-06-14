@@ -1,52 +1,57 @@
 html {
   margin: 0;
   padding: 0;
-  height: 100%;
 }
 
 body {
   margin: 0;
   text-align: center;
   padding: 0;
-  font: 1em/1.4em "Lucida Grande", Lucida, Helvetica, sans-serif;
-  background: #fff;
-  color: #000;
-  height: 100%;
+  font: normal 12px/1.5em "Lucida Grande", Lucida, Helvetica, sans-serif;
+  background: #99D3D5;
+  color: #333;
 }
 
-body * {
+ul, li, form, dt, dl, dd, ol, div, p, 
+blockquote, h1, h2, h3, h4, h5, h6, a {
   margin: 0;
   padding: 0;
 }
 
 #header {
-  background: #B9E900 url(../images/hdr-bg.gif) bottom left repeat-x;
-  height: 81px;
-  border: 1px solid #DDFA26;
-  border-bottom: none;
+  background: #211 url(../images/hdr-bg.gif) bottom left repeat-x;
+  height: 142px;
   margin: 0;
-  font-size: 80%;
   text-align: left;
+  padding-top: 1px;
 }
 
 #container {
   margin: 0 auto;
   text-align: left;
-  font-size: 80%;
   min-width: 778px;
 }
 
-a { color: #390; border-bottom: 1px dotted #ccc; text-decoration: none; }
+a:link, a:visited { color: #920; border-bottom: 1px dotted #ccc; text-decoration: none; }
+
+a:hover {
+  color: #d30;
+  background-color: #f7f7f7;
+}
 
 #main {
-  margin: 0 0 0 10px;
+  margin: -16px 0 0 0;
   float: left;
   width: 68%;
+  background: #fff;
+  border-right: 3px solid #8acacc;
+  border-bottom: 3px solid #8acacc;
+  position: relative;
 }
 
 #sbar {
-  margin: 0 0 0 71%;
-  height: 100%;
+  margin: 0 10px 0 69%;
+  color: #033;
 }
 
 #sbar:after {
@@ -59,13 +64,11 @@ a { color: #390; border-bottom: 1px dotted #ccc; text-decoration: none; }
 
 #footer {
   bottom: 0;
-  background: #390;
   clear: left;
   margin: 0 0;
   padding: 4px;
   min-height: 40px;
   color: #cfc;
-  font-size: 80%;
   text-align: center;
 }
 
@@ -76,9 +79,7 @@ a { color: #390; border-bottom: 1px dotted #ccc; text-decoration: none; }
 
 img { border: 0;}
 .tspace { margin-top: 20px;}
-h1, h2, h3, h4, h5, h6 {
-  font-family: Helvatica, "Lucida Grande", Arial, sans-serif;
-}
+
 
 /*
  *=FORMS
@@ -145,26 +146,29 @@ input[type='text']:focus, textarea:focus {
  *=HEADER
  */
 
+
 #header h1 a {
   color: #fff;
   text-decoration: none;
   text-indent: -9999px;
-  background: url(../images/logo.gif) no-repeat;
-  width: 176px;
-  height: 35px;
+  background: url(../images/logo.png) no-repeat;
+  width: 111px;
+  height: 39px;
   display: block;
   border: none;
-  margin: 12px 20%;
 }
 
 #header h1 {
   line-height: normal;
-  width: 176px;
-  height: 35px;
+  padding: 30px 0 0 30px;
+}
+
+#nav {
+  margin-left: 130px;
 }
 
 #nav ul {
-  margin: 8px 0 0 38px;
+  margin: 11px 0 0 38px;
   padding: 0;
   list-style:none;
   font-size: 80%;
@@ -174,90 +178,34 @@ input[type='text']:focus, textarea:focus {
 #nav li {
   float:left;
   background: #3B8100 url(../images/tab-right.gif) no-repeat right top;
-  margin: 0 5px 0 0;
-  padding:0 5px 0 0;
+  margin: 0 10px 0 0;
+
 }
 
 #nav a {
   float:left;
   display:block;
-  background: #3B8100 url(../images/tab-left.gif) no-repeat left top;
-  padding: 5px 20px;
+  background: #3B8100 url(../images/tab-bg.gif) repeat-x left top;
+  padding: 9px 20px;
   text-decoration: none;
   border: none;
   font-weight: bold;
-  color: #cf3;
-  text-shadow: #060 2px 2px;
+  color: #fff;
+  text-shadow: #333 2px 2px;
+  border-left: 1px solid #bcb89f;
+  border-right: 1px solid #bcb89f;
+  
 }
 
 #nav a:hover {
-  color: #fff;
-}
-
-#nav-r {
-  position: absolute;
-  top: 47px;
-  right: 40px;
-}
-
-
-/*
- *=OTHER NAVIGATION
- */
-
-#sec-nav {
-  list-style: none;
-  float: right;
-}
-
-#sec-nav li, #act-nav li {
-  display: inline;
-  margin-right: 5px;
-}
-
-#sec-nav li a {
-  color: #060;
-  text-shadow: #6c6 2px 2px;
-  border-bottom: 1px dotted #fff;
-}
-
-#sec-nav li a:hover {
-  color: #fff;
-  background: #000;
+  color: #000;
   text-shadow: none;
-}
-
-#page-nav {
-  background: #555;
-  margin: 20px 0;
-  color: #fff;
-}
-
-#act-nav {
-  list-style: none;
-  margin: 5px 10px;
-} 
-
-#act-nav li a {
-  color: #eee;
-  padding: 2px 5px;
-  font-weight: bold;
-  text-shadow: 2px 2px #333;
-  border: 0;
-}
-
-#act-nav li a:hover {
-  color: #fff;
-  text-shadow: 2px 2px #555;
 }
 
 /* Commented Backslash Hack
    hides rule from IE5-Mac \*/
 #nav a {float:none;}
 /* End IE5-Mac hack */
-#header a:hover {
-  color:#fff;
-}
 
 #nav #current {
 }
@@ -268,20 +216,100 @@ input[type='text']:focus, textarea:focus {
 }
 
 
+#nav-r {
+  position: absolute;
+  top: 70px;
+  right: 40px;
+}
+
+
+/*
+ *=OTHER NAVIGATION
+ */
+
+/* Top right in header */
+#sec-nav {
+  list-style: none;
+  float: right;
+  margin-right: 10px;
+  margin-top: 5px;
+  font-size: 90%;
+}
+
+#sec-nav li, #act-nav li {
+  display: inline;
+  margin-right: 5px;
+}
+
+#sec-nav li a {
+  color: #ccc;
+  border: none;
+}
+
+#sec-nav li a:hover {
+  color: #fff;
+  background-color: transparent;
+}
+
+/* Page level (top of page)  */
+#page-nav {
+  background: url(../images/actnav-bg.gif) repeat-x;
+  margin: 0 0 20px 0;
+  color: #fff;
+  border-top: 1px solid #6fb4b6;
+  border-bottom: 1px solid #6fb4b6;
+}
+
+#act-nav {
+  list-style: none;
+  margin: 0 20px;
+  border-left: 1px solid #6fb4b6;
+} 
+
+#act-nav li a {
+  color: #005d60;
+  padding: 11px 8px;
+  border: 0;
+  border-right: 1px solid #6fb4b6;
+  border-left: 1px solid #fff;
+  display: block;
+  float: left;
+}
+
+#act-nav li a:hover {
+  color: #000;
+  text-shadow: 2px 2px #fff;
+  background-color: transparent;
+}
+
+
+
 /*
  *=MAIN
  */
 
-#main {
-  font-size: 90%;
+#flashes {
+  background: #fff9d0;
+  min-height: 30px;
+}
+
+#main-content {
+  padding: 0 20px;
+}
+
+#shadow {
+  position: absolute;
+  right: -3px;
+  top: 0;
+  width: 3px;
+  height: 17px;
+  background: url(../images/corner-shadow.gif) no-repeat;
 }
 
 #main h2 {
   font-size: 150%;
   padding: 0 0 0 5px;
   margin: 25px 0 0 0;
-  letter-spacing: -0.06em;
-  word-spacing: -0.10em;
   border-bottom: 1px dotted #ccc;
 }
 
@@ -296,10 +324,13 @@ input[type='text']:focus, textarea:focus {
 
 #sbar {
   padding-top: 20px;
-  background: #000;
-  color: #fff;
-  font-size: 90%;
+  color: #033;
   position: relative;
+}
+
+#sbar a:hover {
+  background-color: #000;
+  color: #fff;
 }
 
 #sbar dl {
@@ -314,9 +345,14 @@ input[type='text']:focus, textarea:focus {
 
 #sbar h3 {
   padding: 2px 5px;
-  color: #B9E900;
+  color: #033;
   font-size: 100%;
   font-family: Helvetica, "Lucida Grande", sans-serif;
+  border-bottom: 1px dotted #6ab;
+}
+
+#sbar .hint {
+  color: #000;
 }
 
 #revisions, #resources, 
@@ -329,15 +365,9 @@ input[type='text']:focus, textarea:focus {
 #revisions li, #resources li {
   padding: 5px;
   font-style: italic;
-  font-size: 90%;
   vertical-align: top;
   display: block;
   margin-bottom: 1px;
-  border-bottom: 1px dotted #333;
-}
-
-#resources li:hover {
-  background: #222;
 }
 
 #revisions li img {
@@ -355,25 +385,22 @@ input[type='text']:focus, textarea:focus {
   left: 0;
 }
 
-#revisions li a, #resources li a { border: none; text-decoration: none; color: #fff;}
+#revisions li a, #resources li a { border: none; text-decoration: none;}
 
 #resources li a {
   background: url(../images/icons/document.gif) 0 50% no-repeat;
   text-decoration: underline;
   display: block;
-  padding-left: 20px;
+  padding: 3px 0 3px 20px;
   font-style: normal;
+  border-bottom: 1px dotted #C6F4F6;
 }
 
 #attachments li a, #sections li a, #pages li a {
-  color: #fff;
   border: 0;
   text-decoration: underline;
 }
 
-#attachments li a:hover, #sections li a:hover, #pages li a:hover {
-  color: #ccc;
-}
 
 #attachments li, #sections li, #pages li {
   display: block;
@@ -381,7 +408,7 @@ input[type='text']:focus, textarea:focus {
   padding: 5px 8px;
   margin: 0;
   font-size: 90%;
-  border-bottom: 1px dotted #333;
+  border-bottom: 1px dotted #C6F4F6;
 }
 
 #attachments li img, #sections li img, #pages li img {
@@ -401,9 +428,8 @@ a#section-home {
 }
 
 #sbar .box {
-  background: #111;
-  margin: 10px;
-  border: 1px solid #333;
+  margin: 10px 0;
+  border: 1px solid #fff;
 }
 
 .sbar-group * {
@@ -438,7 +464,7 @@ a#section-home {
 }
 
 #sbar .sgroup {
-  margin: 0 10px;
+  margin: 0 10px 20px 10px;
 }
 
 #sbar p.funct {
@@ -448,13 +474,9 @@ a#section-home {
   color: #777;
 }
 
-#sbar p.funct a, .sgroup a {
-  color: #9c3;
-}
-
 #sbar p.funct a:hover, .sgroup a:hover {
   color: #fff;
-  background: #360;
+  background: #000;
 }
 
 .rev-num {
@@ -464,14 +486,6 @@ a#section-home {
   font-size: 300%;
   color: #333;
   font-family: Georgia, "Times New Roman", sans-serif;
-}
-
-#activity {
-  font-size: 90%;
-}
-
-#activity li {
-  border-bottom: 1px dotted #333;
 }
 
 .slist {
@@ -510,21 +524,14 @@ a#section-home {
 }
 
 #article-list a {
-  color: #060;
-  padding: 2px 10px;
+  padding: 2px 0;
   text-decoration: none;
   border: none;
-}
-
-#article-list a:hover {
-  background: #000;
-  color: #fff;
 }
 
 #article-list .date {
   font-size: 80%;
   font-style: italic;
-  color: #093;
 }
 
 #invite {
@@ -745,12 +752,12 @@ img.avatar {
 }
 
 #overview {
-  margin: 20px 0;
+  margin: 0;
 }
 
 #overview h3 {
-  border-bottom: 1px solid #999;
   margin-bottom: 20px;
+  font-size: 100%;
 }
 
 .events {
@@ -758,10 +765,10 @@ img.avatar {
   padding: 0;
   list-style: none;
   width: 100%;
+
 }
 
 .events li {
-  color: #444;
   padding: 5px 10px 10px 50px;
   line-height: 160%;
 }
@@ -769,15 +776,17 @@ img.avatar {
 .events li a { border: 0; }
 
 .events li a:hover {
-  background: #000;
-  color: #fff;
+  color: #d30;
+  background: #f7f7f7;
 }
 
 #overview h4 {
-  margin: 0;
+  margin: 0 0 5px 0;
+  border-bottom: 1px dotted #bbb;
   padding: 0;
-  font-size: 130%;
+  font-size: 90%;
   font-family: Helvetica, Arial, sans-serif;
+  color: #033;
 }
 
 li.event-date {
@@ -797,30 +806,27 @@ li.event-comment  { background-image: url(../images/icons/commentb.gif); }
 li.event-article  { background-image: url(../images/icons/articleb.gif); }
 li.event-none     { background-image: url(../images/icons/minusb.gif); }
 
-.shade { background-color: #eee; }
+.shade { background-color: #DFF4F5; }
 
 .events li blockquote {
-  font-size: 90%;
-  color: #888;
-  margin: 0;
-  padding: 0;
 }
 
 .events li blockquote p {
   margin: 0 !important;
   padding: 0 !important;
+  font-style: italic;
+  font-size: 95%;
 }
+
 
 .events .meta {
   display: block;
   font-size: 90%;
-  color: #888;
 }
 
 .events .event-time {
   float: right;
   font-size: 90%;
-  font-style: italic;
 }
 
 
@@ -930,20 +936,17 @@ ul.nobull li label {
 
 #flash-errors {
   margin: 0 auto;
-  background: #fcc;
-  border: 1px solid #f99;
+  background: #F69A91;
   padding: 10px;
-  margin: 20px 0;
-  color: #900;
+  color: #510;
+  text-align: center;
 }
 
 #flash-notice {
-  margin: 0 auto;
   background: #cfc;
   padding: 10px;
-  margin: 20px 0;
-  border: 1px solid #6c6;
-  color: #090;
+  color: #051;
+  text-align: center;
 }
 
 #flash-notice ul, 

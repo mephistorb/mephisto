@@ -1,11 +1,12 @@
-<h2>People on the inside</h2>
+<% content_for :action_nav do %>
 <!-- begin action nav -->
-<div id="page-nav" class="round">
-  <ul id="act-nav">
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
     <li><%= link_to "Add new user", :action => "new" %></li>
   </ul>
 </div>
 <!-- /end action nav -->
+<% end %>
 
 <ul id="users">
 <% @users.each do |user| -%>

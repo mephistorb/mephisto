@@ -119,32 +119,32 @@ class Article < Content
   end
 
   protected
-  def create_permalink
-    self.permalink = title.strip.downcase \
-      .gsub(/['"]/, '')                   \
-      .gsub(/(\W|\ )+/, '-')              \
-      .chomp('-').reverse.chomp('-').reverse
-  end
-
-  def set_filter_from_user
-    self.filters = user.filters if filters.nil?
-  end
-
-  def save_assigned_sections
-    return if @new_sections.nil?
-    assigned_sections.each do |assigned_section|
-      @new_sections.delete(assigned_section.section_id.to_s) || assigned_section.destroy
+    def create_permalink
+      self.permalink = title.strip.downcase \
+        .gsub(/['"]/, '')                   \
+        .gsub(/(\W|\ )+/, '-')              \
+        .chomp('-').reverse.chomp('-').reverse
     end
     
-    if !@new_sections.blank?
-      Section.find(:all, :conditions => ['id in (?)', @new_sections]).each { |section| assigned_sections.create :section => section }
-      sections.reset
+    def set_filter_from_user
+      self.filters = user.filters if filters.nil?
     end
-
-    @new_sections = nil
-  end
-
-  def body_for_mode(mode = :list)
-    (mode == :single ? excerpt_html.to_s + "\n\n" + body_html.to_s : (excerpt_html || body_html)).strip
-  end
+    
+    def save_assigned_sections
+      return if @new_sections.nil?
+      assigned_sections.each do |assigned_section|
+        @new_sections.delete(assigned_section.section_id.to_s) || assigned_section.destroy
+      end
+      
+      if !@new_sections.blank?
+        Section.find(:all, :conditions => ['id in (?)', @new_sections]).each { |section| assigned_sections.create :section => section }
+        sections.reset
+      end
+    
+      @new_sections = nil
+    end
+    
+    def body_for_mode(mode = :list)
+      (mode == :single ? excerpt_html.to_s + "\n\n" + body_html.to_s : (excerpt_html || body_html)).strip
+    end
 end

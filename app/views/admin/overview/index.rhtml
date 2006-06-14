@@ -1,27 +1,19 @@
-
+<% content_for :action_nav do %>
 <!-- begin action nav -->
-<div class="round" id="page-nav">
-  <ul id="act-nav">
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
     <li><%= link_to "Create new article",  :controller => 'articles', :action => "new" %></li>
     <li><%= link_to "Create new section",  :controller => 'sections' %></li>
     <li><%= link_to "Update your account", :controller => 'users', :action => 'show', :id => current_user %></li>
   </ul>
 </div>
 <!-- /end action nav -->
-
-<!-- begin quickstats 
-<div id="stats">
-  <ul id="quick-stats" class="clear">
-    <li id="stat-comments" class="round"><div>23</div></li>
-  </ul>
-</div>
- /end quickstats -->
+<% end %>
 
 
 <!-- begin overview -->
 <div id="overview">
-  <%= link_to 'Subscribe via RSS', overview_url, :class => 'feed right' %>
-  <h3>Whats happening around <%= site.title %></h3>
+  <%= link_to 'Subscribe', overview_url, :class => 'feed right' %>
   
   <h4>Today <%= todays_short_date %></h4>
   <%= render_events @todays_events %>
@@ -39,7 +31,7 @@
 <% content_for :sidebar do %>
   <% if @articles.any? -%>
   <div class="sgroup">
-    <h3>Comments Needing Moderation</h3>
+    <h3>Comments awaiting your approval</h3>
     <ul class="slist">
     <% @articles.each do |article| -%>
       <li><%= link_to "<strong>(#{article.unapproved_comments.size})</strong> #{h(article.title)}", :controller => 'articles', :action => 'comments', :id => article.id, :filter => :unapproved %></li>
@@ -52,7 +44,7 @@
     <h3>Who done it</h3>
     <ul class="slist" id="activity">
       <% for user in @users %>
-        <li><%= link_to user.login, :controller => 'users', :action => 'show', :id => user.login %> showed up about <%= distance_of_time_in_words_to_now(user.updated_at) %> ago</li>
+        <li><%= link_to user.login, :controller => 'users', :action => 'show', :id => user.login %> showed up <%= distance_of_time_in_words_to_now(user.updated_at) %> ago</li>
       <% end %>
     </ul>
   </div>

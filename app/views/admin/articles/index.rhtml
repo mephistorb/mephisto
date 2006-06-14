@@ -1,12 +1,12 @@
-<h2>Your Articles</h2>
-
+<% content_for :action_nav do %>
 <!-- begin action nav -->
-<div class="round" id="page-nav">
-  <ul id="act-nav">
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
     <li><%= link_to "Create new article", :action => "new" %></li>
   </ul>
 </div>
 <!-- /end action nav -->
+<% end %>
 
 <% if @drafts.any? -%>
 <ul id="drafts">
@@ -22,8 +22,8 @@
     <tr>
       <th scope="col" class="small-col">Status</th>
       <th scope="col">Article</th>
+      <th scope="col">Comments</th>
       <th scope="col">Published</th>
-      <th scope="col" class="small-col">Edit</th>
     </tr>
   </thead>
   <tbody id="articles">

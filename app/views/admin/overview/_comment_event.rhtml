@@ -1,14 +1,10 @@
 <% with_options :controller => 'articles', :id => event.article_id do |article| -%>
 <li id="event-<%= event.id %>" class="event-comment<%= " shade" if shaded %>">
+  <%= link_to_article event.article %> received a comment.
+  
   <span class="event-time"><%= event_time_for event, later %></span>
-  <blockquote><p><%= truncate strip_tags(event.body), 100 %></p></blockquote>
-  <%= link_to_article event.article %> was commented on.
+  <blockquote><p>&quot;<%= truncate strip_tags(event.body), 100 %>&quot;</p></blockquote>
   <span class="meta">
-    <strong>Article:</strong>
-    <%= article.link_to 'Comments', :action => 'comments' %> |
-    <%= article.link_to 'Preview',  :action => 'show' %> |
-    <%= link_to_image('page_edit', { :controller => 'articles', :action => 'edit', :id => event.article_id }, { :size => '16x16' }) %><br />
-    <strong>Event:</strong> <%= link_to_remote 'Delete', :url => { :action => 'delete', :id => event } %><br />
     by <%=h event.author %>
   </span>
 </li>

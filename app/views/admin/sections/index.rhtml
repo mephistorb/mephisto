@@ -1,4 +1,13 @@
-<h2>Sections</h2>
+<% content_for :action_nav do %>
+<!-- begin action nav -->
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
+    <li><%= link_to 'New Section', :action => 'index' %></li>
+  </ul>
+</div>
+<!-- /end action nav -->
+<% end %>
+
 <%= render :partial => 'form' %>
 
 <% content_for :sidebar do %>
