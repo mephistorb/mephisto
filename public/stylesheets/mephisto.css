@@ -313,6 +313,11 @@ input[type='text']:focus, textarea:focus {
   border-bottom: 1px dotted #ccc;
 }
 
+#main h3 {
+  font-size: 100%;
+  color: #033;
+}
+
 #main p {
   padding: 0 5px 5px 5px;
 }
@@ -752,7 +757,7 @@ img.avatar {
 }
 
 #overview {
-  margin: 0;
+  margin: 40px 0 0 0;
 }
 
 #overview h3 {

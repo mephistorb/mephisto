@@ -36,6 +36,19 @@
     
   </dl>
 </div>
+
+<div id="spam" class="setgroup">
+  <h3>Spam prevention</h3>
+  <p>At the moment Mephisto uses <%= link_to 'Akismet', 'http://akismet.com' %> to automatically handle spam.</p>
+  <dl class="setform">
+    <dt><label>Akismet API Key</label></dt> 
+    <dd><%= text_field_tag :api_key, Akismet.api_key %></dd>
+    <dt><label>Blog url</label></dt> 
+    <dd><%= text_field_tag :blog, Akismet.blog %></dd>
+  </dl>
+</div>
+
+
 <p class="btns"><%= submit_tag 'Save and apply settings' %></p>
 <%= end_form_tag %>
     
