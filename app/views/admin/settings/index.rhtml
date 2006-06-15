@@ -1,3 +1,25 @@
+<% content_for :action_nav do %>
+<!-- TODO:  Move settings to different screens or maybe to tabs? -->
+<!-- begin action nav -->
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
+    <li><%= link_to "General", :controller => 'settings' %></li>
+    <li><%= link_to "Publishing", :controller => 'settings' %></li>
+    <li><%= link_to "Comments", :controller => 'settings' %></li>
+    <li><%= link_to "Feeds", :controller => 'settings' %></li>
+    <li id="select">
+      <a class="trigger" id="cog" href="#">&nbsp;</a>
+      <div id="optgroup" style="display: none">
+        <ul id="options">
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>
+<!-- /end action nav -->
+<% end %>
+
+
 <%= form_tag :action => "update" %>
 <div id="general" class="setgroup">
   <h3>General site settings</h3>

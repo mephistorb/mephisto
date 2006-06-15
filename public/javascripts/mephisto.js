@@ -12,7 +12,9 @@ DropMenu.prototype = {
     Event.observe(this.menu, 'mouseout', this.onMenuBlur.bindAsEventListener(this));
   },
   
-  onTriggerClick: function() {
+  onTriggerClick: function(event) {
+    Event.stop(event);
+    Event.element(event).onclick = function() { return false; } //For Safari
     clearTimeout(this.timeout);
     this.options.setStyle({opacity: 1});
     Element.toggle(this.options);

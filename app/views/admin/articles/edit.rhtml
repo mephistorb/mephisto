@@ -1,16 +1,24 @@
-<%= error_messages_for :article %>
-
-<% if @article.draft -%>
-<p><%= link_to 'Draft!', :action => :draft, :id => @article.draft %></p>
-<% end -%>
-
-<% form_for :article, @version, :url => { :action => 'update', :id => @article } do |f| -%>
-<%= render :partial => 'form', :object => f %>
-<p class="btns">
-  <%= save_button_tag %> 
-  <%= draft_button_tag %> or 
-  <%= link_to "cancel", :controller => "articles" %></p>
-<% end -%>
+<% content_for :action_nav do %>
+<!-- begin action nav -->
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
+    <li id="select">
+      <a class="trigger" id="cog" href="#">&nbsp;</a>
+      <div id="optgroup" style="display: none">
+        <ul id="options">
+          <% if @article.draft -%>
+          <li><%= link_to 'View draft', :action => :draft, :id => @article.draft %></li>
+          <% end -%>
+          <% if @article.comments.any? -%>
+          <li><%= link_to "View comments", :controller => 'articles', :action => 'comments', :id => @article %></li>
+          <% end %>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>
+<!-- /end action nav -->
+<% end %>
 
 
 <% content_for :sidebar do %>
@@ -35,3 +43,17 @@
   </div>
   <% end -%>
 <% end %>
+
+<%= error_messages_for :article %>
+
+
+
+<% form_for :article, @version, :url => { :action => 'update', :id => @article } do |f| -%>
+<%= render :partial => 'form', :object => f %>
+<p class="btns">
+  <%= save_button_tag %> 
+  <%= draft_button_tag %> or 
+  <%= link_to "cancel", :controller => "articles" %></p>
+<% end -%>
+
+

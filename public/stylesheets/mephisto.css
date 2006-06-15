@@ -10,7 +10,7 @@ body {
   font: normal 12px/1.5em "Lucida Grande", Lucida, Helvetica, sans-serif;
   background: #99D3D5;
   color: #333;
-  min-width: 950px;
+  min-width: 900px;
 }
 
 ul, li, form, dt, dl, dd, ol, div, p, 
@@ -267,6 +267,7 @@ input[type='text']:focus, textarea:focus {
   color: #fff;
   border-top: 1px solid #6fb4b6;
   border-bottom: 1px solid #6fb4b6;
+  min-height: 40px;
 }
 
 #act-nav {
@@ -326,9 +327,17 @@ input[type='text']:focus, textarea:focus {
 #select #options li {
   display: block;
   margin: 0;
-  padding: 5px;
-  border-bottom: 1px dotted #ccc;
+  padding: 5px 5px 5px 10px;
+  border-bottom: 2px solid #fff;
   color: #333;
+}
+
+#select #options:last-child {
+  border-bottom: 3px solid #fff;
+}
+
+#select #options li:hover {
+  background-color: #ddd;
 }
 
 #select #options a {
@@ -339,7 +348,9 @@ input[type='text']:focus, textarea:focus {
   padding: 0;
 }
 
-
+#options .endgroup {
+  border-bottom: 2px solid #999 !important;
+}
 
 /*
  *=MAIN
@@ -347,7 +358,9 @@ input[type='text']:focus, textarea:focus {
 
 #flashes {
   background: #fff9d0;
-  min-height: 30px;
+  min-height: 38px;
+  text-align: center;
+  font-weight: bold;
 }
 
 #main-content {
