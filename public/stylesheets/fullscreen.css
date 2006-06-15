@@ -7,12 +7,28 @@
 }
 
 #fullscreen #main {
-  width: 80%;
+  width: 330px;
   float: none;
   margin: 0 auto !important;
   text-align: left;
+  padding: 0;
 }
 
+#header {
+  background: #000;
+  text-align: center;
+  height: 100px;
+}
+
+#header h1 {
+  margin: 0 auto;
+  width: 150px;
+}
+
+#flash-errors {
+  background: #a22;
+  color: #fff;
+}
 
 /*
  *=FORMS
@@ -25,13 +41,13 @@
  */
  
 #body-account {
-  background: #fff;
   color: #333;
 }
 
 #body-account .btns {
   background: transparent;
   text-align: right;
+  border: none;
 }
 
 /*
@@ -39,8 +55,9 @@
  */
 
 .little-box {
-  width: 300px;
-  margin: 50px auto;
-  background: #eee;
+  width: 320px;
+  margin: 50px 0 0 0;
   text-shadow: 2px 2px #fff;
+  background: #f7f7f7;
+  border: 5px solid #fff;
 }

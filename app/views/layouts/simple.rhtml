@@ -10,27 +10,28 @@
 	</head>
 	<body id="body-<%= controller.controller_name %>">
 	
-	  <% unless controller.controller_name == 'account' %>
     	<!-- div.header -->
     	<div id="header">
-    	  <h1><a href="/" title="ArticleCast">Mephisto: Admin</a></h1>
+    	  <h1><%= link_to "#{site.title} &mdash; Admin", { :controller => '/admin/overview' }, :title => "#{site.title} admin" %></h1>
     	</div>
     	<!-- /div.header -->
-    <% end %>
       	
 	  <div id="container">  	
       
       <!-- div.content -->
     	<div id="fullscreen">
+    	  <% if flash[:error] %>
+    	  <div id="flash-errors"><%= @flash[:error] %></div>
+    	  <% end %>
+  	    <% if flash[:notice] %>
+  	    <div id="flash-notice">
+  	      <%= @flash[:notice] %>  
+  	    </div>
+  	    <% end %>
     	  
     	  <!-- div.left -->
     	  <div id="main">
-    	    <div id="flash-errors" style="display:none"></div>
-    	    <% if flash[:notice] %>
-    	    <div id="flash-notice">
-    	      <%= @flash[:notice] %>  
-    	    </div>
-    	    <% end %>
+
     	    
     	    <%= yield %>
     	  </div>

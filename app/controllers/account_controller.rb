@@ -19,9 +19,12 @@ class AccountController < ApplicationController
   def login
     return unless request.post?
     self.current_user = User.authenticate(params[:login], params[:password])
+    logger.info current_user
     if current_user
       redirect_back_or_default(:controller => '/admin/overview', :action => 'index')
       flash[:notice] = "Logged in successfully"
+    else
+      flash[:error] = "Could not log you in. Are you sure your Login name and Password are correct?"
     end
   end
   
