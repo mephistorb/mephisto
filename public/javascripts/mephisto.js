@@ -18,6 +18,11 @@ DropMenu.prototype = {
     clearTimeout(this.timeout);
     this.options.setStyle({opacity: 1});
     Element.toggle(this.options);
+    
+    if(this.options.visible())
+      Element.addClassName(this.trigger, 'down');
+    else
+     Element.removeClassName(this.trigger, 'down');
   },
   
   onMenuFocus: function() {
@@ -30,8 +35,10 @@ DropMenu.prototype = {
   },
   
   fadeMenu: function() {
-    if(!this.focused)
+    if(!this.focused) {
+      Element.removeClassName(this.trigger, 'down');
       new Effect.Fade(this.options, {duration: 0.2});
+    }
   }
 }
 

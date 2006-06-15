@@ -297,6 +297,8 @@ input[type='text']:focus, textarea:focus {
   position: absolute;
   right: 0;
   top: 0;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 #select a#cog {
@@ -306,12 +308,18 @@ input[type='text']:focus, textarea:focus {
   background: url(../images/cog.gif) no-repeat;
   padding: 11px 18px;
   outline: none;
+  margin: 0 !important;
+}
+
+.down {
+  background: #ccc url(../images/cog-down.gif) no-repeat !important;
+  border-left: 1px solid #5aa !important;
 }
 
 #select #optgroup {
   position: absolute;
-  top: 38px;
-  left: 2px;
+  top: 41px;
+  left: 4px;
   width: 240px;
   z-index: 9999;
   padding: 0 5px 5px 0;
