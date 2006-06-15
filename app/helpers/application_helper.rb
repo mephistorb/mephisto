@@ -21,5 +21,9 @@ module ApplicationHelper
   def filter_options
     [['Plain HTML', ''], ['Textile', 'textile_filter'], ['Markdown', 'markdown_filter'], ['Markdown with Smarty Pants', 'smartypants']]
   end
+  
+  def who(name)
+    return current_user.login == name ? "You" : name
+  end
 
 end

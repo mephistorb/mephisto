@@ -141,7 +141,8 @@ input[type='text']:focus, textarea:focus {
 .btns {
   padding: 10px !important;
   margin: 20px 0;
-  background: #ccc;
+  background: #cee;
+  border-top: 1px solid #99D3D5;
 }
 
 .big { font-size: 180% !important; }
@@ -453,13 +454,10 @@ input[type='text']:focus, textarea:focus {
   margin-bottom: 1px;
 }
 
-#revisions li img {
-  vertical-align: text-top;
-}
-
 #revisions li {
-  line-height: 140%;
   position: relative;
+  border-bottom: 1px dotted #C6F4F6;
+  min-height: 60px;
 }
 
 #revisions li input[type=checkbox] {
@@ -540,10 +538,19 @@ a#section-home {
 }
 
 #sbar .avatar {
-  background: #111;
-  border: 1px solid #333;
+  border: 1px solid #7bb;
+  background: #fff;
+  padding: 2px;
   float: left;
-  margin: 0 5px 0 15px;
+  margin: 0 5px 0 0;
+  max-height: 50px;
+  max-width: 50px;
+  overflow: hidden;
+}
+
+#revisions h4 {
+  font: bold 100% "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+  color: #333;
 }
 
 #sbar .sgroup {
@@ -565,9 +572,9 @@ a#section-home {
 .rev-num {
   position: absolute;
   top: 10px;
-  left: 100%;
+  right: 5px;
   font-size: 300%;
-  color: #333;
+  color: #488;
   font-family: Georgia, "Times New Roman", sans-serif;
 }
 

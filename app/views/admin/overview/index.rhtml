@@ -5,6 +5,7 @@
     <li><%= link_to "Create new article",  :controller => 'articles', :action => "new" %></li>
     <li><%= link_to "Create new section",  :controller => 'sections' %></li>
     <li><%= link_to "Update your account", :controller => 'users', :action => 'show', :id => current_user %></li>
+    <!-- TODO:  Hook this up when we decide what's needed.
     <li id="select">
       <a class="trigger" id="cog" href="#">&nbsp;</a>
       <div id="optgroup" style="display: none">
@@ -15,6 +16,7 @@
         </ul>
       </div>
     </li>
+  -->
   </ul>
 </div>
 <!-- /end action nav -->
@@ -54,7 +56,7 @@
     <h3>Who done it</h3>
     <ul class="slist" id="activity">
       <% for user in @users %>
-        <li><%= link_to user.login, :controller => 'users', :action => 'show', :id => user.login %> showed up <%= distance_of_time_in_words_to_now(user.updated_at) %> ago</li>
+        <li><%= link_to who(user.login), :controller => 'users', :action => 'show', :id => user.login %> showed up <%= distance_of_time_in_words_to_now(user.updated_at) %> ago</li>
       <% end %>
     </ul>
   </div>
