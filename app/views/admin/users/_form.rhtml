@@ -13,7 +13,7 @@
     <% if @user.avatar -%>
     <dd class="avatar"><%= avatar_for(@user) %></dd>
     <% end -%>
-    <dt><label for="avatar">Your picture</label> <span class="hint">Should be no larger than 75x75 pixels (jpeg, gif, or png)</span></dt>
+    <dt><label for="avatar">Your picture</label> <span class="hint">Should be no larger than 50x50 pixels (jpeg, gif, or png)</span></dt>
     <dd><%= file_field_tag 'user[uploaded_avatar]', :id => 'user_uploaded_avatar' %></dd>
   </dl>
 </div>

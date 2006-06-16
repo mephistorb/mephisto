@@ -141,7 +141,7 @@ input[type='text']:focus, textarea:focus {
 .btns {
   padding: 10px !important;
   margin: 20px 0;
-  background: #cee;
+  background: #dee;
   border-top: 1px solid #99D3D5;
 }
 
@@ -437,6 +437,7 @@ input[type='text']:focus, textarea:focus {
 
 #sbar .hint {
   color: #000;
+  margin-top: 4px;
 }
 
 #revisions, #resources, 
@@ -457,7 +458,7 @@ input[type='text']:focus, textarea:focus {
 #revisions li {
   position: relative;
   border-bottom: 1px dotted #C6F4F6;
-  min-height: 60px;
+  min-height: 50px;
 }
 
 #revisions li input[type=checkbox] {
@@ -510,7 +511,8 @@ a#section-home {
 
 #sbar .box {
   margin: 10px 0;
-  border: 1px solid #fff;
+  border: 1px solid #6aa;
+  background: #bee;
 }
 
 .sbar-group * {
@@ -543,8 +545,8 @@ a#section-home {
   padding: 2px;
   float: left;
   margin: 0 5px 0 0;
-  max-height: 50px;
-  max-width: 50px;
+  max-height: 40px;
+  max-width: 40px;
   overflow: hidden;
 }
 
@@ -792,11 +794,14 @@ a#section-home {
 #users li {
   background: #eee;
   margin: 0 0 10px 0;
+  padding: 5px;
 }
 
 #users li .avatar {
   float: left;
-  margin-right: 5px;
+  margin-right: 10px;
+  max-height: 50px;
+  max-width: 50px;
 }
 
 dd.avatar {
@@ -808,6 +813,8 @@ img.avatar {
   padding: 3px;
   background: #fff;
   border: 1px solid #ccc;
+  max-width: 50px;
+  max-height: 50px;
 }
 
 
@@ -982,7 +989,7 @@ h3.withcontrol {
 .feed {
   background: url(../images/icons/feed-icon-12x12.gif) 0 50% no-repeat;
   padding-left: 16px;
-  border: 0;
+  border: none !important;
   color: #f60;
 }
 

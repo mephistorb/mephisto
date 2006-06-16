@@ -10,13 +10,10 @@
 
 <ul id="users">
 <% @users.each do |user| -%>
-  <li class="round">
-    <div class="pad">
+  <li class="clear">
       <%= avatar_for user %>
       <h3><%= link_to user.login, :action => 'show', :id => user %></h3>
       <%= user.email %>
-      <p style="padding:5px"></p>
-    </div>
   </li>
 <% end -%>
 </ul>

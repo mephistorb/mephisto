@@ -1,3 +1,7 @@
+<% content_for :action_nav do %>
+  <div id="page-nav"></div>
+<% end %>
+
 <!-- FIXME:  Closing tag for form needs to be after the sidebar content in order to add options to sidebar -->
 <% form_for :article, @article, :url => { :action => 'create' }, :html => {:id => 'article-form'} do |f| -%>
   <%= render :partial => 'form', :object => f %>

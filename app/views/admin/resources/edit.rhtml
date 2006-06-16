@@ -1,5 +1,11 @@
-<h2>Update your template</h2>
-<div id="flash-notice" style="display:none"></div>
+<% content_for :action_nav do %>
+  <div id="page-nav">
+    <ul id="act-nav" class="clear">
+      <li><%= link_to "New template", :controller => 'design' %></li>
+    </ul>
+  </div>
+<% end %>
+
 <div id="template-container">
 <% form_remote_for :resource, @resource, :url => { :action => 'update', :id => @resource }, 
      :html => { :id => 'template-form' } do |f| -%>

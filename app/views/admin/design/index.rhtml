@@ -1,10 +1,18 @@
+<% content_for :action_nav do %>
+  <div id="page-nav">
+    <ul id="act-nav" class="clear">
+      <li><%= link_to "New template", :controller => 'design' %></li>
+    </ul>
+  </div>
+<% end %>
+
 <% form_for :resource, @resource, :url => { :action => 'create' } do |f| -%>
 <%= render :partial => 'form', :object => @resource, :locals => { 
   :title  => 'Create a new template',
   :hint   => 'You can use HTML and Liquid in your template.',
   :f      => f,
   :labels => { :data     => 'Template source code',
-               :filename => 'Title of your template' }
+               :filename => 'Name of your template' }
  } %>
 <p class="btns"><%= submit_tag 'Create template' %></p>
 <% end -%>
