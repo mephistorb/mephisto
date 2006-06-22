@@ -8,8 +8,7 @@ module Mephisto
         result = []
         context.stack do
           context['head'] = {
-            'feed'       => tag(:link, :rel => 'alternate', :type => 'application/atom+xml', :href => '/feed/atom.xml'),
-            'javascript' => content_tag(:script, nil, :type => 'text/javascript', :src => '/javascripts/mephisto.js')
+            'feed' => tag(:link, :rel => 'alternate', :type => 'application/atom+xml', :href => '/feed/atom.xml')
           }
 
           result << content_tag(:head, render_all(@nodelist, context))
