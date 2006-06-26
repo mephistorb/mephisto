@@ -36,10 +36,12 @@ class Template < Attachment
       nil
     end
 
-    def render_liquid_for(section, template_type, assigns = {}, controller = nil)      
-      templates          = (section && section.template && section.layout) ? [] : templates_for(template_type)
-      preferred_template = (section && section.template) || find_preferred(template_type, templates)
-      layout_template    = (section && section.layout)   || templates['layout']
+    def render_liquid_for(site, section, template_type, assigns = {}, controller = nil)      
+      templates           = (section && section.template && section.layout) ? [] : templates_for(template_type)
+      preferred_template  = (section && section.template) || find_preferred(template_type, templates)
+      layout_template     = (section && section.layout)   || templates['layout']
+      assigns['site']     = site.to_liquid
+      assigns['sections'] = Mephisto::Liquid::SectionsDrop.new(site)
       assigns['content_for_layout'] = Liquid::Template.parse(preferred_template).render(assigns, :registers => {:controller => controller})
       Liquid::Template.parse(layout_template).render(assigns, :registers => {:controller => controller})
     end
