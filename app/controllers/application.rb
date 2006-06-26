@@ -15,8 +15,7 @@ class ApplicationController < ActionController::Base
       assigns['articles']     = assigns['articles'].collect &:to_liquid
     end
     
-    assigns.update 'site' => site.to_liquid
-    render :text => site.templates.render_liquid_for(@section, template_type, assigns, self)
+    render :text => site.templates.render_liquid_for(site, @section, template_type, assigns, self)
   end
   
   protected

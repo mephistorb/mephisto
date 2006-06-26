@@ -23,7 +23,7 @@ class Admin::ArticlesController < Admin::BaseController
     @article  = site.articles.find_by_id(params[:id], :include => :comments)
     @comments = @article.comments.collect { |c| c.to_liquid }
     @article  = @article.to_liquid(:single)
-    render :text => Template.render_liquid_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => site.to_liquid)
+    render :text => Template.render_liquid_for(site, :single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => site.to_liquid)
   end
 
   def new

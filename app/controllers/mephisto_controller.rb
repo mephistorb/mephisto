@@ -72,10 +72,11 @@ class MephistoController < ApplicationController
       @article = page_name.nil? ? @section.articles.find_by_position : @section.articles.find_by_permalink(page_name)
     
       self.cached_references << @section << @article
-      render_liquid_template_for(template_type, 'section'       => @section.name, 
-                                                'section_title' => @section.title,
-                                                'pages'         => @section.articles.collect { |a| a.to_liquid },
-                                                'article'       => @article.to_liquid(:single))
+      render_liquid_template_for(template_type, 'section'          => @section.name, 
+                                                'section_title'    => @section.title,
+                                                'pages'            => @section.articles.collect(&:to_liquid),
+                                                'article'          => @article.to_liquid(:single),
+                                                'article_sections' => @article.sections.collect(&:to_liquid) )
     end
     
     def paged_search_url_for(page)
