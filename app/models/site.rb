@@ -11,6 +11,7 @@ class Site < ActiveRecord::Base
   
   serialize :filters, Array
   
+  before_validation_on_create :set_default_comment_options
   validates_uniqueness_of :host
 
   def filters=(value)
@@ -24,4 +25,12 @@ class Site < ActiveRecord::Base
       'host'     => host
     }
   end
+
+  protected
+    def set_default_comment_options
+      self.accept_comments  = true  unless accept_comments == false
+      self.approve_comments = false unless approve_comments?
+      self.comment_age      = 30    unless comment_age
+      true
+    end
 end

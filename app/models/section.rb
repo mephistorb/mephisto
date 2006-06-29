@@ -33,7 +33,7 @@ class Section < ActiveRecord::Base
     # returns [<#Section: about>, 'site_map']
     def find_section_and_page_name(section_path)
       page_name = []
-      section       = nil
+      section   = nil
       while section.nil? && section_path.any?
         section       = find_by_name(section_path.join('/'))
         page_name << section_path.pop if section.nil?

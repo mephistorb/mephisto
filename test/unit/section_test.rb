@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class SectionTest < Test::Unit::TestCase
-  fixtures :sections, :contents, :assigned_sections, :sites
+  fixtures :sections, :contents, :assigned_sections, :sites, :users
 
   def test_find_or_create_sanity_check
     assert_no_difference Section, :count do
@@ -52,13 +52,13 @@ class SectionTest < Test::Unit::TestCase
   end
 
   def test_should_include_home_section_by_default
-    assert contents(:welcome).has_section?(sections(:home))
-    assert contents(:welcome).has_section?(sections(:about))
+    assert  contents(:welcome).has_section?(sections(:home))
+    assert  contents(:welcome).has_section?(sections(:about))
     assert !contents(:another).has_section?(sections(:about))
   end
 
   def test_should_create_article_with_sections
-    a = Article.create :title => 'foo', :body => 'bar', :user_id => 1, :section_ids => [sections(:home).id, sections(:about).id]
+    a = Article.create :title => 'foo', :body => 'bar', :user_id => 1, :section_ids => [sections(:home).id, sections(:about).id], :site_id => 1
     assert_equal [sections(:about), sections(:home)], a.sections
   end
 

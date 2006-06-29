@@ -4,8 +4,8 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   def before_save(record)
     @event = Event.new 
     @event.mode = case
-      when record.is_a?(Comment)      then 'comment'
-      when record.new_record?         then 'publish'
+      when record.is_a?(Comment) then 'comment'
+      when record.new_record?    then 'publish'
       else 'edit'
     end
   end

@@ -2,3 +2,6 @@ default:
   id: 1
   host: unusedfornow
   title: Mephisto
+  accept_comments: true
+  approve_comments: false
+  comment_age: 30

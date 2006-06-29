@@ -9,6 +9,9 @@ first:
   title: Mephisto
   host: test.host
   filters: "--- \n- :foo\n- :bar\n"
+  accept_comments: true
+  approve_comments: false
+  comment_age: 30
 
 hostess:
   id: 2

@@ -16,7 +16,7 @@ class DraftTest < Test::Unit::TestCase
 
   def test_should_count_new_drafts
     assert_difference Article::Draft, :count_new do
-      Article.new(:title => 'foo').save_draft
+      Article.new(:title => 'foo', :site_id => 1).save_draft
     end
   end
 
@@ -25,12 +25,12 @@ class DraftTest < Test::Unit::TestCase
     assert_equal [content_drafts(:first)], sites(:first).drafts.find_new(:all)
     assert_equal [content_drafts(:cupcake_unfinished)], sites(:hostess).drafts.find_new(:all)
     
-    Article.new(:title => 'foo').save_draft
-    sites(:first).articles.create(:title => 'bar').save_draft
-    
-    # XXX (streadway) is this correct behavior? Should we be having many drafts through articles?
-    assert_equal 1, sites(:first).drafts(true).count_new
-    assert_equal 4, Article::Draft.count_new
+    assert_difference Article::Draft, :count_new, 2 do
+      assert_difference sites(:first).drafts, :count_new, 2 do
+        Article.new(:title => 'foo', :site_id => 1).save_draft
+        sites(:first).articles.create(:title => 'bar', :site_id => 1).save_draft
+      end
+    end
   end
 
   def test_should_change_draft_to_unsaved_article
@@ -55,7 +55,7 @@ class DraftTest < Test::Unit::TestCase
   def test_should_save_draft_of_new_article
     assert_no_difference Article, :count do
       assert_difference Article::Draft, :count do
-        article = Article.new(:title => 'foo')
+        article = Article.new(:title => 'foo', :site_id => 1)
         article.save_draft
         assert_equal 'foo', article.draft.title
       end

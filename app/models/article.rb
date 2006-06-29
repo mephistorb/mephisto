@@ -1,6 +1,7 @@
 class Article < Content
-  validates_presence_of :title, :user_id
+  validates_presence_of :title, :user_id, :site_id
 
+  after_validation :set_comment_expiration
   before_create :create_permalink
   before_create :set_filter_from_user
   after_save    :save_assigned_sections
@@ -11,7 +12,11 @@ class Article < Content
     end
   end
 
-  acts_as_draftable :fields => [:title, :body, :excerpt]
+  acts_as_draftable :fields => [:title, :body, :excerpt, :site_id] do
+    def self.included(base)
+      base.validates_presence_of :site_id
+    end
+  end
 
   has_many :assigned_sections
   has_many :sections, :through => :assigned_sections, :order => 'sections.name'
@@ -110,7 +115,19 @@ class Article < Content
       :permalink => permalink }.merge(options)
   end
 
+  def comments_expired?
+    expire_comments_at && expire_comments_at > Time.now.utc
+  end
+
   protected
+    def set_comment_expiration
+      if site.accept_comments?
+        self.expire_comments_at = published_at + site.comment_age.days if site.comment_age.to_i > 0
+      else
+        self.expire_comments_at = published_at
+      end unless !errors.empty? || published_at.nil? || expire_comments_at
+    end
+  
     def create_permalink
       self.permalink = title.strip.downcase \
         .gsub(/['"]/, '')                   \
