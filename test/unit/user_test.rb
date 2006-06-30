@@ -41,8 +41,13 @@ class UserTest < Test::Unit::TestCase
     assert_equal users(:quentin), User.authenticate('quentin', 'quentin')
   end
 
-  protected
-  def create_user(options = {})
-    User.create({ :login => 'quire', :email => 'quire@example.com', :password => 'quire', :password_confirmation => 'quire' }.merge(options))
+  def test_should_allow_empty_filter
+    users(:quentin).update_attribute :filters, ['']
+    assert_equal [], users(:quentin).filters
   end
+
+  protected
+    def create_user(options = {})
+      User.create({ :login => 'quire', :email => 'quire@example.com', :password => 'quire', :password_confirmation => 'quire' }.merge(options))
+    end
 end

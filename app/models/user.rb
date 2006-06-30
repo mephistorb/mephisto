@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   end
 
   def filters=(value)
-    write_attribute :filters, [value].flatten.collect(&:to_sym)
+    write_attribute :filters, [value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq
   end
 
   def to_param
