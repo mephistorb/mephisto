@@ -47,6 +47,7 @@
 <!-- /end optional fields -->
 
 <% content_for :sidebar do %>
+<!--
   <div class="sgroup">
     <h3>Publish in these sections (FIXME)</h3>
     <ul class="slist">
@@ -61,9 +62,23 @@
   </div>
   
   <div class="sgroup">
-    <h3>Comments</h3>
+
+    <h3>Latest uploads</h3>
+      <ul id="assets">
+        <% 1.upto(5) do |i| %>
+        <%= %(
+        <li id="#{i}">
+          <img src="/images/assets/preview-s.png" />
+        </li>
+        ) %>
+        <% end %>
+    </ul>
+  </div>
+  
+  
+  <div class="sgroup">
+    <h3>Other options</h3>
     <p><%= check_box_tag 'allow_comments' %> Allow comments</p>
   </div>
+-->
 <% end %>
-
-<%# observe_form "article-form", :frequency => 2, :with => %(Form.serialize('article-form')), :url => { :action => "live_preview" } %>      

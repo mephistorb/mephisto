@@ -550,7 +550,7 @@ a#section-home {
   overflow: hidden;
 }
 
-#revisions h4 {
+#revisions h4, #assets h4 {
   font: bold 100% "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
   color: #333;
 }
@@ -759,28 +759,6 @@ a#section-home {
   margin: 0 0 0 20px;
 }
 
-
-
-/*
- *=ASSET MANAGER
- */
-
-#asset-manager {
-  position: fixed;
-  top: 95%;
-  left: 0;
-  width: 100%;
-  height: 80%;
-  background: #000;
-}
-
-#am-tab {
-  position: absolute;
-  top: -7px;
-  right: 10%;
-}
-
-
 /*
  *=USERS
  */
@@ -964,7 +942,38 @@ li.event-none     { background-image: url(../images/icons/minusb.gif); }
 }
 
 
+/*
+ *=ASSET MANAGEMENT
+ */
 
+#assets {
+  list-style: none;
+  margin-top: 5px;
+}
+
+#assets li {
+  display: inline;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+#assets li a {
+  padding: 4px;
+  background: #fff;
+}
+
+#assets img {
+  max-height: 50px;
+  max-width: 50px;
+  padding: 3px;
+  background: #fff;
+  border: 1px solid #8BCACD;
+}
+
+#assets span {
+  display: block;
+  font-size: 80%;
+}
 /*
  *=MISC
  */
