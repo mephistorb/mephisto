@@ -31,6 +31,7 @@ class MephistoController < ApplicationController
     @article  = site.articles.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
     @comments = @article.comments.collect { |c| c.to_liquid }
     self.cached_references << @article
+    Mephisto::Liquid::CommentForm.article = @article
     @article  = @article.to_liquid(:single)
     render_liquid_template_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments)
   end
@@ -72,6 +73,7 @@ class MephistoController < ApplicationController
       @article = page_name.nil? ? @section.articles.find_by_position : @section.articles.find_by_permalink(page_name)
     
       self.cached_references << @section << @article
+      Mephisto::Liquid::CommentForm.article = @article
       render_liquid_template_for(template_type, 'section'          => @section.name, 
                                                 'section_title'    => @section.title,
                                                 'pages'            => @section.articles.collect(&:to_liquid),

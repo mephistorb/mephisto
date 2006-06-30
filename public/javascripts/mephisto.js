@@ -3,6 +3,7 @@ var DropMenu = Class.create();
 DropMenu.prototype = {
   initialize: function(element) {
     this.menu = $(element);
+    if(!this.menu) return;
     this.trigger = document.getElementsByClassName('trigger', this.menu)[0];
     this.options = $('optgroup');
     this.focused = false;
@@ -116,18 +117,6 @@ var Fat = {
   }
 }
 
-function highlight_comment() {
-  var h = location.hash;
-  var c = h ? h.substr(1) : '';
-  if(document.getElementById(c)) Fat.fade_element(c, 20, 1500);
-}
-
-window.onload = function() {
-  highlight_comment();
-}
-
-
-
 Asset = {
   upload: function(form) {
     form = $(form);
@@ -135,7 +124,6 @@ Asset = {
     form.submit();
   }
 }
-
 
 
 /*-------------------- Flash ------------------------------*/
@@ -171,8 +159,4 @@ var Flash = {
     new Effect.Fade('flash-errors', {duration: 0.3});
   }
 }
-
-Event.observe(window, 'load', function() {
-  new DropMenu('select');
-});
 

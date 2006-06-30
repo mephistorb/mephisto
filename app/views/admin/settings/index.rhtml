@@ -3,39 +3,32 @@
 <!-- begin action nav -->
 <div id="page-nav">
   <ul id="act-nav" class="clear">
-    <li><%= link_to "General", :controller => 'settings' %></li>
-    <li><%= link_to "Publishing", :controller => 'settings' %></li>
-    <li><%= link_to "Comments", :controller => 'settings' %></li>
-    <li><%= link_to "Feeds", :controller => 'settings' %></li>
-    <li id="select">
-      <a class="trigger" id="cog" href="#">&nbsp;</a>
-      <div id="optgroup" style="display: none">
-        <ul id="options">
-        </ul>
-      </div>
-    </li>
+    <li><%= link_to "General", '#general' %></li>
+    <li><%= link_to "Publishing", '#publish' %></li>
+    <li><%= link_to "Comments", '#spam' %></li>
   </ul>
 </div>
 <!-- /end action nav -->
 <% end %>
 
 
-<%= form_tag :action => "update" %>
+<% form_for :site, :url => { :action => "update" } do |f| %>
 <div id="general" class="setgroup">
   <h3>General site settings</h3>
   <dl class="setform">
     <dt><label for="site_title">Website title</label></dt>
-    <dd><%= text_field 'site', 'title' %></dd>
+    <dd><%= f.text_field :title %></dd>
     <dt><label for="site_subtitle">Website subtitle</label></dt>
-    <dd><%= text_field 'site', 'subtitle' %></dd>
+    <dd><%= f.text_field :subtitle %></dd>
     <dt>
       <label for="site_email">Administrator email</label>
       <span class="hint">Shown in emails sent from your site</span>
     </dt>
-    <dd><%= text_field 'site', 'email' %></dd>
+    <dd><%= f.text_field :email %></dd>
   </dl>
 </div>
 
+<% if false -%>
 <div id="publish" class="setgroup">
   <h3>Publishing and reading</h3>
   <dl class="setform">
@@ -58,29 +51,35 @@
     
   </dl>
 </div>
+<% end -%>
 
 <div id="spam" class="setgroup">
   <h3>Spam prevention</h3>
   <p>At the moment Mephisto uses <%= link_to 'Akismet', 'http://akismet.com' %> to automatically handle spam.</p>
   <dl class="setform">
     <dt><label>Akismet API Key</label></dt> 
-    <dd><%= text_field_tag :api_key, Akismet.api_key %></dd>
+    <dd><%= f.text_field :akismet_key %></dd>
     <dt><label>Blog url</label></dt> 
-    <dd><%= text_field_tag :blog, Akismet.blog %></dd>
-    <dt><label>Allow comments?</label></dt>
-    <dd><%= check_box_tag 'allow_comments' %> Yes, I would like to accept comments.</dd>
-    <dt><label for="moderate_comments">Will you approve comments?</label></dt>
-    <dd><%= check_box_tag 'moderate_comments' %> Yes, All comments require approval before being published.</dd>
-    <dt><label for="comment_lifetime">Close comments</label></dt>
+    <dd><%= f.text_field :akismet_url %></dd>
+    <dt><label for="site_accept_comments">Allow comments?</label></dt>
+    <dd><%= f.check_box 'accept_comments' %> Yes, I would like to accept comments.</dd>
+    <dt><label for="site_approve_comments">Will you approve comments?</label></dt>
+    <dd><%= f.check_box 'approve_comments' %> Yes, All comments require approval before being published.</dd>
+    <dt><label for="site_comment_age">Close comments</label></dt>
     <dd>
-      <select name="comment_lifetime">
-        <%= options_for_select ['Never', '24 hours after publishing', '1 week after publishing', '2 weeks after publishing', '1 month after publishing', '3 months after publishing', '6 months after publishing', '1 year after publishing'] %>
-      </select>
+      <%= f.select :comment_age, [['Never', 0], 
+          ['24 hours after publishing',     1], 
+          ['1 week after publishing',       7], 
+          ['2 weeks after publishing',      14], 
+          ['1 month after publishing',      30], 
+          ['3 months after publishing',     90], 
+          ['6 months after publishing',     180], 
+          ['1 year after publishing',       365]] %>
     </dd>
   </dl>
 </div>
 
 
 <p class="btns"><%= submit_tag 'Save and apply settings' %></p>
-<%= end_form_tag %>
+<% end %>
     

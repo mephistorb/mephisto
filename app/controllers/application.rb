@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   protected
     def load_site
       # Redefine this method if you wish to fail on host without a site
-      @site ||= Site.find_by_host(request.host) || Site.find(:first)
+      @site ||= Site.find_by_host(request.host) || Site.find(:first, :order => 'id')
     end
 
   #  def set_cache_root

@@ -1,25 +1,4 @@
-<% content_for :action_nav do %>
-<!-- begin action nav -->
-<div id="page-nav">
-  <ul id="act-nav" class="clear">
-    <li id="select">
-      <a class="trigger" id="cog" href="#">&nbsp;</a>
-      <div id="optgroup" style="display: none">
-        <ul id="options">
-          <% if @article.draft -%>
-          <li><%= link_to 'View draft', :action => :draft, :id => @article.draft %></li>
-          <% end -%>
-          <% if @article.comments.any? -%>
-          <li><%= link_to "View comments", :controller => 'articles', :action => 'comments', :id => @article %></li>
-          <% end %>
-        </ul>
-      </div>
-    </li>
-  </ul>
-</div>
-<!-- /end action nav -->
-<% end %>
-
+<%= render :partial => "page_nav" %>
 
 <% content_for :sidebar do %>
   <% if @article.versions.any? -%>
@@ -40,8 +19,6 @@
 <% end %>
 
 <%= error_messages_for :article %>
-
-
 
 <% form_for :article, @version, :url => { :action => 'update', :id => @article } do |f| -%>
 <%= render :partial => 'form', :object => f %>

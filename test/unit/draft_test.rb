@@ -58,6 +58,7 @@ class DraftTest < Test::Unit::TestCase
         article = Article.new(:title => 'foo', :site_id => 1)
         article.save_draft
         assert_equal 'foo', article.draft.title
+        assert_equal 1, article.draft.site_id
       end
     end
   end

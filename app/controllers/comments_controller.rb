@@ -29,11 +29,12 @@ class CommentsController < ApplicationController
       logger.info "Checking Akismet (#{Akismet.api_key}) for new comment on Article #{@article.id}.  #{@comment.approved ? 'Approved' : 'Blocked'}"
     end
 
-    if @comment.save
-      redirect_to comment_preview_url(@article.hash_for_permalink(:comment => @comment))
-    else
-      show_article_with 'errors' => @comment.errors.full_messages
-    end
+    @comment.save!
+    redirect_to comment_preview_url(@article.hash_for_permalink(:comment => @comment))
+  rescue ActiveRecord::RecordInvalid
+    show_article_with 'errors' => @comment.errors.full_messages
+  rescue Article::CommentNotAllowed
+    show_article_with 'errors' => ["Commenting has been disabled on this article"]
   end
   
   protected
@@ -42,6 +43,7 @@ class CommentsController < ApplicationController
     end
 
     def show_article_with(assigns)
+      Mephisto::Liquid::CommentForm.article = @article
       @comments = @article.comments.reject(&:new_record?).collect(&:to_liquid)
       @article  = @article.to_liquid(:single)
       render_liquid_template_for(:single, assigns.merge('articles' => [@article], 

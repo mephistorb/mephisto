@@ -85,9 +85,11 @@ class ArticleTest < Test::Unit::TestCase
   end
   
   def test_comment_expiry
-    a = Article.new :expire_comments_at => 5.minutes.ago.utc
-    assert !a.comments_expired?
-    a.expire_comments_at = 5.minutes.from_now.utc
-    assert  a.comments_expired?
+    a = Article.new :expire_comments_at => 5.minutes.from_now.utc, :published_at => 5.minutes.from_now.utc
+    assert !a.comments_allowed?
+    a.published_at = 5.minutes.ago.utc
+    assert  a.comments_allowed?
+    a.expire_comments_at = 5.minutes.ago.utc
+    assert !a.comments_allowed?
   end
 end

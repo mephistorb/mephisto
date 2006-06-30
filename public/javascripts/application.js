@@ -130,6 +130,10 @@ var ArticleForm = {
 
   getAvailableComments: function() {
     return $$('#main div').reject(function(div) { return !(div.visible() && div.id.match(/^comment-/)); }).collect(function(div) { return div.id.match(/comment-(\d+)/)[1] });
+  },
+  
+  viewComments: function() {
+    location.href = "?filter=" + $F(this).toLowerCase();
   }
 }
 
@@ -161,3 +165,9 @@ var SectionForm = {
     new Ajax.Request('/admin/sections/order/' + Navigate.currentId(), {asynchronous:true, evalScripts:true, parameters:query});
   }
 }
+
+Event.observe(window, 'load', function() {
+  new DropMenu('select');
+  var commentsView = $('comments-view');
+  if(commentsView) Event.observe(commentsView, 'change', ArticleForm.viewComments.bind(commentsView));
+});

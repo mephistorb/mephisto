@@ -72,6 +72,7 @@ about:
   published_at: <%= (4.days - 13.minutes).ago.to_s(:db) %>
   user_id: 1
   type: Article
+  expire_comments_at: <%= 3.days.ago.utc.to_s :db %>
 site_map:
   id: 7
   site_id: 1

@@ -1,13 +1,5 @@
-<%= render :partial => "page_nav" %>
+<h2>Unapproved Comments</h2>
 
-<h2><%= link_to_article @article %><%= %( <small>(#{(params[:filter] || :all).to_s.humanize})</small>) %></h2>
-
-<h3 class="withcontrol">
-  Show comments:
-  <select id="comments-view">
-    <%= options_for_select ['All', 'Unapproved', 'Approved'], params[:filter].to_s.humanize %>
-  </select>
-</h3>
 <ul class="pagelist">
   <% @comments.each_with_index do |comment, i| -%>
   <li class="event-comment<%= " shade" if (i % 2 > 0) %>" id="comment-<%= comment.id %>">

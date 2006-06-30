@@ -22,6 +22,18 @@ class CommentTest < Test::Unit::TestCase
     assert_equal "<p><strong>test</strong> comment</p>", c.body_html
   end
 
+  def test_should_not_add_comment_to_pending_article
+    assert_raises Article::CommentNotAllowed do
+      contents(:future).comments.create(:body => 'flunk', :author => 'bob', :author_ip => '127.0.0.1')
+    end
+  end
+
+  def test_should_not_add_comment_to_article_with_expired_comments
+    assert_raises Article::CommentNotAllowed do
+      contents(:about).comments.create(:body => 'flunk', :author => 'bob', :author_ip => '127.0.0.1')
+    end
+  end
+
   def test_should_return_correct_author_link
     assert_equal 'rico',                            contents(:welcome_comment).author_link
     contents(:welcome_comment).author_url = 'abc'

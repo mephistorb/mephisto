@@ -1,4 +1,5 @@
 class Article < Content
+  class CommentNotAllowed < StandardError; end
   validates_presence_of :title, :user_id, :site_id
 
   after_validation :set_comment_expiration
@@ -16,6 +17,10 @@ class Article < Content
     def self.included(base)
       base.validates_presence_of :site_id
     end
+    
+    def status() :pending ; end
+    def comments() []     ; end
+    def published?() false; end
   end
 
   has_many :assigned_sections
@@ -115,8 +120,8 @@ class Article < Content
       :permalink => permalink }.merge(options)
   end
 
-  def comments_expired?
-    expire_comments_at && expire_comments_at > Time.now.utc
+  def comments_allowed?
+    status == :published && (expire_comments_at.nil? || expire_comments_at > Time.now.utc)
   end
 
   protected

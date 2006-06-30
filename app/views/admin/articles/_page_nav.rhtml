@@ -1,0 +1,22 @@
+<% content_for :action_nav do %>
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
+    <li id="select">
+      <a class="trigger" id="cog" href="#">&nbsp;</a>
+      <div id="optgroup" style="display: none">
+        <ul id="options">
+        <% unless @article.new_record? -%>
+          <li><%= link_to 'View article', :action => :edit, :id => @article %></li>
+        <% end -%>
+        <% if @article.draft -%>
+          <li><%= link_to 'View draft', :action => :draft, :id => @article.draft %></li>
+        <% end -%>
+        <% if @article.comments.any? -%>
+          <li><%= link_to "View comments", :controller => 'articles', :action => 'comments', :id => @article %></li>
+        <% end %>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>
+<% end unless @article.new_record? && @article.draft.nil? && @article.comments.empty? -%>

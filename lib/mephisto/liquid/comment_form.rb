@@ -1,9 +1,11 @@
 module Mephisto
   module Liquid
     class CommentForm < ::Liquid::Block
+      cattr_accessor :article
       include Reloadable
     
       def render(context)
+        return '' unless article.comments_allowed?
         result = []
         context.stack do
           if context['message'].blank? 
