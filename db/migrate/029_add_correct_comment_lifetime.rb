@@ -15,7 +15,7 @@ class AddCorrectCommentLifetime < ActiveRecord::Migration
       site.update_attributes(:accept_comments => true, :approve_comments => false, :comment_age => 30)
     end
     Article.find(:all, :select => 'id, created_at, expire_comments_at').each do |article|
-      article.update_attribute(:expire_comments_at => (article.created_at + 30.days))
+      article.update_attribute(:expire_comments_at, (article.created_at + 30.days))
     end
   end
 
