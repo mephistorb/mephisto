@@ -1,4 +1,4 @@
-class AddCorrectCommentLifetime < ActiveRecord::
+class AddCorrectCommentLifetime < ActiveRecord::Migration
   class Site < ActiveRecord::Base ; end
   class Content < ActiveRecord::Base ; end
   class Article < Content ; end
@@ -11,11 +11,11 @@ class AddCorrectCommentLifetime < ActiveRecord::
     add_column "sites", "comment_age", :integer
     add_column "contents", "expire_comments_at", :datetime
     add_column "content_versions", "expire_comments_at", :datetime
-    Section.find(:all, :select => 'id, accept_comments, approve_comments, comment_age').each do |section|
-      section.update_attributes :accept_comments => true, :approve_comments => false, :comment_age => 30
+    Site.find(:all, :select => 'id, accept_comments, approve_comments, comment_age').each do |site|
+      site.update_attributes(:accept_comments => true, :approve_comments => false, :comment_age => 30)
     end
     Article.find(:all, :select => 'id, created_at, expire_comments_at').each do |article|
-      article.update_attribute :expire_comments_at => (article.created_at + 30.days)
+      article.update_attribute(:expire_comments_at => (article.created_at + 30.days))
     end
   end
 
