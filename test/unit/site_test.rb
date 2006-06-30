@@ -44,7 +44,12 @@ class SiteTest < Test::Unit::TestCase
     assert_equal [content_drafts(:first), content_drafts(:welcome)], sites(:first).drafts
     assert_equal [content_drafts(:cupcake_unfinished), content_drafts(:cupcake_welcome)], sites(:hostess).drafts
   end
-  
+
+  def test_should_allow_empty_filter
+    sites(:first).update_attribute :filters, ['']
+    assert_equal [], sites(:first).reload.filters
+  end
+
   def test_liquid_keys
     assert_equal ['host', 'subtitle', 'title'], sites(:first).to_liquid.keys.sort
   end

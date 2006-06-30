@@ -20,16 +20,16 @@ class Site < ActiveRecord::Base
     comment.has_many :all_comments
   end
 
-  def filters=(value)
-    write_attribute :filters, [value].flatten.collect(&:to_sym)
-  end
-
   def to_liquid
     {
       'title'    => title, 
       'subtitle' => subtitle,
       'host'     => host
     }
+  end
+
+  def filters=(value)
+    write_attribute :filters, [value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq
   end
 
   protected

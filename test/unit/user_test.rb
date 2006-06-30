@@ -43,7 +43,7 @@ class UserTest < Test::Unit::TestCase
 
   def test_should_allow_empty_filter
     users(:quentin).update_attribute :filters, ['']
-    assert_equal [], users(:quentin).filters
+    assert_equal [], users(:quentin).reload.filters
   end
 
   protected
