@@ -1,6 +1,6 @@
 <%= render :partial => "page_nav" %>
 
-<h2><%= link_to_article @article %><%= %( <small>(#{(params[:filter] || :all).to_s.humanize})</small>) %></h2>
+<h3><%= link_to_article @article %></h3>
 
 <h3 class="withcontrol">
   Show comments:
@@ -9,6 +9,7 @@
   </select>
 </h3>
 <ul class="pagelist">
+  <% if @comments.any? %>
   <% @comments.each_with_index do |comment, i| -%>
   <li class="event-comment<%= " shade" if (i % 2 > 0) %>" id="comment-<%= comment.id %>">
     <blockquote><p>"<%= truncate strip_tags(comment.body), 255 %>"</p></blockquote>
@@ -24,4 +25,7 @@
     </span>
   </li>
   <% end -%>
+  <% else %>
+    <li class="event-none shade">This article has no <%= params[:filter].to_s.humanize.downcase %> comments.</li>
+  <% end %>
 </ul>

@@ -6,10 +6,10 @@
       <div id="optgroup" style="display: none">
         <ul id="options">
         <% unless @article.new_record? -%>
-          <li><%= link_to 'View article', :action => :edit, :id => @article %></li>
+          <li><%= link_to 'Edit this article', :action => :edit, :id => @article %></li>
         <% end -%>
         <% if @article.draft -%>
-          <li><%= link_to 'View draft', :action => :draft, :id => @article.draft %></li>
+          <li><%= link_to 'Edit article draft', :action => :draft, :id => @article.draft %></li>
         <% end -%>
         <% if @article.comments.any? -%>
           <li><%= link_to "View comments", :controller => 'articles', :action => 'comments', :id => @article %></li>

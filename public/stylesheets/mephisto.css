@@ -888,7 +888,7 @@ li.event-none     { background-image: url(../images/icons/minusb.gif); }
 .events li blockquote p {
   margin: 0 !important;
   padding: 0 !important;
-  color: #000;
+  color: #444;
   font: italic 100% "Times New Roman", serif;
 }
 
@@ -1062,7 +1062,6 @@ ul.nobull li label {
 blockquote p {
   margin: 0 !important;
   padding: 0 !important;
-  color: #000;
   font: italic 110% "Times New Roman", serif;
 }
 
