@@ -9,7 +9,7 @@ module MephistoPlugins
 
     def measure_map_post(article)
       javascript_tag(%Q{if(!mmposts){var mmposts=[];}mmposts[mmposts.length]="#{article['id']}";}) +
-      %Q{<!-- mmp mmid:#{article['id']} mmdate:#{format_date(article['published_at'], :db)} mmurl:#{url_for_article(article)} mmtitle:#{escape_html(article['title'])} -->}
+      %Q{<!-- mmp mmid:#{article['id']} mmdate:#{format_date(article['published_at'], :db)} mmurl:#{article['url']} mmtitle:#{escape_html(article['title'])} -->}
     end
 
     def measure_map_footer(foo)
