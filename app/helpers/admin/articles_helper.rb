@@ -14,7 +14,7 @@ module Admin::ArticlesHelper
   end
 
   def published_at_for(article)
-    article.published? ? article.published_at.to_s(:long) : "not published"
+    article.published? ? article.published_at.to_s(:stub) : "not published"
   end
 
   def valid_filter?(filter = params[:filter])
