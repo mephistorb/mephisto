@@ -50,7 +50,6 @@
 </dl>
 <!-- /end optional fields -->
 
-<% if false %>
 <!--
   <div class="sgroup">
     <h3>Publish in these sections</h3>
@@ -69,19 +68,41 @@
     <%= form.date_select :expire_comments_at %>
   <% end -%>
   </div>
-  
-  <div class="sgroup">
+-->
 
-    <h3>Latest uploads</h3>
-      <ul id="assets">
-        <% 1.upto(5) do |i| %>
-        <%= %(
-        <li id="#{i}">
-          <img src="/images/assets/preview-s.png" />
-        </li>
-        ) %>
-        <% end %>
+<% content_for :sidebar do %>
+<% if false %>
+  <div class="sgroup" id="filetabs">
+
+    <ul class="stabs">
+      <li id="selected"><a href="#latest-files" title="Latest files uploaded">Latest files</a></li>
+      <li><a href="#search-files" title="Search for files">Search files</a></li>
+      <li><a href="#upload-files" title="Upload new files">Upload files</a></li>
     </ul>
+    <div id="tabpanels">
+      <div class="tabpanel" id="latest-files">
+        <ul id="assets">
+          <% 1.upto(5) do |i| %>
+          <%= %(
+          <li id="#{i}">
+            <img src="/images/assets/preview-s.png" title="Cool Image, Uploaded July 1st 2006" />
+          </li>
+          ) %>
+          <% end %>
+        </ul>
+      </div>
+      <div class="tabpanel" id="search-files" style="display:none;">
+        <p>This is the search</p>
+        <input type="search" />
+        
+      </div>
+      <div class="tabpanel" id="upload-files" style="display:none;">
+        <p>This will be uploading</p>
+        <input type="file" />
+        <input type="submit" value="Upload" />
+      </div>
+    </div>
+    
   </div>
   
   
@@ -89,5 +110,5 @@
     <h3>Other options</h3>
     <p><%= check_box_tag 'allow_comments' %> Allow comments</p>
   </div>
--->
+  <% end %>
 <% end %>

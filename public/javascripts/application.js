@@ -168,6 +168,8 @@ var SectionForm = {
 
 Event.observe(window, 'load', function() {
   new DropMenu('select');
+  new TinyTab('filetabs');
+  
   var commentsView = $('comments-view');
   if(commentsView) Event.observe(commentsView, 'change', ArticleForm.viewComments.bind(commentsView));
 });

@@ -43,6 +43,35 @@ DropMenu.prototype = {
   }
 }
 
+var TinyTab = Class.create();
+TinyTab.prototype = {
+  initialize: function(element) {
+    this.container = $(element);
+    if(!this.container) return;
+    
+    this.setup();
+  },
+  
+  setup: function() {
+    var links = document.getElementsByClassName('stabs', this.container)[0]
+    links.cleanWhitespace();
+    this.tabLinks = $A(links.childNodes);
+    this.tabPanels = document.getElementsByClassName('tabpanel', this.container);
+    
+    this.tabLinks.each(function(link) {
+      Event.observe(link, 'click', function(event) {
+        var lastclicked = link;
+        this.tabPanels.each(function(element) { Element.hide(element) });
+        var element = Event.element(event);
+        var finding = element.getAttribute('href').split('#')[1];
+        $(finding).show();
+        Event.stop(event);
+        element.onclick = function() { return false; } //Safari bug
+      }.bindAsEventListener(this));
+    }.bind(this));
+  }
+}
+
 // @name      The Fade Anything Technique
 // @namespace http://www.axentric.com/aside/fat/
 // @version   1.0-RC1

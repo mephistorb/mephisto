@@ -592,7 +592,42 @@ a#section-home {
 
 .slist a { border: 0; }
 
+.stabs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
+.stabs li {
+  display: inline;
+}
+
+.stabs li a {
+  padding: 5px;
+  padding-bottom: 2px;
+  border: 1px solid #6aa;
+  border-bottom: 0;
+  background: #9BDDDD;
+  color: #000;
+  margin-left: 3px;
+}
+
+.stabs li#selected a {
+  background: #bee;
+  padding-bottom: 3px;
+}
+
+ul.stabs li a:hover {
+  background: #BEE6E6 !important;
+  color: #000 !important;
+}
+
+.tabpanel {
+  border: 1px solid #6aa;
+  padding:; 0 5px 5px 5px;
+  background: #bee;
+  padding: 5px;
+}
 /*
  *=ARTICLES
  */
