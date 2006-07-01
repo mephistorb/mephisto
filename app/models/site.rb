@@ -1,5 +1,10 @@
 class Site < ActiveRecord::Base
-  has_many  :sections
+  has_many  :sections do
+    def home
+      Section.find_by_name 'home'
+    end
+  end
+
   has_many  :articles
   has_many  :drafts, :class_name => 'Article::Draft', :order => 'content_drafts.updated_at'
   has_many  :events

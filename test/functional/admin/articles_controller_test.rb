@@ -90,7 +90,12 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_response :success
     assert_tag :tag => 'form', :attributes => { :action => "/admin/articles/update/#{contents(:welcome).id}" }    
   end
-  
+
+  def test_show_action_previews_article
+    get :show, :id => contents(:welcome).id
+    assert_response :success
+  end
+
   def test_should_create_article_with_given_sections
     post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id.to_s] }, :submit => :save
     assert_redirected_to :action => 'index'
