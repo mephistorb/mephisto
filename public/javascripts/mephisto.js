@@ -49,6 +49,7 @@ TinyTab.prototype = {
     this.container = $(element);
     if(!this.container) return;
     
+    this.cachedElement;
     this.setup();
   },
   
@@ -60,13 +61,22 @@ TinyTab.prototype = {
     
     this.tabLinks.each(function(link) {
       Event.observe(link, 'click', function(event) {
-        var lastclicked = link;
-        this.tabPanels.each(function(element) { Element.hide(element) });
         var element = Event.element(event);
         var finding = element.getAttribute('href').split('#')[1];
+        this.tabPanels.each(function(element) { Element.hide(element) });
+        
+        if(this.cachedElement) {
+          this.cachedElement.removeClassName('selected');
+        } else {
+          this.tabLinks[0].firstChild.removeClassName('selected');
+        }
+        
+        element.addClassName('selected');
         $(finding).show();
         Event.stop(event);
         element.onclick = function() { return false; } //Safari bug
+        this.cachedElement = element;
+      
       }.bindAsEventListener(this));
     }.bind(this));
   }

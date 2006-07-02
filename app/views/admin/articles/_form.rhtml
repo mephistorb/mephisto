@@ -35,22 +35,10 @@
 <% end -%>
   <dt><label for="article_permalink">Permanent link</label></dt>
   <dd><%= form.text_field :permalink %></dd>
-
-<% if false -%>
-  <dt><strong><%= link_to_function("Invite people to review and revise this article&hellip;", "Element.toggle('invites');", :id => 'invite') %></strong></dt>
-  <dd id="invites" class="indent-box" style="display:none;">
-    <p class="hint">
-      The emails you add here will be sent a url to the article to review, comment and revise your article.  Your 
-      article will however not change unless you approve the revisions. (Separate emails with a space)
-    </p>
-    <%= text_area_tag 'emails', '', :rows => 4, :style => 'width:100%;' %>
-    <p style="padding:5px;"><%= link_to_function 'Cancel', "Element.hide('invites');" %></p>
-    </dd>
-<% end -%>
 </dl>
 <!-- /end optional fields -->
 
-<!--
+<% if false %>
   <div class="sgroup">
     <h3>Publish in these sections</h3>
     <ul class="slist">
@@ -68,16 +56,16 @@
     <%= form.date_select :expire_comments_at %>
   <% end -%>
   </div>
--->
+<% end %>
 
 <% content_for :sidebar do %>
 <% if false %>
   <div class="sgroup" id="filetabs">
 
     <ul class="stabs">
-      <li id="selected"><a href="#latest-files" title="Latest files uploaded">Latest files</a></li>
-      <li><a href="#search-files" title="Search for files">Search files</a></li>
-      <li><a href="#upload-files" title="Upload new files">Upload files</a></li>
+      <li id="tab-latest"><a class="selected" href="#latest-files" title="Latest files uploaded">Latest files</a></li>
+      <li id="tab-search"><a href="#search-files" title="Search for files">Search files</a></li>
+      <li id="tab-files"><a href="#upload-files" title="Upload new files">Upload</a></li>
     </ul>
     <div id="tabpanels">
       <div class="tabpanel" id="latest-files">
@@ -92,14 +80,13 @@
         </ul>
       </div>
       <div class="tabpanel" id="search-files" style="display:none;">
-        <p>This is the search</p>
-        <input type="search" />
-        
+        <p>Search by tag or title</p>
+        <input class="searchbox" type="text" size="30" />
+        <%= submit_tag 'Search' %>
       </div>
       <div class="tabpanel" id="upload-files" style="display:none;">
-        <p>This will be uploading</p>
-        <input type="file" />
-        <input type="submit" value="Upload" />
+        <p><strong>1.</strong> <input type="file" size="15" /></p>
+        <p><strong>2.</strong> <input type="submit" value="Upload" /></p>
       </div>
     </div>
     

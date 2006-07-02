@@ -125,9 +125,7 @@ input[type='text'], textarea {
 
 input[type='text']:focus, textarea:focus {
   background: #fff;
-  color: #000;
-  border: 1px solid #9c3;
-  
+  color: #000;  
 }
 
 .btn-asset {
@@ -604,21 +602,23 @@ a#section-home {
 
 .stabs li a {
   padding: 5px;
-  padding-bottom: 2px;
+  padding-bottom: 3px;
   border: 1px solid #6aa;
   border-bottom: 0;
-  background: #9BDDDD;
+  background-color: #9BDDDD !important;
   color: #000;
-  margin-left: 3px;
+  margin-right: 3px;
+  outline: none;
+  font-size: 90%;
 }
 
-.stabs li#selected a {
-  background: #bee;
-  padding-bottom: 3px;
+.stabs li a.selected {
+  background-color: #bee !important;
+  padding-bottom: 4px;
 }
 
 ul.stabs li a:hover {
-  background: #BEE6E6 !important;
+  background-color: #BEE6E6 !important;
   color: #000 !important;
 }
 
@@ -627,6 +627,21 @@ ul.stabs li a:hover {
   padding:; 0 5px 5px 5px;
   background: #bee;
   padding: 5px;
+}
+
+#tab-search a {
+  background: url(../images/icons/magnify.png) 3px 50% no-repeat;
+  padding-left: 18px;
+}
+
+#tab-files a {
+  background: url(../images/icons/updark.png) 3px 5px no-repeat;
+  padding-left: 18px;
+}
+
+#tab-latest a {
+  background: url(../images/icons/thumbs.png) 3px 5px no-repeat;
+  padding-left: 18px;
 }
 /*
  *=ARTICLES
@@ -857,6 +872,15 @@ img.avatar {
   font-weight: bold;
 }
 
+#activity .avatar {
+  max-width: 25px;
+  max-height: 25px;
+}
+
+#activity li {
+  min-height: 30px;
+}
+
 #stat-comments {
   background: #c30;
 }
@@ -1038,6 +1062,10 @@ h3.withcontrol {
 }
 
 .feed:hover { color: #000; }
+
+.searchbox {
+  background: #fff url(../images/icons/magnify.png) 5px 50% no-repeat;
+}
 
 .right { float: right; }
 

@@ -43,10 +43,10 @@
   <% end -%>
 
   <div class="sgroup">
-    <h3>Authors</h3>
+    <h3>Recent activity</h3>
     <ul class="slist" id="activity">
       <% for user in @users %>
-        <li><%= link_to who(user.login), :controller => 'users', :action => 'show', :id => user.login %> showed up <%= distance_of_time_in_words_to_now(user.updated_at) %> ago</li>
+        <li style="clear:right;"><%= avatar_for user %><%= link_to who(user.login), :controller => 'users', :action => 'show', :id => user.login %><br /> showed up <%= distance_of_time_in_words_to_now(user.updated_at) %> ago</li>
       <% end %>
     </ul>
   </div>
