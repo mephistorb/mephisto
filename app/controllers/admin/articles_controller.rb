@@ -7,7 +7,7 @@ class Admin::ArticlesController < Admin::BaseController
     cache_sweeper :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
   end
   
-  before_filter :find_site_article, :only => [:update, :comments, :approve, :unapprove, :destroy_comment]
+  before_filter :find_site_article, :only => [:update, :comments, :approve, :unapprove]
   before_filter :load_sections, :only => [:new, :edit, :draft]
 
   def index
@@ -87,7 +87,7 @@ class Admin::ArticlesController < Admin::BaseController
   end
   
   def destroy_comment
-    @comments = @article.all_comments.find :all, :conditions => ['id in (?)', [params[:comment]].flatten] rescue []
+    @comments = site.all_comments.find :all, :conditions => ['id in (?)', [params[:comment]].flatten] rescue []
     Comment.transaction { @comments.each(&:destroy) } if @comments.any?
   end
 

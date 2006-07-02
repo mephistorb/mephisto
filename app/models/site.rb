@@ -19,7 +19,7 @@ class Site < ActiveRecord::Base
   before_validation_on_create :set_default_comment_options
   validates_uniqueness_of :host
 
-  with_options :order => 'created_at', :class_name => 'Comment' do |comment|
+  with_options :order => 'contents.created_at', :class_name => 'Comment' do |comment|
     comment.has_many :comments,            :conditions => ['contents.approved = ?', true]
     comment.has_many :unapproved_comments, :conditions => ['contents.approved = ?', false]
     comment.has_many :all_comments
