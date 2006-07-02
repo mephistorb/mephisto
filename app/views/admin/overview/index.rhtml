@@ -4,7 +4,9 @@
   <ul id="act-nav" class="clear">
     <li><%= link_to "Create new article", :controller => 'articles', :action => "new" %></li>
     <li><%= link_to "Create new section", :controller => 'sections' %></li>
+  <% if @articles.any? -%>
     <li><%= link_to "Moderate Comments",  :controller => 'comments' %></li>
+  <% end -%>
   </ul>
 </div>
 <!-- /end action nav -->
