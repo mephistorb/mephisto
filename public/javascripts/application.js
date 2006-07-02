@@ -129,7 +129,7 @@ var ArticleForm = {
   },
 
   getAvailableComments: function() {
-    return $$('#main div').reject(function(div) { return !(div.visible() && div.id.match(/^comment-/)); }).collect(function(div) { return div.id.match(/comment-(\d+)/)[1] });
+    return $$('#main li').select(function(div) { return div.visible() && div.id.match(/^comment-/); }).collect(function(div) { return div.id.match(/comment-(\d+)/)[1] });
   },
   
   viewComments: function() {
