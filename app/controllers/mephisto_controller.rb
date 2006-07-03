@@ -16,7 +16,7 @@ class MephistoController < ApplicationController
   def search
     conditions     = ['published_at <= :now AND title LIKE :q OR excerpt LIKE :q OR body LIKE :q', 
                      { :now => Time.now.utc, :q => "%#{params[:q]}%" }]
-    @article_pages = Paginator.new self, site.articles.count(conditions), 15, params[:page]
+    @article_pages = Paginator.new self, site.articles.count(conditions), site.articles_per_page, params[:page]
     @articles      = site.articles.find(:all, :conditions => conditions, :order => 'published_at DESC',
                        :include => [:user, :sections],
                        :limit   =>  @article_pages.items_per_page,
@@ -43,7 +43,7 @@ class MephistoController < ApplicationController
 
   def month
     count = site.articles.count_by_published_date(params[:year], params[:month], params[:day])
-    @article_pages = Paginator.new self, count, 15, params[:page]
+    @article_pages = Paginator.new self, count, site.articles_per_page, params[:page]
     @articles = site.articles.find_all_by_published_date(params[:year], params[:month], params[:day],
                   :include => [:user, :sections],
                   :limit   =>  @article_pages.items_per_page,
@@ -55,7 +55,7 @@ class MephistoController < ApplicationController
 
   protected
     def list_section_articles_with(template_type)
-      @article_pages = Paginator.new self, @section.articles.size, 15, params[:page]
+      @article_pages = Paginator.new self, @section.articles.size, @section.articles_per_page, params[:page]
       @articles      = @section.articles.find_by_date(
                          :include => [:user],
                          :limit   =>  @article_pages.items_per_page,
