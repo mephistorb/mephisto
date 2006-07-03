@@ -52,6 +52,14 @@ class CommentTest < Test::Unit::TestCase
     end
   end
   
+  def test_should_decrement_comment_count_upon_unapproval
+    assert_difference contents(:welcome), :comments_count, -1 do
+      contents(:welcome_comment).approved = false
+      assert contents(:welcome_comment).save
+      contents(:welcome).reload
+    end
+  end
+  
   def test_should_not_decrement_unapproved_comment_count
     assert_no_difference contents(:welcome), :comments_count do
       contents(:unwelcome_comment).destroy
