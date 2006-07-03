@@ -4,7 +4,7 @@ class ArticleTest < Test::Unit::TestCase
   fixtures :contents, :users, :sections, :sites
 
   def test_should_create_permalink
-    a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :body => 'foo', :user_id => 1, :site_id => 1
+    a = create_article :title => 'This IS a Tripped out title!!!1  (well not really)', :body => 'foo'
     assert_equal 'this-is-a-tripped-out-title-1-well-not-really', a.permalink
   end
 
@@ -92,4 +92,33 @@ class ArticleTest < Test::Unit::TestCase
     a.expire_comments_at = 5.minutes.ago.utc
     assert !a.comments_allowed?
   end
+
+  def test_empty_body
+    a = create_article
+    assert_equal '', a.send(:body_for_mode, :single)
+    assert_equal '', a.send(:body_for_mode, :list)
+  end
+  
+  def test_body_with_excerpt
+    a = create_article :excerpt => 'excerpt', :body => 'body'
+    assert_equal "<p>excerpt</p>\n\n<p>body</p>", a.send(:body_for_mode, :single)
+    assert_equal '<p>excerpt</p>', a.send(:body_for_mode, :list)
+  end
+  
+  def test_only_body
+    a = create_article :body => 'body'
+    assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
+    assert_equal '<p>body</p>', a.send(:body_for_mode, :list)
+  end
+  
+  def test_only_body_with_empty_excerpt
+    a = create_article :body => 'body', :excerpt => ''
+    assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
+    assert_equal '<p>body</p>', a.send(:body_for_mode, :list)
+  end
+  
+  protected
+    def create_article(options = {})
+      Article.create options.reverse_merge(:user_id => 1, :site_id => 1, :title => 'foo')
+    end
 end

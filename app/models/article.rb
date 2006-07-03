@@ -159,6 +159,6 @@ class Article < Content
     end
     
     def body_for_mode(mode = :list)
-      (mode == :single ? excerpt_html.to_s + "\n\n" + body_html.to_s : (excerpt_html || body_html)).strip
+      (mode == :single ? "#{excerpt_html}\n\n#{body_html}" : [excerpt_html, body_html].detect { |attr| !attr.blank? }.to_s).strip
     end
 end
