@@ -24,6 +24,12 @@ class ApplicationController < ActionController::Base
       @site ||= Site.find_by_host(request.host) || Site.find(:first, :order => 'id')
     end
 
+    def utc_to_local(time)
+      site.timezone.utc_to_local(time)
+    end
+
+    helper_method :utc_to_local
+
   #  def set_cache_root
   #    self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'cache', site.host].compact)
   #  end

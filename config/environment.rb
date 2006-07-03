@@ -59,6 +59,7 @@ end
 # end
 
 # Include your application configuration below
+require 'tzinfo'
 require 'time_ext'
 require 'zip/zipfilesystem'
 Liquid::Template.register_filter(Mephisto::Liquid::Filters)
@@ -70,7 +71,7 @@ FilteredColumn.constant_filters << :macro_filter
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
   :standard  => '%B %d, %Y @ %I:%M%p',
-  :stub      => '%B %d',
+  :stub      => '%B %d', # XXX what is the meaning of stub in this context?
   :time_only => '%I:%M %p',
   :plain     => '%B %d %I:%M %p'
 
@@ -80,6 +81,7 @@ module ActiveSupport::CoreExtensions::Time::Conversions
   def to_ordinalized_s(format = :default)
     format = ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS[format] 
     return to_default_s if format.nil?
+    # XXX should we convert this Time object to Site timezone here?  (if its in UTC timezone)  but this seems something that is not a concern for this Time object :/
     strftime(format.gsub(/%d/, '_%d_')).gsub(/_(\d+)_/) { |s| s.to_i.ordinalize }
   end
 end

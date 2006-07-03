@@ -2,7 +2,7 @@ xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
 
 xml.feed "xml:lang" => "en-US", "xmlns" => 'http://www.w3.org/2005/Atom' do
   xml.title       "#{site.title || 'Mephisto'} - #{@section.name}"
-  xml.id          "tag:#{request.host},#{Time.now.year}:mephisto/#{@section.name}"
+  xml.id          "tag:#{request.host},#{Time.now.utc.year}:mephisto/#{@section.name}"
   xml.generator   "Mephisto", :uri => "http://mephisto.techno-weenie.net", :version => '666'
   xml.link "rel" => "self",      "type" => "application/atom+xml", "href" => url_for(:only_path => false)
   xml.link "rel" => "alternate", "type" => "text/html",            "href" => section_url(@section.hash_for_url(:only_path => false))

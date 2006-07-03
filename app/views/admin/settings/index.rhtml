@@ -1,5 +1,4 @@
 <% content_for :action_nav do %>
-<!-- TODO:  Move settings to different screens or maybe to tabs? -->
 <!-- begin action nav -->
 <div id="page-nav">
   <ul id="act-nav" class="clear">
@@ -25,6 +24,8 @@
       <span class="hint">Shown in emails sent from your site</span>
     </dt>
     <dd><%= f.text_field :email %></dd>
+    <dt><label for="site_timezone">Website Timezone</label></dt>
+    <dd><%= select_tag 'site_timezone', options_for_select(TZInfo::Timezone.all.map{|tz| [tz.to_s, tz.name]}.sort, @site.timezone.name), :name => 'site[timezone]' %></dd>
   </dl>
 </div>
 

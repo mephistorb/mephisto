@@ -13,13 +13,13 @@ module ApplicationHelper
       image_tag "/images/icons/avatar.gif", {:class => 'avatar'}
     end
   end
-  
+ 
   def todays_short_date
-    Time.now.utc.to_ordinalized_s(:stub)
+    utc_to_local(Time.now.utc).to_ordinalized_s(:stub)
   end
-  
+ 
   def yesterdays_short_date
-    Time.now.utc.yesterday.to_ordinalized_s(:stub)
+    utc_to_local(Time.now.utc.yesterday).to_ordinalized_s(:stub)
   end
 
   def filter_options

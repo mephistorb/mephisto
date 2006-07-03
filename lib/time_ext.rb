@@ -9,6 +9,7 @@ class Time
       
   # Borrowed from Typo
   def self.delta(year, month = nil, day = nil)
+    # XXX what to do here?  should we use UTC?
     from = Time.mktime(year, month || 1, day || 1)
 
     to   = from + 1.year

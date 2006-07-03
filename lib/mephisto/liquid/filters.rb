@@ -14,6 +14,8 @@ module Mephisto
       def escape_html(html)
         CGI::escapeHTML(html)
       end
+      
+      alias h escape_html
 
       def pluralize(count, singular, plural = nil)
         "#{count} " + if count == 1

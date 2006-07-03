@@ -12,6 +12,7 @@ first:
   accept_comments: true
   approve_comments: false
   comment_age: 30
+  timezone: UTC
 
 hostess:
   id: 2
@@ -19,3 +20,4 @@ hostess:
   subtitle: Your hostess
   filters: "--- \n- :foo\n- :bar\n"
   host: cupcake.host
+  timezone: UTC
