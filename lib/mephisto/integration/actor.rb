@@ -30,7 +30,7 @@ module Mephisto
 
       def revise(article, contents)
         post "/admin/articles/update/#{article.id}", to_article_params(article, contents.is_a?(Hash) ? contents : {:body => contents})
-        assert_redirected_to "/admin/articles/index"
+        assert_redirected_to "/admin/articles"
       end
 
       def create(params)
