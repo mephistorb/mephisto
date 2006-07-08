@@ -82,7 +82,7 @@ class MephistoController < ApplicationController
     end
     
     def paged_search_url_for(page)
-      page ? paged_search_url(:q => params[:q], :page => page) : ''
+      page ? search_url(:q => params[:q], :page => page) : ''
     end
     
     def paged_monthly_url_for(page)
