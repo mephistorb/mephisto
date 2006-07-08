@@ -12,6 +12,7 @@ cupcake_home:
   id: 3
   site_id: 2
   name: home
+  show_paged_articles: true
 cupcake_about:
   id: 4
   site_id: 2

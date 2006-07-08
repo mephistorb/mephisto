@@ -1,6 +1,6 @@
 class MephistoController < ApplicationController
   session :off
-  caches_page_with_references :list, :search, :show, :date
+  caches_page_with_references :list, :show, :date
 
   def list
     if params[:sections].blank?

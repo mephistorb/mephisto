@@ -29,24 +29,30 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_list_on_home
-    get :list, :sections => []
+    get_mephisto
+    assert_response :success
     assert_equal sites(:first), assigns(:site)
     assert_equal sections(:home), assigns(:section)
     assert_equal [contents(:welcome), contents(:another)], assigns(:articles)
   end
 
-  #def test_should_cache_list
-  #  get :list, :sections => []
-  #  assert_page_cached section_url(:sections => [])
-  #end
+  def test_should_show_paged_home
+    host! 'cupcake.host'
+    get_mephisto
+    assert_equal sites(:hostess), assigns(:site)
+    assert_equal sections(:cupcake_home), assigns(:section)
+    assert_nil assigns(:articles)
+    assert_equal contents(:cupcake_welcome), assigns(:article)
+    assert_response :success
+  end
 
   def test_should_show_correct_feed_url
-    get :list, :sections => []
+    get_mephisto
     assert_tag :tag => 'link', :attributes => { :type => 'application/atom+xml', :href => '/feed/atom.xml' }
   end
 
   def test_list_by_sections
-    get :list, :sections => %w(about)
+    get_mephisto 'about'
     assert_equal sites(:first), assigns(:site)
     assert_equal sections(:about), assigns(:section)
     assert_equal contents(:welcome), assigns(:article)
@@ -54,20 +60,20 @@ class MephistoControllerTest < Test::Unit::TestCase
   
   def test_list_by_site_sections
     host! 'cupcake.host'
-    get :list, :sections => %w(about)
+    get_mephisto 'about'
     assert_equal sites(:hostess), assigns(:site)
     assert_equal sections(:cupcake_about), assigns(:section)
     assert_equal contents(:cupcake_welcome), assigns(:article)
   end
 
   def test_should_show_page
-    get :list, :sections => %w(about the-site-map)
+    get_mephisto 'about/the-site-map'
     assert_equal sections(:about), assigns(:section)
     assert_equal contents(:site_map), assigns(:article)
   end
 
   def test_should_render_liquid_templates_on_home
-    get :list, :sections => []
+    get_mephisto
     assert_tag :tag => 'h1', :content => 'This is the layout'
     assert_tag :tag => 'p',  :content => 'home'
     assert_tag :tag => 'h2', :content => contents(:welcome).title
@@ -77,7 +83,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_render_liquid_templates_by_sections
-    get :list, :sections => %w(about)
+    get_mephisto 'about'
     assert_tag :tag => 'h1', :content => contents(:welcome).title
   end
 
@@ -100,7 +106,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
   
   def test_should_show_navigation_on_paged_sections
-    get :list, :sections => %w(about)
+    get_mephisto 'about'
     assert_tag :tag => 'ul', :attributes => { :id => 'nav' },
                :children => { :count => 3, :only => { :tag => 'li' } }
     assert_tag :tag => 'ul', :attributes => { :id => 'nav' },
@@ -132,4 +138,9 @@ class MephistoControllerTest < Test::Unit::TestCase
     get :month, :year => date.year, :month => date.month
     assert_equal [contents(:welcome), contents(:about), contents(:site_map), contents(:another)], assigns(:articles)
   end
+  
+  protected
+    def get_mephisto(path = '')
+      get :list, :sections => path.split('/')
+    end
 end
