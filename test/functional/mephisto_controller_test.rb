@@ -39,10 +39,10 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_show_paged_home
     host! 'cupcake.host'
     get_mephisto
-    assert_equal sites(:hostess), assigns(:site)
-    assert_equal sections(:cupcake_home), assigns(:section)
-    assert_nil assigns(:articles)
+    assert_equal sites(:hostess),            assigns(:site)
+    assert_equal sections(:cupcake_home),    assigns(:section)
     assert_equal contents(:cupcake_welcome), assigns(:article)
+    assert_nil assigns(:articles)
     assert_response :success
   end
 
