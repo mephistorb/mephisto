@@ -14,13 +14,9 @@ class AssetsControllerTest < Test::Unit::TestCase
   end
 
   def test_routing
-    with_options :controller => 'assets', :action => 'show' do |test|
-      test.assert_routing 'stylesheets/foo/bar', :dir => 'stylesheets', :path => ['foo', 'bar']
-      test.assert_routing 'stylesheets/foo.css', :dir => 'stylesheets', :path => ['foo.css']
-      test.assert_routing 'images/foo/bar',      :dir => 'images',      :path => ['foo', 'bar']
-      test.assert_routing 'images/foo.png' ,     :dir => 'images',      :path => ['foo.png']
-      test.assert_routing 'javascripts/foo/bar', :dir => 'javascripts', :path => ['foo', 'bar']
-      test.assert_routing 'javascripts/foo.js' , :dir => 'javascripts', :path => ['foo.js']
+    {:stylesheets => :css, :images => :png, :javascripts => :js}.each do |dir, ext|
+      assert_routing "#{dir}/foo/bar",    :controller => 'assets', :action => 'show', :dir => dir.to_s, :path => %w(foo bar)
+      assert_routing "#{dir}/foo.#{ext}", :controller => 'assets', :action => 'show', :dir => dir.to_s, :path => ["foo.#{ext}"]
     end
   end
 

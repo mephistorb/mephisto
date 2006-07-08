@@ -2,6 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   map.feed    'feed/*sections', :controller => 'feed', :action => 'feed'
 
   map.with_options :controller => 'assets', :action => 'show' do |m|
+    m.connect ':dir/*path',       :dir => /stylesheets|javascripts|images/
     m.css    'stylesheets/*path', :dir => 'stylesheets'
     m.js     'javascripts/*path', :dir => 'javascripts'
     m.images 'images/*path',      :dir => 'images'
@@ -11,8 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.admin   'admin', :controller => 'admin/overview', :action => 'index'
   
-  map.connect ':controller/:action/:id/:version', :version => nil, 
-      :controller => /account|(admin\/\w+)/
+  map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/
   
   map.comment ':year/:month/:day/:permalink/comment', :controller => 'comments', :action => 'create',
       :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/
