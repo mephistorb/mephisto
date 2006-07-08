@@ -131,6 +131,7 @@ class Article < Content
       else
         self.expire_comments_at = published_at
       end unless !errors.empty? || published_at.nil? || expire_comments_at
+      self.published_at = published_at.utc if published_at
     end
   
     def create_permalink

@@ -78,7 +78,7 @@ class MephistoController < ApplicationController
                                                 'section_title'    => @section.title,
                                                 'pages'            => @section.articles.collect(&:to_liquid),
                                                 'article'          => @article.to_liquid(:single),
-                                                'article_sections' => @article.sections.collect(&:to_liquid) )
+                                                'article_sections' => @article.sections.collect(&:to_liquid))
     end
     
     def paged_search_url_for(page)

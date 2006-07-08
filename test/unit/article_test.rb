@@ -116,7 +116,12 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
     assert_equal '<p>body</p>', a.send(:body_for_mode, :list)
   end
-  
+
+  def test_should_set_published_to_utc
+    a = create_article :body => 'body', :published_at => Time.now
+    assert a.published_at.utc?
+  end
+
   protected
     def create_article(options = {})
       Article.create options.reverse_merge(:user_id => 1, :site_id => 1, :title => 'foo')
