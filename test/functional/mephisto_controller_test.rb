@@ -46,6 +46,12 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_response :success
   end
 
+  def test_should_show_error_on_bad_blog_url
+    get_mephisto 'foobar/basd'
+    assert_equal sites(:first), assigns(:site)
+    assert_response :missing
+  end
+
   def test_should_show_error_on_bad_paged_url
     host! 'cupcake.host'
     {'foobar/basd' => sections(:cupcake_home), 'about/foo' => sections(:cupcake_about)}.each do |path, section|
