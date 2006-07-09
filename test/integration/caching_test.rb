@@ -126,6 +126,14 @@ class CachingTest < ActionController::IntegrationTest
     assert_not_cached contents(:welcome).full_permalink
   end
 
+  def test_should_not_cache_bad_urls
+    visitor = visit
+    assert_expires_pages '/about/blah', '/foo/bar' do
+      visitor.get '/about/blah'
+      visitor.get '/foo/bar'
+    end
+  end
+
   protected
     def visit_sections_and_feeds_with(visitor)
       assert_caches_page section_url_for(:home) do
