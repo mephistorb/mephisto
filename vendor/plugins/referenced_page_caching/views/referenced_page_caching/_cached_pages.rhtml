@@ -1,0 +1,57 @@
+<div id="cached-pages">
+
+<div class="pages">
+  <%= link_to_remote 'Clear', :url => { :action => 'clear' } %>
+<% if @cached_page_pages.page_count > 1 %>
+:: Pages: <strong><%= pagination_remote_links @cached_page_pages, :params => { :action => :index } %></strong>
+<% end %>
+</div>
+
+<h1>Cached Pages</h1>
+
+<table cellspacing="0">
+
+  <thead style="display:none;">
+    <tr>
+      <th>Url</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  <% cached_pages.each do |page| -%>
+    <tr id="cached-page-<%= page.id %>" class="<%= cycle("eor", "") %>">
+      <td>
+        <div class="expclass"><%=h page.url %></div>
+      </td>
+      <td nowrap=nowrap class="time">
+<!--
+
+-->
+<% 
+if Date.today == page.updated_at.to_date 
+	if page.updated_at > Time.now - 4.hours
+	%>
+		<%= time_ago_in_words(page.updated_at).gsub(/about /,"~ ") %> ago
+	<% else %>
+		Today, <%= page.updated_at.strftime("%l:%M %p") %>
+	<% end %>
+<% else %>
+<%= page.updated_at.strftime("%b %d, %Y") %>
+<% end %>
+</td>
+      <td><%= link_to_remote 'Delete', {:url => { :action => 'destroy', :id => page }} , :class => "util" %></td>
+    </tr>
+  <% end -%>
+  </tbody>
+
+</table>
+
+<% if @cached_page_pages.page_count>1 %>
+<div class="pages pages-bottom">
+Pages: <strong><%= pagination_remote_links @cached_page_pages, :params => { :action => :index } %></strong>
+</div>
+<% end %>
+
+
+</div> <!-- #exceptions -->
