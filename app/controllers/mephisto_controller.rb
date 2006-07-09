@@ -34,6 +34,7 @@ class MephistoController < ApplicationController
 
   def show
     @article  = site.articles.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
+    show_404 and return unless @article
     @comments = @article.comments.collect { |c| c.to_liquid }
     self.cached_references << @article
     Mephisto::Liquid::CommentForm.article = @article

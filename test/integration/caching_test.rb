@@ -128,9 +128,9 @@ class CachingTest < ActionController::IntegrationTest
 
   def test_should_not_cache_bad_urls
     visitor = visit
-    assert_expires_pages '/about/blah', '/foo/bar' do
-      visitor.get '/about/blah'
-      visitor.get '/foo/bar'
+    pages   = ['/about/blah', '/foo/bar', '2006/1/2/fasd']
+    assert_expires_pages *pages do
+      pages.each { |p| visitor.get p }
     end
   end
 

@@ -121,6 +121,12 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal contents(:cupcake_welcome).to_liquid['id'], assigns(:article)['id']
   end
   
+  def test_should_show_error_on_bad_permalink
+    date = 3.days.ago
+    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-paradise'
+    assert_response :missing
+  end
+  
   def test_should_show_navigation_on_paged_sections
     get_mephisto 'about'
     assert_tag :tag => 'ul', :attributes => { :id => 'nav' },
