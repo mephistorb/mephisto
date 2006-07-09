@@ -59,4 +59,33 @@ Add the sweeper to your controller:
 
 Be sure to modify the sweeper for any special rules in your application.  
 
+== The Cache Manager
+
+After that, visit /referenced_page_caching in your application to manage and sweep the cache.
+
+It's understandable that you may want to require authentication.  Add this to your config/environments/production.rb:
+
+  # config/environments/production.rb
+  config.after_initialize do
+    require 'application' unless Object.const_defined?(:ApplicationController)
+    ReferencedPageCachingController.class_eval do
+      # The controller is disabled by default
+      self.enabled = true
+      before_filter :login_required
+      protected
+        # only allow admins
+        # this obviously depends on how your auth system works
+        def authorized?
+          current_user.is_a?(Admin)
+        end
+    end
+  end
+
+The exact code of course depends on the specific needs of your application.
+
+== CREDITS
+
+Rick Olson  - model/controller code
+Josh Goebel - design
+
 Good luck!

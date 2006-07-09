@@ -1,5 +1,8 @@
 class ReferencedPageCachingController < ActionController::Base
+  cattr_accessor :enabled
   layout nil
+  
+  before_filter { |c| c.render(:text => 'Referenced Page Caching is disabled', :status => '500 Error') unless c.enabled }
 
   def index
     @cached_page_pages, @cached_pages = paginate :cached_pages, :order => 'updated_at', :per_page => 30, 
