@@ -12,7 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.admin   'admin', :controller => 'admin/overview', :action => 'index'
   
-  map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/
+  map.connect ':controller/:action/:id/:version', :version => nil, :controller => /referenced_page_caching|routing_navigator|account|(admin\/\w+)/
   
   map.comment ':year/:month/:day/:permalink/comment', :controller => 'comments', :action => 'create',
       :year => /\d{4}/, :month => /\d{1,2}/, :day => /\d{1,2}/
