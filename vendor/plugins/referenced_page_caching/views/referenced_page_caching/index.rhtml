@@ -22,6 +22,7 @@
   <%= form_remote_tag :url => { :action => 'query' }, :html => { :id => 'query-form' } %>
     <div>
       <%= text_field_tag :query, "", :size => 17 %>
+      <%= hidden_field_tag :page, params[:page] %>
       <%= submit_tag :Find %>
     </div>
   </form>

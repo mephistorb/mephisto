@@ -5,7 +5,7 @@ module ReferencedPageCachingHelper
      
      pagination_links_each(paginator, options) do |n|
        params[name] = n
-       link_to_function n.to_s, "ExceptionLogger.setPage(#{n})"
+       link_to_function n.to_s, "ReferencedPageCaching.setPage(#{n})"
      end
   end
 end
