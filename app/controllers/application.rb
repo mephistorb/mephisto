@@ -10,12 +10,12 @@ class ApplicationController < ActionController::Base
   def render_liquid_template_for(template_type, assigns = {})
     headers["Content-Type"] ||= 'text/html; charset=utf-8'
 
-    unless assigns['article']
+    if assigns['articles'] && assigns['article'].nil?
       self.cached_references += assigns['articles']
       assigns['articles']     = assigns['articles'].collect &:to_liquid
     end
-    
-    render :text => site.templates.render_liquid_for(site, @section, template_type, assigns, self)
+
+    render :text => site.templates.render_liquid_for(site, @section, template_type, assigns, self), :status => (assigns.delete(:status) || '200 OK')
   end
   
   protected

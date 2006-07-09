@@ -46,6 +46,16 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_response :success
   end
 
+  def test_should_show_error_on_bad_paged_url
+    host! 'cupcake.host'
+    {'foobar/basd' => sections(:cupcake_home), 'about/foo' => sections(:cupcake_about)}.each do |path, section|
+      get_mephisto path
+      assert_equal sites(:hostess), assigns(:site)
+      assert_equal section,         assigns(:section)
+      assert_response :missing
+    end
+  end
+
   def test_should_show_correct_feed_url
     get_mephisto
     assert_tag :tag => 'link', :attributes => { :type => 'application/atom+xml', :href => '/feed/atom.xml' }
