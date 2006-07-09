@@ -23,6 +23,7 @@ config.after_initialize do
   ReferencedPageCachingController.class_eval do
     # The controller is disabled by default
     self.enabled = true
+    include AuthenticatedSystem
     before_filter :login_required
   end
 end
