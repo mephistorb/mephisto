@@ -16,7 +16,8 @@ class Site < ActiveRecord::Base
   
   serialize :filters, Array
   
-  before_validation_on_create :set_default_options
+  before_validation :set_default_timezone
+  before_validation_on_create :set_default_comment_options
   validates_uniqueness_of :host
 
   with_options :order => 'contents.created_at', :class_name => 'Comment' do |comment|
@@ -45,11 +46,15 @@ class Site < ActiveRecord::Base
   end
 
   protected
-    def set_default_options
+    def set_default_timezone
+      self.timezone = 'UTC' if read_attribute(:timezone).blank?
+      true
+    end
+
+    def set_default_comment_options
       self.accept_comments  = true  unless accept_comments == false
       self.approve_comments = false unless approve_comments?
       self.comment_age      = 30    unless comment_age
-      self.timezone         = 'UTC' if timezone.blank?
       true
     end
 end
