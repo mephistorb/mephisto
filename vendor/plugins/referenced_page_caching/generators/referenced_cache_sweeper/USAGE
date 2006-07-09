@@ -1,5 +1,0 @@
-Generate a Cache Sweeper for your Cached Pages
-
-  ./script/generate referenced_cache_sweeper reference
-    exists  app/models/
-    create  app/models/reference_sweeper.rb
