@@ -55,7 +55,6 @@ module Mephisto
           params = [:title, :excerpt, :body].inject({}) { |params, key| params.merge "article[#{key}]" => options[key] }
           add_published_at! params, options[:published_at] if options[:published_at].is_a?(Time)
           params[:submit] = options[:submit] || 'save'
-          params[:submit] = 'Save as Draft' if params[:submit] == :draft
           params = params.keys.inject([]) { |all, k| params[k] ? all << "#{k}=#{CGI::escape params[k].to_s}" : all } # change to an array so we can add multiple sections
           add_section_ids! params, options[:sections]
           params * '&'

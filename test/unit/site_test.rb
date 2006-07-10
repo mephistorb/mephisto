@@ -1,8 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class SiteTest < Test::Unit::TestCase
-  fixtures :sites, :contents, :content_drafts, :attachments, :db_files
-  set_fixture_class :content_drafts => Article::Draft
+  fixtures :sites, :contents, :attachments, :db_files
   
   def test_should_validate_host
     assert_valid sites(:first)
@@ -38,11 +37,6 @@ class SiteTest < Test::Unit::TestCase
   def test_should_find_host
     assert_equal sites(:first), Site.find_by_host('test.host')
     assert_equal sites(:hostess), Site.find_by_host('cupcake.host')
-  end
-  
-  def test_should_find_drafts
-    assert_equal [content_drafts(:first), content_drafts(:welcome)], sites(:first).drafts
-    assert_equal [content_drafts(:cupcake_unfinished), content_drafts(:cupcake_welcome)], sites(:hostess).drafts
   end
 
   def test_should_allow_empty_filter

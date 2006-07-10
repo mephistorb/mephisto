@@ -7,10 +7,8 @@
   <%= render :partial => 'form', :object => f %>
   
   <p class="btns">
-    <%= create_button_tag %>
-    <%= draft_button_tag %> or 
+    <%= submit_tag 'Save Article' %> or 
     <%= link_to "cancel", :controller => "articles" %>
-    <%= hidden_field_tag 'draft', @draft.id if @draft %>
   </p>
   
 <% end -%>

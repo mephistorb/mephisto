@@ -1,20 +1,17 @@
 class Admin::ArticlesController < Admin::BaseController
   with_options :only => [:create, :update] do |c|
     c.before_filter :set_default_section_ids
-    c.before_filter :save_or_draft
     c.cache_sweeper :article_sweeper
     c.cache_sweeper :section_sweeper
     cache_sweeper :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
   end
   
   before_filter :find_site_article, :only => [:update, :comments, :approve, :unapprove]
-  before_filter :load_sections, :only => [:new, :edit, :draft]
+  before_filter :load_sections, :only => [:new, :edit]
 
   def index
-    @drafts        = site.drafts.find_new(:all)
     @article_pages = Paginator.new self, site.articles.count, 30, params[:page]
-    @articles      = site.articles.find(:all, :order => 'contents.created_at DESC',
-                       :include => [:user, :draft],
+    @articles      = site.articles.find(:all, :order => 'contents.created_at DESC', :include => :user,
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)
   end
@@ -32,15 +29,13 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def edit
-    @article = site.articles.find(params[:id], :include => :draft)
+    @article = site.articles.find(params[:id])
     @version = params[:version] ? @article.find_version(params[:version]) : @article
   end
 
   def create
     @article = current_user.articles.create params[:article].merge(
-      :updater => current_user, 
-      :draft => Article::Draft.find_by_id(params[:draft]),
-      :site => site)
+      :updater => current_user, :site => site)
       
     if @article.new_record?
       load_sections
@@ -57,12 +52,6 @@ class Admin::ArticlesController < Admin::BaseController
       @sections = site.sections
       render :action => 'edit'
     end
-  end
-
-  def draft
-    @draft   = site.drafts.find(params[:id], :include => :article)
-    @article = @draft.to_article
-    render :action => (@article.new_record? ? :new : :edit)
   end
 
   def comments
@@ -100,27 +89,6 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   protected
-    def save_or_draft
-      if draft?(params[:submit])
-        params[:id] ? update_draft : create_draft
-        @article.save_draft
-        @draft = @article.draft
-        flash[:notice] = "Your draft has been created"
-        redirect_to :action => 'index'
-        return false
-      end
-    end
-    
-    def update_draft
-      @article = site.articles.find(params[:id])
-      @article.attributes = params[:article]
-    end
-    
-    def create_draft
-      @article = site.articles.build(params[:article])
-      @article.draft = site.drafts.find(params[:draft]) if params[:draft]
-    end
-    
     def load_sections
       @sections = site.sections.find :all, :order => 'name'
       home = @sections.find { |s| s.name == 'home' }
@@ -136,22 +104,4 @@ class Admin::ArticlesController < Admin::BaseController
       params[:article] ||= {}
       params[:article][:section_ids] ||= []
     end
-    
-    def save_button
-      @save_button ||= 'Apply Changes'
-    end
-    
-    def create_button
-      @create_button ||= 'Save Article'
-    end
-    
-    def draft_button
-      @draft_button ||= 'Save as Draft'
-    end
-    
-    def draft?(value)
-      (@draft_options ||= [draft_button, :draft]).include? value
-    end
-    
-    helper_method :save_button, :create_button, :draft_button
 end

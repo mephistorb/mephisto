@@ -6,24 +6,24 @@ class CachingTest < ActionController::IntegrationTest
     prepare_for_caching!
   end
 
-  def test_should_not_expire_feeds_and_sections_on_new_unpublished_articles
-    visitor = visit
-    writer  = login_as :quentin
-    
-    visit_sections_and_feeds_with visitor
-
-    assert_no_difference Article, :count do
-      assert_difference Article::Draft, :count do
-        writer.create :title => 'This is a new article & title', :body => 'this is a new article body', 
-          :sections => [sections(:home)], :submit => :draft
-      end
-    end
-    
-    assert_cached section_url_for(:home)
-    assert_cached section_url_for(:about)
-    assert_cached feed_url_for(:home)
-    assert_cached feed_url_for(:about)
-  end
+  #def test_should_not_expire_feeds_and_sections_on_new_unpublished_articles
+  #  visitor = visit
+  #  writer  = login_as :quentin
+  #  
+  #  visit_sections_and_feeds_with visitor
+  #
+  #  assert_no_difference Article, :count do
+  #    assert_difference Article::Draft, :count do
+  #      writer.create :title => 'This is a new article & title', :body => 'this is a new article body', 
+  #        :sections => [sections(:home)], :submit => :draft
+  #    end
+  #  end
+  #  
+  #  assert_cached section_url_for(:home)
+  #  assert_cached section_url_for(:about)
+  #  assert_cached feed_url_for(:home)
+  #  assert_cached feed_url_for(:about)
+  #end
 
   def test_should_expire_necessary_feeds_and_sections_when_publishing_article
     visitor = visit

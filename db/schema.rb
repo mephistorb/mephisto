@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 31) do
+ActiveRecord::Schema.define(:version => 32) do
 
   create_table "assigned_sections", :force => true do |t|
     t.column "article_id", :integer
@@ -29,15 +29,6 @@ ActiveRecord::Schema.define(:version => 31) do
     t.column "url",        :string
     t.column "references", :text
     t.column "updated_at", :datetime
-  end
-
-  create_table "content_drafts", :force => true do |t|
-    t.column "article_id", :integer
-    t.column "updated_at", :datetime
-    t.column "title",      :string
-    t.column "body",       :text
-    t.column "excerpt",    :text
-    t.column "site_id",    :integer
   end
 
   create_table "content_versions", :force => true do |t|

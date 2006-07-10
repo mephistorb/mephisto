@@ -13,16 +13,6 @@ class Article < Content
     end
   end
 
-  acts_as_draftable :fields => [:title, :body, :excerpt, :site_id] do
-    def self.included(base)
-      base.validates_presence_of :site_id
-    end
-    
-    def status() :pending ; end
-    def comments() []     ; end
-    def published?() false; end
-  end
-
   has_many :assigned_sections
   has_many :sections, :through => :assigned_sections, :order => 'sections.name'
   has_many :events,   :order => 'created_at desc'

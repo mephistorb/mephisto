@@ -6,7 +6,6 @@ class Site < ActiveRecord::Base
   end
 
   has_many  :articles
-  has_many  :drafts, :class_name => 'Article::Draft', :order => 'content_drafts.updated_at'
   has_many  :events
   
   has_many  :assets, :as => :attachable

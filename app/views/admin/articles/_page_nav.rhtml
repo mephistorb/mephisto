@@ -8,9 +8,6 @@
         <% unless @article.new_record? -%>
           <li><%= link_to 'Edit this article', :action => :edit, :id => @article %></li>
         <% end -%>
-        <% if @article.draft -%>
-          <li><%= link_to 'Edit article draft', :action => :draft, :id => @article.draft %></li>
-        <% end -%>
         <% if @article.comments.any? -%>
           <li><%= link_to "View comments", :controller => 'articles', :action => 'comments', :id => @article %></li>
         <% end %>
@@ -24,4 +21,4 @@
     </li>
   </ul>
 </div>
-<% end unless @article.new_record? && @article.draft.nil? && @article.comments.empty? -%>
+<% end unless @article.new_record? && @article.comments.empty? -%>
