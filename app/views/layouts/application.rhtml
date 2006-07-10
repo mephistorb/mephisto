@@ -67,7 +67,9 @@
           <%= yield :action_nav %>
           <!-- /end action nav -->
     	    
+    	    <%= yield :form if @content_for_form %>
     	    <div id="main-content"><%= yield %></div>
+    	    <%= '</form>' if @content_for_form %>
     	    <div id="shadow"></div>
     	  </div>
     	  <!-- /div.left -->
