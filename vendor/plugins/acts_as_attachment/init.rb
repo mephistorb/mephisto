@@ -1,6 +1,6 @@
 begin
   require 'RMagick'
-rescue
+rescue LoadError
   # boo hoo no rmagick
 end
 ActiveRecord::Base.send(:include, Technoweenie::ActsAsAttachment)
