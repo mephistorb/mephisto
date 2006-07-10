@@ -1,8 +1,8 @@
 <%= render :partial => "page_nav" %>
 
-<h3><%= link_to_article @article %></h3>
 
 <h3 class="withcontrol">
+  <span style="float: left;"><%= link_to_article @article %></span>
   Show comments:
   <select id="comments-view">
     <%= options_for_select ['All', 'Unapproved', 'Approved'], params[:filter].to_s.humanize %>
