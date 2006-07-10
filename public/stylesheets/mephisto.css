@@ -686,6 +686,14 @@ ul.stabs li a:hover {
   color: #000;
 }
 
+.focused {
+  padding: 20px 20px 20px 55px !important;
+  padding-bottom: 3px;
+  border: 1px solid #6aa;
+  background-color: #D6F0F0 !important;
+  margin: 20px 0;
+}
+
 /*
  *=LIVE PREVIEW
  */

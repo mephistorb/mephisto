@@ -1,6 +1,6 @@
 <% with_options :controller => 'articles', :id => event.article_id do |article| -%>
 <li id="event-<%= event.id %>" class="event-comment<%= " shade" if shaded %>">
-  <%= link_to_article event.article %> received a comment.
+  <%= link_to event.article.title, :controller => 'articles', :action => 'comments', :id => event.article_id, :anchor => "comment-#{event.comment_id}" %> received a comment.
   
   <span class="event-time"><%= event_time_for event, later %></span>
   <blockquote><p>&quot;<%= truncate strip_tags(event.body), 100 %>&quot;</p></blockquote>

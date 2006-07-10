@@ -1,5 +1,5 @@
 <li class="event-revision<%= " shade" if defined?(shaded) && shaded == true %>">
   <span class="event-time"><%= event_time_for event, later %></span>
-  <%= link_to h(event.title), :controller => 'articles', :action => 'show', :id => event.article_id %> was revised.
+  <%= link_to h(event.title), :controller => 'articles', :action => 'edit', :id => event.article_id %> was revised.
   <span class="meta">by <%= link_to who(event.user.login), :controller => 'users', :action => 'show', :id => event.user.login %></span>
 </li>

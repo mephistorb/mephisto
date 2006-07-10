@@ -12,6 +12,7 @@
   <% if @comments.any? %>
   <% @comments.each_with_index do |comment, i| -%>
   <li class="event-comment<%= " shade" if (i % 2 > 0) %>" id="comment-<%= comment.id %>">
+    <a name="comment-<%= comment.id %>"></a> 
     <blockquote><p>"<%= truncate strip_tags(comment.body), 255 %>"</p></blockquote>
     <span class="meta">
       <cite>&mdash; <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %></cite>
@@ -29,3 +30,12 @@
     <li class="event-none shade">This article has no <%= params[:filter].to_s.humanize.downcase %> comments.</li>
   <% end %>
 </ul>
+
+
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+  var comment = $(document.location.hash.substring(1));
+  if(comment) Element.addClassName(comment, 'focused');
+  
+// ]]>
+</script>

@@ -16,7 +16,7 @@
 <ul class="pagelist">
   <% @comments.each_with_index do |comment, i| -%>
   <li class="event-comment<%= " shade" if (i % 2 > 0) %>" id="comment-<%= comment.id %>">
-    <h3><%= link_to comment.article.title, :controller => 'articles', :action => :edit, :id => comment.article %></h3>
+    <h3><a name="comment-<%= comment.id %>"></a> <%= link_to comment.article.title, :controller => 'articles', :action => :edit, :id => comment.article %></h3>
     <blockquote><p>"<%= truncate strip_tags(comment.body), 255 %>"</p></blockquote>
     <span class="meta">
       <cite>&mdash; <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %></cite>
