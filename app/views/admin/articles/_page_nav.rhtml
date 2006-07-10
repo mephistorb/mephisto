@@ -9,11 +9,11 @@
         <% unless @article.new_record? -%>
           <li><%= link_to 'Edit this article', :action => :edit, :id => @article %></li>
         <% end -%>
-        <% if @article.comments.any? -%>
+        <% if @article.comments.any? && controller.action_name != 'comments' -%>
           <li><%= link_to "View comments", :controller => 'articles', :action => 'comments', :id => @article %></li>
         <% end %>
         <% if controller.action_name == 'comments' && @comments.any? -%>
-          <li><%= link_to_remote "Delete all #{@filter != 'all' ? @filter : ''} comments", :confirm => "Are you sure you wish to clear all visible comments?",
+          <li><%= link_to_remote "Delete all #{@filter != 'all' ? @filter : ''} comments", :confirm => "Are you sure you wish to delete all #{@filter != 'all' ? @filter : ''} comments?",
               :url => { :action => 'destroy_comment', :id => @article }, :with => "ArticleForm.getAvailableComments().toQueryString('comment')"
             %></li>
         <% end -%>

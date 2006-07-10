@@ -70,8 +70,8 @@ Liquid::Template.register_tag('head',           Mephisto::Liquid::Head)
 FilteredColumn.constant_filters << :macro_filter
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
-  :standard  => '%B %d, %Y @ %I:%M%p',
-  :stub      => '%B %d', # XXX what is the meaning of stub in this context?
+  :standard  => '%B %d, %Y @ %I:%M %p',
+  :stub      => '%B %d', # XXX what is the meaning of stub in this context?  (Basically it means short)
   :time_only => '%I:%M %p',
   :plain     => '%B %d %I:%M %p'
 
