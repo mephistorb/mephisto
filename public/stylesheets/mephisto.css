@@ -1005,12 +1005,12 @@ li.event-none     { background-image: url(../images/icons/minusb.gif); }
  *=ASSET MANAGEMENT
  */
 
-#assets {
+#assets, #files {
   list-style: none;
   margin-top: 5px;
 }
 
-#assets li {
+#assets li, #files li {
   display: inline;
   margin-left: 5px;
   margin-bottom: 5px;
@@ -1033,6 +1033,49 @@ li.event-none     { background-image: url(../images/icons/minusb.gif); }
   display: block;
   font-size: 80%;
 }
+
+/*
+ *=FIES
+ */
+
+#files, #recentfiles {
+  margin-bottom: 20px;
+  list-style: none;
+}
+
+#files li, #recentfiles li {
+  float: left;
+  margin-right: 10px;
+  text-align: center;
+  margin-bottom: 10px;
+  width: 23%;
+}
+
+#recentfiles li img, #files li img {
+  max-width: 120px;
+  max-height: 120px;
+  overflow: hidden;
+  background: #fff;
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+#files li {
+  width: 20%;
+}
+
+#files li img {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+#filelist #recentfiles span {
+  font-size: 80%;
+  color: #555;
+  font-style: italic;
+  display: block;
+  text-align: center;
+}
 /*
  *=MISC
  */
@@ -1052,6 +1095,15 @@ h3.withcontrol {
   margin-bottom: 10px;
   padding: 5px 0;
   text-align: right;
+}
+
+.divider {
+  margin: 0 0 5px 0;
+  border-bottom: 1px dotted #bbb;
+  padding: 0;
+  font-size: 90%;
+  font-family: Helvetica, Arial, sans-serif;
+  color: #033;
 }
 
 .feed {
