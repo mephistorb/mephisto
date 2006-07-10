@@ -138,7 +138,8 @@ var ArticleForm = {
   
   saveDraft: function() {
     var isDraft = $F(this);
-    $$('#article-optional .publish-date select').each(function(sel) { sel.disabled = isDraft; });
+    if(isDraft) Element.hide('publish-date-lbl', 'publish-date');
+    else Element.show('publish-date-lbl', 'publish-date');
   }
 }
 
@@ -175,6 +176,7 @@ Event.observe(window, 'load', function() {
   new DropMenu('select');
   new TinyTab('filetabs');
   
+  // TODO: IE doesn't fire onchange for checkbox
   var commentsView = $('comments-view');
   var articleDraft = $('article-draft');
   if(commentsView) Event.observe(commentsView, 'change', ArticleForm.viewComments.bind(commentsView));
