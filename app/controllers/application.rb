@@ -1,11 +1,10 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
-  # wait until we have multiple sites before we deal with changing the cache root
-  before_filter :load_site
-  #before_filter :set_cache_root
-  helper_method :site
-  attr_reader   :site
+  cattr_accessor :site_count
+  before_filter  :set_cache_root
+  helper_method  :site
+  attr_reader    :site
 
   def render_liquid_template_for(template_type, assigns = {})
     headers["Content-Type"] ||= 'text/html; charset=utf-8'
@@ -19,18 +18,15 @@ class ApplicationController < ActionController::Base
   end
   
   protected
-    def load_site
-      # Redefine this method if you wish to fail on host without a site
-      @site ||= Site.find_by_host(request.host) || Site.find(:first, :order => 'id')
-    end
-
     def utc_to_local(time)
       site.timezone.utc_to_local(time)
     end
 
     helper_method :utc_to_local
 
-  #  def set_cache_root
-  #    self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'cache', site.host].compact)
-  #  end
+    def set_cache_root
+      @site ||= Site.find_by_host(request.host) || Site.find(:first, :order => 'id')
+      # prepping for site-specific page cache directories, DONT PANIC
+      #self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'sites', site.host])
+    end
 end
