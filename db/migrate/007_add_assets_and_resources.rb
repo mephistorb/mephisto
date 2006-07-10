@@ -1,10 +1,12 @@
-class OldTemplate < ActiveRecord::Base
-  set_table_name 'templates'
-end
-
-Template.set_table_name 'assets'
-
 class AddAssetsAndResources < ActiveRecord::Migration
+  class OldTemplate < ActiveRecord::Base
+    set_table_name 'templates'
+  end
+
+  class Template < ActiveRecord::Base
+    set_table_name 'assets'
+  end
+
   def self.up
     create_table :assets, :force => true do |t|
       t.column :type,         :string, :limit => 15

@@ -23,11 +23,11 @@ class Admin::TemplatesController < Admin::BaseController
   end
 
   protected
-  # @template var clashes with ActionView instance, so use @tmpl
-  # Selects all templates for sidebar
-  # Create system template if it does not exist
-  def select_template
-    @tmpl   = @templates.detect { |t| t.filename == params[:id] }
-    @tmpl ||= site.templates.find_or_create_by_filename(params[:id]) if Template.template_types.include?(params[:id].to_sym)
-  end
+    # @template var clashes with ActionView instance, so use @tmpl
+    # Selects all templates for sidebar
+    # Create system template if it does not exist
+    def select_template
+      @tmpl   = @templates.detect { |t| t.filename == params[:id] }
+      @tmpl ||= site.templates.find_or_create_by_filename(params[:id]) if Template.template_types.include?(params[:id].to_sym)
+    end
 end

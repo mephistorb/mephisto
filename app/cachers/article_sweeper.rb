@@ -31,15 +31,15 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   alias after_destroy after_save
 
   protected
-  def expire_overview_feed!
-    controller.class.expire_page overview_url(:only_path => true, :skip_relative_url_root => true) if controller
-  end
-
-  def expire_assigned_sections!(record)
-    record.send :save_assigned_sections
-    record.sections.each do |section|
-      controller.expire_page :sections => section.to_url,      :controller => '/mephisto', :action => 'list'
-      controller.expire_page :sections => section.to_feed_url, :controller => '/feed',     :action => 'feed'
+    def expire_overview_feed!
+      controller.class.expire_page overview_url(:only_path => true, :skip_relative_url_root => true) if controller
     end
-  end
+    
+    def expire_assigned_sections!(record)
+      record.send :save_assigned_sections
+      record.sections.each do |section|
+        controller.expire_page :sections => section.to_url,      :controller => '/mephisto', :action => 'list'
+        controller.expire_page :sections => section.to_feed_url, :controller => '/feed',     :action => 'feed'
+      end
+    end
 end

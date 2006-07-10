@@ -1,5 +1,8 @@
-Template.set_table_name 'attachments'
 class AddSectionAttributes < ActiveRecord::Migration
+  class Template < ActiveRecord::Base
+    set_table_name 'attachments'
+  end
+  
   def self.up
     add_column :sections, :articles_per_page, :integer, :default => 15
     add_column :sections, :layout,            :string
