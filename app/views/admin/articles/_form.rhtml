@@ -26,9 +26,12 @@
 <!-- /end required fields -->
 
 <!-- begin optional fields -->
-<dl class="optional">
-  <dt><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
-  <dd><%= form.datetime_select :published_at, :discard_year => true %></dd>
+<dl id="article-optional">
+  <% unless @article.published? -%>
+  <dt><label>Save as Draft? <%= check_box_tag :draft, '1', false, :id => 'article-draft' %></label></dt>
+  <% end -%>
+  <dt class="publish-date"><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
+  <dd class="publish-date"><%= form.datetime_select :published_at, :discard_year => true %></dd>
 <% if @article.expire_comments_at && site.accept_comments? && site.comment_age.to_i > 0 %>
   <dt><%= label_tag 'article_expire_comments_at', 'Expire Comments on this date:' %></dt>
   <dd><%= form.datetime_select :expire_comments_at %></dd>

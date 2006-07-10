@@ -134,6 +134,11 @@ var ArticleForm = {
   
   viewComments: function() {
     location.href = "?filter=" + $F(this).toLowerCase();
+  },
+  
+  saveDraft: function() {
+    var isDraft = $F(this);
+    $$('#article-optional .publish-date select').each(function(sel) { sel.disabled = isDraft; });
   }
 }
 
@@ -171,5 +176,7 @@ Event.observe(window, 'load', function() {
   new TinyTab('filetabs');
   
   var commentsView = $('comments-view');
+  var articleDraft = $('article-draft');
   if(commentsView) Event.observe(commentsView, 'change', ArticleForm.viewComments.bind(commentsView));
+  if(articleDraft) Event.observe(articleDraft, 'change', ArticleForm.saveDraft.bind(articleDraft));
 });

@@ -3,8 +3,10 @@ class Admin::ArticlesController < Admin::BaseController
     c.before_filter :set_default_section_ids
     c.cache_sweeper :article_sweeper
     c.cache_sweeper :section_sweeper
-    cache_sweeper :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
+    cache_sweeper   :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
   end
+  
+  before_filter :check_for_new_draft, :only => :create
   
   before_filter :find_site_article, :only => [:update, :comments, :approve, :unapprove]
   before_filter :load_sections, :only => [:new, :edit]
@@ -103,5 +105,10 @@ class Admin::ArticlesController < Admin::BaseController
     def set_default_section_ids
       params[:article] ||= {}
       params[:article][:section_ids] ||= []
+    end
+    
+    def check_for_new_draft
+      params[:article] ||= {}
+      params[:article].delete_if { |k, v| k.to_s =~ /^published_at/ }
     end
 end
