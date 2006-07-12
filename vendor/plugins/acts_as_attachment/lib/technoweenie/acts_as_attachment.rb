@@ -304,7 +304,8 @@ module Technoweenie # :nodoc:
 
       # Gets the attachment data
       def attachment_data
-        @attachment_data ||= File.read(full_filename)
+        filename = full_filename
+        @attachment_data ||= File.file?(filename) && File.read(filename)
       end
 
       # Gets the full path to the filename in this format:
