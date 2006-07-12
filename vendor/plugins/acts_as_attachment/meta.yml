@@ -1,0 +1,7 @@
+author: 
+    name: technoweenie
+    homepage: http://techno-weenie.net
+summary: File upload handling plugin.
+homepage: http://technoweenie.stikipad.com
+plugin: http://svn.techno-weenie.net/projects/plugins/acts_as_attachment
+license: MIT
