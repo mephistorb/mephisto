@@ -1,8 +1,12 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TemplateTest < Test::Unit::TestCase
-  fixtures :attachments, :db_files, :sites
-  
+  fixtures :attachments, :sites
+
+  def setup
+    prepare_theme_fixtures
+  end
+
   def test_should_require_site
     assert_equal true, (t = sites(:first).templates.first).valid?
     t.update_attribute(:site, nil)
@@ -64,6 +68,6 @@ class TemplateTest < Test::Unit::TestCase
 
   protected
   def assert_template_type(expected_template_name, template_type, site=sites(:first))
-    assert_equal(attachments(expected_template_name).data, site.templates.find_preferred(template_type))
+    assert_equal(attachments(expected_template_name), site.templates.find_preferred(template_type))
   end
 end

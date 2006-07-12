@@ -5,8 +5,9 @@ require 'admin/resources_controller'
 class Admin::ResourcesController; def rescue_action(e) raise e end; end
 
 class Admin::ResourcesControllerTest < Test::Unit::TestCase
-  fixtures :attachments, :db_files, :users, :sites
+  fixtures :attachments, :users, :sites
   def setup
+    prepare_theme_fixtures
     @controller = Admin::ResourcesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
@@ -16,7 +17,7 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
   def test_should_show_edit_resource_form
     get :edit, :id => attachments(:css).id
     assert_tag :tag => 'form'
-    assert_tag :tag => 'textarea', :attributes => { :id => 'resource_data' }
+    assert_tag :tag => 'textarea', :attributes => { :id => 'resource_attachment_data' }
   end
 
   def test_should_require_resource_id
@@ -40,11 +41,11 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_save_resource
-    post :update, :id => attachments(:css).id, :resource => { :filename => 'foo', :data => "body {}\na {}" }
+    post :update, :id => attachments(:css).id, :resource => { :filename => 'foo', :attachment_data => "body {}\na {}" }
     assert_response :success
     attachments(:css).reload
     assert_equal 'foo.css',       attachments(:css).filename
-    assert_equal "body {}\na {}", attachments(:css).data
+    assert_equal "body {}\na {}", attachments(:css).attachment_data
   end
 
   def test_should_upload_resource

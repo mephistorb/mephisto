@@ -11,7 +11,7 @@ class Admin::ResourcesController < Admin::BaseController
          :redirect_to => { :controller => 'design', :action => 'index' }
          
   with_options :except => :index do |c|
-    c.before_filter :find_templates_and_resources!
+    c.before_filter :find_templates_and_resources
     c.before_filter :select_resource
   end
 

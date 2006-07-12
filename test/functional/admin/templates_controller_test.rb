@@ -5,9 +5,10 @@ require 'admin/templates_controller'
 class Admin::TemplatesController; def rescue_action(e) raise e end; end
 
 class Admin::TemplatesControllerTest < Test::Unit::TestCase
-  fixtures :attachments, :db_files, :users, :cached_pages, :sections
+  fixtures :attachments, :users, :cached_pages, :sections
 
   def setup
+    prepare_theme_fixtures
     @controller = Admin::TemplatesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
@@ -17,7 +18,7 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
   def test_should_show_edit_template_form
     get :edit, :id => attachments(:layout).filename
     assert_tag :tag => 'form'
-    assert_tag :tag => 'textarea', :attributes => { :id => 'template_data' }
+    assert_tag :tag => 'textarea', :attributes => { :id => 'template_attachment_data' }
   end
 
   def test_should_require_template_id
@@ -46,12 +47,4 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
     attachments(:layout).reload
     assert_equal 'foo', attachments(:layout).filename
   end
-
-  #def test_should_save_template_and_sweep_caches
-  #  set_controller_url :index
-  #  create_cached_page_for sections(:home), section_url(:sections => [])
-  #  assert_expire_page_caches section_url(:sections => []) do
-  #    post :update, :id => attachments(:layout).filename, :template => { :filename => 'foo' }
-  #  end
-  #end
 end

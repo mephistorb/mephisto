@@ -8,7 +8,7 @@ class Admin::TemplatesController < Admin::BaseController
          :redirect_to => { :action => 'edit' }
          
   with_options :except => :index do |c|
-    c.before_filter :find_templates_and_resources!
+    c.before_filter :find_templates_and_resources
     c.before_filter :select_template
   end
 

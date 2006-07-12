@@ -87,14 +87,6 @@ class MephistoController < ApplicationController
                                                 'article'          => @article.to_liquid(:single),
                                                 'article_sections' => @article.sections.collect(&:to_liquid))
     end
-    
-    def show_error(message = 'An error occurred.', status = '500 Error')
-      render_liquid_template_for(:error, 'message' => message, :status => status)
-    end
-
-    def show_404
-      show_error 'Page Not Found', '404 NotFound'
-    end
 
     def paged_search_url_for(page)
       page ? search_url(:q => params[:q], :page => page) : ''

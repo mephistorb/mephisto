@@ -42,15 +42,20 @@ class Test::Unit::TestCase
 
   def assert_attachment_created(num = 1)
     assert_difference Attachment, :count, num do
-      assert_difference DbFile, :count, num do
-        yield
-      end
+      yield
     end
   end
 
   def assert_no_attachment_created
     assert_attachment_created 0 do
       yield
+    end
+  end
+
+  def prepare_theme_fixtures
+    %w(1 2).each do |i|
+      FileUtils.rm_rf File.join(RAILS_ROOT, 'tmp/themes/site-' + i)
+      FileUtils.cp_r File.join(RAILS_ROOT, 'test/fixtures/themes/site-' + i), File.join(RAILS_ROOT, 'tmp/themes/site-' + i)
     end
   end
 end

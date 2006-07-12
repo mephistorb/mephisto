@@ -8,12 +8,14 @@ module Admin::ArticlesHelper
   end
 
   def link_to_article(article)
+    return '' unless article
     article.published? ?
       link_to(h(article.title), article_url(article.hash_for_permalink)) :
       h(article.title)
   end
 
   def published_at_for(article)
+    return 'not published' unless article
     format = utc_to_local(article.published_at).year == Time.now.year ? :plain : :standard
     article.published? ? utc_to_local(article.published_at).to_s(format) : "not published"
   end

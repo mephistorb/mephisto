@@ -6,18 +6,26 @@ class ApplicationController < ActionController::Base
   helper_method  :site
   attr_reader    :site
 
-  def render_liquid_template_for(template_type, assigns = {})
-    headers["Content-Type"] ||= 'text/html; charset=utf-8'
-
-    if assigns['articles'] && assigns['article'].nil?
-      self.cached_references += assigns['articles']
-      assigns['articles']     = assigns['articles'].collect &:to_liquid
+  protected
+    def render_liquid_template_for(template_type, assigns = {})
+      headers["Content-Type"] ||= 'text/html; charset=utf-8'
+    
+      if assigns['articles'] && assigns['article'].nil?
+        self.cached_references += assigns['articles']
+        assigns['articles']     = assigns['articles'].collect &:to_liquid
+      end
+    
+      render :text => site.templates.render_liquid_for(site, @section, template_type, assigns, self), :status => (assigns.delete(:status) || '200 OK')
     end
 
-    render :text => site.templates.render_liquid_for(site, @section, template_type, assigns, self), :status => (assigns.delete(:status) || '200 OK')
-  end
-  
-  protected
+    def show_error(message = 'An error occurred.', status = '500 Error')
+      render_liquid_template_for(:error, 'message' => message, :status => status)
+    end
+
+    def show_404
+      show_error 'Page Not Found', '404 NotFound'
+    end
+    
     def utc_to_local(time)
       site.timezone.utc_to_local(time)
     end

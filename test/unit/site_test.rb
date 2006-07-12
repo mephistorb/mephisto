@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class SiteTest < Test::Unit::TestCase
-  fixtures :sites, :contents, :attachments, :db_files
+  fixtures :sites, :contents, :attachments
   
   def test_should_validate_host
     assert_valid sites(:first)

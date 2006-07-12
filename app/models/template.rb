@@ -1,8 +1,8 @@
 # Templates are a special type of Asset for storing liquid template data.  It defines
 # special methods for retrieving the preferred template.
 class Template < Attachment
-  include Attachment::TemplateAndResourceMixin
   acts_as_attachment :content_type => 'text/liquid'
+  validates_as_attachment
   before_validation :set_file_path_and_content_type
 
   @@hierarchy = {
@@ -21,12 +21,12 @@ class Template < Attachment
 
   class << self
     def find_all_by_filename(template_type)
-      find_with_data(:all, :conditions => ["filename IN (?)", (hierarchy[template_type] + [:layout]).collect { |v| v.to_s }])
+      find(:all, :conditions => ["filename IN (?)", (hierarchy[template_type] + [:layout]).collect(&:to_s)])
     end
 
     def templates_for(template_type)
       find_all_by_filename(template_type).inject({}) do |templates, template|
-        template.data.blank? ? templates : templates.merge(template.filename => template.data)
+        templates.merge(template.filename => template)
       end
     end
 
@@ -36,10 +36,12 @@ class Template < Attachment
       nil
     end
 
-    def render_liquid_for(site, section, template_type, assigns = {}, controller = nil)      
+    def render_liquid_for(site, section, template_type, assigns = {}, controller = nil)
       templates           = (section && section.template && section.layout) ? [] : templates_for(template_type)
       preferred_template  = (section && section.template) || find_preferred(template_type, templates)
       layout_template     = (section && section.layout)   || templates['layout']
+      preferred_template  = preferred_template ? preferred_template.attachment_data : ''
+      layout_template     = layout_template    ? layout_template.attachment_data    : ''
       assigns['site']     = site.to_liquid
       assigns['sections'] = Mephisto::Liquid::SectionsDrop.new(site)
       assigns['content_for_layout'] = Liquid::Template.parse(preferred_template).render(assigns, :registers => {:controller => controller})
@@ -47,7 +49,7 @@ class Template < Attachment
     end
 
     def find_custom
-      find(:all, :conditions => ['filename NOT IN (?)', template_types.map(&:to_s)])
+      find(:all, :conditions => ['filename NOT IN (?)', template_types.collect(&:to_s)])
     end
   end
 
@@ -63,9 +65,20 @@ class Template < Attachment
     filename
   end
 
-  protected
-  def set_file_path_and_content_type
-    self.path         = 'templates'
-    self.content_type = 'text/liquid'
+  def path
+    layout? ? 'layouts' : 'templates'
   end
+
+  def full_filename(thumbnail = nil)
+    File.join(base_path, path, thumbnail_name_for(thumbnail).to_s + '.liquid')
+  end
+
+  def base_path
+    @base_path ||= File.join(RAILS_ROOT, 'themes', "site-#{site_id}")
+  end
+
+  protected
+    def set_file_path_and_content_type
+      self.content_type = 'text/liquid'
+    end
 end

@@ -5,9 +5,10 @@ require_dependency 'mephisto_controller'
 class MephistoController; def rescue_action(e) raise e end; end
 
 class MephistoControllerTest < Test::Unit::TestCase
-  fixtures :contents, :sections, :assigned_sections, :attachments, :db_files, :sites, :users
+  fixtures :contents, :sections, :assigned_sections, :attachments, :sites, :users
 
   def setup
+    prepare_theme_fixtures
     @controller = MephistoController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

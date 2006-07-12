@@ -15,7 +15,6 @@ layout:
   content_type: 'text/liquid'
   size: 1
   filename: layout
-  path: templates
 
 home:
   id: 2
@@ -25,7 +24,6 @@ home:
   content_type: 'text/liquid'
   size: 1
   filename: home
-  path: templates
 
 index:
   id: 3
@@ -35,7 +33,6 @@ index:
   content_type: 'text/liquid'
   size: 1
   filename: index
-  path: templates
 
 single:
   id: 4
@@ -45,7 +42,6 @@ single:
   content_type: 'text/liquid'
   size: 1
   filename: single
-  path: templates
 
 section:
   id: 5
@@ -55,7 +51,6 @@ section:
   content_type: 'text/liquid'
   size: 1
   filename: section
-  path: templates
 
 archive:
   id: 6
@@ -65,7 +60,6 @@ archive:
   content_type: 'text/liquid'
   size: 1
   filename: archive
-  path: templates
 
 page:
   id: 7
@@ -75,7 +69,6 @@ page:
   content_type: 'text/liquid'
   size: 1
   filename: page
-  path: templates
 
 author:
   id: 8
@@ -85,7 +78,6 @@ author:
   content_type: 'text/liquid'
   size: 1
   filename: author
-  path: templates
 
 search:
   id: 9
@@ -95,7 +87,6 @@ search:
   content_type: 'text/liquid'
   size: 1
   filename: search
-  path: templates
 
 error:
   id: 10
@@ -105,7 +96,6 @@ error:
   content_type: 'text/liquid'
   size: 1
   filename: error
-  path: templates
 
 css:
   id: 11
@@ -115,7 +105,6 @@ css:
   content_type: 'text/css'
   size: 1
   filename: style.css
-  path: stylesheets
 
 js:
   id: 12
@@ -125,18 +114,6 @@ js:
   content_type: 'text/javascript'
   size: 1
   filename: behavior.js
-  path: javascripts
-
-quentin:
-  id: 13
-  db_file_id: 13
-  attachable_id: 1
-  attachable_type: User
-  type: Avatar
-  content_type: 'image/png'
-  size: 1
-  filename: quentin.png
-  path: images/users
 
 site:
   id: 14
@@ -147,7 +124,6 @@ site:
   content_type: 'image/png'
   size: 1
   filename: foobar.png
-  path: images/site
 
 hostess_home:
   id: 15
@@ -157,4 +133,3 @@ hostess_home:
   content_type: 'text/liquid'
   size: 1
   filename: home
-  path: templates

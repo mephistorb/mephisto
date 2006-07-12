@@ -1,7 +1,7 @@
 class Admin::DesignController < Admin::BaseController
   verify :method => :post, :params => [:resource_type, :resource], :only => :create,
    :redirect_to => { :action => 'index' }
-  before_filter :find_templates_and_resources!
+  before_filter :find_templates_and_resources
 
   def index
     @resource = site.resources.build

@@ -6,7 +6,7 @@
     <li><%= link_to template.filename, :controller => 'templates', :action => 'edit', :id => template %></li>
   <% end -%>
   <% @resources.each do |resource| -%>
-    <li><%= link_to resource.full_path, :controller => 'resources', :action => 'edit', :id => resource %></li>
+    <li><%= link_to resource.public_filename, :controller => 'resources', :action => 'edit', :id => resource %></li>
   <% end -%>
 </ul>
 
@@ -15,7 +15,7 @@
 <p class="hint">Select an image to use in your template.</p>
 <ul id="attachments">
   <% @images.each do |image| -%>
-    <li id="image-<%= image.id %>"><%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {:url => {:controller => 'resources', :action => 'remove', :id => image}}, :class => 'aicon', :title => 'Delete image' %> <%= link_to image.full_path, :controller => 'resources', :action => 'show', :id => image %></li>
+    <li id="image-<%= image.id %>"><%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {:url => {:controller => 'resources', :action => 'remove', :id => image}}, :class => 'aicon', :title => 'Delete image' %> <%= link_to image.public_filename, :controller => 'resources', :action => 'show', :id => image %></li>
   <% end -%>
 </ul>
 

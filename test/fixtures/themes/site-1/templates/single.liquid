@@ -1,5 +1,25 @@
-<p>single</p>
+<div class="article">
+  <h3>{{ article.published_at | format_date: 'standard' }}</h3>
+  <h2>{{ article.title }}</h2>
+  {{ article.body }}
+</div>
 
-{% for article in articles %}
-  <p>{{ article | link_to_article }}</p>
+<h3>Comments</h3>
+<ul class="comments">
+{% for comment in comments %}
+<li id="comment_{{ comment.id }}">
+  <p>{{ comment.body }}</p>
+  <p>by {{ comment.author }} on {{ comment.created_at | format_date: 'short' }}</p>
+</li>
 {% endfor %}
+</ul>
+
+{% commentform %}
+<p>Name: {{ form.name }}</p>
+<p>Email: {{ form.email }}</p>
+<p>Url: {{ form.url }}</p>
+<p>
+  {{ form.body }}<br />
+  {{ form.submit }}
+</p>
+{% endcommentform %}

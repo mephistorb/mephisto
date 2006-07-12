@@ -3,7 +3,7 @@
   <h2>{{ article.published_at | format_date: 'standard' }}</h2>
   {{ article.body }}
 </div>
-<ul>
+<ul id="nav">
 {% pagenavigation %}
 <li>{{ page.link }}</li>
 {% endpagenavigation %}

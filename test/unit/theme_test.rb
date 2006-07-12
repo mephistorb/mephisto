@@ -1,7 +1,14 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ThemeTest < Test::Unit::TestCase
-  fixtures :attachments, :db_files, :sites
+  fixtures :attachments, :sites
+
+  def setup
+    FileUtils.rm_rf THEME_ROOT
+    FileUtils.mkdir_p THEME_ROOT
+    prepare_theme_fixtures
+  end
+
   THEME_ROOT = File.join(RAILS_ROOT, 'tmp/themes')
   THEME_FILES = [
     'images',
@@ -18,11 +25,6 @@ class ThemeTest < Test::Unit::TestCase
     'templates/section.liquid',
     'templates/single.liquid'
   ]
-
-  def setup
-    FileUtils.rm_rf THEME_ROOT
-    FileUtils.mkdir_p THEME_ROOT
-  end
 
   def test_should_select_theme_files
     files = sites(:first).attachments.find_theme_files

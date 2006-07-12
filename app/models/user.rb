@@ -1,4 +1,5 @@
 require 'digest/sha1'
+require 'digest/md5'
 class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
   attr_accessor :password
@@ -12,11 +13,9 @@ class User < ActiveRecord::Base
   validates_length_of       :email,    :within => 3..100
   validates_uniqueness_of   :login, :email, :salt
   before_save :encrypt_password
-  after_save  :save_uploaded_avatar
   serialize   :filters, Array
   
   has_many :articles
-  has_one  :avatar, :as => :attachable, :dependent => :destroy
   
   # Uncomment this to use activation
   # before_create :make_activation_code
@@ -57,43 +56,18 @@ class User < ActiveRecord::Base
     [:login, :email].inject({}) { |hsh, attr_name| hsh.merge attr_name.to_s => send(attr_name) }
   end
 
-  def uploaded_avatar=(uploaded_data)
-    @uploaded_avatar = uploaded_data
+  def gravatar_url(size = 80)
+    "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(email)}"
   end
 
-  # Uncomment these methods for user activation  These also help let the mailer know precisely when the user is activated.
-  # There's also a commented-out before hook above and a protected method below.
-  #
-  # The controller has a commented-out 'activate' action too.
-  #
-  # # Activates the user in the database.
-  # def activate
-  #   @activated = true
-  #   update_attributes(:activated_at => Time.now.utc, :activation_code => nil)
-  # end
-  # 
-  # # Returns true if the user has just been activated.
-  # def recently_activated?
-  #   @activated
-  # end
-
-  protected
-  def save_uploaded_avatar
-    if @uploaded_avatar && @uploaded_avatar.size > 0
-      # XXX (streadway) the next line is necessary because has_one is prematurely saving the association
-      # and not destroying the previous association, even if :dependent => :destroy is set.
-      avatar.destroy && avatar.reset unless avatar.nil?
-      build_avatar(:uploaded_data => @uploaded_avatar)
+  protected    
+    def encrypt_password
+      return if password.blank?
+      self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
+      self.crypted_password = encrypt(password)
     end
-  end
-
-  def encrypt_password
-    return if password.blank?
-    self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
-    self.crypted_password = encrypt(password)
-  end
-
-  def password_required?
-    crypted_password.nil? || !password.blank?
-  end
+    
+    def password_required?
+      crypted_password.nil? || !password.blank?
+    end
 end

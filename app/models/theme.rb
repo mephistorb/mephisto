@@ -18,13 +18,9 @@ module Theme
   end
 
   private
-  def write_files_with(file_object, path = '')
-    find_theme_files.each do |file|
-      filename = case file
-        when Resource       then file.full_path
-        when Template       then File.join(file.layout? ? 'layouts' : 'templates', file.filename + '.liquid')
+    def write_files_with(file_object, path = '')
+      find_theme_files.each do |file|
+        file_object.open(File.join(path, file.path, file.is_a?(Template) ? file.filename + '.liquid' : file.filename), 'w') { |f| f.write file.attachment_data }
       end
-      file_object.open(File.join(path, filename), 'w') { |f| f.write file.data }
     end
-  end
 end
