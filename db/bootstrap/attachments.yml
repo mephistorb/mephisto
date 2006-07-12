@@ -3,7 +3,6 @@ archive:
   site_id: 1
   content_type: text/liquid
   filename: archive
-  db_file_id: 1
   path: templates
   type: Template
   size: 99
@@ -13,7 +12,6 @@ home:
   site_id: 1
   content_type: text/liquid
   filename: home
-  db_file_id: 2
   path: templates
   type: Template
   size: 96
@@ -23,7 +21,6 @@ index:
   site_id: 1
   content_type: text/liquid
   filename: index
-  db_file_id: 3
   path: templates
   type: Template
   size: 97
@@ -33,7 +30,6 @@ layout:
   site_id: 1
   content_type: text/liquid
   filename: layout
-  db_file_id: 4
   path: templates
   type: Template
   size: 85
@@ -43,7 +39,6 @@ page:
   site_id: 1
   content_type: text/liquid
   filename: page
-  db_file_id: 5
   path: templates
   type: Template
   size: 223
@@ -53,7 +48,6 @@ search:
   site_id: 1
   content_type: text/liquid
   filename: search
-  db_file_id: 6
   path: templates
   type: Template
   size: 98
@@ -63,7 +57,6 @@ section:
   site_id: 1
   content_type: text/liquid
   filename: section
-  db_file_id: 7
   path: templates
   type: Template
   size: 99
@@ -73,7 +66,6 @@ single:
   site_id: 1
   content_type: text/liquid
   filename: single
-  db_file_id: 8
   path: templates
   type: Template
   size: 98

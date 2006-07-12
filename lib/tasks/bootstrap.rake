@@ -10,6 +10,7 @@ namespace :db do
       (ENV['FIXTURES'] ? ENV['FIXTURES'].split(/,/) : Dir.glob(File.join(RAILS_ROOT, 'db', 'bootstrap', '*.{yml,csv}'))).each do |fixture_file|
         Fixtures.create_fixtures('db/bootstrap', File.basename(fixture_file, '.*'))
       end
+      FileUtils.cp_r File.join(RAILS_ROOT, 'themes/default'), File.join(RAILS_ROOT, 'themes/site-1')
     end
   end
 end
