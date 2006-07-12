@@ -34,6 +34,7 @@ module Technoweenie # :nodoc:
       #     :thumbnails => { :thumb => [50, 50], :geometry => 'x50' }
       def acts_as_attachment(options = {})
         # this allows you to redefine the acts' options for each subclass, however
+        set_fs_path = options.keys.include? :file_system_path
         options[:thumbnails]       ||= {}
         options[:thumbnail_class]  ||= self
         options[:min_size]         ||= 1
@@ -49,15 +50,12 @@ module Technoweenie # :nodoc:
           after_destroy :destroy_file
 
           before_validation     :sanitize_filename
-          validates_presence_of :size, :content_type, :filename
-          validate              :attachment_attributes_valid?
-
           with_options :foreign_key => 'parent_id' do |m|
             m.has_many   :thumbnails, :dependent => :destroy, :class_name => options[:thumbnail_class].to_s
             m.belongs_to :parent, :class_name => self.base_class.to_s
           end
 
-          include options[:storage] == :file_system ? FileSystemMethods : DbFileMethods
+          include set_fs_path || options[:storage] == :file_system ? FileSystemMethods : DbFileMethods
           after_save :create_attachment_thumbnails # allows thumbnails with parent_id to be created
 
           extend  ClassMethods
@@ -71,6 +69,12 @@ module Technoweenie # :nodoc:
 
     module ClassMethods
       delegate :content_types, :to => Technoweenie::ActsAsAttachment
+
+      # Performs common validations for attachment models.
+      def validates_as_attachment
+        validates_presence_of :size, :content_type, :filename
+        validate              :attachment_attributes_valid?
+      end
 
       # Returns true or false if the given content type is recognized as an image.
       def image?(content_type)
@@ -252,6 +256,7 @@ module Technoweenie # :nodoc:
         def callback_with_args(method, arg = self)
           notify(method)
 
+          result = nil
           callbacks_for(method).each do |callback|
             result = callback.call(self, arg)
             return false if result == false
@@ -311,13 +316,18 @@ module Technoweenie # :nodoc:
       # Overwrite this method in your model to customize the filename.
       # The optional thumbnail argument will output the thumbnail's filename.
       def full_filename(thumbnail = nil)
-        File.join(RAILS_ROOT, attachment_options[:file_system_path], id.to_s, thumbnail_name_for(thumbnail))
+        File.join(RAILS_ROOT, attachment_options[:file_system_path], (parent_id || id).to_s, thumbnail_name_for(thumbnail))
+      end
+
+      # Used as the base path that #public_filename strips off full_filename to create the public path
+      def base_path
+        @base_path ||= File.join(RAILS_ROOT, 'public')
       end
 
       # Gets the public path to the file
       # The optional thumbnail argument will output the thumbnail's filename.
       def public_filename(thumbnail = nil)
-        full_filename(thumbnail).gsub %r(^#{Regexp.escape(File.join(RAILS_ROOT, 'public'))}), ''
+        full_filename(thumbnail).gsub %r(^#{Regexp.escape(base_path)}), ''
       end
 
       def filename=(value)
@@ -332,7 +342,7 @@ module Technoweenie # :nodoc:
         end
         
         def rename_file
-          return unless @old_filename
+          return unless @old_filename && @old_filename != full_filename
           if @save_attachment && File.exists?(@old_filename)
             FileUtils.rm @old_filename
           elsif File.exists?(@old_filename)
