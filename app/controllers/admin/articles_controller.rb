@@ -6,7 +6,7 @@ class Admin::ArticlesController < Admin::BaseController
     cache_sweeper   :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
   end
   
-  before_filter :check_for_new_draft, :only => :create
+  before_filter :check_for_new_draft, :only => [:create, :update]
   
   before_filter :find_site_article, :only => [:update, :comments, :approve, :unapprove]
   before_filter :load_sections, :only => [:new, :edit]
