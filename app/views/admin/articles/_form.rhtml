@@ -31,8 +31,8 @@
   <dt><label>Save as Draft?</label></dt>
   <dd><%= check_box_tag :draft, '1', !@article.new_record?, :id => 'article-draft' %> Yes, save this article as a draft.</dd>
   <% end -%>
-  <dt id="publish-date-lbl"<%= %( style="display:none") unless @article.new_record? -%>><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
-  <dd id="publish-date"<%= %( style="display:none") unless @article.new_record? -%>><%= form.datetime_select :published_at, :discard_year => true %></dd>
+  <dt id="publish-date-lbl"<%= %( style="display:none") unless @article.new_record? || @article.published? -%>><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
+  <dd id="publish-date"<%= %( style="display:none") unless @article.new_record? || @article.published? -%>><%= form.datetime_select :published_at, :discard_year => true %></dd>
 <% if @article.expire_comments_at && site.accept_comments? && site.comment_age.to_i > 0 %>
   <dt><%= label_tag 'article_expire_comments_at', 'Expire Comments on this date:' %></dt>
   <dd><%= form.datetime_select :expire_comments_at %></dd>
