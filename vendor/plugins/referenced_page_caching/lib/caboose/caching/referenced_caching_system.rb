@@ -17,20 +17,21 @@ module Caboose # :nodoc:
       end
 
       protected
-      # An array of the current page's references.
-      #
-      #   self.cached_references << @post
-      #   self.cached_references += @post.comments
-      # 
-      def cached_references
-        @cached_references ||= []
-      end
-
-      # Saves a CachedPage for the current request with the current references.  This is called in an after filter if #caches_page_with_references
-      # is used.
-      def cache_page_with_references
-        CachedPage.create_by_url(url_for(:only_path => true, :skip_relative_url_root => true), cached_references)
-      end
+        # An array of the current page's references.
+        #
+        #   self.cached_references << @post
+        #   self.cached_references += @post.comments
+        # 
+        def cached_references
+          @cached_references ||= []
+        end
+        
+        # Saves a CachedPage for the current request with the current references.  This is called in an after filter if #caches_page_with_references
+        # is used.
+        def cache_page_with_references
+          return unless perform_caching && caching_allowed
+          CachedPage.create_by_url(url_for(:only_path => true, :skip_relative_url_root => true), cached_references)
+        end
     end
   end
 end

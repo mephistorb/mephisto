@@ -34,7 +34,8 @@ class CachingTest < ActionController::IntegrationTest
     assert_difference Article, :count do
       assert_expires_pages section_url_for(:home),
                            feed_url_for(:home) do
-        writer.create :title => 'This is a new article & title', :body => 'this is a new article body', :sections => [sections(:home)], :published_at => Time.now
+        writer.create :title => 'This is a new article & title', :body => 'this is a new article body', :sections => [sections(:home)], :published_at => 5.minutes.ago
+        RAILS_DEFAULT_LOGGER.warn "HOLY FUCKING SHIT"
       end
     end
     
@@ -129,27 +130,31 @@ class CachingTest < ActionController::IntegrationTest
   def test_should_not_cache_bad_urls
     visitor = visit
     pages   = ['/about/blah', '/foo/bar', '2006/1/2/fasd']
-    assert_expires_pages *pages do
-      pages.each { |p| visitor.get p }
+    assert_no_difference CachedPage, :count do
+      assert_expires_pages *pages do
+        pages.each { |p| visitor.get p }
+      end
     end
   end
 
   protected
     def visit_sections_and_feeds_with(visitor)
-      assert_caches_page section_url_for(:home) do
-        visitor.read sections(:home)
-      end
-
-      assert_caches_page section_url_for(:about) do
-        visitor.read sections(:about)
-      end
-
-      assert_caches_page feed_url_for(:home) do
-        visitor.syndicate sections(:home)
-      end
-
-      assert_caches_page feed_url_for(:about) do
-        visitor.syndicate sections(:about)
+      assert_difference CachedPage, :count, 4 do
+        assert_caches_page section_url_for(:home) do
+          visitor.read sections(:home)
+        end
+        
+        assert_caches_page section_url_for(:about) do
+          visitor.read sections(:about)
+        end
+        
+        assert_caches_page feed_url_for(:home) do
+          visitor.syndicate sections(:home)
+        end
+        
+        assert_caches_page feed_url_for(:about) do
+          visitor.syndicate sections(:about)
+        end
       end
     end
 end
