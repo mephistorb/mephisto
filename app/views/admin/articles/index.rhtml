@@ -8,6 +8,7 @@
 <!-- /end action nav -->
 <% end %>
 
+<% if @articles.any? %>
 <!-- begin article list -->
 <table id="article-list" cellspacing="0" cellpadding="0">
   <thead>
@@ -19,10 +20,13 @@
     </tr>
   </thead>
   <tbody id="articles">
-<%= render :partial => 'article', :collection => @articles %>
+      <%= render :partial => 'article', :collection => @articles %>
   </tbody>
 </table>
 <!-- /end article list -->
+<% else %>
+  <div class="empty">You have no articles.  <%= link_to "Create one now &raquo;", :action => "new" %></div>
+<% end %>
 
 <!-- begin pagination -->
 <div id="pagination">

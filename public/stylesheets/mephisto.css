@@ -88,7 +88,11 @@ a:hover {
 
 img { border: 0;}
 .tspace { margin-top: 20px;}
-
+.empty {
+  padding: 10px;
+  padding-left: 40px;
+  background: #eee url(../images/icons/minusb.gif) 10px 50% no-repeat; }
+}
 
 /*
  *=FORMS
@@ -937,7 +941,7 @@ li.event-date {
 }
 
 li.event-revision, li.event-comment,
-li.event-article, li.event-none {
+li.event-article, .event-none {
   background-repeat: no-repeat;
   background-position: 2% 50%;
 }
@@ -945,7 +949,7 @@ li.event-article, li.event-none {
 li.event-revision { background-image: url(../images/icons/review.gif);   }
 li.event-comment  { background-image: url(../images/icons/commentb.gif); }
 li.event-article  { background-image: url(../images/icons/articleb.gif); }
-li.event-none     { background-image: url(../images/icons/minusb.gif); }
+.event-none     { background-image: url(../images/icons/minusb.gif); }
 
 .shade { background-color: #eee; }
 
