@@ -91,7 +91,11 @@ img { border: 0;}
 .empty {
   padding: 10px;
   padding-left: 40px;
-  background: #eee url(../images/icons/minusb.gif) 10px 50% no-repeat; }
+  background: #eee url(../images/icons/minusb.gif) 10px 50% no-repeat; 
+}
+.highlight {
+  border-bottom: 3px double #ccc;
+  font-style: normal;
 }
 
 /*
