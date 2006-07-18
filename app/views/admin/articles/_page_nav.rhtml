@@ -2,6 +2,7 @@
 <% content_for :action_nav do %>
 <div id="page-nav">
   <ul id="act-nav" class="clear">
+    <li><%= link_to 'Delete this article', {:action => 'destroy', :id => @article}, :confirm => 'Are you sure you want to delete this article?' %></li>
     <li id="select">
       <a class="trigger" id="cog" href="#">&nbsp;</a>
       <div id="optgroup" style="display: none">
