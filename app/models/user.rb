@@ -2,7 +2,7 @@ require 'digest/md5'
 class User < UserAuth
   serialize   :filters, Array
   has_many :articles
-  #acts_as_paranoid
+  acts_as_paranoid
 
   def filters=(value)
     write_attribute :filters, [value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq
