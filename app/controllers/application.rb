@@ -7,6 +7,13 @@ class ApplicationController < ActionController::Base
   attr_reader    :site
 
   protected
+    [:utc_to_local, :local_to_utc].each do |meth|
+      define_method meth do |time|
+        site.timezone.send(meth, time)
+      end
+      helper_method meth
+    end
+
     def render_liquid_template_for(template_type, assigns = {})
       headers["Content-Type"] ||= 'text/html; charset=utf-8'
     
@@ -25,16 +32,17 @@ class ApplicationController < ActionController::Base
     def show_404
       show_error 'Page Not Found', '404 NotFound'
     end
-    
-    def utc_to_local(time)
-      site.timezone.utc_to_local(time)
-    end
-
-    helper_method :utc_to_local
 
     def set_cache_root
       @site ||= Site.find_by_host(request.host) || Site.find(:first, :order => 'id')
       # prepping for site-specific page cache directories, DONT PANIC
       #self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'sites', site.host])
+    end
+
+    def with_site_timezone
+      old_tz = ENV['TZ']
+      ENV['TZ'] = site.timezone.name
+      yield
+      ENV['TZ'] = old_tz
     end
 end

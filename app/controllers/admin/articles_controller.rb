@@ -6,7 +6,8 @@ class Admin::ArticlesController < Admin::BaseController
     cache_sweeper   :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
   end
   
-  before_filter :check_for_new_draft, :only => [:create, :update]
+  before_filter :check_for_new_draft,  :only => [:create, :update]
+  before_filter :convert_times_to_utc, :only => [:create, :update]
   
   before_filter :find_site_article, :only => [:update, :comments, :approve, :unapprove]
   before_filter :load_sections, :only => [:new, :edit]
@@ -28,6 +29,7 @@ class Admin::ArticlesController < Admin::BaseController
 
   def new
     @article = site.articles.build
+    @article.published_at = utc_to_local(Time.now.utc)
   end
 
   def edit
@@ -109,6 +111,17 @@ class Admin::ArticlesController < Admin::BaseController
     
     def check_for_new_draft
       params[:article] ||= {}
-      params[:article].delete_if { |k, v| k.to_s =~ /^published_at/ }
+      params[:article].delete_if { |k, v| k.to_s =~ /^published_at/ } if params[:draft]
+    end
+    
+    def convert_times_to_utc
+      with_site_timezone do
+        [:published_at, :expire_comments_at].each do |attr|
+          date = Time.parse_from_attributes(params[:article], attr, :local)
+          next unless date
+          params[:article].delete_if { |k, v| k.to_s =~ /^#{attr}/ }
+          params[:article][attr] = date.utc
+        end
+      end
     end
 end

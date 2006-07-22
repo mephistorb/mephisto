@@ -25,7 +25,7 @@
     </dt>
     <dd><%= f.text_field :email %></dd>
     <dt><label for="site_timezone">Website Timezone</label></dt>
-    <dd><%= select_tag 'site_timezone', options_for_select(TZInfo::Timezone.all.map{|tz| [tz.to_s, tz.name]}.sort, @site.timezone.name), :name => 'site[timezone]' %></dd>
+    <dd><%= select_tag 'site_timezone', options_for_select(['UTC'] + TZInfo::Timezone.all.map{|tz| [tz.to_s, tz.name]}.sort, @site.timezone.name), :name => 'site[timezone]' %></dd>
   </dl>
 </div>
 

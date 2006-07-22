@@ -12,7 +12,7 @@ first:
   accept_comments: true
   approve_comments: false
   comment_age: 30
-  timezone: UTC
+  timezone: America/New_York
 
 hostess:
   id: 2

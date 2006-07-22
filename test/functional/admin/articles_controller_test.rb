@@ -36,14 +36,27 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_no_tag :tag => 'input', :attributes => { :id => 'draft' }
     assert_equal sections(:home), assigns(:sections).first
   end
-  
+
+  def test_should_show_timezone_published_date
+    Time.mock! Time.local(2005, 1, 1, 10, 0, 0) do
+      get :new
+      assert_response :success
+      assert_tag 'option', :content => '11', :attributes => { :selected => 'selected' }, 
+        :ancestor => { :tag => 'select', :attributes => { :name => 'article[published_at(4i)]' } }
+    end
+  end
+
   def test_should_create_article
-    assert_difference Article, :count do
-      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah" }, :submit => :save
-      assert_redirected_to :action => 'index'
-      assert !assigns(:article).published?
-      assert !assigns(:article).new_record?
-      assert_equal users(:quentin), assigns(:article).updater
+    Time.mock! Time.local(2005, 1, 1, 12, 0, 0) do
+      assert_difference Article, :count do
+        post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah",
+          'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10' }, :submit => :save
+        assert_redirected_to :action => 'index'
+        assert  assigns(:article).published?
+        assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
+        assert !assigns(:article).new_record?
+        assert_equal users(:quentin), assigns(:article).updater
+      end
     end
   end
   
@@ -116,7 +129,10 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
 
   def test_should_create_edit_event
     assert_event_created_for :welcome, 'edit' do |article|
-      post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => Time.now }, :submit => :save
+      post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => 5.days.ago }, :submit => :save
+      assert_redirected_to :action => 'index'
+      assert !assigns(:article).new_record?
+      assert  assigns(:article).published?
     end
   end
   
@@ -132,7 +148,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
 
   def test_should_create_article_draft
     assert_difference Article, :count do
-      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => Time.now }, :draft => '1'
+      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => 5.days.ago }, :draft => '1'
       assert_redirected_to :action => 'index'
       assert !assigns(:article).new_record?
       assert !assigns(:article).published?

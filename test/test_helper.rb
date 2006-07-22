@@ -1,6 +1,24 @@
 ENV["RAILS_ENV"] = "test"
+ENV['TZ'] = 'US/Central'
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
+
+Time.class_eval do
+  class << self
+    alias_method :real_now, :now
+  end
+
+  def self.mock_now
+    @current_time
+  end
+
+  def self.mock!(time)
+    class << Time ; alias_method :now, :mock_now; end
+    @current_time = time
+    yield
+    class << Time ; alias_method :now, :real_now; end
+  end
+end
 
 class Test::Unit::TestCase
   include AuthenticatedTestHelper
