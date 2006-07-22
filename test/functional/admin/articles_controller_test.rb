@@ -106,7 +106,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       [ :year, :month, :day, :hour, :min ].each_with_index do |attr, i|
         value = local_time.send(attr)
         assert_tag 'option', :attributes => { :selected => 'selected', :value => 
-          (i > 3 ? leading_zero_on_single_digits(value) : value).to_s }, 
+          (i > 3 ? ('%02d' % local_time.send(attr)) : value.to_s) }, 
           :ancestor => { :tag => 'select', :attributes => { :name => "article[#{date_attr}(#{i+1}i)]" } }
       end
     end
