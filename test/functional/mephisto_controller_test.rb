@@ -91,12 +91,17 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_render_liquid_templates_on_home
     get_mephisto
-    assert_tag :tag => 'h1', :content => 'This is the layout'
-    assert_tag :tag => 'p',  :content => 'home'
-    assert_tag :tag => 'h2', :content => contents(:welcome).title
-    assert_tag :tag => 'h2', :content => contents(:another).title
-    assert_tag :tag => 'p',  :content => contents(:welcome).excerpt
-    assert_tag :tag => 'p',  :content => contents(:another).body
+    assert_tag 'h1', :content => 'This is the layout'
+    assert_tag 'p',  :content => 'home'
+    assert_tag 'h2', :content => contents(:welcome).title
+    assert_tag 'h2', :content => contents(:another).title
+    assert_tag 'p',  :content => contents(:welcome).excerpt
+    assert_tag 'p',  :content => contents(:another).body
+  end
+
+  def test_should_show_time_in_correct_timezone
+    get_mephisto
+    assert_tag 'span', :content => assigns(:site).timezone.utc_to_local(contents(:welcome).published_at).to_s(:standard)
   end
 
   def test_should_render_liquid_templates_by_sections

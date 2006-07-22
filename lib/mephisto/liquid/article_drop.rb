@@ -11,8 +11,8 @@ module Mephisto
           'permalink'        => article.permalink,
           'url'              => article.full_permalink,
           'body'             => article.send(:body_for_mode, mode),
-          'published_at'     => article.published_at,
-          'updated_at'       => article.updated_at,
+          'published_at'     => article.site.timezone.utc_to_local(article.published_at),
+          'updated_at'       => article.site.timezone.utc_to_local(article.updated_at),
           'comments_count'   => article.comments_count,
           'author'           => article.user.to_liquid,
           'comments_allowed' => article.comments_allowed?
