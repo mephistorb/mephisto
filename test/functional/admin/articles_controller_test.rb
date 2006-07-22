@@ -40,6 +40,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_show_timezone_published_date
     Time.mock! Time.local(2005, 1, 1, 10, 0, 0) do
       get :new
+      assert_no_tag 'select', :attributes => { :name => 'article[expire_comments_at(1i)]' }
       assert_response :success
       assert_tag 'option', :content => '11', :attributes => { :selected => 'selected' }, 
         :ancestor => { :tag => 'select', :attributes => { :name => 'article[published_at(4i)]' } }
@@ -97,6 +98,20 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_no_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
   end
   
+  def test_should_show_expire_comments_date_selector
+    get :edit, :id => contents(:welcome).id
+    [:published_at, :expire_comments_at].each do |date_attr|
+      local_time = assigns(:article).send(date_attr)
+      assert_tag 'select', :attributes => { :name => "article[#{date_attr}(1i)]" }
+      [ :year, :month, :day, :hour, :min ].each_with_index do |attr, i|
+        value = local_time.send(attr)
+        assert_tag 'option', :attributes => { :selected => 'selected', :value => 
+          (i > 3 ? leading_zero_on_single_digits(value) : value).to_s }, 
+          :ancestor => { :tag => 'select', :attributes => { :name => "article[#{date_attr}(#{i+1}i)]" } }
+      end
+    end
+  end
+  
   def test_edit_form_should_have_correct_post_action
     get :edit, :id => contents(:welcome).id
     assert_response :success
@@ -106,6 +121,18 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_show_action_previews_article
     get :show, :id => contents(:welcome).id
     assert_response :success
+  end
+
+  def test_should_update_article_with_correct_time
+    Time.mock! Time.local(2005, 1, 1, 12, 0, 0) do
+      post :update, :id => contents(:welcome).id, :article => { 
+        'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10',
+        'expire_comments_at(1i)' => '2005', 'expire_comments_at(2i)' => '2', 'expire_comments_at(3i)' => '1', 'expire_comments_at(4i)' => '10' }
+      assert_redirected_to :action => 'index'
+      assert  assigns(:article).published?
+      assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
+      assert_equal Time.local(2005, 2, 1, 9, 0, 0).utc, assigns(:article).expire_comments_at
+    end
   end
 
   def test_should_create_article_with_given_sections

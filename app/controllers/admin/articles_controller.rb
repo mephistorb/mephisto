@@ -35,6 +35,9 @@ class Admin::ArticlesController < Admin::BaseController
   def edit
     @article = site.articles.find(params[:id])
     @version = params[:version] ? @article.find_version(params[:version]) : @article
+    [:published_at, :expire_comments_at].each do |attr|
+      @version.send("#{attr}=", utc_to_local(@version.send(attr) || Time.now.utc))
+    end
   end
 
   def create

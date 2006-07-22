@@ -24,7 +24,12 @@ class Test::Unit::TestCase
   include AuthenticatedTestHelper
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
-  
+
+  # taken from actionview to help test dates
+  def leading_zero_on_single_digits(number)
+    number > 9 ? number : "0#{number}"
+  end
+
   def host!(hostname)
     @request.host = hostname
   end
