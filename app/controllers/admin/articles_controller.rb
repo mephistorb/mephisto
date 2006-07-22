@@ -9,7 +9,7 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :check_for_new_draft,  :only => [:create, :update]
   before_filter :convert_times_to_utc, :only => [:create, :update]
   
-  before_filter :find_site_article, :only => [:update, :comments, :approve, :unapprove]
+  before_filter :find_site_article, :only => [:edit, :update, :comments, :approve, :unapprove, :destroy]
   before_filter :load_sections, :only => [:new, :edit]
 
   def index
@@ -33,7 +33,6 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def edit
-    @article = site.articles.find(params[:id])
     @version = params[:version] ? @article.find_version(params[:version]) : @article
     [:published_at, :expire_comments_at].each do |attr|
       @version.send("#{attr}=", utc_to_local(@version.send(attr) || Time.now.utc))
@@ -58,6 +57,13 @@ class Admin::ArticlesController < Admin::BaseController
     else
       @sections = site.sections
       render :action => 'edit'
+    end
+  end
+
+  def destroy
+    @article.destroy
+    render :update do |page|
+      page.redirect_to :action => 'index'
     end
   end
 
