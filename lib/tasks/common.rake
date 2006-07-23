@@ -1,15 +1,7 @@
-desc "Sets up a cloudnine app on a remote server with switchtower"
-task :init do
+desc "freeze rails edge"
+task :edge do
   ENV['SHARED_PATH']  = '../../shared' unless ENV['SHARED_PATH']
   ENV['RAILS_PATH'] ||= File.join(ENV['SHARED_PATH'], 'rails')
-  puts 'copying files...'
-  cp "#{ENV['SHARED_PATH']}/database.yml",      'config'
-  cp "#{ENV['SHARED_PATH']}/lighttpd.conf",     'config' rescue nil # not all of us have this you know
-  cp "#{ENV['SHARED_PATH']}/dispatch.fcgi",     'public'
-
-  puts 'setting permissions...'
-  chmod 0600, 'config/database.yml'
-  chmod 0700, 'public/dispatch.fcgi'
   
   checkout_path = File.join(ENV['RAILS_PATH'], 'trunk')
   export_path   = "#{ENV['RAILS_PATH']}/rev_#{ENV['REVISION']}"
@@ -39,12 +31,12 @@ task :init do
   get_framework_for symlink_path do |framework|
     ln_s File.expand_path("#{export_path}/#{framework}/lib"), "#{symlink_path}/#{framework}/lib"
   end
-
+  
   touch "vendor/rails_#{ENV['REVISION']}"
 end
 
 def get_framework_for(*paths)
-  %w( railties actionpack activerecord actionmailer activesupport actionwebservice ).each do |framework|
+  %w( railties actionpack activerecord actionmailer activesupport activeresource ).each do |framework|
     paths.each { |path| mkdir_p "#{path}/#{framework}" }
     yield framework
   end
