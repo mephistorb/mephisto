@@ -12,7 +12,7 @@ class UserAuth < ActiveRecord::Base
   validates_confirmation_of :password,                   :if => :password_required?
   validates_length_of       :login,    :within => 3..40
   validates_length_of       :email,    :within => 3..100
-  validates_uniqueness_of   :login, :email, :salt
+  validates_uniqueness_of   :login, :email, :case_sensitve => false
   before_save :encrypt_password
   
   # Uncomment this to use activation

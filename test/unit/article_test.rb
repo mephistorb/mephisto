@@ -122,6 +122,10 @@ class ArticleTest < Test::Unit::TestCase
     assert a.published_at.utc?
   end
 
+  def test_should_find_deleted_user
+    assert_equal User.find_with_deleted(3), contents(:another).user
+  end
+
   protected
     def create_article(options = {})
       Article.create options.reverse_merge(:user_id => 1, :site_id => 1, :title => 'foo')

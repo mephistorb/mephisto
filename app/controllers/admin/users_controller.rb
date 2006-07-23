@@ -1,10 +1,16 @@
 class Admin::UsersController < Admin::BaseController
   def index
-    @users = User.find :all, :order => 'login'
+    @users = User.find_with_deleted :all, :order => 'login'
+    @enabled, @disabled = @users.partition { |u| u.deleted_at.nil? }
+    @users = @enabled + @disabled
   end
 
   def show
     @user = User.find_by_login params[:id]
+  end
+  
+  def new
+    @user = User.new
   end
 
   def create
@@ -28,9 +34,16 @@ class Admin::UsersController < Admin::BaseController
       render :action => 'show'
     end
   end
-  
-  def new
-    @user = User.new
+
+  def destroy
+    @user = User.find params[:id]
+    @user.destroy
+    @user = User.find_with_deleted params[:id] # reload
   end
-  
+
+  def enable
+    @user = User.find_with_deleted params[:id]
+    @user.deleted_at = nil
+    @user.save!
+  end
 end

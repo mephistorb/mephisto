@@ -9,11 +9,5 @@
 <% end %>
 
 <ul id="users">
-<% @users.each do |user| -%>
-  <li class="clear">
-      <%= avatar_for user %>
-      <h3><%= link_to user.login, :action => 'show', :id => user %></h3>
-      <%= user.email %>
-  </li>
-<% end -%>
+<%= render :partial => "user", :collection => @users %>
 </ul>

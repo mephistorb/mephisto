@@ -81,4 +81,38 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     users(:quentin).reload
     assert_equal :markdown_filter, users(:quentin).filters.first
   end
+
+  def test_should_show_deleted_users
+    get :index
+    assert_equal 3, assigns(:users).size
+    normal_tag  = { :tag => 'li', :attributes => { :id => 'user-1', :class => 'clear' } }
+    deleted_tag = { :tag => 'li', :attributes => { :id => 'user-3', :class => 'clear deleted' } }
+    assert_tag normal_tag
+    assert_tag 'li', :attributes => { :id => 'user-2', :class => 'clear' }
+    assert_tag deleted_tag
+    assert_tag    'a', :content => 'Disable', :ancestor => normal_tag
+    assert_no_tag 'a', :content => 'Disable', :ancestor => deleted_tag
+    assert_no_tag 'a', :content => 'Enable',  :ancestor => normal_tag
+    assert_tag    'a', :content => 'Enable',  :ancestor => deleted_tag
+  end
+
+  def test_should_disable_user
+    assert_no_difference User, :count_with_deleted do
+      assert_difference User, :count, -1 do
+        xhr :post, :destroy, :id => users(:quentin).id
+        assert_response :success
+      end
+    end
+    
+    assert_equal users(:quentin), User.find_with_deleted(users(:quentin).id)
+  end
+
+  def test_should_enable_user
+    assert_no_difference User, :count_with_deleted do
+      assert_difference User, :count do
+        xhr :post, :enable, :id => 3
+        assert_response :success
+      end
+    end
+  end
 end

@@ -6,7 +6,7 @@ class Event < ActiveRecord::Base
   belongs_to :article, :foreign_key => 'article_id'
 
   # updater of the article at the time of the event
-  belongs_to :user
+  belongs_to :user, :with_deleted => true
   
   belongs_to :comment
   belongs_to :site

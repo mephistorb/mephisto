@@ -19,3 +19,14 @@ arthur:
   created_at: <%= 1.days.ago.to_s :db %>
   updated_at: <%= 1.days.ago.to_s :db %>
   filters: "--- \n- :markdown_filter\n"
+aaron:
+  id: 3
+  login: aaron
+  email: aaron@example.com
+  salt: 55bc51360864c82dcd7ff4bcfec56a8d8e79e751
+  crypted_password: 37ba966058c6f39162e5b537adb516af91cd1fe6 # arthur
+  activation_code: arthurscode # only if you're activating new signups
+  created_at: <%= 1.days.ago.to_s :db %>
+  updated_at: <%= 1.days.ago.to_s :db %>
+  deleted_at: <%= 5.hours.ago.to_s :db %>
+  filters: "--- \n- :markdown_filter\n"
