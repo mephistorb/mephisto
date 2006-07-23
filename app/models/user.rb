@@ -16,7 +16,8 @@ class User < UserAuth
     [:login, :email].inject({}) { |hsh, attr_name| hsh.merge attr_name.to_s => send(attr_name) }
   end
 
+  # FIXME
   def gravatar_url(size = 80)
-    "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(email)}"
+    "http://www.gravatar.com/avatar.php?size=#{size}&amp;gravatar_id=#{Digest::MD5.hexdigest(email)}&amp;default=http://localhost:3002/images/avatar.gif"
   end
 end
