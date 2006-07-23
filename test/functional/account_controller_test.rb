@@ -31,6 +31,13 @@ class AccountControllerTest < Test::Unit::TestCase
     assert_response :success
   end
 
+  def test_should_fail_login_for_disabled_user_and_not_redirect
+    post :login, :login => 'aaron', :password => 'arthur'
+    assert_nil session[:user]
+    assert_nil cookies['user']
+    assert_response :success
+  end
+
   def test_should_logout
     login_as :quentin
     get :logout
