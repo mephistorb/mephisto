@@ -29,7 +29,7 @@ class CommentsControllerTest < Test::Unit::TestCase
           :author_ip => '127.0.0.1'
         })
         assert_response :redirect
-        assert_redirected_to comment_preview_url(contents(:welcome).hash_for_permalink(:comment => assigns(:comment)))
+        assert_redirected_to comment_preview_url(contents(:welcome).hash_for_permalink(:comment => assigns(:comment), :anchor => assigns(:comment).dom_id))
         contents(:welcome).reload
       end
     end
@@ -44,7 +44,7 @@ class CommentsControllerTest < Test::Unit::TestCase
           :author    => 'approved bob',
           :author_ip => '127.0.0.1'
         })
-        assert_redirected_to comment_preview_url(contents(:cupcake_welcome).hash_for_permalink(:comment => assigns(:comment)))
+        assert_redirected_to comment_preview_url(contents(:cupcake_welcome).hash_for_permalink(:comment => assigns(:comment), :anchor => assigns(:comment).dom_id))
         contents(:cupcake_welcome).reload
       end
     end
@@ -59,7 +59,7 @@ class CommentsControllerTest < Test::Unit::TestCase
             :body   => 'test comment', 
             :author => 'bob'
           })
-          assert_redirected_to section_url(:sections => [])
+          assert_response :missing
           contents(:welcome).reload
           contents(:cupcake_welcome).reload
         end
@@ -92,21 +92,17 @@ class CommentsControllerTest < Test::Unit::TestCase
   end
 
   def test_should_reject_missing_article_params
-    #get :create
-    #assert_redirected_to @controller.send(:section_url, { :sections => [] })
     post :create, :year => '2006', :month => '01', :day => '01', :permalink => 'foo'
-    assert_redirected_to @controller.send(:section_url, { :sections => [] })
+    assert_response :missing
   end
 
   def test_should_reject_get_request
     get :create, contents(:welcome).hash_for_permalink
-    assert_redirected_to @controller.url_for(contents(:welcome).hash_for_permalink(:controller => 'mephisto', 
-                                                                                   :action     => 'show'))
+    assert_redirected_to contents(:welcome).hash_for_permalink(:controller => 'mephisto', :action => 'show')
   end
 
   def test_should_reject_invalid_post
     post :create, contents(:welcome).hash_for_permalink
-    assert_redirected_to @controller.url_for(contents(:welcome).hash_for_permalink(:controller => 'mephisto', 
-                                                                                   :action     => 'show'))
+    assert_redirected_to contents(:welcome).hash_for_permalink(:controller => 'mephisto', :action => 'show')
   end
 end

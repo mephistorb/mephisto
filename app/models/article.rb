@@ -115,6 +115,10 @@ class Article < Content
   end
 
   protected
+    def create_permalink
+      self.permalink = title.to_s.gsub(/\W+/, ' ').strip.downcase.gsub(/\ +/, '-')
+    end
+
     def set_comment_expiration
       if site.accept_comments?
         self.expire_comments_at = published_at + site.comment_age.days if site.comment_age.to_i > 0
@@ -122,13 +126,6 @@ class Article < Content
         self.expire_comments_at = published_at
       end unless !errors.empty? || published_at.nil? || expire_comments_at
       self.published_at = published_at.utc if published_at
-    end
-  
-    def create_permalink
-      self.permalink = title.strip.downcase \
-        .gsub(/['"]/, '')                   \
-        .gsub(/(\W|\ )+/, '-')              \
-        .chomp('-').reverse.chomp('-').reverse
     end
     
     def set_filter_from_user

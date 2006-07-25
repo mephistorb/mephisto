@@ -14,6 +14,11 @@ class SectionTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_create_permalink
+    s = sites(:first).sections.find_or_create_by_name('This IS a Tripped out title!!!1  (well/ not. really)')
+    assert_equal 'this-is-a-tripped-out-title-1-well/-not-really', s.permalink
+  end
+
   def test_should_return_correct_url_paths
     assert_equal [],        sections(:home).to_url
     assert_equal ['about'], sections(:about).to_url

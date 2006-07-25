@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  session :off
   cache_sweeper :comment_sweeper
   verify :params => [:year, :month, :day, :permalink], :redirect_to => { :controller => 'mephisto', :action => 'list', :sections => [] }
   before_filter :find_article
@@ -10,7 +11,7 @@ class CommentsController < ApplicationController
   def create
     @article  = site.articles.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
     
-    redirect_to(section_url(:sections => [])) and return unless @article
+    show_404 and return unless @article
     if request.get? || params[:comment].blank?
       redirect_to(article_url(@article.hash_for_permalink)) and return
     end
@@ -30,7 +31,7 @@ class CommentsController < ApplicationController
     end
 
     @comment.save!
-    redirect_to comment_preview_url(@article.hash_for_permalink(:comment => @comment))
+    redirect_to comment_preview_url(@article.hash_for_permalink(:comment => @comment, :anchor => @comment.dom_id))
   rescue ActiveRecord::RecordInvalid
     show_article_with 'errors' => @comment.errors.full_messages
   rescue Article::CommentNotAllowed

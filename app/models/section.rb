@@ -1,6 +1,7 @@
 class Section < ActiveRecord::Base
   ARTICLES_COUNT_SQL = 'INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id INNER JOIN sections ON sections.id = assigned_sections.section_id' unless defined?(ARTICLES_COUNT)
   validates_presence_of :name
+  before_create :create_permalink
   belongs_to :site
   has_many :assigned_sections, :dependent => :delete_all
   has_many :articles, :order => 'position', :through => :assigned_sections do
@@ -51,12 +52,7 @@ class Section < ActiveRecord::Base
   end
 
   def to_liquid
-    url = '/' + to_url.join('/')
-    {
-      'name' => name,
-      'url'  => url,
-      'link' => %(<a href="#{url}">#{name}</a>)
-    }
+    Mephisto::Liquid::SectionDrop.new self
   end
 
   def order!(*article_ids)
@@ -87,4 +83,10 @@ class Section < ActiveRecord::Base
   def to_feed_url
     to_url << 'atom.xml'
   end
+  
+  protected
+    def create_permalink
+      # nasty regex because i want to keep alpha numerics AND /'s
+      self.permalink = name.to_s.gsub(/[^\w\/]|[!\(\)\.]+/, ' ').strip.downcase.gsub(/\ +/, '-')
+    end
 end

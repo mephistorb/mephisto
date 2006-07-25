@@ -21,7 +21,7 @@ class Admin::ArticlesController < Admin::BaseController
 
   def show
     @article  = site.articles.find_by_id(params[:id], :include => :comments)
-    @comments = @article.comments.collect { |c| c.to_liquid }
+    @comments = @article.comments.collect &:to_liquid
     Mephisto::Liquid::CommentForm.article = @article
     @article  = @article.to_liquid(:single)
     render :text => Template.render_liquid_for(site, site.sections.home, :single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => site.to_liquid)
