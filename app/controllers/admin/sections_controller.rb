@@ -34,27 +34,27 @@ class Admin::SectionsController < Admin::BaseController
   end
 
   protected
-  def find_and_sort_templates
-    @layouts, @templates = site.templates.find_custom.partition { |t| t.layout? }
-  end
-
-  def find_and_reorder_sections
-    @article_count = site.sections.articles_count
-    @sections      = site.sections.find :all
-    @sections.each do |s|
-      @home    = s if s.name.downcase == 'home'
-      @section = s if params[:id].to_s == s.id.to_s
+    def find_and_sort_templates
+      @layouts, @templates = site.templates.find_custom.partition { |t| t.layout? }
     end
-    @sections.delete  @home
-    @sections.unshift @home
-  end
-
-  def find_section
-    @section = site.sections.find params[:id]
-  end
-
-  def preprocess_section_params
-    params[:section][:template] = nil if params[:section][:template] == '0'
-    params[:section][:layout]   = nil if params[:section][:layout]   == '0'
-  end
+    
+    def find_and_reorder_sections
+      @article_count = site.sections.articles_count
+      @sections      = site.sections.find :all
+      @sections.each do |s|
+        @home    = s if s.name.downcase == 'home'
+        @section = s if params[:id].to_s == s.id.to_s
+      end
+      @sections.delete  @home
+      @sections.unshift @home
+    end
+    
+    def find_section
+      @section = site.sections.find params[:id]
+    end
+    
+    def preprocess_section_params
+      params[:section][:template] = nil if params[:section][:template] == '0'
+      params[:section][:layout]   = nil if params[:section][:layout]   == '0'
+    end
 end
