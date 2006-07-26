@@ -62,11 +62,26 @@ end
 require 'tzinfo'
 require 'time_ext'
 require 'zip/zipfilesystem'
-Liquid::Template.register_filter(Mephisto::Liquid::Filters)
-Liquid::Template.register_tag('textile',        Mephisto::Liquid::Textile)
-Liquid::Template.register_tag('commentform',    Mephisto::Liquid::CommentForm)
-Liquid::Template.register_tag('pagenavigation', Mephisto::Liquid::PageNavigation)
-Liquid::Template.register_tag('head',           Mephisto::Liquid::Head)
+require 'dispatcher'
+
+class << Dispatcher
+  def register_liquid_tags
+    Liquid::Template.register_filter(Mephisto::Liquid::Filters)
+    Liquid::Template.register_tag(:textile,        Mephisto::Liquid::Textile)
+    Liquid::Template.register_tag(:commentform,    Mephisto::Liquid::CommentForm)
+    Liquid::Template.register_tag(:pagenavigation, Mephisto::Liquid::PageNavigation)
+    Liquid::Template.register_tag(:head,           Mephisto::Liquid::Head)
+  end
+  
+  def reset_application_with_plugins!
+    reset_application_without_plugins!
+    register_liquid_tags
+  end
+  
+  alias_method_chain :reset_application!, :plugins
+end
+
+Dispatcher.register_liquid_tags
 FilteredColumn.constant_filters << :macro_filter
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
