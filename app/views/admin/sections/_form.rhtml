@@ -1,4 +1,4 @@
-<% form_remote_for :section, @section, 
+<% form_remote_for :section,
      :url => { :action => (@section.new_record? ? 'create' : 'update'), :id => @section }, :html => { :id => 'section-form' } do |f| %>
 <div class="group">
   <dl>

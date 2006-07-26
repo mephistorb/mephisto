@@ -22,10 +22,6 @@ class Admin::SectionsController < Admin::BaseController
 
   def update
     @section.update_attributes params[:section]
-    render :update do |page|
-      page.replace_html "section_#{params[:id]}", :partial => 'section'
-      page.visual_effect :highlight, "section_#{params[:id]}"
-    end
   end
 
   def order

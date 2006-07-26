@@ -1,6 +1,7 @@
 unless @section.new_record?
   page.insert_html :bottom, 'sections', :partial => 'section'
   page << "$('section_name').value = ''"
+  page.call 'Flash.notice', "Section '#{h @section.name}' created."
 else
   page.visual_effect :shake, 'section_name'
 end

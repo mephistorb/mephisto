@@ -1,4 +1,4 @@
-<li id="section-<%= section.id %>">
+<li id="<%= section.dom_id %>">
   <%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {
         :url     => { :controller => 'sections', :action => 'destroy', :id => section }, 
         :confirm => "Are you sure?"}, 
