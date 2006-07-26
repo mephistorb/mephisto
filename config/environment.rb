@@ -74,8 +74,9 @@ class << Dispatcher
   end
   
   def reset_application_with_plugins!
-    reset_application_without_plugins!
-    register_liquid_tags
+    returning reset_application_without_plugins! do
+      register_liquid_tags
+    end
   end
   
   alias_method_chain :reset_application!, :plugins
