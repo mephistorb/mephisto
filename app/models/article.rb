@@ -70,7 +70,7 @@ class Article < Content
   end
 
   def published?
-    !published_at.nil?
+    !new_record? && !published_at.nil?
   end
   
   def pending?

@@ -14,8 +14,9 @@ class ArticleTest < Test::Unit::TestCase
   end
 
   def test_should_show_published_status
-    assert contents(:welcome).published?
-    assert contents(:future).published?
+    assert !Article.new(:published_at => 5.minutes.ago).published?
+    assert  contents(:welcome).published?
+    assert  contents(:future).published?
   end
 
   def test_should_show_pending_status
@@ -86,6 +87,7 @@ class ArticleTest < Test::Unit::TestCase
   
   def test_comment_expiry
     a = Article.new :expire_comments_at => 5.minutes.from_now.utc, :published_at => 5.minutes.from_now.utc
+    def a.new_record?() false ; end
     assert !a.comments_allowed?
     a.published_at = 5.minutes.ago.utc
     assert  a.comments_allowed?
