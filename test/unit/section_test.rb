@@ -89,12 +89,6 @@ class SectionTest < Test::Unit::TestCase
     assert_equal [sections(:about)], sites(:first).sections.find_paged
   end
 
-  def test_should_show_correct_titles
-    sections(:about).name = 'about/foo'
-    assert_equal 'Home', sections(:home).title
-    assert_equal 'Foo',  sections(:about).title
-  end
-
   def test_should_order_sections
     assert_reorder_articles sections(:about),
       [contents(:welcome), contents(:about), contents(:site_map)],

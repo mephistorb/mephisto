@@ -47,10 +47,6 @@ class Section < ActiveRecord::Base
     end
   end
 
-  def title
-    name.to_s.split('/').last.humanize
-  end
-
   def to_liquid
     Mephisto::Liquid::SectionDrop.new self
   end

@@ -68,8 +68,7 @@ class MephistoController < ApplicationController
                          :offset  =>  @article_pages.current.offset)
     
       self.cached_references << @section
-      render_liquid_template_for(template_type, 'section'       => @section.name, 
-                                                'section_title' => @section.title,
+      render_liquid_template_for(template_type, 'section'       => @section.to_liquid,
                                                 'articles'      => @articles,
                                                 'previous_page' => paged_section_url_for(@article_pages.current.previous),
                                                 'next_page'     => paged_section_url_for(@article_pages.current.next))
@@ -81,8 +80,7 @@ class MephistoController < ApplicationController
     
       self.cached_references << @section << @article
       Mephisto::Liquid::CommentForm.article = @article
-      render_liquid_template_for(template_type, 'section'          => @section.name, 
-                                                'section_title'    => @section.title,
+      render_liquid_template_for(template_type, 'section'       => @section.to_liquid,
                                                 'pages'            => @section.articles.collect(&:to_liquid),
                                                 'article'          => @article.to_liquid(:single),
                                                 'article_sections' => @article.sections.collect(&:to_liquid))
