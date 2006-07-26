@@ -1,11 +1,11 @@
 class Admin::ArticlesController < Admin::BaseController
   with_options :only => [:create, :update] do |c|
     c.before_filter :set_default_section_ids
-    c.cache_sweeper :article_sweeper
-    c.cache_sweeper :section_sweeper
+    c.cache_sweeper :article_sweeper, :section_sweeper
     cache_sweeper   :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
   end
-  
+
+  observer      :article_observer, :comment_observer
   before_filter :check_for_new_draft,  :only => [:create, :update]
   before_filter :convert_times_to_utc, :only => [:create, :update]
   
@@ -40,8 +40,7 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def create
-    @article = current_user.articles.create params[:article].merge(
-      :updater => current_user, :site => site)
+    @article = current_user.articles.create params[:article].merge(:updater => current_user, :site => site)
       
     if @article.new_record?
       load_sections

@@ -1,26 +1,13 @@
 class ArticleSweeper < ActionController::Caching::Sweeper
   observe Article
 
-  def before_save(record)
-    @event = Event.new 
-    @event.mode = case
-      when record.is_a?(Comment) then 'comment'
-      when record.new_record?    then 'publish'
-      else 'edit'
-    end
-  end
-
   def after_create(record)
     expire_assigned_sections!(record) unless controller.nil? || record.status != :published
   end
 
   def after_save(record)
-    if @event && record.is_a?(Article)
-      @event.update_attributes :title => record.title, :body => record.body, :article => record, :user => record.updater, :site => record.site
-      expire_overview_feed!
-    end
-
     return if controller.nil?
+    expire_overview_feed! if record.is_a?(Article)
     pages = CachedPage.find_by_reference(record)
     controller.class.benchmark "Expired pages referenced by #{record.class} ##{record.id}" do
       pages.each { |p| controller.class.expire_page(p.url) }

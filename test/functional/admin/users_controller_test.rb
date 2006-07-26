@@ -28,34 +28,32 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
   end
 
   def test_should_update_email_and_password
-    post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }
+    post :update, :id => users(:quentin).id, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }
     users(:quentin).reload
     assert_equal 'foo', users(:quentin).email
     assert_equal users(:quentin), User.authenticate('quentin', 'testy')
-    assert_redirected_to :action => 'show', :id => users(:quentin).login
+    assert_response :success
   end
 
   def test_should_leave_password_alone
-    post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => '', :password_confirmation => '' }
+    post :update, :id => users(:quentin).id, :user => { :email => 'foo', :password => '', :password_confirmation => '' }
     users(:quentin).reload
     assert_equal 'foo', users(:quentin).email
     assert_equal users(:quentin), User.authenticate('quentin', 'quentin')
-    assert_redirected_to :action => 'show', :id => users(:quentin).login
+    assert_response :success
   end
 
   def test_should_show_error_while_updating
-    post :update, :id => users(:quentin).login, :user => { :email => 'foo', :password => 'tea', :password_confirmation => '' }
+    post :update, :id => users(:quentin).id, :user => { :email => 'foo', :password => 'tea', :password_confirmation => '' }
     users(:quentin).reload
     assert_equal 'quentin@example.com', users(:quentin).email
     assert_equal users(:quentin), User.authenticate('quentin', 'quentin')
     assert_response :success
-    assert_template 'show'
   end
 
   def test_should_show_error_while_creating
     post :create, :user => { :email => 'foo', :password => 'tea', :password_confirmation => '' }
     assert_response :success
-    assert_template 'new'
   end
 
   def test_should_not_upload_nonexistent_file
@@ -63,21 +61,21 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_correct_form_action
-    get :show, :id => 'quentin'
-    assert_tag :tag => 'form', :attributes => { :action => '/admin/users/update/quentin' }
+    get :show, :id => users(:quentin).id
+    assert_tag :tag => 'form', :attributes => { :action => '/admin/users/update/1' }
   end
 
   def test_should_highlight_correct_filter
-    get :show, :id => 'quentin'
+    get :show, :id => users(:quentin).id
     assert_tag :tag => 'select', :attributes => { :id => 'user_filters' },
       :descendant => { :tag => 'option', :attributes => { :selected => 'selected', :value => 'textile_filter' } }
-    get :show, :id => 'arthur'
+    get :show, :id => users(:arthur).id
     assert_tag :tag => 'select', :attributes => { :id => 'user_filters' },
       :descendant => { :tag => 'option', :attributes => { :selected => 'selected', :value => 'markdown_filter' } }
   end
 
   def test_should_save_new_filter
-    post :update, :id => 'quentin', :user => { :filters => ['markdown_filter'] }
+    post :update, :id => '1', :user => { :filters => ['markdown_filter'] }
     users(:quentin).reload
     assert_equal :markdown_filter, users(:quentin).filters.first
   end
