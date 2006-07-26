@@ -1,3 +1,10 @@
-<% form_for :user, @user, :url => { :action => 'create' }, :html => { :multipart => true } do |f| -%>
+<% form_for :user, :url => { :action => 'create' } do |f| -%>
 <%= render :partial => 'form', :locals => { :f => f, :create  => true } %>
+<% end -%>
+
+<% content_for :sidebar do -%>
+<h3>Users</h3>
+<ul id="users">
+<%= render :partial => "user", :collection => @users %>
+</ul>
 <% end -%>

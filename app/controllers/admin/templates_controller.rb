@@ -18,7 +18,11 @@ class Admin::TemplatesController < Admin::BaseController
 
   def update
     render :update do |page|
-      page.call 'Flash.notice', 'Template updated successfully' if @tmpl.update_attributes(params[:template])
+      if @tmpl.update_attributes(params[:template])
+        page.call 'Flash.notice', 'Template updated successfully'
+      else
+        page.call 'Flash.error', "Save failed: #{@tmpl.errors.full_messages.to_sentence}"
+      end
     end
   end
 

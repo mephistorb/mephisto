@@ -1,16 +1,13 @@
 class Admin::UsersController < Admin::BaseController
+  before_filter :find_all_users, :only => [:index, :show, :new]
+  before_filter :find_user,      :only => [:show, :update]
   def index
-    @users = User.find_with_deleted :all, :order => 'login'
     @enabled, @disabled = @users.partition { |u| u.deleted_at.nil? }
     @users = @enabled + @disabled
   end
-
-  def show
-    @user = User.find_by_login params[:id]
-  end
   
   def new
-    @user = User.new
+    @user  = User.new
   end
 
   def create
@@ -25,13 +22,12 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def update
-    @user = User.find_by_login params[:id]
-    if @user.update_attributes params[:user]
-      flash[:notice] = "Profile updated."
-      redirect_to :action => 'show', :id => @user
-    else
-      flash[:error] = "Save failed."
-      render :action => 'show'
+    render :update do |page|
+      if @user.update_attributes(params[:user])
+        page.call 'Flash.notice', 'Profile updated.'
+      else
+        page.call 'Flash.error', "Save failed: #{@user.errors.full_messages.to_sentence}"
+      end
     end
   end
 
@@ -46,4 +42,13 @@ class Admin::UsersController < Admin::BaseController
     @user.deleted_at = nil
     @user.save!
   end
+  
+  protected
+    def find_all_users
+      @users = User.find_with_deleted :all, :order => 'login'
+    end
+    
+    def find_user
+      @user = User.find_with_deleted params[:id]
+    end
 end

@@ -8,10 +8,6 @@ class User < UserAuth
     write_attribute :filters, [value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq
   end
 
-  def to_param
-    login
-  end
-
   def to_liquid
     [:login, :email].inject({}) { |hsh, attr_name| hsh.merge attr_name.to_s => send(attr_name) }
   end

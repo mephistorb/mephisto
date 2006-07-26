@@ -174,6 +174,7 @@ var Flash = {
   // and show it on the screen.  This message will auto-hide 
   // after a specified amount of miliseconds
   error: function(message) {
+    new Effect.ScrollTo('flash-notice');
     $('flash-errors').innerHTML = '';
     $('flash-errors').innerHTML = "<ul>" + message + "</ul>";
     new Effect.Appear('flash-errors', {duration: 0.3});
@@ -182,6 +183,7 @@ var Flash = {
 
   // Notice-level messages.  See Messenger.error for full details.
   notice: function(message) {
+    new Effect.ScrollTo('flash-notice');
     $('flash-notice').innerHTML = '';
     $('flash-notice').innerHTML = "<li>" + message + "</li>";
     new Effect.Appear('flash-notice', {duration: 0.3});

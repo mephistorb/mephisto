@@ -1,4 +1,4 @@
-<li id="<%= user.dom_id %>" class="clear<%= %( deleted) unless user.deleted_at.nil? %>">
+<li id="<%= user.dom_id %>" class="clear<%= %( deleted) unless user.deleted_at.nil? %><%= %( selected) if @user == user %>">
   <% if user.deleted_at.nil? -%>
     <%= avatar_for user %>
     <h3><%= link_to user.login, :action => 'show', :id => user %></h3>

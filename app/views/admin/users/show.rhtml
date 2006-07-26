@@ -8,7 +8,13 @@
 <!-- /end action nav -->
 <% end %>
 
-<% form_for :user, @user, :url => { :action => 'update', :id => @user }, :html => { :multipart => true } do |f| -%>
+<% remote_form_for :user, :url => { :action => 'update', :id => @user }, :html => { :multipart => true } do |f| -%>
 <%= render :partial => 'form', :locals => { :f => f, :create => false } %>
 <% end -%>
 
+<% content_for :sidebar do -%>
+<h3>Users</h3>
+<ul id="users">
+<%= render :partial => "user", :collection => @users %>
+</ul>
+<% end -%>
