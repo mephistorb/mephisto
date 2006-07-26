@@ -1,7 +1,7 @@
 class Section < ActiveRecord::Base
   ARTICLES_COUNT_SQL = 'INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id INNER JOIN sections ON sections.id = assigned_sections.section_id' unless defined?(ARTICLES_COUNT)
   validates_presence_of :name
-  before_create :create_permalink
+  before_create :create_path
   belongs_to :site
   has_many :assigned_sections, :dependent => :delete_all
   has_many :articles, :order => 'position', :through => :assigned_sections do
@@ -36,7 +36,7 @@ class Section < ActiveRecord::Base
       page_name = []
       section   = nil
       while section.nil? && section_path.any?
-        section       = find_by_name(section_path.join('/'))
+        section    = find_by_path(section_path.join('/'))
         page_name << section_path.pop if section.nil?
       end
       [section, page_name.any? ? page_name.join('/') : nil]
@@ -81,8 +81,8 @@ class Section < ActiveRecord::Base
   end
   
   protected
-    def create_permalink
+    def create_path
       # nasty regex because i want to keep alpha numerics AND /'s
-      self.permalink = name.to_s.gsub(/[^\w\/]|[!\(\)\.]+/, ' ').strip.downcase.gsub(/\ +/, '-')
+      self.path = name.to_s.gsub(/[^\w\/]|[!\(\)\.]+/, ' ').strip.downcase.gsub(/\ +/, '-') if path.blank?
     end
 end

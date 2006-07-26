@@ -1,5 +1,6 @@
 home:
   id: 1
   site_id: 1
-  name: home
+  name: Home
+  path: home
   articles_per_page: 15

@@ -33,7 +33,7 @@ module Typo
     end
 
     def find_or_create_sections(typo_article)
-      home_section = Section.find_by_name 'home'
+      home_section = Section.find_by_path 'home'
       section_ids = typo_article.categories.inject([home_section.id]) { |a, c| a << ::Section.find_or_create_by_name(c.name, :site_id => 1).id }
     end
 
