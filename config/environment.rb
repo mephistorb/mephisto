@@ -97,7 +97,6 @@ module ActiveSupport::CoreExtensions::Time::Conversions
   def to_ordinalized_s(format = :default)
     format = ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS[format] 
     return to_default_s if format.nil?
-    # XXX should we convert this Time object to Site timezone here?  (if its in UTC timezone)  but this seems something that is not a concern for this Time object :/
     strftime(format.gsub(/%d/, '_%d_')).gsub(/_(\d+)_/) { |s| s.to_i.ordinalize }
   end
 end
