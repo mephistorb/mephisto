@@ -103,7 +103,7 @@ class Admin::ArticlesController < Admin::BaseController
   protected
     def load_sections
       @sections = site.sections.find :all, :order => 'name'
-      home = @sections.find { |s| s.name == 'home' }
+      home = @sections.find &:home?
       @sections.delete  home
       @sections.unshift home
     end

@@ -38,7 +38,7 @@ class Admin::SectionsController < Admin::BaseController
       @article_count = site.sections.articles_count
       @sections      = site.sections.find :all
       @sections.each do |s|
-        @home    = s if s.name.downcase == 'home'
+        @home    = s if s.home?
         @section = s if params[:id].to_s == s.id.to_s
       end
       @sections.delete  @home

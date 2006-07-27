@@ -5,11 +5,11 @@ class SectionTest < Test::Unit::TestCase
 
   def test_find_or_create_sanity_check
     assert_no_difference Section, :count do
-      assert_equal sections(:home), sites(:first).sections.find_or_create_by_name('home')
+      assert_equal sections(:home), sites(:first).sections.find_or_create_by_path('home')
     end
     
     assert_difference Section, :count do 
-      section = sites(:first).sections.find_or_create_by_name('foo')
+      section = sites(:first).sections.create(:name => 'Foo')
       assert_equal sites(:first), section.site
     end
   end

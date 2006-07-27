@@ -33,8 +33,11 @@ module Typo
     end
 
     def find_or_create_sections(typo_article)
-      home_section = Section.find_by_path 'home'
-      section_ids = typo_article.categories.inject([home_section.id]) { |a, c| a << ::Section.find_or_create_by_name(c.name, :site_id => 1).id }
+      site         = ::Site.find(1)
+      home_section = site.sections.home
+      section_ids = typo_article.categories.inject([home_section.id]) do |a, c|
+        a << (site.sections.find_by_path(::Section.permalink_for(c.name)) || site.sections.create(:name => c.name)).id
+      end
     end
 
     def create_article(site, typo_article)

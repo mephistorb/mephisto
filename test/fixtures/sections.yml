@@ -2,23 +2,23 @@
 home:
   id: 1
   site_id: 1
-  name: home
+  name: Home
   path: home
 about:
   id: 2
   site_id: 1
-  name: about
+  name: About
   path: about
   show_paged_articles: true
 cupcake_home:
   id: 3
   site_id: 2
-  name: home
+  name: Home
   path: home
   show_paged_articles: true
 cupcake_about:
   id: 4
   site_id: 2
-  name: about
+  name: About
   path: about
   show_paged_articles: true

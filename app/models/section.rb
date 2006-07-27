@@ -1,7 +1,8 @@
 class Section < ActiveRecord::Base
   ARTICLES_COUNT_SQL = 'INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id INNER JOIN sections ON sections.id = assigned_sections.section_id' unless defined?(ARTICLES_COUNT)
-  validates_presence_of :name
-  before_create :create_path
+  before_validation_on_create :create_path
+  validates_presence_of   :name, :path, :site_id
+  validates_uniqueness_of :path, :case_sensitive => false, :scope => :site_id
   belongs_to :site
   has_many :assigned_sections, :dependent => :delete_all
   has_many :articles, :order => 'position', :through => :assigned_sections do
@@ -18,7 +19,7 @@ class Section < ActiveRecord::Base
 
     def find_by_permalink(permalink, options = {})
       find(:first, { :conditions => ['contents.permalink = ? AND published_at <= ? AND contents.published_at IS NOT NULL',
-                                   permalink, Time.now.utc] }.merge(options))
+                                      permalink, Time.now.utc] }.merge(options))
     end
   end
 
@@ -45,6 +46,10 @@ class Section < ActiveRecord::Base
     def articles_count
       Article.count :all, :group => :section_id, :joins => ARTICLES_COUNT_SQL
     end
+    
+    def permalink_for(str)
+      str.gsub(/[^\w\/]|[!\(\)\.]+/, ' ').strip.downcase.gsub(/\ +/, '-')
+    end
   end
 
   def to_liquid
@@ -69,11 +74,11 @@ class Section < ActiveRecord::Base
   end
 
   def home?
-    name == 'home'
+    path.to_s.downcase == 'home'
   end
 
   def to_url
-    ((name.nil? || home?) ? '' : name).split('/')
+    ((path.blank? || home?) ? '' : path).split('/')
   end
 
   def to_feed_url
@@ -83,6 +88,6 @@ class Section < ActiveRecord::Base
   protected
     def create_path
       # nasty regex because i want to keep alpha numerics AND /'s
-      self.path = name.to_s.gsub(/[^\w\/]|[!\(\)\.]+/, ' ').strip.downcase.gsub(/\ +/, '-') if path.blank?
+      self.path = self.class.permalink_for(name.to_s) if path.blank?
     end
 end
