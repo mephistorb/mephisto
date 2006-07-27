@@ -10,6 +10,6 @@ module Admin::OverviewHelper
   end
 
   def event_time_for(event, long = false)
-    long ? event.created_at.to_ordinalized_s(:plain) : event.created_at.to_s(:time_only)
+    utc_to_local(event.created_at).send *(long ? [:to_ordinalized_s, :plain] : [:to_s, :time_only])
   end
 end
