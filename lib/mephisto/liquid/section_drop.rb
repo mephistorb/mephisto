@@ -15,6 +15,10 @@ module Mephisto
       def url
         @url ||= '/' + @section.to_url.join('/')
       end
+      
+      def is_home
+        @section.home?
+      end
     end
   end
 end
