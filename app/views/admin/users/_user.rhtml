@@ -2,9 +2,11 @@
     <%= avatar_for user %>
     <h3><%= link_to user.login, :action => 'show', :id => user %></h3>
     <%= user.email %>
+  <% unless user == current_user -%>
     <p>
       <%= check_box_tag user.id, user.id,  user.deleted_at.nil?, :onclick => "UserForm.toggle(this);" %>
       <strong>Allow this user to login</strong>
       <%= image_tag 'progress.gif', :size => '10x10', :style => 'display:none', :id => "#{user.dom_id}-progress" %>
     </p>
+  <% end -%>
 </li>
