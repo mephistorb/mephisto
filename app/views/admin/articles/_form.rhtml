@@ -28,7 +28,7 @@
 <!-- begin optional fields -->
 <dl id="article-optional">
   <% unless @article.published? -%>
-  <dt><label>Save as Draft?</label></dt>
+  <dt><label for="draft">Save as Draft?</label></dt>
   <dd><%= check_box_tag :draft, '1', !@article.new_record?, :id => 'article-draft' %> Yes, save this article as a draft.</dd>
   <% end -%>
   <dt id="publish-date-lbl"<%= %( style="display:none") unless @article.new_record? || @article.published? -%>><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
