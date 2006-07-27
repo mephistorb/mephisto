@@ -14,6 +14,6 @@ class User < UserAuth
 
   # FIXME
   def gravatar_url(size = 80)
-    "http://www.gravatar.com/avatar.php?size=#{size}&amp;gravatar_id=#{Digest::MD5.hexdigest(email)}&amp;default=http://localhost:3002/images/avatar.gif"
+    "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(email)}&default=http://localhost:3002/images/avatar.gif"
   end
 end
