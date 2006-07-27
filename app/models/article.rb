@@ -13,11 +13,11 @@ class Article < Content
     end
   end
 
-  has_many :assigned_sections
+  has_many :assigned_sections, :dependent => :delete_all
   has_many :sections, :through => :assigned_sections, :order => 'sections.name'
-  has_many :events,   :order => 'created_at desc'
-  with_options :order => 'created_at',:class_name => 'Comment' do |comment|
-    comment.has_many :comments,            :conditions => ['contents.approved = ?', true]  do
+  has_many :events,   :order => 'created_at desc', :dependent => :delete_all
+  with_options :order => 'created_at', :class_name => 'Comment' do |comment|
+    comment.has_many :comments,            :conditions => ['contents.approved = ?', true], :dependent => :delete_all  do
       def unapprove(id)
         returning find(id) do |comment|
           comment.approved = false
