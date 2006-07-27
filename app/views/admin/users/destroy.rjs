@@ -1,2 +1,2 @@
 page.call 'Flash.notice', "#{@user.login} was disabled."
-page[@user.dom_id].replace :partial => 'user'
+page["#{@user.dom_id}-progress"].hide

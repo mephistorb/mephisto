@@ -2,5 +2,9 @@
     <%= avatar_for user %>
     <h3><%= link_to user.login, :action => 'show', :id => user %></h3>
     <%= user.email %>
-    <p><%= check_box_tag user.id, user.id,  user.deleted_at.nil?, :onclick => %(if (confirm('Are you sure you wish to disable this user?')) { new Ajax.Request('/admin/users/destroy/#{user.id}', {asynchronous:true, evalScripts:true}); }; return false;) %> <strong>Allow this user to login</strong></p>
+    <p>
+      <%= check_box_tag user.id, user.id,  user.deleted_at.nil?, :onclick => "UserForm.toggle(this);" %>
+      <strong>Allow this user to login</strong>
+      <%= image_tag 'progress.gif', :size => '10x10', :style => 'display:none', :id => "#{user.dom_id}-progress" %>
+    </p>
 </li>

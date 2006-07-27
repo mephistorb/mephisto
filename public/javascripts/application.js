@@ -143,6 +143,13 @@ var ArticleForm = {
   }
 }
 
+var UserForm = {
+  toggle: function(chk) {
+    $('user-' + chk.getAttribute('value') + '-progress').show();
+    new Ajax.Request('/admin/users/' + (chk.checked ? 'enable' : 'destroy') + '/' + chk.getAttribute('value'));
+  }
+}
+
 var SectionForm = {
   toggle_settings: function() {
     Element.toggle('blog-options')
