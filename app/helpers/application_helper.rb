@@ -1,4 +1,4 @@
-# Methods added to this helper will be available to all templates in the application.
+require 'digest/md5'
 module ApplicationHelper
 
   def author_link_for(comment)
@@ -7,7 +7,7 @@ module ApplicationHelper
   end
 
   def avatar_for(user, options = {})
-    image_tag user.gravatar_url, {:class => 'avatar'}.merge(options)
+    image_tag gravatar_url_for(user), {:class => 'avatar'}.merge(options)
   end
  
   def todays_short_date
@@ -26,4 +26,7 @@ module ApplicationHelper
     return current_user.login == name ? "You" : name
   end
 
+  def gravatar_url_for(user, size = 80)
+    "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(user.email)}&default=http://#{request.host_with_port}/images/avatar.gif"
+  end
 end
