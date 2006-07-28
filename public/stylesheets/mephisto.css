@@ -184,11 +184,11 @@ input[type='text']:focus, textarea:focus {
 }
 
 #nav ul {
-  margin: 11px 0 0 38px;
+  margin: 13px 0 0 38px;
   padding: 0;
   list-style:none;
   font-size: 80%;
-  line-height: normal;
+  line-height: 100%;
 }
 
 #nav li {
