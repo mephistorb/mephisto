@@ -44,9 +44,22 @@ module Mephisto
         date ? date.strftime(format) : nil
       end
       
+      def img_tag(img, options = {})
+        tag 'img', {:src => "/images/#{img}", :alt => img.split('.').first }.merge(options)
+      end
+      
+      def asset_url(asset)
+        "/images/#{asset}"
+      end
+      
       def stylesheet(stylesheet)
         stylesheet << '.css' unless stylesheet.include? '.'
         tag 'link', :rel => 'stylesheet', :type => 'text/css', :href => "/stylesheets/#{stylesheet}"
+      end
+      
+      def javascript(javascript)
+        javascript << '.js' unless javascript.include? '.'
+        content_tag 'script', '', :type => 'text/javascript', :src => "/javascripts/#{javascript}"
       end
       
       def month_list
