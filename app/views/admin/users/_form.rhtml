@@ -10,6 +10,10 @@
     </dd>
     <dt><label for="user_email">Email address</label></dt>
     <dd><%= f.text_field :email %></dd>
+    <% unless @user == current_user %>
+    <dt><label for="user_deleted_at">Allow this user to login?</label></dt>
+    <dd><%= f.check_box :deleted_at, {},  @user.deleted_at.nil? %> Yes, allow this user to login.</dd>
+    <% end %>
   </dl>
 </div>
 

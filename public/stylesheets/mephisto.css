@@ -889,12 +889,13 @@ img.avatar {
 }
 
 #activity .avatar {
-  max-width: 45px;
-  max-height: 45px;
+  max-width: 30px;
+  max-height: 30px;
 }
 
 #activity li {
-  min-height: 30px;
+  min-height: 40px;
+  line-height: 125%;
 }
 
 #stat-comments {

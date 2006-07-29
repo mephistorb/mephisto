@@ -1,3 +1,11 @@
+<% content_for :action_nav do %>
+<!-- begin action nav -->
+<div id="page-nav">
+
+</div>
+<!-- /end action nav -->
+<% end %>
+
 <%= error_messages_for :user %>
 <% form_for :user, :url => { :action => 'create' } do |f| -%>
 <%= render :partial => 'form', :locals => { :f => f, :create  => true } %>
