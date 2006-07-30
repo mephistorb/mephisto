@@ -36,8 +36,12 @@ module Mephisto
         textilized.to_html
       end
 
-      def format_date(date, format)
-        date ? date.to_s(format.to_sym) : nil
+      def format_date(date, format, ordinalized = false)
+        if ordinalized
+          date ? date.to_ordinalized_s(format.to_sym) : nil
+        else
+          date ? date.to_s(format.to_sym) : nil unless ordinalized
+        end
       end
       
       def strftime(date, format)
