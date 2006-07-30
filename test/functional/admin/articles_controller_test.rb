@@ -176,16 +176,50 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_show_draft_checkbox_for_new_articles
     get :new
     assert_response :success
-    assert_tag 'label', :attributes => { :for => 'article-draft' }
-    assert_tag 'input', :attributes => { :type => 'checkbox', :id => 'article-draft', :name => 'draft', :value => '1' }
+    assert_draft_check_box
+    assert_publish_date_select :hidden
+  end
+
+  def test_should_not_show_draft_checkbox_for_published_articles
+    get :edit, :id => contents(:about)
+    assert_response :success
+    assert_draft_check_box :hidden
+    assert_publish_date_select :hidden
+  end
+
+  def test_should_show_draft_checkbox_for_unpublished_articles
+    get :edit, :id => contents(:draft)
+    assert_response :success
+    assert_draft_check_box
+    assert_publish_date_select
   end
 
   def test_should_create_article_draft
     assert_difference Article, :count do
-      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => 5.days.ago }, :draft => '1'
+      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => 5.days.ago, :expire_comments_at => 5.days.ago }, :draft => '1'
+      assert_nil @controller.params['published_at']
+      assert_nil @controller.params['expire_comments_at']
       assert_redirected_to :action => 'index'
       assert !assigns(:article).new_record?
       assert !assigns(:article).published?
+      assert_nil assigns(:article).published_at
     end
   end
+
+  protected
+    def assert_draft_check_box(visibility = true)
+      assert_tag_visibility visibility, 'label', :attributes => { :for => 'article-draft' }
+      assert_tag_visibility visibility, 'input', :attributes => { :type => 'checkbox', :id => 'article-draft', :name => 'draft', :value => '1' }
+    end
+
+    def assert_publish_date_select(visibility = true)
+      assert_tag 'dt', :attributes => { :id => 'publish-date-lbl' }
+      assert_tag 'dd', :attributes => { :id => 'publish-date' }
+      assert_tag_visibility visibility, 'dt', :attributes => { :id => 'publish-date-lbl', :style => 'display:none' }
+      assert_tag_visibility visibility, 'dd', :attributes => { :id => 'publish-date',     :style => 'display:none' }
+    end
+    
+    def assert_tag_visibility(visibility, *args)
+      send *(args.unshift(visibility != :hidden ? :assert_tag : :assert_no_tag))
+    end
 end

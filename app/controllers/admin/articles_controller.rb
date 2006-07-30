@@ -33,7 +33,8 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def edit
-    @version = params[:version] ? @article.find_version(params[:version]) : @article
+    @version   = params[:version] ? @article.find_version(params[:version]) : @article
+    @published = @version.published?
     [:published_at, :expire_comments_at].each do |attr|
       @version.send("#{attr}=", utc_to_local(@version.send(attr) || Time.now.utc))
     end
@@ -119,7 +120,7 @@ class Admin::ArticlesController < Admin::BaseController
     
     def check_for_new_draft
       params[:article] ||= {}
-      params[:article].delete_if { |k, v| k.to_s =~ /^published_at/ } if params[:draft]
+      params[:article].delete_if { |k, v| k.to_s =~ /^(published_at|expire_comments_at)/ } unless params[:draft].blank?
     end
     
     def convert_times_to_utc
