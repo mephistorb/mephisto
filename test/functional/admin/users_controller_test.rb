@@ -83,15 +83,17 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
   def test_should_show_deleted_users
     get :index
     assert_equal 3, assigns(:users).size
-    normal_tag  = { :tag => 'li', :attributes => { :id => 'user-1', :class => 'clear' } }
+    user_tag    = { :tag => 'li', :attributes => { :id => 'user-1', :class => 'clear' } }
+    normal_tag  = { :tag => 'li', :attributes => { :id => 'user-2', :class => 'clear' } }
     deleted_tag = { :tag => 'li', :attributes => { :id => 'user-3', :class => 'clear deleted' } }
+    assert_tag user_tag
     assert_tag normal_tag
-    assert_tag 'li', :attributes => { :id => 'user-2', :class => 'clear' }
     assert_tag deleted_tag
-    assert_tag    'a', :content => 'Disable', :ancestor => normal_tag
-    assert_no_tag 'a', :content => 'Disable', :ancestor => deleted_tag
-    assert_no_tag 'a', :content => 'Enable',  :ancestor => normal_tag
-    assert_tag    'a', :content => 'Enable',  :ancestor => deleted_tag
+    assert_no_tag 'input', :attributes => { :type => 'checkbox', :id => 'user-toggle-1' }, :ancestor => user_tag
+    assert_tag    'input', :attributes => { :type => 'checkbox', :id => 'user-toggle-2' }, :ancestor => normal_tag
+    assert_tag    'input', :attributes => { :type => 'checkbox', :id => 'user-toggle-3' }, :ancestor => deleted_tag
+    assert_tag    'input', :attributes => { :type => 'checkbox', :id => 'user-toggle-2', :checked => 'checked' }, :ancestor => normal_tag
+    assert_no_tag 'input', :attributes => { :type => 'checkbox', :id => 'user-toggle-3', :checked => 'checked' }, :ancestor => deleted_tag
   end
 
   def test_should_disable_user

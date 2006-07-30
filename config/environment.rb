@@ -7,13 +7,6 @@
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-Rails::Initializer.class_eval do
-  def load_plugins
-    find_plugins(configuration.plugin_paths).sort.each { |path| load_plugin path }
-    $LOAD_PATH.uniq!
-  end
-end
-
 require 'RedCloth-3.0.4/lib/redcloth'
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here

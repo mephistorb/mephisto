@@ -76,8 +76,8 @@ ActiveRecord::Schema.define(:version => 36) do
     t.column "author_ip",          :string,   :limit => 100
     t.column "comments_count",     :integer,                 :default => 0
     t.column "filters",            :text
-    t.column "updater_id",         :integer
     t.column "version",            :integer
+    t.column "updater_id",         :integer
     t.column "site_id",            :integer
     t.column "approved",           :boolean,                 :default => false
     t.column "expire_comments_at", :datetime
@@ -85,11 +85,11 @@ ActiveRecord::Schema.define(:version => 36) do
 
   create_table "events", :force => true do |t|
     t.column "mode",       :string
-    t.column "user_id",    :integer
     t.column "article_id", :integer
     t.column "title",      :text
     t.column "body",       :text
     t.column "created_at", :datetime
+    t.column "user_id",    :integer
     t.column "author",     :string,   :limit => 100
     t.column "comment_id", :integer
     t.column "site_id",    :integer

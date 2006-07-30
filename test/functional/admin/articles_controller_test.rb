@@ -28,7 +28,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   
   def test_should_show_articles
     get :index
-    assert_equal 5, assigns(:articles).length
+    assert_equal 6, assigns(:articles).length
   end
   
   def test_should_show_home_section_first
@@ -171,6 +171,13 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       assert_equal [sections(:home)], assigns(:article).sections
       assert_equal users(:arthur),    assigns(:article).updater
     end
+  end
+
+  def test_should_show_draft_checkbox_for_new_articles
+    get :new
+    assert_response :success
+    assert_tag 'label', :attributes => { :for => 'article-draft' }
+    assert_tag 'input', :attributes => { :type => 'checkbox', :id => 'article-draft', :name => 'draft', :value => '1' }
   end
 
   def test_should_create_article_draft

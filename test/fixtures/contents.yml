@@ -127,3 +127,14 @@ unwelcome_comment:
   type: Comment
   author: rico
   author_ip: '127.0.0.1'
+draft:
+  id: 11
+  site_id: 1
+  title: Test Draft
+  permalink: test-draft
+  body: This is a test draft
+  body_html: This is a test draft
+  created_at: <%= 1.day.ago.to_s(:db) %>
+  updated_at: <%= 1.day.ago.to_s(:db) %>
+  user_id: 1
+  type: Article
