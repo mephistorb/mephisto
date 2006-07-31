@@ -10,7 +10,7 @@
 </h3>
 <ul class="pagelist">
   <% if @comments.any? %>
-  <% @comments.each_with_index do |comment, i| -%>
+  <% @comments.reverse.each_with_index do |comment, i| -%>
   <li class="event-comment<%= " shade" if (i % 2 > 0) %>" id="comment-<%= comment.id %>">
     <a name="comment-<%= comment.id %>"></a> 
     <blockquote><p>"<%= truncate strip_tags(comment.body), 255 %>"</p></blockquote>
