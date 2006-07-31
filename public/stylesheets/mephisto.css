@@ -951,7 +951,7 @@ li.event-article, .event-none {
   background-position: 2% 50%;
 }
 
-li.event-revision { background-image: url(../images/icons/review.gif);   }
+li.event-revision { background-image: url(../images/icons/article-edit.gif); }
 li.event-comment  { background-image: url(../images/icons/commentb.gif); }
 li.event-article  { background-image: url(../images/icons/articleb.gif); }
 .event-none     { background-image: url(../images/icons/minusb.gif); }
