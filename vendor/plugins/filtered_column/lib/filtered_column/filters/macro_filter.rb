@@ -9,11 +9,11 @@ module FilteredColumn
         ]
       cattr_accessor :macros, :patterns
       
-      class << self
+      class << self        
         def filter(text, options = {})
           patterns.inject(text) do |txt, pattern|
             txt.gsub(pattern) do |match|
-              macro_classes[$1].filter(hash_from_attributes(match)) if macros.keys.include?($1)
+              macros["#{$1}_macro"].filter(hash_from_attributes(match)) if macros.keys.include?("#{$1}_macro")
             end
           end
         end
@@ -22,7 +22,8 @@ module FilteredColumn
         def hash_from_attributes(string)
           attributes = {}
           string.gsub(/([^ =]+="[^"]*")/) do |match|
-            attributes[key] = match.split(/=/, 2).last.gsub(/"/, '')
+            key, value = match.split(/=/, 2)
+            attributes[key] = value.gsub(/"/, '')
           end
 
           attributes.symbolize_keys!

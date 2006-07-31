@@ -1,9 +1,12 @@
 module FilteredColumn
   module Filters
-    module Macros
+    module Macros      
       class ImageMacro
-      def self.filter(attributes, inner_text = "", text = "")
-        %(#{attributes[:file]})
+        include Reloadable        
+        def self.filter(attributes, inner_text = "", text = "")
+          RAILS_DEFAULT_LOGGER.info "ATTRIBUTES...... #{attributes}"
+          %(#{attributes[:file]})
+        end
       end
     end
   end

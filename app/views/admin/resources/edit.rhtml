@@ -2,6 +2,7 @@
   <div id="page-nav">
     <ul id="act-nav" class="clear">
       <li><%= link_to "New template", :controller => 'design' %></li>
+      <li><%= link_to 'Delete this file', { :controller => 'resources', :action => 'remove', :id => @resource }, :confirm => "Are you sure you want to delete #{@resource.filename}?\nThis action can't be undone!" %></li>
     </ul>
   </div>
 <% end %>

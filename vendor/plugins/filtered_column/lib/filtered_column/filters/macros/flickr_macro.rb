@@ -18,7 +18,6 @@ module FilteredColumn
         KEY = '84f652422f05b96b29b9a960e0081c50'
   
         def self.filter(attributes, inner_text = "", text="")
-          RAILS_DEFAULT_LOGGER.info("ATTRIBUTES: #{attributes}")
            img     = attributes[:img]
            size    = attributes[:size] || "square"
            style   = attributes[:style]
