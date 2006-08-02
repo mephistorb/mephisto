@@ -35,8 +35,8 @@
   <div class="sgroup">
     <h3>Comments awaiting your approval</h3>
     <ul class="slist">
-    <% @articles.each do |article| -%>
-      <li><%= link_to "<strong>(#{article.unapproved_comments.size})</strong> #{h(article.title)}", :controller => 'articles', :action => 'comments', :id => article.id, :filter => :unapproved %></li>
+    <% @articles.each do |article, count| -%>
+      <li><%= link_to "<strong>(#{count})</strong> #{h(article.title)}", :controller => 'articles', :action => 'comments', :id => article.id, :filter => :unapproved %></li>
     <% end -%>
     </ul>
   </div>
