@@ -11,11 +11,12 @@ module FilteredColumn
       
       class << self        
         def filter(text, options = {})
-          patterns.inject(text) do |txt, pattern|
-            txt.gsub(pattern) do |match|
-              macros["#{$1}_macro"].filter(hash_from_attributes(match)) if macros.keys.include?("#{$1}_macro")
+          patterns.each do |pattern|
+          text.gsub!(pattern) do |match|
+              macros["#{$1}_macro"].filter(hash_from_attributes(match), $3, text) if macros.keys.include?("#{$1}_macro")
             end
           end
+          text
         end
       
         protected

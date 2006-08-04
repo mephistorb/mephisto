@@ -10,6 +10,10 @@ module Mephisto
       def link_to_comments(article)
         content_tag :a, pluralize(article['comments_count'], 'comment'), :href => article['url']
       end
+      
+      def link_to_section(section)
+        content_tag :a, section['name'], :href => section['url']
+      end
 
       def escape_html(html)
         CGI::escapeHTML(html)
