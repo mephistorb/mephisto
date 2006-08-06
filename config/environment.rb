@@ -76,7 +76,7 @@ class << Dispatcher
 end
 
 Dispatcher.register_liquid_tags
-FilteredColumn.constant_filters << :macro_filter
+RubyPants # load RubyPants
 
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
   :standard  => '%B %d, %Y @ %I:%M %p',
