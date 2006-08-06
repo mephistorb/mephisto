@@ -24,8 +24,8 @@ module FilteredColumn
         send :include, InstanceMethods
         extend(ClassMethods)
         class_inheritable_accessor :filtered_attributes, :filtered_options
-        before_validation :process_filters
-        serialize         :filters, Array
+        before_save :process_filters
+        serialize   :filters, Array
         
         options = names.last.is_a?(Hash) ? names.pop : {}
         names.each do |name|
