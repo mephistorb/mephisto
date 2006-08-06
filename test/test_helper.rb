@@ -97,8 +97,8 @@ class ActionController::IntegrationTest
     end
   end
 
-  def section_url_for(section)
-    sections(section).to_url * '/'
+  def section_url_for(section, article = nil)
+    (article ? sections(section).to_page_url(contents(article)) : sections(section).to_url) * '/'
   end
 
   def feed_url_for(section)

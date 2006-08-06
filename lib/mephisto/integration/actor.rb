@@ -8,12 +8,19 @@ module Mephisto
           else record.to_s
         end
         get url
-        assert_equal 200, status
+        assert_equal 200, status, url
+      end
+
+      def read_page(section, article)
+        url = section.to_page_url(article) * '/'
+        get url
+        assert_equal 200, status, url
       end
 
       def syndicate(section)
-        get "/feed/#{section.to_feed_url * '/'}"
-        assert_equal 200, status
+        url = "/feed/#{section.to_feed_url * '/'}"
+        get url
+        assert_equal 200, status, url
       end
 
       def comment_on(article, comment)
@@ -26,6 +33,16 @@ module Mephisto
 
       def unapprove_comment(comment)
         manage_comment :unapprove, comment
+      end
+
+      def update_section(section, options = {})
+        post "/admin/sections/update/#{section.id}", :section => options
+        assert_equal 200, status, "Updating section #{section.id}"
+      end
+      
+      def update_template(template, options = {})
+        post "/admin/templates/update/#{template.filename}", :template => (options.is_a?(Hash) ? options : { :attachment_data => options })
+        assert_equal 200, status, "Updating template #{template.filename}"
       end
 
       def revise(article, contents)

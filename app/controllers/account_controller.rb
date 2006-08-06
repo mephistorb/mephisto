@@ -1,17 +1,7 @@
 class AccountController < ApplicationController
   include AuthenticatedSystem
   layout 'simple'
-  # Be sure to include AuthenticationSystem in Application Controller instead
-  # To require logins, use:
-  #
-  #   before_filter :login_required                            # restrict all actions
-  #   before_filter :login_required, :only => [:edit, :update] # only restrict these actions
-  # 
-  # To skip this in a subclassed controller:
-  #
-  #   skip_before_filter :login_required
 
-  # say something nice, you goof!  something sweet.
   def index
     render :action => 'login'
   end
@@ -26,16 +16,6 @@ class AccountController < ApplicationController
       flash[:error] = "Could not log you in. Are you sure your Login name and Password are correct?"
     end
   end
-  
-  # Sample method for activating the current user
-  #def activate
-  #  @user = User.find_by_activation_code(params[:id])
-  #  if @user and @user.activate
-  #    self.current_user = @user
-  #    redirect_back_or_default(:controller => '/account', :action => 'index')
-  #    flash[:notice] = "Your account has been activated."
-  #  end
-  #end
 
   def logout
     self.current_user = nil

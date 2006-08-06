@@ -29,6 +29,12 @@ class SectionTest < Test::Unit::TestCase
     assert_equal ['about'], sections(:about).to_url
   end
 
+  def test_should_return_correct_page_url_paths
+    assert_equal ['foo'],                   sections(:home).to_page_url('foo')
+    assert_equal ['about', 'foo'],          sections(:about).to_page_url('foo')
+    assert_equal ['about', 'the-site-map'], sections(:about).to_page_url(contents(:site_map))
+  end
+
   def test_should_return_correct_feed_url_paths
     assert_equal ['atom.xml'],          sections(:home).to_feed_url
     assert_equal ['about', 'atom.xml'], sections(:about).to_feed_url

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 class CachingTest < ActionController::IntegrationTest
-  fixtures :contents, :users, :sections, :assigned_sections, :sites
+  fixtures :contents, :users, :sections, :assigned_sections, :sites, :attachments
 
   def setup
     prepare_for_caching!
@@ -133,6 +133,36 @@ class CachingTest < ActionController::IntegrationTest
     assert_no_difference CachedPage, :count do
       assert_expires_pages *pages do
         pages.each { |p| visitor.get p }
+      end
+    end
+  end
+
+  def test_should_expire_section_cache_when_updating_section
+    visitor = visit
+    assert_caches_page section_url_for(:about) do
+      visitor.read sections(:about)
+    end
+    
+    assert_caches_page feed_url_for(:about) do
+      visitor.syndicate sections(:about)
+    end
+    
+    assert_caches_page section_url_for(:about, :site_map) do
+      visitor.read_page sections(:about), contents(:site_map)
+    end
+    
+    assert_expires_pages section_url_for(:about), feed_url_for(:about), section_url_for(:about, :site_map) do
+      login_as :quentin do |writer|
+        writer.update_section sections(:about), :name => 'ABOUT'
+      end
+    end
+  end
+
+  def test_should_expire_cache_when_updating_template
+    visit_sections_and_feeds_with visit
+    assert_expires_pages section_url_for(:home), section_url_for(:about), feed_url_for(:home), feed_url_for(:about) do
+      login_as :quentin do |writer|
+        writer.update_template attachments(:error), '<p>error!</p>'
       end
     end
   end

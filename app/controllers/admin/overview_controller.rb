@@ -9,7 +9,7 @@ class Admin::OverviewController < Admin::BaseController
     @users = User.find(:all, :order => 'updated_at desc')
     @events, @todays_events, @yesterdays_events = [], [], []
     today, yesterday = Time.now.to_date, 1.day.ago.to_date
-    @articles = Comment.count :all, :conditions => ['site_id = ? and (approved = ? or approved is null)', @site.id, false], :group => :article, :order => '1 desc'
+    @articles = @site.comments.count :all, :conditions => ['approved = ? or approved is null', false], :group => :article, :order => '1 desc'
     @site.events.find(:all, :order => 'events.created_at DESC', :include => [:article, :user], :limit => 50).each do |event|
       case event.created_at.to_date
         when today     then @todays_events

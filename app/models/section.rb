@@ -78,11 +78,15 @@ class Section < ActiveRecord::Base
   end
 
   def to_url
-    ((path.blank? || home?) ? '' : path).split('/')
+    path.blank? || home? ? [] : path.split('/')
+  end
+
+  def to_page_url(page_name)
+    to_url << (page_name.respond_to?(:permalink) ? page_name.permalink : page_name)
   end
 
   def to_feed_url
-    to_url << 'atom.xml'
+    to_page_url 'atom.xml'
   end
   
   protected
