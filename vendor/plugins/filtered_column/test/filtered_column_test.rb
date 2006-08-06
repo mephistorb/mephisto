@@ -18,6 +18,23 @@ class FilteredColumnTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_use_default_filter_names
+    assert_equal 'Textile',  FilteredColumn::Filters::TextileFilter.filter_name
+    assert_equal 'Markdown', FilteredColumn::Filters::MarkdownFilter.filter_name
+    assert_equal 'Macro',    FilteredColumn::Filters::MacroFilter.filter_name
+  end
+
+  def test_should_allow_filter_name_customization
+    assert_equal 'Markdown with Smarty Pants', FilteredColumn::Filters::SmartypantsFilter.filter_name
+  end
+
+  def test_should_use_default_filter_keys
+    assert_equal :textile_filter,     FilteredColumn::Filters::TextileFilter.filter_key
+    assert_equal :markdown_filter,    FilteredColumn::Filters::MarkdownFilter.filter_key
+    assert_equal :macro_filter,       FilteredColumn::Filters::MacroFilter.filter_key
+    assert_equal :smartypants_filter, FilteredColumn::Filters::SmartypantsFilter.filter_key
+  end
+
   def test_should_not_bomb_on_nil_filters
     a = Article.new :filters => nil
     assert_equal [], a.filters

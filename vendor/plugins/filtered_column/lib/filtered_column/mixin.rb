@@ -5,6 +5,14 @@ module FilteredColumn
   @@constant_filters = []
   mattr_reader :filters, :default_filters, :default_macros, :constant_filters
 
+  def self.[](key)
+    filters[key] ||= Filters.const_get(key.to_s.camelize)
+  end
+  
+  def self.[]=(key, value)
+    filters[key] = value
+  end
+
   module Mixin
     def self.included(base)
       base.extend(ActMethod)
@@ -32,17 +40,17 @@ module FilteredColumn
         end
 
         protected
-        def process_filters
-          filtered_attributes.each do |attr_name|
-            send "#{attr_name}_html=", self.class.process_filters(filters_for_attribute(attr_name), send(attr_name))
+          def process_filters
+            filtered_attributes.each do |attr_name|
+              send "#{attr_name}_html=", self.class.process_filters(filters_for_attribute(attr_name), send(attr_name))
+            end
           end
-        end
-
-        def filters_for_attribute(attr_name)
-          filters   = self.filters
-          filters ||= filtered_options[attr_name][:only]
-          filters ||= FilteredColumn.default_filters - ([filtered_options[attr_name][:except]].flatten || [])
-        end
+          
+          def filters_for_attribute(attr_name)
+            filters   = self.filters
+            filters ||= filtered_options[attr_name][:only]
+            filters ||= FilteredColumn.default_filters - ([filtered_options[attr_name][:except]].flatten || [])
+          end
       end
 
       module ClassMethods
@@ -51,9 +59,9 @@ module FilteredColumn
         end
 
         def filter_text(filter_name, text_to_filter)
-          (FilteredColumn.filters[filter_name.to_sym] ||= FilteredColumn::Filters.const_get(filter_name.to_s.camelize)).filter text_to_filter unless text_to_filter.blank?
+          FilteredColumn[filter_name.to_sym].filter text_to_filter unless text_to_filter.blank?
         end
-      end      
+      end
     end
   end
 end

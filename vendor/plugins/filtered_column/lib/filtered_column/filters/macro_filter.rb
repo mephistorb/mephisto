@@ -1,6 +1,6 @@
 module FilteredColumn
   module Filters
-    class MacroFilter
+    class MacroFilter < Base
       @@macros = nil
       #TODO: Backreferences
       @@patterns = [
@@ -20,21 +20,21 @@ module FilteredColumn
         end
       
         protected
-        def hash_from_attributes(string)
-          attributes = {}
-          string.gsub(/([^ =]+="[^"]*")/) do |match|
-            key, value = match.split(/=/, 2)
-            attributes[key] = value.gsub(/"/, '')
+          def hash_from_attributes(string)
+            attributes = {}
+            string.gsub(/([^ =]+="[^"]*")/) do |match|
+              key, value = match.split(/=/, 2)
+              attributes[key] = value.gsub(/"/, '')
+            end
+          
+            attributes.symbolize_keys!
           end
-
-          attributes.symbolize_keys!
-        end
-
-        def macros
-          @@macros ||= FilteredColumn.default_macros.inject({}) do |macros, macro_name|
-            macros.merge macro_name => FilteredColumn::Filters::Macros.const_get(macro_name.to_s.camelize)
-          end.stringify_keys
-        end
+          
+          def macros
+            @@macros ||= FilteredColumn.default_macros.inject({}) do |macros, macro_name|
+              macros.merge macro_name => FilteredColumn::Filters::Macros.const_get(macro_name.to_s.camelize)
+            end.stringify_keys
+          end
       end
     end
   end
