@@ -1,11 +1,10 @@
 <%= render :partial => "page_nav" %>
 
 <% content_for :sidebar do %>
-  <% if @article.versions.any? -%>
   <div class="sgroup">
-    <h3>Revisions</h3>
+    <h3>Revisions<% if params[:version] -%> (<%= link_to 'current', :action => :edit, :id => @article, :version => nil %>)<% end -%></h3>
     <ul id="revisions">
-    <% @article.versions.find(:all, :order => 'updated_at DESC', :limit => 3).each do |version| -%>
+    <% @article.versions.find(:all, :order => 'updated_at DESC', :limit => 4).each do |version| -%>
       <li>
         <%= link_to avatar_for(version.updater), {:action => 'edit', :id => @article, :version => version.version }, :title => 'Edit this revision' %>
         <h4><%=h who(version.updater.login) %></h4>
@@ -15,7 +14,20 @@
     <% end -%>
     </ul>
   </div>
-  <% end -%>
+  
+  <div class="sgroup">
+    <% fields_for :article, @version do |f| -%>
+    <dl class="setform clear">
+      <dt><label for="article_filters">What markup type do you prefer?</label></dt>
+      <dd>
+        <select name="article[filters][]" id="article_filters">
+          <%= options_for_select(filter_options, (@version.filters || []).first.to_s) %>
+        </select>
+      </dd>
+      <dt><label><%= f.check_box :parse_macros %> Parse body with the Macro Filter?</label></dt>
+    </dl>
+    <% end -%>
+  </div>
 <% end %>
 
 <%= error_messages_for :article %>

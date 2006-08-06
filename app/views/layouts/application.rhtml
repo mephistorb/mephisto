@@ -53,7 +53,7 @@
 
       	  
 	  <div id="container">  	
-      
+      <%= yield :form if @content_for_form %>
       <!-- div.content -->
     	<div id="content">
     	  
@@ -66,10 +66,7 @@
     	    <!-- begin action nav -->
           <%= yield :action_nav %>
           <!-- /end action nav -->
-    	    
-    	    <%= yield :form if @content_for_form %>
     	    <div id="main-content"><%= yield %></div>
-    	    <%= '</form>' if @content_for_form %>
     	    <div id="shadow"></div>
     	  </div>
     	  <!-- /div.left -->
@@ -81,6 +78,7 @@
     	  <!-- /div.right -->
     	</div>
     	<!-- /div.content -->
+    	<%= '</form>' if @content_for_form %>
     	
     	<!-- begin div.footer -->
     	<div id="footer">

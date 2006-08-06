@@ -6,7 +6,7 @@ class Article < Content
   before_create :create_permalink
   after_save    :save_assigned_sections
 
-  acts_as_versioned :if_changed => [:title, :body, :excerpt] do
+  acts_as_versioned :if_changed => [:title, :body, :excerpt, :filters, :parse_macros] do
     def self.included(base)
       base.belongs_to :updater, :class_name => '::User', :foreign_key => 'updater_id'
     end
@@ -115,7 +115,7 @@ class Article < Content
 
   # leave out macro_filter, that is turned on/off with parse_macros?
   def filters=(value)
-    write_attribute :filters, ([value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq - [:macro_filter])
+    write_changed_attribute :filters, ([value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq - [:macro_filter])
   end
   
   # factor in parse_macros?
