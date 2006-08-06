@@ -2,11 +2,12 @@ class Article < Content
   class CommentNotAllowed < StandardError; end
   validates_presence_of :title, :user_id, :site_id
 
+  before_validation { |record| record.set_default_filters! }
   after_validation :set_comment_expiration
   before_create :create_permalink
   after_save    :save_assigned_sections
 
-  acts_as_versioned :if_changed => [:title, :body, :excerpt, :filters, :parse_macros] do
+  acts_as_versioned :if_changed => [:title, :body, :excerpt, :filters, :parse_macros], :limit => 5 do
     def self.included(base)
       base.belongs_to :updater, :class_name => '::User', :foreign_key => 'updater_id'
     end
@@ -120,8 +121,19 @@ class Article < Content
   
   # factor in parse_macros?
   def filters
-    set_filter_from_user if new_record? && attributes[:filters].nil?
     (read_attribute(:filters) || []) + (parse_macros? ? [:macro_filter] : [])
+  end
+
+  def set_filters_from(filtered_object)
+    self.attributes = { :filters => filtered_object.filters, :parse_macros => filtered_object.parse_macros? }
+  end
+
+  def set_default_filters_from(filtered_object)
+    set_filters_from(filtered_object) if attributes[:filters].nil?
+  end
+
+  def set_default_filters!
+    set_filters_from user if attributes[:filters].nil?
   end
 
   protected
@@ -136,11 +148,6 @@ class Article < Content
         self.expire_comments_at = published_at
       end unless !errors.empty? || published_at.nil? || expire_comments_at
       self.published_at = published_at.utc if published_at
-    end
-    
-    # called during the process_filters callback of FilteredColumn
-    def set_filter_from_user
-      self.attributes = { :filters => user.filters, :parse_macros => user.parse_macros? } if attributes[:filters].nil?
     end
     
     def save_assigned_sections

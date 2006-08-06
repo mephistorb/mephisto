@@ -2,6 +2,23 @@
   <div id="page-nav"></div>
 <% end %>
 
+<% content_for :sidebar do %>
+  <%= render :partial => 'shared_options' %>
+  <div class="sgroup">
+    <h3><label for="article_filters">Markup options</label></h3>
+    <% fields_for :article do |f| -%>
+    <ul class="sform">
+      <li>
+        <select name="article[filters][]" id="article_filters">
+          <%= options_for_select(filter_options, (@article.filters || []).first.to_s) %>
+        </select>
+      </li>
+      <li><label><%= f.check_box :parse_macros %>Use macro filters</label></li>
+    </ul>
+    <% end -%>
+  </div>
+<% end %>
+
 <% content_for :form do -%>
   <%= start_form_tag({:action => 'create'}, {:id => 'article-form'}) %>
 <% end -%>

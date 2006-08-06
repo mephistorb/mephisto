@@ -183,7 +183,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_not_show_draft_checkbox_for_published_articles
     get :edit, :id => contents(:about)
     assert_response :success
-    assert_draft_check_box :hidden
+    assert_draft_check_box
     assert_publish_date_select :hidden
   end
 

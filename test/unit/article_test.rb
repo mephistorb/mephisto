@@ -36,10 +36,10 @@ class ArticleTest < Test::Unit::TestCase
   end
 
   def test_should_save_filters_from_user
-    a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :user => users(:quentin), :excerpt => '*foo*', :body => '_bar_', :site_id => 1
-    assert !a.new_record?
+    a = Article.new
+    assert_equal [], a.filters
+    a.set_default_filters_from(users(:quentin))
     assert_equal [:textile_filter, :macro_filter], a.filters
-    assert_equal  :textile_filter, a.filters.first
     assert a.parse_macros?
   end
 
@@ -56,9 +56,8 @@ class ArticleTest < Test::Unit::TestCase
   end
 
   def test_should_not_create_article_version_for_useless_changes
-    assert_no_difference Article::Version, :count do
-      contents(:welcome).update_attributes :body_html => 'nope'
-    end
+    contents(:welcome).body_html = 'nope'
+    assert !contents(:welcome).save_version?
   end
   
   def test_should_set_comment_expiration
