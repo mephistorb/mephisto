@@ -20,7 +20,7 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def show
-    @article  = site.articles.find_by_id(params[:id], :include => :comments)
+    @article  = site.articles.find(params[:id])
     @comments = @article.comments.collect &:to_liquid
     Mephisto::Liquid::CommentForm.article = @article
     @article  = @article.to_liquid(:single)
