@@ -55,7 +55,7 @@ class Admin::ArticlesController < Admin::BaseController
     save_with_revision? ? @article.save! : @article.save_without_revision!
     redirect_to :action => 'index'
   rescue ActiveRecord::RecordInvalid
-    @sections = site.sections
+    load_sections
     render :action => 'edit'
   end
 
