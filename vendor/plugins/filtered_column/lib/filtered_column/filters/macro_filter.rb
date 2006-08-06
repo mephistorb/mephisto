@@ -4,16 +4,16 @@ module FilteredColumn
       @@macros = nil
       #TODO: Backreferences
       @@patterns = [
-        /<filter:([_a-zA-Z0-9]+)[^>]*\/>/,
-        /<filter:([_a-zA-Z0-9]+)([^>]*)>(.*?)<\/filter:([_a-zA-Z0-9]+)>/m
+        /<(filter|macro):([_a-zA-Z0-9]+)([^>]*)\/>/,
+        /<(filter|macro):([_a-zA-Z0-9]+)([^>]*)>(.*?)<\/(filter|macro):([_a-zA-Z0-9]+)>/m
         ]
       cattr_accessor :macros, :patterns
       
       class << self        
         def filter(text, options = {})
           patterns.each do |pattern|
-          text.gsub!(pattern) do |match|
-              macros["#{$1}_macro"].filter(hash_from_attributes(match), $3, text) if macros.keys.include?("#{$1}_macro")
+            text.gsub!(pattern) do |match|
+              macros[$2].filter(hash_from_attributes($3), ($4 || ''), text) if macros.keys.include?($2)
             end
           end
           text
@@ -32,7 +32,9 @@ module FilteredColumn
           
           def macros
             @@macros ||= FilteredColumn.default_macros.inject({}) do |macros, macro_name|
-              macros.merge macro_name => FilteredColumn::Filters::Macros.const_get(macro_name.to_s.camelize)
+              klass = FilteredColumn::Filters::Macros.const_get(macro_name.to_s.camelize) rescue nil
+              macros[macro_name] = klass unless klass.nil?
+              macros
             end.stringify_keys
           end
       end

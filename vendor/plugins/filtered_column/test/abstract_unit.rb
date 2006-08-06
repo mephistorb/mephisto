@@ -16,6 +16,13 @@ Test::Unit::TestCase.class_eval do
   end
 end
 
+class FilteredColumn::Filters::Macros::Sample
+  def self.filter(attributes, inner_text = '', text = '')
+    "foo: #{attributes[:foo]} - flip: #{attributes[:flip]} - text: #{inner_text}"
+  end
+end
+FilteredColumn.default_macros << :sample
+
 FilteredColumn.constant_filters << :macro_filter
 class Article < ActiveRecord::Base
   @@called_filters = []
@@ -34,11 +41,14 @@ class Article < ActiveRecord::Base
   column :no_textile_body,             :string
   column :no_textile_body_html,        :string
   column :filters,                     :text
+  column :sample_macro_body,           :string
+  column :sample_macro_body_html,      :string
 
   filtered_column :body
   filtered_column :textile_body,           :only   => :textile_filter
   filtered_column :textile_and_macro_body, :only   => [:textile_filter, :macro_filter]
   filtered_column :no_textile_body,        :except => :textile_filter
+  filtered_column :sample_macro_body,      :except => :macro_filter
 
   class << self
     alias_method :old_filter_text, :filter_text

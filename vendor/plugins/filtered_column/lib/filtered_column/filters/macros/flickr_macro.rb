@@ -16,8 +16,8 @@ module FilteredColumn
     module Macros
       class FlickrMacro
         KEY = '84f652422f05b96b29b9a960e0081c50'
-  
-        def self.filter(attributes, inner_text = "", text="")
+
+        def self.filter(attributes, inner_text = '', text = '')
            img     = attributes[:img]
            size    = attributes[:size] || "square"
            style   = attributes[:style]

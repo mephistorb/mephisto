@@ -2,8 +2,10 @@ require File.join(File.dirname(__FILE__), 'abstract_unit')
 
 class FilteredColumnTest < Test::Unit::TestCase
   {
-    :textile  => { :input => '*foo*',        :output => '<p><strong>foo</strong></p>' },
-    :markdown => { :input => "# bar\n\nfoo", :output => "<h1>bar</h1>\n\n<p>foo</p>" }
+    :textile  => { :input  => '*foo*',        :output => '<p><strong>foo</strong></p>' },
+    :markdown => { :input  => "# bar\n\nfoo", :output => "<h1>bar</h1>\n\n<p>foo</p>" },
+    :macro    => { :input  => '<macro:sample foo="bar" flip="flop">hello world</macro:sample>', 
+                   :output => "foo: bar - flip: flop - text: hello world" }
   }.each do |filter_name, values|
     define_method "test_should_filter_with_#{filter_name}" do
       assert_equal values[:output], Article.filter_text("#{filter_name}_filter", values[:input])
@@ -79,6 +81,6 @@ class FilteredColumnTest < Test::Unit::TestCase
   end
 
   def test_should_find_default_macros
-    assert_equal [:flickr_macro, :image_macro], FilteredColumn.default_macros
+    assert_equal [:flickr_macro, :image_macro, :sample], FilteredColumn.default_macros
   end
 end
