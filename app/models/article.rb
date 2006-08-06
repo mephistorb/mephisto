@@ -129,7 +129,7 @@ class Article < Content
   end
 
   def set_default_filters_from(filtered_object)
-    set_filters_from(filtered_object) if read_attribute(:filters).nil?
+    set_filters_from(filtered_object) if read_attribute(:filters).blank?
   end
 
   def set_default_filters!
