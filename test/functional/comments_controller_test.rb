@@ -5,7 +5,7 @@ require_dependency 'comments_controller'
 class CommentsController; def rescue_action(e) raise e end; end
 
 class CommentsControllerTest < Test::Unit::TestCase
-  fixtures :contents, :attachments, :sites
+  fixtures :contents, :attachments, :sites, :sections, :assigned_sections, :events
 
   def setup
     @controller = CommentsController.new
@@ -28,13 +28,26 @@ class CommentsControllerTest < Test::Unit::TestCase
           :author    => 'approved bob',
           :author_ip => '127.0.0.1'
         })
-        assert_response :redirect
         assert_redirected_to comment_preview_url(contents(:welcome).hash_for_permalink(:comment => assigns(:comment), :anchor => assigns(:comment).dom_id))
         contents(:welcome).reload
       end
     end
   end
-  
+
+  def test_should_reject_comment_on_expired_article
+    assert_no_difference Comment, :count do
+      assert_no_difference contents(:another).comments, :count do
+        post :create, contents(:another).hash_for_permalink.update(:comment => {
+          :body      => 'test comment', 
+          :author    => 'approved bob',
+          :author_ip => '127.0.0.1'
+        })
+        assert_response :success
+        contents(:another).reload
+      end
+    end
+  end
+
   def test_should_add_comment_in_site
     @request.host = 'cupcake.host'
     assert_difference Comment, :count do
@@ -69,6 +82,13 @@ class CommentsControllerTest < Test::Unit::TestCase
 
   def test_should_not_add_comment_article_event_for_unapproved
     assert_no_event_created do
+      post :create, contents(:welcome).hash_for_permalink.merge(:comment => { :body   => 'test comment', :author => 'bob' })
+    end
+  end
+
+  def test_should_automatically_approve_comment
+    sites(:first).update_attribute :approve_comments, true
+    assert_event_created_for :welcome, 'comment' do
       post :create, contents(:welcome).hash_for_permalink.merge(:comment => { :body   => 'test comment', :author => 'bob' })
     end
   end

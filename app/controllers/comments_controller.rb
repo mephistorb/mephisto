@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   session :off
   cache_sweeper :comment_sweeper
+  observer      :comment_observer
   verify :params => [:year, :month, :day, :permalink], :redirect_to => { :controller => 'mephisto', :action => 'list', :sections => [] }
   before_filter :find_article
 
@@ -17,17 +18,22 @@ class CommentsController < ApplicationController
     end
 
     @comment = @article.comments.build(params[:comment].merge(:author_ip => request.remote_ip))
-    if @comment.valid? && site.akismet_key && site.akismet_url
-      @comment.approved = Akismet.new(site.akismet_key, site.akismet_url).comment_check \
-        :user_ip              => @comment.author_ip, 
-        :user_agent           => request.user_agent, 
-        :referrer             => request.referer,
-        :permalink            => article_url(@article.hash_for_permalink), 
-        :comment_author       => @comment.author, 
-        :comment_author_email => @comment.author_email, 
-        :comment_author_url   => @comment.author_url, 
-        :comment_content      => @comment.body
-      logger.info "Checking Akismet (#{site.akismet_key}) for new comment on Article #{@article.id}.  #{@comment.approved ? 'Approved' : 'Blocked'}"
+
+    if @comment.valid?
+      if site.approve_comments?
+        @comment.approved = true
+      elsif site.akismet_key && site.akismet_url
+        @comment.approved = Akismet.new(site.akismet_key, site.akismet_url).comment_check \
+          :user_ip              => @comment.author_ip, 
+          :user_agent           => request.user_agent, 
+          :referrer             => request.referer,
+          :permalink            => article_url(@article.hash_for_permalink), 
+          :comment_author       => @comment.author, 
+          :comment_author_email => @comment.author_email, 
+          :comment_author_url   => @comment.author_url, 
+          :comment_content      => @comment.body
+        logger.info "Checking Akismet (#{site.akismet_key}) for new comment on Article #{@article.id}.  #{@comment.approved ? 'Approved' : 'Blocked'}"
+      end
     end
 
     @comment.save!
