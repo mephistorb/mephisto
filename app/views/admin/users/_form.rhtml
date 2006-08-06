@@ -8,6 +8,7 @@
         <%= options_for_select(filter_options, (@user.filters || []).first.to_s) %>
       </select>
     </dd>
+    <dt><label><%= f.check_box :parse_macros %> Parse articles with the markup filter?</label></dt>
     <dt><label for="user_email">Email address</label></dt>
     <dd><%= f.text_field :email %></dd>
     <% unless @user == current_user %>

@@ -1,10 +1,10 @@
 class User < UserAuth
-  serialize   :filters, Array
+  serialize :filters, Array
   has_many :articles
   acts_as_paranoid
 
   def filters=(value)
-    write_attribute :filters, [value, 'macro_filter'].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq
+    write_attribute :filters, ([value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq - [:macro_filter])
   end
 
   def to_liquid

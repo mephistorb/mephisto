@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 36) do
+ActiveRecord::Schema.define(:version => 37) do
 
   create_table "assigned_sections", :force => true do |t|
     t.column "article_id", :integer
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(:version => 36) do
     t.column "site_id",            :integer
     t.column "approved",           :boolean,                 :default => false
     t.column "expire_comments_at", :datetime
+    t.column "parse_macros",       :boolean
   end
 
   create_table "contents", :force => true do |t|
@@ -81,6 +82,7 @@ ActiveRecord::Schema.define(:version => 36) do
     t.column "site_id",            :integer
     t.column "approved",           :boolean,                 :default => false
     t.column "expire_comments_at", :datetime
+    t.column "parse_macros",       :boolean
   end
 
   create_table "events", :force => true do |t|
@@ -140,6 +142,7 @@ ActiveRecord::Schema.define(:version => 36) do
     t.column "updated_at",       :datetime
     t.column "filters",          :text
     t.column "deleted_at",       :datetime
+    t.column "parse_macros",     :boolean
   end
 
 end

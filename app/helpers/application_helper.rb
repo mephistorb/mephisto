@@ -18,8 +18,9 @@ module ApplicationHelper
     utc_to_local(Time.now.utc.yesterday).to_ordinalized_s(:stub)
   end
 
+  # TODO: write a select helper in the filtered column plugin for this
   def filter_options
-    [['Plain HTML', ''], ['Textile', 'textile_filter'], ['Markdown', 'markdown_filter'], ['Markdown with Smarty Pants', 'smartypants_filter']]
+    (FilteredColumn.default_filters - [:macro_filter]).inject([]) { |arr, key| arr << [FilteredColumn[key].filter_name, key.to_s] }.unshift(['Plain HTML', ''])
   end
   
   def who(name)

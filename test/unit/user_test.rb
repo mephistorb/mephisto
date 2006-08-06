@@ -46,6 +46,11 @@ class UserTest < Test::Unit::TestCase
     assert_equal [], users(:quentin).reload.filters
   end
 
+  def test_should_skip_macro_filter
+    users(:quentin).update_attribute :filters, [:textile_filter, :macro_filter]
+    assert_equal [:textile_filter], users(:quentin).reload.filters
+  end
+
   protected
     def create_user(options = {})
       User.create({ :login => 'quire', :email => 'quire@example.com', :password => 'quire', :password_confirmation => 'quire' }.merge(options))

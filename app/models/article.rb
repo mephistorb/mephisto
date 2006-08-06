@@ -4,7 +4,6 @@ class Article < Content
 
   after_validation :set_comment_expiration
   before_create :create_permalink
-  before_create :set_filter_from_user
   after_save    :save_assigned_sections
 
   acts_as_versioned :if_changed => [:title, :body, :excerpt] do
@@ -114,6 +113,17 @@ class Article < Content
     status == :published && (expire_comments_at.nil? || expire_comments_at > Time.now.utc)
   end
 
+  # leave out macro_filter, that is turned on/off with parse_macros?
+  def filters=(value)
+    write_attribute :filters, ([value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq - [:macro_filter])
+  end
+  
+  # factor in parse_macros?
+  def filters
+    set_filter_from_user if new_record? && attributes[:filters].nil?
+    (read_attribute(:filters) || []) + (parse_macros? ? [:macro_filter] : [])
+  end
+
   protected
     def create_permalink
       self.permalink = title.to_s.gsub(/\W+/, ' ').strip.downcase.gsub(/\ +/, '-')
@@ -128,8 +138,9 @@ class Article < Content
       self.published_at = published_at.utc if published_at
     end
     
+    # called during the process_filters callback of FilteredColumn
     def set_filter_from_user
-      self.filters = user.filters if filters.nil?
+      self.attributes = { :filters => user.filters, :parse_macros => user.parse_macros? } if attributes[:filters].nil?
     end
     
     def save_assigned_sections

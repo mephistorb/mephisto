@@ -31,13 +31,16 @@ class ArticleTest < Test::Unit::TestCase
 
   def test_should_cache_redcloth
     a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :user => users(:quentin), :excerpt => '*foo*', :body => '_bar_', :site_id => 1
-    assert_equal '<p><strong>foo</strong></p>', a.excerpt_html
-    assert_equal '<p><em>bar</em></p>',         a.body_html
+    assert_equal '<p><strong>foo</strong></p>',    a.excerpt_html
+    assert_equal '<p><em>bar</em></p>',            a.body_html
   end
 
   def test_should_save_filters_from_user
     a = Article.create :title => 'This IS a Tripped out title!!!1  (well not really)', :user => users(:quentin), :excerpt => '*foo*', :body => '_bar_', :site_id => 1
-    assert_equal :textile_filter, a.filters.first
+    assert !a.new_record?
+    assert_equal [:textile_filter, :macro_filter], a.filters
+    assert_equal  :textile_filter, a.filters.first
+    assert a.parse_macros?
   end
 
   def test_should_cache_bluecloth
