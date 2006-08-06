@@ -35,7 +35,6 @@ class CachingTest < ActionController::IntegrationTest
       assert_expires_pages section_url_for(:home),
                            feed_url_for(:home) do
         writer.create :title => 'This is a new article & title', :body => 'this is a new article body', :sections => [sections(:home)], :published_at => 5.minutes.ago
-        RAILS_DEFAULT_LOGGER.warn "HOLY FUCKING SHIT"
       end
     end
     
