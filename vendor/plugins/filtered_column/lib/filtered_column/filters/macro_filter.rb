@@ -26,7 +26,6 @@ module FilteredColumn
               key, value = match.split(/=/, 2)
               attributes[key] = value.gsub(/"/, '')
             end
-          
             attributes.symbolize_keys!
           end
           
