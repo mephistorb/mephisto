@@ -1,0 +1,13 @@
+<div class="sgroup">
+  <h3>Publish in these sections</h3>
+  <ul class="slist">
+    <% @sections.each do |section| %>
+      <li>
+        <%= check_box_tag 'article[section_ids][]', section.id, @article.has_section?(section), 
+              :id => "article_section_ids_#{section.id}" %>
+        <label for="article_section_ids_<%= section.id %>"><%= section.name %></label>
+      </li>
+    <% end %>
+  </ul>
+</div>
+

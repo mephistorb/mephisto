@@ -9,18 +9,6 @@
     <dd id="x-body" style="display:none"><%= form.text_area :excerpt, :rows => '8', :class => 'fat'  %></dd>
     <dt><label for="article_body">Write your article</label> <span class="hint">(<%= link_to_function 'Add an excerpt', %(Element.toggle('x-lbl', 'x-body')) %>)</span></dt>
     <dd><%= form.text_area :body, :class => 'fat'  %></dd>
-    <dt><label for="article_section">Show article in these sections</label> </dt>
-    <dd>
-      <ul id="section-options" class="nobull clear">
-        <% @sections.each do |section| %>
-          <li>
-            <%= check_box_tag 'article[section_ids][]', section.id, @article.has_section?(section), 
-                  :id => "article_section_ids_#{section.id}" %>
-            <label for="article_section_ids_<%= section.id %>"><%= section.name %></label>
-          </li>
-        <% end %>
-      </ul>
-    </dd>
   </dl>
 </div>
 <!-- /end required fields -->
@@ -42,46 +30,16 @@
 </dl>
 <!-- /end optional fields -->
 
-<% if false %>
-  <div class="sgroup">
-    <h3>Publish in these sections</h3>
-    <ul class="slist">
-      <% @sections.each do |section| %>
-        <li>
-          <%= check_box_tag 'article[section_ids][]', section.id, @article.has_section?(section), 
-                :id => "article_section_ids_#{section.id}" %>
-          <label for="article_section_ids_<%= section.id %>"><%= section.name %></label>
-        </li>
-      <% end %>
-    </ul>
-    
-  <% unless @article.new_record? -%>
-    <h3>Expire Comments At</h3>
-    <%= form.date_select :expire_comments_at %>
-  <% end -%>
-  </div>
-<% end %>
+
 
 <% content_for :sidebar do %>
-<% if false %>
-  <div class="sgroup">
-    <h3>Publish in these sections</h3>
-    <ul class="slist">
-      <% @sections.each do |section| %>
-        <li>
-          <%= check_box_tag 'article[section_ids][]', section.id, @article.has_section?(section), 
-                :id => "article_section_ids_#{section.id}" %>
-          <label for="article_section_ids_<%= section.id %>"><%= section.name %></label>
-        </li>
-      <% end %>
-    </ul>
-    
-  <% unless @article.new_record? -%>
-    <h3>Expire Comments At</h3>
-    <%= form.date_select :expire_comments_at %>
-  <% end -%>
-  </div>
-<% end %>
+  
+<div class="sgroup">
+<% unless @article.new_record? -%>
+  <h3>Expire Comments At</h3>
+  <%= form.date_select :expire_comments_at %>
+<% end -%>
+</div>
 
 <% if false %>
   <div class="sgroup" id="filetabs">

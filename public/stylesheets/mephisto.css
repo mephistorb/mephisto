@@ -106,7 +106,7 @@ form dl {
   margin: 0 10px;
 }
 
-dt label {
+dt label, .sform label {
   font-weight: bold;
   text-shadow: #fff 2px 2px;
   margin: 0;
@@ -120,6 +120,19 @@ dt {
 dd {
   line-height: normal;
   padding: 1px;
+}
+
+.sform {
+  list-style: none;
+}
+
+.sform li {
+  margin-bottom: 5px;
+}
+
+.sform li label {
+  text-shadow: none;
+  font-size: 90%;
 }
 
 input[type='text'], textarea {
@@ -439,6 +452,7 @@ input[type='text']:focus, textarea:focus {
   font-size: 100%;
   font-family: Helvetica, "Lucida Grande", sans-serif;
   border-bottom: 1px dotted #6ab;
+  margin-bottom: 5px;
 }
 
 #sbar .hint {

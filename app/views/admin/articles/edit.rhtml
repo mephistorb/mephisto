@@ -1,6 +1,21 @@
 <%= render :partial => "page_nav" %>
 
 <% content_for :sidebar do %>
+  <%= render :partial => 'shared_options' %>
+  <div class="sgroup">
+    <h3><label for="article_filters">Markup options</label></h3>
+    <% fields_for :article, @version do |f| -%>
+    <ul class="sform">
+      <li>
+        <select name="article[filters][]" id="article_filters">
+          <%= options_for_select(filter_options, (@version.filters || []).first.to_s) %>
+        </select>
+      </li>
+      <li><label><%= f.check_box :parse_macros %>Use macro filters</label></li>
+    </ul>
+    <% end -%>
+  </div>
+  
   <div class="sgroup">
     <h3>Revisions<% if params[:version] -%> (<%= link_to 'current', :action => :edit, :id => @article, :version => nil %>)<% end -%></h3>
     <ul id="revisions">
@@ -15,19 +30,6 @@
     </ul>
   </div>
   
-  <div class="sgroup">
-    <% fields_for :article, @version do |f| -%>
-    <dl class="setform clear">
-      <dt><label for="article_filters">What markup type do you prefer?</label></dt>
-      <dd>
-        <select name="article[filters][]" id="article_filters">
-          <%= options_for_select(filter_options, (@version.filters || []).first.to_s) %>
-        </select>
-      </dd>
-      <dt><label><%= f.check_box :parse_macros %> Parse body with the Macro Filter?</label></dt>
-    </dl>
-    <% end -%>
-  </div>
 <% end %>
 
 <%= error_messages_for :article %>
