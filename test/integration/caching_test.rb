@@ -167,6 +167,32 @@ class CachingTest < ActionController::IntegrationTest
     end
   end
 
+  def test_should_expire_new_assigned_section_to_article
+    visitor = visit
+    writer  = login_as :quentin
+    visit_sections_and_feeds_with visitor
+    assert_expires_pages feed_url_for(:about) do
+      writer.revise contents(:site_map), 'sitemap whoo'
+    end
+    
+    assert_cached section_url_for(:about) # paged section only shows the homepage
+    assert_cached section_url_for(:home)
+    assert_cached feed_url_for(:home)
+
+    assert_expires_pages section_url_for(:home), feed_url_for(:home), feed_url_for(:about) do
+      writer.revise contents(:site_map), :sections => [sections(:home), sections(:about)]
+    end
+  end
+
+  def test_should_expire_section_when_removing_from_article
+    visit_sections_and_feeds_with visit
+    assert_expires_pages section_url_for(:home), section_url_for(:about), feed_url_for(:home), feed_url_for(:about) do
+      login_as :quentin do |writer|
+        writer.revise contents(:site_map), :sections => [sections(:home)]
+      end
+    end
+  end
+
   protected
     def visit_sections_and_feeds_with(visitor)
       assert_difference CachedPage, :count, 4 do

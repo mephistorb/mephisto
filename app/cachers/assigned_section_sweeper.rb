@@ -9,4 +9,6 @@ class AssignedSectionSweeper < ActionController::Caching::Sweeper
       CachedPage.expire_pages(pages)
     end if pages.any?
   end
+  
+  alias after_create after_destroy
 end
