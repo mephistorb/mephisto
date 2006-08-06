@@ -8,6 +8,7 @@ quentin:
   created_at: <%= 5.days.ago.to_s :db %>
   updated_at: <%= 5.days.ago.to_s :db %>
   filters: "--- \n- :textile_filter\n"
+  parse_macros: true
   # activated_at: <%= 5.days.ago.to_s :db %> # only if you're activating new signups
 arthur:
   id: 2
