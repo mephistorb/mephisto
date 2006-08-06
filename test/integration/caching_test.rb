@@ -193,6 +193,22 @@ class CachingTest < ActionController::IntegrationTest
     end
   end
 
+  def test_should_expire_section_and_article_cache_when_deleting_article
+    visitor = visit
+    
+    visit_sections_and_feeds_with visitor
+    visitor.read contents(:site_map)
+    
+    assert_expires_pages feed_url_for(:about), section_url_for(:about), contents(:site_map).full_permalink do
+      login_as :quentin do |writer|
+        writer.remove_article contents(:site_map)
+      end
+    end
+
+    assert_cached section_url_for(:home)
+    assert_cached feed_url_for(:home)
+  end
+
   protected
     def visit_sections_and_feeds_with(visitor)
       assert_difference CachedPage, :count, 4 do

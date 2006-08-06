@@ -50,6 +50,11 @@ module Mephisto
         assert_redirected_to "/admin/articles"
       end
 
+      def remove_article(article)
+        post "/admin/articles/destroy/#{article.id}"
+        assert_equal 200, status, "Removing article #{article.id}"
+      end
+
       def create(params)
         post '/admin/articles/create', to_article_params(params)
         assert_redirected_to "/admin/articles"

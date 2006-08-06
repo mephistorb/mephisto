@@ -1,5 +1,5 @@
 class Admin::ArticlesController < Admin::BaseController
-  with_options :only => [:create, :update] do |c|
+  with_options :only => [:create, :update, :destroy] do |c|
     c.before_filter :set_default_section_ids
     c.cache_sweeper :article_sweeper, :section_sweeper, :assigned_section_sweeper
     cache_sweeper   :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
