@@ -17,8 +17,8 @@ class CommentsController < ApplicationController
     end
 
     @comment = @article.comments.build(params[:comment].merge(:author_ip => request.remote_ip))
-    if @comment.valid? && Akismet.api_key && Akismet.blog
-      @comment.approved = Akismet.new(Akismet.api_key, Akismet.blog).comment_check \
+    if @comment.valid? && site.akismet_key && site.akismet_url
+      @comment.approved = Akismet.new(site.akismet_key, site.akismet_url).comment_check \
         :user_ip              => @comment.author_ip, 
         :user_agent           => request.user_agent, 
         :referrer             => request.referer,
@@ -27,7 +27,7 @@ class CommentsController < ApplicationController
         :comment_author_email => @comment.author_email, 
         :comment_author_url   => @comment.author_url, 
         :comment_content      => @comment.body
-      logger.info "Checking Akismet (#{Akismet.api_key}) for new comment on Article #{@article.id}.  #{@comment.approved ? 'Approved' : 'Blocked'}"
+      logger.info "Checking Akismet (#{site.akismet_key}) for new comment on Article #{@article.id}.  #{@comment.approved ? 'Approved' : 'Blocked'}"
     end
 
     @comment.save!

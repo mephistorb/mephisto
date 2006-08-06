@@ -93,14 +93,6 @@ class Admin::ArticlesController < Admin::BaseController
     Comment.transaction { @comments.each(&:destroy) } if @comments.any?
   end
 
-  def set_akismet
-    Akismet.api_key = params[:api_key]
-    Akismet.blog    = params[:blog]
-    render :update do |page|
-      page[:akismet].visual_effect :drop_out
-    end
-  end
-
   protected
     def load_sections
       @sections = site.sections.find :all, :order => 'name'
