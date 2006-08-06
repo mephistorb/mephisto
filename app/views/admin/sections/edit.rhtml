@@ -17,7 +17,8 @@
 </ul>
 
 <% if @section.show_paged_articles? -%>
-<h3 class="tspace">Pages in <%=h @section.name %></h3>
+<h3 class="tspace">Articles in <%=h @section.name %></h3>
+<% if @section.articles.any? %>
 <p class="hint">
   Drag the icons to the left to reorder the way in which these 
   pages show up in the menu for this section.
@@ -26,5 +27,8 @@
   <%= render :partial => 'page', :collection => @section.articles %>
 </ul>
 <p><%= link_to_function 'Reorder', "SectionForm.toggleSortable(this)" %></p>
+<% else %>
+<p>You haven't created an pages(articles) for this section yet. <%= link_to 'Create one now', :controller => 'articles', :action => 'new' %></p>
+<% end %>
 <% end -%>
 <% end %>

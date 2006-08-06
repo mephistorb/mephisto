@@ -12,10 +12,10 @@
 
 <h3 style="margin-top:15px;">Images</h3>
 
-<p class="hint">Select an image to use in your template.</p>
+<p>Select an image to use in your template.</p>
 <ul id="attachments">
   <% @images.each do |image| -%>
-    <li id="image-<%= image.id %>"><%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {:url => {:controller => 'resources', :action => 'remove', :id => image}}, :class => 'aicon', :title => 'Delete image' %> <%= link_to image.public_filename, :controller => 'resources', :action => 'show', :id => image %></li>
+    <li id="image-<%= image.id %>"><%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {:url => {:controller => 'resources', :action => 'remove', :id => image}}, :class => 'aicon', :title => 'Delete image' %> <%=  image.public_filename %> </li>
   <% end -%>
 </ul>
 
