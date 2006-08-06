@@ -46,6 +46,15 @@ a:hover {
   background-color: #f7f7f7;
 }
 
+.disabled {
+  text-decoration: line-through;
+  color:#555;
+}
+
+.disabled a {
+  display:none;
+}
+
 #main {
   margin: -16px 0 0 0;
   float: left;
