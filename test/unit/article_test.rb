@@ -43,6 +43,13 @@ class ArticleTest < Test::Unit::TestCase
     assert a.parse_macros?
   end
 
+  def test_should_modify_filters
+    assert_equal [:textile_filter], contents(:welcome).filters
+    contents(:welcome).filters = :markdown_filter
+    contents(:welcome).save
+    assert_equal [:markdown_filter], contents(:welcome).reload.filters
+  end
+
   def test_should_cache_bluecloth
     a = Article.create :title => 'simple Title', :user => users(:arthur), :body => "# bar\n\nfoo", :filters => [:markdown_filter], :site_id => 1
     assert_equal "<h1>bar</h1>\n\n<p>foo</p>", a.body_html

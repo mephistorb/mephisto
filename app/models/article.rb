@@ -7,7 +7,7 @@ class Article < Content
   before_create :create_permalink
   after_save    :save_assigned_sections
 
-  acts_as_versioned :if_changed => [:title, :body, :excerpt, :filters, :parse_macros], :limit => 5 do
+  acts_as_versioned :if_changed => [:title, :body, :excerpt], :limit => 5 do
     def self.included(base)
       base.belongs_to :updater, :class_name => '::User', :foreign_key => 'updater_id'
     end
@@ -129,11 +129,11 @@ class Article < Content
   end
 
   def set_default_filters_from(filtered_object)
-    set_filters_from(filtered_object) if attributes[:filters].nil?
+    set_filters_from(filtered_object) if read_attribute(:filters).nil?
   end
 
   def set_default_filters!
-    set_filters_from user if attributes[:filters].nil?
+    set_filters_from user if read_attribute(:filters).blank?
   end
 
   protected
