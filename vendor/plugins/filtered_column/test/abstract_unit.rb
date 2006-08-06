@@ -7,7 +7,8 @@ require 'breakpoint'
 Test::Unit::TestCase.class_eval do
   def assert_filters_called_on(klass, *filters)
     klass.called_filters = []
-    yield
+    filtered = yield
+    filtered.save if filtered
     assert_equal filters.length, (klass.called_filters & filters).length, "#{filters.join(', ')} expected, #{klass.called_filters.join(', ')} called"
   end
 
@@ -57,5 +58,9 @@ class Article < ActiveRecord::Base
       (called_filters << filter_name).uniq!
       old_filter_text(filter_name, text_to_filter)
     end
+  end
+  
+  def save
+    valid? && send(:callback, :before_save) && true
   end
 end

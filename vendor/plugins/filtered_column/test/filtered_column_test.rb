@@ -14,7 +14,7 @@ class FilteredColumnTest < Test::Unit::TestCase
     define_method "test_should_filter_model_attribute_with_#{filter_name}" do
       assert_filters_called_on Article, "#{filter_name}_filter".to_sym do
         a = Article.new :body => values[:input], :filters => "#{filter_name}_filter"
-        a.valid?      
+        a.save 
         assert_equal values[:output], a.body_html
       end
     end
@@ -43,36 +43,36 @@ class FilteredColumnTest < Test::Unit::TestCase
   end
 
   def test_should_call_no_filters_with_no_data
-    assert_no_filters_called_on(Article) { Article.new.valid? }
+    assert_no_filters_called_on(Article) { Article.new }
   end
 
   def test_should_call_all_default_filters
     assert_filters_called_on Article, *FilteredColumn.default_filters do
-      Article.new(:body => 'foo').valid?
+      Article.new(:body => 'foo')
     end
   end
 
   def test_should_call_only_textile
     assert_filters_called_on Article, :textile_filter, :macro_filter do
-      Article.new(:textile_body => 'foo').valid?
+      Article.new(:textile_body => 'foo')
     end
   end
 
   def test_should_override_standard_filters
     assert_filters_called_on Article, :textile_filter, :macro_filter do
-      Article.new(:textile_body => 'foo', :filters => [:textile_filter, :macro_filter]).valid?
+      Article.new(:textile_body => 'foo', :filters => [:textile_filter, :macro_filter])
     end
   end
 
   def test_should_call_only_textile_and_markdown
     assert_filters_called_on Article, :textile_filter, :markdown_filter, :macro_filter do
-      Article.new(:textile_and_macro_body => 'foo').valid?
+      Article.new(:textile_and_macro_body => 'foo')
     end
   end
 
   def test_should_not_call_textile
     assert_filters_called_on Article, *(FilteredColumn.default_filters - [:textile_filter]) do
-      Article.new(:no_textile_body => 'foo').valid?
+      Article.new(:no_textile_body => 'foo')
     end
   end
 
