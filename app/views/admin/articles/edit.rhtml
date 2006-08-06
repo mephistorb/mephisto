@@ -5,7 +5,7 @@
   <div class="sgroup">
     <h3>Revisions</h3>
     <ul id="revisions">
-    <% @article.versions.find(:all, :order => 'updated_at DESC', :limit => 10).each do |version| -%>
+    <% @article.versions.find(:all, :order => 'updated_at DESC', :limit => 3).each do |version| -%>
       <li>
         <%= link_to avatar_for(version.updater), {:action => 'edit', :id => @article, :version => version.version }, :title => 'Edit this revision' %>
         <h4><%=h who(version.updater.login) %></h4>
@@ -20,10 +20,15 @@
 
 <%= error_messages_for :article %>
 
-<% form_for :article, @version, :url => { :action => 'update', :id => @article } do |f| -%>
+<% content_for :form do -%>
+  <%= start_form_tag({:action => 'update', :id => @article}, {:id => 'article-form'}) %>
+<% end -%>
+
+<% fields_for :article, @version do |f| -%>
 <%= render :partial => 'form', :object => f %>
 <p class="btns">
   <%= submit_tag 'Apply Changes' %>
+  <%= submit_tag 'Save without Revision' %>
   <%= link_to "cancel", :controller => "articles" %></p>
 <% end -%>
 

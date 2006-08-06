@@ -206,6 +206,12 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_save_article_without_revision
+    assert_no_difference Article::Version, :count do
+      post :update, :id => contents(:welcome).id, :article => { :title => 'Foo' }, :commit => 'Save without Revision'
+    end
+  end
+
   protected
     def assert_draft_check_box(visibility = true)
       assert_tag_visibility visibility, 'label', :attributes => { :for => 'article-draft' }

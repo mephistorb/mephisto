@@ -52,12 +52,12 @@ class Admin::ArticlesController < Admin::BaseController
   end
   
   def update
-    if @article.update_attributes(params[:article].merge(:updater => current_user))
-      redirect_to :action => 'index'
-    else
-      @sections = site.sections
-      render :action => 'edit'
-    end
+    @article.attributes = params[:article].merge(:updater => current_user)
+    save_with_revision? ? @article.save! : @article.save_without_revision!
+    redirect_to :action => 'index'
+  rescue ActiveRecord::RecordInvalid
+    @sections = site.sections
+    render :action => 'edit'
   end
 
   def destroy
@@ -124,5 +124,9 @@ class Admin::ArticlesController < Admin::BaseController
           params[:article][attr] = date.utc
         end
       end
+    end
+    
+    def save_with_revision?
+      params[:commit].to_s !~ /save without revision/i
     end
 end

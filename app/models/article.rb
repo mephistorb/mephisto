@@ -10,6 +10,10 @@ class Article < Content
     def self.included(base)
       base.belongs_to :updater, :class_name => '::User', :foreign_key => 'updater_id'
     end
+
+    def published?
+      !new_record? && !published_at.nil?
+    end
   end
 
   has_many :assigned_sections, :dependent => :destroy
@@ -66,10 +70,6 @@ class Article < Content
       from, to = Time.delta(year, month, day)
       count :all, :conditions => ["published_at <= ? AND published_at BETWEEN ? AND ?", Time.now.utc, from, to]
     end
-  end
-
-  def published?
-    !new_record? && !published_at.nil?
   end
   
   def pending?
