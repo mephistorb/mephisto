@@ -21,7 +21,7 @@ class UserAuth < ActiveRecord::Base
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
     u = find_by_login(login) # need to get the salt
-    u.save and return u if u && u.authenticated?(password)
+    u && u.authenticated?(password) ? u : nil
   end
 
   # Encrypts some data with the salt.
@@ -42,7 +42,24 @@ class UserAuth < ActiveRecord::Base
     crypted_password == encrypt(password)
   end
 
-  protected    
+  def remember_token?
+    remember_token_expires_at && Time.now.utc < remember_token_expires_at 
+  end
+
+  # These create and unset the fields required for remembering users between browser closes
+  def remember_me
+    self.remember_token_expires_at = 2.weeks.from_now.utc
+    self.remember_token            = encrypt("#{email}--#{remember_token_expires_at}")
+    save(false)
+  end
+
+  def forget_me
+    self.remember_token_expires_at = nil
+    self.remember_token            = nil
+    save(false)
+  end
+
+  protected
     def encrypt_password
       return if password.blank?
       self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
