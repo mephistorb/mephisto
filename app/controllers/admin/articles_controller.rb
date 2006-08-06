@@ -111,7 +111,7 @@ class Admin::ArticlesController < Admin::BaseController
     
     def check_for_new_draft
       params[:article] ||= {}
-      params[:article].delete_if { |k, v| k.to_s =~ /^(published_at|expire_comments_at)/ } unless params[:draft].blank?
+      [:published_at, :expire_comments_at].each { |k| params[:article][k] = nil } unless params[:draft].blank?
     end
     
     def convert_times_to_utc

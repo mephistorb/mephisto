@@ -206,6 +206,12 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_change_article_to_draft
+    post :update, :id => contents(:welcome).id, :draft => '1'
+      assert !assigns(:article).published?
+      assert_nil assigns(:article).published_at
+  end
+
   def test_should_save_article_without_revision
     assert_no_difference Article::Version, :count do
       post :update, :id => contents(:welcome).id, :article => { :title => 'Foo' }, :commit => 'Save without Revision'
