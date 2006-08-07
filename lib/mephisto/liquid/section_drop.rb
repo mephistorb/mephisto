@@ -7,7 +7,7 @@ module Mephisto
 
       def initialize(section)
         @section        = section
-        @section_liquid = [:id, :name, :path].inject({}) { |h, k| h.merge k.to_s => section.send(k) }
+        @section_liquid = [:id, :name, :path, :articles_count].inject({}) { |h, k| h.merge k.to_s => section.send(k) }
       end
 
       def before_method(method)
