@@ -81,6 +81,14 @@ class Section < ActiveRecord::Base
     path.blank? || home? ? [] : path.split('/')
   end
 
+  def paged?
+    show_paged_articles?
+  end
+  
+  def blog?
+    !show_paged_articles?
+  end
+
   def to_page_url(page_name)
     to_url << (page_name.respond_to?(:permalink) ? page_name.permalink : page_name)
   end

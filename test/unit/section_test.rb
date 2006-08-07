@@ -111,4 +111,9 @@ class SectionTest < Test::Unit::TestCase
     section.order! expected.collect(&:id)
     assert_equal expected, section.articles(true)
   end
+  
+  def test_should_report_section_types
+    assert sections(:home).blog?
+    [:about, :cupcake_home, :cupcake_about].each { |s| assert sections(s).paged? }
+  end
 end
