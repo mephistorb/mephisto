@@ -23,8 +23,6 @@
   <dt><%= label_tag 'article_expire_comments_at', 'Expire Comments on this date:' %></dt>
   <dd><%= form.datetime_select :expire_comments_at %></dd>
 <% end -%>
-  <dt><label for="article_permalink">Permanent link</label></dt>
-  <dd><%= form.text_field :permalink %></dd>
 </dl>
 <!-- /end optional fields -->
 
@@ -32,12 +30,7 @@
 
 <% content_for :sidebar do %>
   
-<div class="sgroup">
-<% unless @article.new_record? -%>
-  <h3>Expire Comments At</h3>
-  <%= form.date_select :expire_comments_at %>
-<% end -%>
-</div>
+
 
 <% if false %>
   <div class="sgroup" id="filetabs">

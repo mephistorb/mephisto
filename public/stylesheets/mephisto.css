@@ -131,19 +131,6 @@ dd {
   padding: 1px;
 }
 
-.sform {
-  list-style: none;
-}
-
-.sform li {
-  margin-bottom: 5px;
-}
-
-.sform li label {
-  text-shadow: none;
-  font-size: 90%;
-}
-
 input[type='text'], textarea {
   border: 1px solid #ddd;
   border-top: 1px solid #aaa;
@@ -487,13 +474,18 @@ input[type='text']:focus, textarea:focus {
 #revisions li {
   position: relative;
   border-bottom: 1px dotted #C6F4F6;
-  min-height: 50px;
+  min-height: 30px;
 }
 
 #revisions li input[type=checkbox] {
   position: absolute;
   top: 50%;
   left: 0;
+}
+
+#revisions li .avatar {
+  max-width: 25px;
+  max-height: 25px;
 }
 
 #revisions li a, #resources li a { border: none; text-decoration: none;}
@@ -604,7 +596,7 @@ a#section-home {
   position: absolute;
   top: 10px;
   right: 5px;
-  font-size: 300%;
+  font-size: 240%;
   color: #488;
   font-family: Georgia, "Times New Roman", sans-serif;
 }
@@ -673,6 +665,55 @@ ul.stabs li a:hover {
 #tab-latest a {
   background: url(../images/icons/thumbs.png) 3px 5px no-repeat;
   padding-left: 18px;
+}
+
+
+/*
+ *=SBAR FORMS
+ */
+
+.sform {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sform input[type !='submit'] {
+  border: 1px solid #333;
+  border-top: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+}
+
+.sform li {
+  margin-bottom: 5px;
+}
+
+.sform label {
+  text-shadow: none;
+  font-size: 90%;
+  margin: 0;
+  color: #044;
+}
+
+dl.sform {
+  margin: 0 !important;
+  padding: 0 0 0 5px !important;
+}
+
+.sform dt {
+  margin: 0 0 2px 0 !important;
+  padding: 5px 0 0 0 !important;
+}
+
+.sform dd {
+  display: block !important;
+  padding: 0 0 5px 0 !important;
+  border-bottom: 1px dotted #C6F4F6 !important;
+}
+
+.sform p {
+  margin: 0;
+  padding: 3px 0 0 0 !important;
 }
 /*
  *=ARTICLES

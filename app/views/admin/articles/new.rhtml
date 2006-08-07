@@ -5,16 +5,18 @@
 <% content_for :sidebar do %>
   <%= render :partial => 'shared_options' %>
   <div class="sgroup">
-    <h3><label for="article_filters">Markup options</label></h3>
+    <h3>Optional settings</h3>
+    <dl class="sform">
     <% fields_for :article do |f| -%>
-    <ul class="sform">
-      <li>
+      <dt><label for="article_filters">Format with: </label></dt>
+      <dd>
         <select name="article[filters][]" id="article_filters">
-          <%= options_for_select(filter_options, (@article.filters || []).first.to_s) %>
-        </select>
-      </li>
-      <li><label><%= f.check_box :parse_macros %>Use macro filters</label></li>
-    </ul>
+        <%= options_for_select(filter_options, (@article.filters || []).first.to_s) %>
+      </select>
+      <p><%= f.check_box :parse_macros %><label>Use macro filters</label></p>
+    </dd>
+    <dt><label for="article_permalink">Permanent link:</label></dt>
+    <dd><%= f.text_field :permalink %></dd>
     <% end -%>
   </div>
 <% end %>

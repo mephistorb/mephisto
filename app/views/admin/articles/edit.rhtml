@@ -2,21 +2,28 @@
 
 <% content_for :sidebar do %>
   <%= render :partial => 'shared_options' %>
+  <% fields_for :article, @version do |f| -%>
   <div class="sgroup">
-    <h3><label for="article_filters">Markup options</label></h3>
-    <% fields_for :article, @version do |f| -%>
-    <ul class="sform">
-      <li>
-        <select name="article[filters][]" id="article_filters">
+    <h3>Optional settings</h3>
+    <dl class="sform">
+        <dt><label for="article_filters">Format with: </label></dt>
+        <dd>
+          <select name="article[filters][]" id="article_filters">
           <%= options_for_select(filter_options, (@version.filters || []).first.to_s) %>
         </select>
-      </li>
-      <li><label><%= f.check_box :parse_macros %>Use macro filters</label></li>
-    </ul>
-    <% end -%>
+        <p style="margin-top: 3px;"><%= f.check_box :parse_macros %><label>Use macro filters</label></p>
+      </dd>
+      <dt><label for="article_expire_comments">Comments expire:</label></dt> 
+      <dd><%= f.date_select :expire_comments_at, { :discard_year => true } %></dd>
+      <dt><label for="article_permalink">Permanent link:</label></dt>
+      <dd><%= f.text_field :permalink %></dd>
+    </dl>
   </div>
+<% end %>
+  
   
   <div class="sgroup">
+    
     <h3>Revisions<% if params[:version] -%> (<%= link_to 'current', :action => :edit, :id => @article, :version => nil %>)<% end -%></h3>
     <ul id="revisions">
     <% @article.versions.reverse.each do |version| -%>
