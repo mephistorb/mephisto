@@ -56,6 +56,7 @@ require 'tzinfo'
 require 'time_ext'
 require 'zip/zipfilesystem'
 require 'dispatcher'
+require 'coderay'
 
 class << Dispatcher
   def register_liquid_tags

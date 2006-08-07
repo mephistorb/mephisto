@@ -13,7 +13,12 @@ module FilteredColumn
         def filter(text, options = {})
           patterns.each do |pattern|
             text.gsub!(pattern) do |match|
-              macros[$2].filter(hash_from_attributes($3), ($4 || ''), text) if macros.keys.include?($2)
+              # puts "our match: #{$2}"
+              # puts "macros array: #{macros.inspect}"
+              if macros.has_key?($2)
+                # puts "It has the key!"
+                macros[$2].filter(hash_from_attributes($3), ($4 || ''), text) 
+              end
             end
           end
           text

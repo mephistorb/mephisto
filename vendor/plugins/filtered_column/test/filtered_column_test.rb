@@ -19,7 +19,7 @@ class FilteredColumnTest < Test::Unit::TestCase
       end
     end
   end
-
+  
   def test_should_use_default_filter_names
     assert_equal 'Textile',  FilteredColumn::Filters::TextileFilter.filter_name
     assert_equal 'Markdown', FilteredColumn::Filters::MarkdownFilter.filter_name
@@ -81,6 +81,6 @@ class FilteredColumnTest < Test::Unit::TestCase
   end
 
   def test_should_find_default_macros
-    assert_equal [:flickr_macro, :image_macro, :sample], FilteredColumn.default_macros
+    assert_equal [:code, :flickr, :sample], FilteredColumn.default_macros
   end
 end
