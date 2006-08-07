@@ -1,6 +1,7 @@
 <% content_for :sidebar do -%>
 <h3>Templates</h3>
-<p class="hint">Modify a template by selecting it from the list below.</p>
+<p>Modify a template by selecting it from the list below.  Add a new layout by creating a Liquid template with an 
+  *_layout suffix (e.g custom_layout).</p>
 <ul id="resources">
   <% @templates.each do |template| -%>
     <li><%= link_to template.filename, :controller => 'templates', :action => 'edit', :id => template %></li>
