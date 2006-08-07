@@ -4,21 +4,25 @@ home:
   site_id: 1
   name: Home
   path: home
+  articles_count: 3
 about:
   id: 2
   site_id: 1
   name: About
   path: about
   show_paged_articles: true
+  articles_count: 3
 cupcake_home:
   id: 3
   site_id: 2
   name: Home
   path: home
   show_paged_articles: true
+  articles_count: 1
 cupcake_about:
   id: 4
   site_id: 2
   name: About
   path: about
   show_paged_articles: true
+  articles_count: 1

@@ -65,10 +65,6 @@ class Section < ActiveRecord::Base
     end
   end
 
-  def articles_count
-    @articles_count ||= Article.count :all, :joins => ARTICLES_COUNT_SQL
-  end
-
   def hash_for_url(options = {})
     { :sections => to_url }.merge(options)
   end
