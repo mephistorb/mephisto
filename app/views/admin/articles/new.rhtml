@@ -7,17 +7,18 @@
   <div class="sgroup">
     <h3>Optional settings</h3>
     <dl class="sform">
-    <% fields_for :article do |f| -%>
-      <dt><label for="article_filters">Format with: </label></dt>
-      <dd>
-        <select name="article[filters][]" id="article_filters">
-        <%= options_for_select(filter_options, (@article.filters || []).first.to_s) %>
-      </select>
-      <p><%= f.check_box :parse_macros %><label>Use macro filters</label></p>
-    </dd>
-    <dt><label for="article_permalink">Permanent link:</label></dt>
-    <dd><%= f.text_field :permalink %></dd>
-    <% end -%>
+      <% fields_for :article do |f| -%>
+        <dt><label for="article_filters">Format with: </label></dt>
+        <dd>
+          <select name="article[filters][]" id="article_filters">
+          <%= options_for_select(filter_options, (@article.filters || []).first.to_s) %>
+        </select>
+        <p><%= f.check_box :parse_macros %><label>Use macro filters</label></p>
+      </dd>
+      <dt><label for="article_permalink">Permanent link:</label></dt>
+      <dd><%= f.text_field :permalink %></dd>
+      <% end -%>
+    </dl>
   </div>
 <% end %>
 
