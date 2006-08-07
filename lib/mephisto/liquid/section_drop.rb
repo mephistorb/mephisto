@@ -3,6 +3,8 @@ module Mephisto
     class SectionDrop < ::Liquid::Drop
       include Reloadable
 
+      attr_reader :section
+
       def initialize(section)
         @section        = section
         @section_liquid = [:id, :name, :path].inject({}) { |h, k| h.merge k.to_s => section.send(k) }
