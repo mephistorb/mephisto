@@ -28,6 +28,14 @@ module Mephisto
       def sections
         @sections ||= @article.sections.inject([]) { |all, s| s.home? ? all : all << s.to_liquid } # your days are numbered, home section!
       end
+
+      def blog_sections
+        sections.select { |s| s.section.blog? }
+      end
+      
+      def page_sections
+        sections.select { |s| s.section.paged? }
+      end
     end
   end
 end

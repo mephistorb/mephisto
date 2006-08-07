@@ -7,7 +7,7 @@ class SiteDropTest < Test::Unit::TestCase
     @site = Mephisto::Liquid::SiteDrop.new(sites(:first))
   end
   
-  def test_should_list_all_but_home_sections
+  def test_should_list_all_sections
     assert_equal [sections(:home), sections(:about)], @site.sections.collect(&:section)
   end
   

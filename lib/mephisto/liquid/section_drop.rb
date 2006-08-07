@@ -10,11 +10,6 @@ module Mephisto
         @section_liquid = [:id, :name, :path, :articles_count].inject({}) { |h, k| h.merge k.to_s => section.send(k) }
       end
 
-      # Liquid Drops can not use #id
-      def section_id
-        @section_liquid['id']
-      end
-
       def before_method(method)
         @section_liquid[method.to_s]
       end
