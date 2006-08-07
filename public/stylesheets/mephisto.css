@@ -131,7 +131,8 @@ dd {
   padding: 1px;
 }
 
-input[type='text'], textarea {
+input[type='text'], input[type='password'], 
+input[type='checkbox'], select, textarea {
   border: 1px solid #ddd;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;

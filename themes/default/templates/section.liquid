@@ -1,5 +1,30 @@
-<p>section</p>
+  <div id="primary" class="single-post">
+    <div class="inside">
+      <div class="primary">
+        <h1>Archives for {{section.name}}</h1>
+        <ul class="dates">
+          {% for article in articles %}
+            <li>
+              <span class="date">{{article.published_at | date: '%d.%m.%y' }}</span>  
+              {{ article | link_to_article }} posted in 
+              {% for section in article.sections %}
+                {{section | link_to_section }}
+              {% endfor %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+  		
+		
+		  	<div class="secondary">
+      		<h2>About the archives</h2>
+      		<div class="featured">
+      			<p>Welcome to the archives here at {{site.title}}. Have a look around.</p>
+      	</div>
+      </div>
+      
+      <div class="clear"></div>
+  </div>
+</div>
+  
 
-{% for article in articles %}
-  <p>{{ article | link_to_article }}</p>
-{% endfor %}

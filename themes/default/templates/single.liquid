@@ -1,5 +1,77 @@
-<p>single</p>
-
-{% for article in articles %}
-  <p>{{ article | link_to_article }}</p>
+<div id="primary" class="single-post">
+  <div class="inside">
+    <div class="primary">
+      <h1>{{ article.title }}</h1>
+      {{ article.body }}
+    </div>
+    <hr class="hide" />
+    <div class="secondary">
+      <h2>About this entry</h2>
+      <div class="featured">
+        <p>You&rsquo;re currently reading &ldquo;{{ article.title }},&rdquo; an entry on {{ site.title }}</p>
+        <dl>
+          <dt>Published:</dt>
+          <dd>{{ article.published_at | format_date: 'plain', true  }}</dd>
+        </dl>
+      {% if article.published_at != article.updated_at %}
+        <dl>
+          <dt>Updated:</dt>
+          <dd>{{ article.updated_at | format_date: 'plain', true }}</dd>
+        </dl>
+      {% endif %}
+        <dl>
+          <dt>Sections:</dt>
+          <dd>
+{% for section in article.sections %}
+  <a href="{{section.url}}" title="{{section.name}}">{{ section.name }}</a>
 {% endfor %}
+          </dd>
+        </dl>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<!-- [END] #primary -->
+
+<hr class="hide" />
+<div id="secondary">
+  <div class="inside">
+    <div class="comment-head">
+      <h2>{{ article.comments_count | pluralize: 'comment' }}</h2>
+      <span class="details"><a href="#comment-form">Jump to comment form</a> | <a href="#">comments rss</a> <a href="#what-is-comment-rss" class="help">[?]</a></span>
+    </div>
+<div id="comments">
+    <ol>
+{% for comment in comments %}
+      <li>
+        <cite>
+          <span class="author">{{ comment.author }}</span>
+          <span class="date">{{ comment.created_at | strftime: '%m.%d.%y / %H%p' }}</span>
+        </cite>
+        <div class="content">
+          {{ comment.body }}
+        </div>
+        <div class="clear"></div>
+      </li>
+{% endfor %}
+    </ol>
+</div>
+    
+    <div id="comment-form">
+      {% commentform %}
+      <h3 class="formhead">Have your say</h3>
+      <p>A name is required. You may use HTML in your comments.</p>
+      {{ form.name }}<label class="text" for="comment_author">Name (Required)</label><br />
+      {{ form.email }}<label class="text" for="comment_author_email">Email (Required)</label><br />
+      {{ form.url }}<label class="text" for="comment_author_url">Website</label><br />
+      <p><textarea name="comment[body]" class="commentbox"></textarea></p>
+      <div class="formactions">
+        <input type="submit" value="Post comment" class="submit" />
+      </div>
+      {% endcommentform %}
+    </div>
+    
+  </div>
+</div>
+

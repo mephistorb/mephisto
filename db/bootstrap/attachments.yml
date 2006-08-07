@@ -61,3 +61,19 @@ single:
   filename: single
   type: Template
   size: 98
+  
+style:
+  id: 9
+  site_id: 1
+  content_type: text/css
+  filename: base.css
+  type: Resource
+  size: 223
+
+error:
+  id: 10
+  site_id: 1
+  content_type: text/liquid
+  filename: error
+  type: Template
+  size: 99

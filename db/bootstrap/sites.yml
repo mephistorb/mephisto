@@ -2,7 +2,9 @@ default:
   id: 1
   host: unusedfornow
   title: Mephisto
+  subtitle: Publish With Impunity
+  email: email@domain.com
   accept_comments: true
-  approve_comments: false
-  comment_age: 30
+  approve_comments: true
+  comment_age: 
   timezone: UTC

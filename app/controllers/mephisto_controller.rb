@@ -29,7 +29,8 @@ class MephistoController < ApplicationController
 
     render_liquid_template_for(:search, 'articles'      => @articles,
                                         'previous_page' => paged_search_url_for(@article_pages.current.previous),
-                                        'next_page'     => paged_search_url_for(@article_pages.current.next))
+                                        'next_page'     => paged_search_url_for(@article_pages.current.next),
+                                        'search_string' => params[:q])
   end
 
   def show
