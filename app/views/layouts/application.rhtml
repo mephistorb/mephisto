@@ -1,27 +1,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />		
-		<title><%= site.title %>: Admin <%= controller.controller_name %></title>
-		<%= stylesheet_link_tag 'mephisto' %>
-		<%= javascript_include_tag :defaults %>
-		<%= javascript_include_tag 'mephisto' %>
-	</head>
-	<body>
-	
-  	<!-- div.header -->
-  	<div id="header">
-  	  <ul id="sec-nav">
-  	    <li><%= link_to 'settings', :controller => 'settings' %></li>
-  	    <li><%= link_to 'account', :controller => 'users', :action => 'show', :id => current_user %></li>
-  	    <li><%= link_to 'logout', :controller => '/account', :action => 'logout' %></li>
-  	  </ul>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />   
+    <title><%= site.title %>: Admin <%= controller.controller_name %></title>
+    <%= stylesheet_link_tag 'mephisto' %>
+    <%= javascript_include_tag :defaults %>
+    <%= javascript_include_tag 'mephisto' %>
+  </head>
+  <body>
+  
+    <!-- div.header -->
+    <div id="header">
+      <ul id="sec-nav">
+        <li><%= link_to 'settings', :controller => 'settings' %></li>
+        <li><%= link_to 'account', :controller => 'users', :action => 'show', :id => current_user %></li>
+        <li><%= link_to 'logout', :controller => '/account', :action => 'logout' %></li>
+      </ul>
 
-  	  <h1><%= link_to "#{site.title} &mdash; Admin", { :controller => '/admin/overview' }, :title => "#{site.title} admin" %></h1>
+      <h1><%= link_to "#{site.title} &mdash; Admin", { :controller => '/admin/overview' }, :title => "#{site.title} admin" %></h1>
 
-  	  <!-- div.nav -->	
-  	  <div id="nav">
+      <!-- div.nav -->  
+      <div id="nav">
         <% if logged_in? -%>
           <ul>
             <li><%= link_to 'Overview', :controller => '/admin/overview' %></li>
@@ -33,56 +33,56 @@
             <li><%= link_to "Users",      :controller => "users" %></li>
           </ul>
         <% end -%>
-  	  </div> 
-  	  <!-- /div.nav -->  
-  	  
-  	  <!-- TODO: Figure out where to put this
-  	  <div id="search">
-    	    <form action="#">
-    	      <input type="text" name="q" />
-    	      <select name="context">
-    	        <%= options_for_select %w(Comments Articles) %>
-    	      </select>
-    	    </form>
-    	  </div>
-    	-->
-    	
-  	</div>
-  	<!-- /div.header -->
-  	
+      </div> 
+      <!-- /div.nav -->  
+      
+      <!-- TODO: Figure out where to put this
+      <div id="search">
+          <form action="#">
+            <input type="text" name="q" />
+            <select name="context">
+              <%= options_for_select %w(Comments Articles) %>
+            </select>
+          </form>
+        </div>
+      -->
+      
+    </div>
+    <!-- /div.header -->
+    
 
-	  <div id="container">  	
+    <div id="container">    
       <%= yield :form if @content_for_form %>
       <!-- div.content -->
-    	<div id="content">
-    	  
-    	  <!-- div.left -->
-    	  <div id="main">
-    	    <div id="flashes">
-      	    <div id="flash-errors" style="display: none;"></div>
-      	    <div id="flash-notice" style="display:none"><%= flash[:notice] %></div>
-    	    </div>
-    	    <!-- begin action nav -->
+      <div id="content">
+        
+        <!-- div.left -->
+        <div id="main">
+          <div id="flashes">
+            <div id="flash-errors" style="display: none;"></div>
+            <div id="flash-notice" style="display:none"><%= flash[:notice] %></div>
+          </div>
+          <!-- begin action nav -->
           <%= yield :action_nav %>
           <!-- /end action nav -->
-    	    <div id="main-content"><%= yield %></div>
-    	    <div id="shadow"></div>
-    	  </div>
-    	  <!-- /div.left -->
-    	  
-    	  <!-- div.right -->
-    	  <div id="sbar">
-    	    <%= yield :sidebar %>
-    	  </div>
-    	  <!-- /div.right -->
-    	</div>
-    	<!-- /div.content -->
-    	<%= '</form>' if @content_for_form %>
-    	
-    	<!-- begin div.footer -->
-    	<div id="footer">
+          <div id="main-content"><%= yield %></div>
+          <div id="shadow"></div>
+        </div>
+        <!-- /div.left -->
+        
+        <!-- div.right -->
+        <div id="sbar">
+          <%= yield :sidebar %>
+        </div>
+        <!-- /div.right -->
+      </div>
+      <!-- /div.content -->
+      <%= '</form>' if @content_for_form %>
+      
+      <!-- begin div.footer -->
+      <div id="footer">
 
-    	</div>
-  	</div>
-	</body>
+      </div>
+    </div>
+  </body>
 </html>
