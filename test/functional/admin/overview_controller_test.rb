@@ -35,4 +35,14 @@ class Admin::OverviewControllerTest < Test::Unit::TestCase
     get :feed
     assert_response :success
   end
+
+  def test_should_sort_future_items_in_todays_events
+    events(:future).update_attribute   :created_at, 2.days.from_now.utc
+    events(:site_map).update_attribute :created_at, 5.minutes.ago.utc
+    events(:about).update_attribute    :created_at, 25.hours.ago.utc
+    get :index
+    assert assigns(:todays_events).include?(events(:future)),    "#{assigns(:todays_events).collect(&:id).inspect}"
+    assert assigns(:todays_events).include?(events(:site_map)),  "#{assigns(:todays_events).collect(&:id).inspect}"
+    assert assigns(:yesterdays_events).include?(events(:about)), "#{assigns(:yesterdays_events).collect(&:id).inspect}"
+  end
 end

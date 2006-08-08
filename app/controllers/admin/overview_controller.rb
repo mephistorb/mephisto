@@ -8,13 +8,16 @@ class Admin::OverviewController < Admin::BaseController
   def index
     @users = User.find(:all, :order => 'updated_at desc')
     @events, @todays_events, @yesterdays_events = [], [], []
-    today, yesterday = Time.now.to_date, 1.day.ago.to_date
+    today, yesterday = Time.now.utc.to_date, 1.day.ago.utc.to_date
     @articles = @site.unapproved_comments.count :all, :group => :article, :order => '1 desc'
     @site.events.find(:all, :order => 'events.created_at DESC', :include => [:article, :user], :limit => 50).each do |event|
-      case event.created_at.to_date
-        when today     then @todays_events
-        when yesterday then @yesterdays_events
-        else                @events
+      event_date = event.created_at.to_date
+      if event_date >= today
+        @todays_events
+      elsif event_date == yesterday
+        @yesterdays_events
+      else
+        @events
       end << event
     end
   end
