@@ -34,3 +34,16 @@
   <%= link_to 'Next page', { :page => @article_pages.current.next } if @article_pages.current.next %> 
 </div>
 <!-- /end pagination -->
+
+<% content_for :sidebar do %>
+  <% if @comments.any? -%>
+  <div class="sgroup">
+    <h3>Comments awaiting your approval</h3>
+    <ul class="slist">
+    <% @comments.each do |article, count| -%>
+      <li><%= link_to "<strong>(#{count})</strong> #{h(article.title)}", :controller => 'articles', :action => 'comments', :id => article.id, :filter => :unapproved %></li>
+    <% end -%>
+    </ul>
+  </div>
+  <% end -%>
+<% end %>
