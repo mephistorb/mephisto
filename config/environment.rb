@@ -53,3 +53,6 @@ end
 
 # Include your application configuration below
 require 'mephisto_init'
+
+# turn this on to get detailed cache sweeper logging in production mode
+# Mephisto::SweeperMethods.cache_sweeper_tracing = true

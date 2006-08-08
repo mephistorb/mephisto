@@ -1,4 +1,5 @@
 class TemplateSweeper < ActionController::Caching::Sweeper
+  include Mephisto::SweeperMethods
   observe Template
 
   # only sweep updates, not creations
@@ -8,10 +9,6 @@ class TemplateSweeper < ActionController::Caching::Sweeper
   end
 
   def after_save(record)
-    return if controller.nil?
-    controller.class.benchmark "Expired all referenced pages" do
-      CachedPage.find(:all).each { |p| controller.class.expire_page(p.url) }
-      CachedPage.delete_all
-    end if @new.nil? && controller
+    expire_cached_pages "Expired all referenced pages", *CachedPage.find(:all) if @new.nil? && controller
   end
 end
