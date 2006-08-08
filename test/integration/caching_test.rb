@@ -98,6 +98,17 @@ class CachingTest < ActionController::IntegrationTest
     assert_cached contents(:welcome).full_permalink
   end
 
+  def test_should_expire_cache_on_new_comment_if_approved
+    visitor = visit
+    assert_caches_page contents(:welcome).full_permalink do
+      visitor.read contents(:welcome)
+    end
+    
+    visitor.comment_on contents(:welcome), :author => 'approved bob', :body => 'what a wonderful post.'
+    
+    assert_not_cached contents(:welcome).full_permalink
+  end
+
   def test_should_expire_cache_when_comment_is_approved
     visitor = visit
     assert_caches_page contents(:welcome).full_permalink do
