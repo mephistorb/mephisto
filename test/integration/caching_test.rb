@@ -78,11 +78,11 @@ class CachingTest < ActionController::IntegrationTest
     rss     = visit
     writer  = login_as :quentin
 
-    assert_caches_page overview_url(:only_path => true, :skip_relative_url_root => true) do
+    assert_caches_page overview_path do
       rss.get_with_basic 'admin/overview.xml', :login => :quentin
     end
 
-    assert_expires_page overview_url(:only_path => true, :skip_relative_url_root => true) do
+    assert_expires_page overview_path do
       writer.revise contents(:welcome), 'new welcome description'
     end
   end
@@ -135,6 +135,43 @@ class CachingTest < ActionController::IntegrationTest
     end
 
     assert_not_cached contents(:welcome).full_permalink
+  end
+
+  def test_should_expire_cache_when_approved_comment_is_deleted
+    visitor = visit
+    rss     = visit
+    writer  = login_as :quentin
+    assert_caches_page contents(:welcome).full_permalink do
+      visitor.read contents(:welcome)
+    end
+    
+    assert_caches_page overview_path do
+      rss.get_with_basic 'admin/overview.xml', :login => :quentin
+    end
+
+    assert_expires_pages overview_path, contents(:welcome).full_permalink do
+      writer.post "admin/articles/destroy_comment/#{contents(:welcome).id}", :comment => contents(:welcome_comment).id
+    end
+  end
+
+  def test_should_only_expire_overview_when_unapproved_comment_is_deleted
+    visitor = visit
+    rss     = visit
+    writer  = login_as :quentin
+    assert_caches_page contents(:welcome).full_permalink do
+      visitor.read contents(:welcome)
+    end
+
+    assert_caches_page overview_path do
+      rss.get_with_basic 'admin/overview.xml', :login => :quentin
+    end
+
+    assert_expires_pages overview_path do
+      contents(:welcome_comment).update_attribute :approved, false
+      writer.post "admin/articles/destroy_comment/#{contents(:welcome).id}", :comment => contents(:welcome_comment).id
+    end
+
+    assert_cached contents(:welcome).full_permalink
   end
 
   def test_should_not_cache_bad_urls
