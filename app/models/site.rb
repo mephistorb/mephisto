@@ -21,7 +21,7 @@ class Site < ActiveRecord::Base
 
   with_options :order => 'contents.created_at', :class_name => 'Comment' do |comment|
     comment.has_many :comments,            :conditions => ['contents.approved = ?', true]
-    comment.has_many :unapproved_comments, :conditions => ['contents.approved = ?', false]
+    comment.has_many :unapproved_comments, :conditions => ['contents.approved = ? or contents.approved is null', false]
     comment.has_many :all_comments
   end
 
