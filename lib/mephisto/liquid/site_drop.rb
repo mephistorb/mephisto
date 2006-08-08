@@ -7,6 +7,11 @@ module Mephisto
 
       def initialize(site)
         @site = site
+        @site_liquid = [:id, :host, :subtitle, :title].inject({}) { |h, k| h.merge k.to_s => site.send(k) }
+      end
+
+      def before_method(method)
+        @site_liquid[method.to_s]
       end
 
       def sections

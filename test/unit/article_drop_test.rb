@@ -7,6 +7,10 @@ class ArticleDropTest < Test::Unit::TestCase
     @article = Mephisto::Liquid::ArticleDrop.new(contents(:welcome), :single)
   end
   
+  def test_should_convert_article_to_drop
+    assert_kind_of Liquid::Drop, contents(:welcome).to_liquid
+  end
+  
   def test_should_list_all_but_home_sections
     assert_equal [sections(:about)], @article.sections.collect(&:section)
   end

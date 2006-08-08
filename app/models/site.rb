@@ -26,11 +26,7 @@ class Site < ActiveRecord::Base
   end
 
   def to_liquid
-    {
-      'title'    => title, 
-      'subtitle' => subtitle,
-      'host'     => host
-    }
+    Mephisto::Liquid::SiteDrop.new self
   end
 
   def filters=(value)
