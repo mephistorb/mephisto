@@ -140,6 +140,12 @@ var ArticleForm = {
     var isDraft = $F(this);
     if(isDraft) Element.hide('publish-date-lbl', 'publish-date');
     else Element.show('publish-date-lbl', 'publish-date');
+  },
+
+  acceptComments: function() {
+    var checked = $F(this);
+    if(checked) Element.show('approve-comments-lbl', 'approve-comments', 'comment-age-lbl', 'comment-age');
+    else Element.hide('approve-comments-lbl', 'approve-comments', 'comment-age-lbl', 'comment-age');
   }
 }
 
@@ -184,8 +190,10 @@ Event.observe(window, 'load', function() {
   new TinyTab('filetabs');
   
   // TODO: IE doesn't fire onchange for checkbox
-  var commentsView = $('comments-view');
-  var articleDraft = $('article-draft');
-  if(commentsView) Event.observe(commentsView, 'change', ArticleForm.viewComments.bind(commentsView));
-  if(articleDraft) Event.observe(articleDraft, 'change', ArticleForm.saveDraft.bind(articleDraft));
+  var commentsView   = $('comments-view');
+  var articleDraft   = $('article-draft');
+  var acceptComments = $('site_accept_comments');
+  if(commentsView)   Event.observe(commentsView,   'change', ArticleForm.viewComments.bind(commentsView));
+  if(articleDraft)   Event.observe(articleDraft,   'change', ArticleForm.saveDraft.bind(articleDraft));
+  if(acceptComments) Event.observe(acceptComments, 'change', ArticleForm.acceptComments.bind(acceptComments));
 });

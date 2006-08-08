@@ -13,7 +13,6 @@ first:
   approve_comments: false
   comment_age: 30
   timezone: America/New_York
-
 hostess:
   id: 2
   title: Cupcake
@@ -21,3 +20,12 @@ hostess:
   filters: "--- \n- :foo\n- :bar\n"
   host: cupcake.host
   timezone: UTC
+  accept_comments: true
+  approve_comments: false
+  comment_age: 0
+garden:
+  id: 3
+  title: walled garden
+  host: garden.host
+  timezone: UTC
+  accept_comments: false

@@ -64,10 +64,16 @@
     <dd><%= f.text_field :akismet_url %></dd>
     <dt><label for="site_accept_comments">Allow comments?</label></dt>
     <dd><%= f.check_box 'accept_comments' %> Yes, I would like to accept comments.</dd>
-    <dt><label for="site_approve_comments">Automatically approve comments?</label></dt>
-    <dd><%= f.check_box 'approve_comments' %> Yes, approve and publish all comments automatically.</dd>
-    <dt><label for="site_comment_age">Close comments</label></dt>
-    <dd>
+    <dt id="approve-comments-lbl" <%= %( style="display:none") unless @site.accept_comments? %>>
+      <label>Automatically approve comments?</label>
+    </dt>
+    <dd id="approve-comments" <%= %( style="display:none") unless @site.accept_comments? %>>
+      <label><%= f.check_box 'approve_comments' %> Yes, approve and publish all comments automatically.</label>
+    </dd>
+    <dt id="comment-age-lbl" <%= %( style="display:none") unless @site.accept_comments? %>>
+      <label>Close comments</label>
+    </dt>
+    <dd id="comment-age" <%= %( style="display:none") unless @site.accept_comments? %>>
       <%= f.select :comment_age, [['Never', 0], 
           ['24 hours after publishing',     1], 
           ['1 week after publishing',       7], 
