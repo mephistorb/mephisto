@@ -22,7 +22,7 @@ class CommentsController < ApplicationController
     if @comment.valid?
       if site.approve_comments?
         @comment.approved = true
-      elsif site.akismet_key && site.akismet_url
+      elsif [:akismet_key, :akismet_url].all? { |attr| !site.send(attr).blank? }
         @comment.approved = Akismet.new(site.akismet_key, site.akismet_url).comment_check \
           :user_ip              => @comment.author_ip, 
           :user_agent           => request.user_agent, 
