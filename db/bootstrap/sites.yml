@@ -4,7 +4,6 @@ default:
   title: Mephisto
   subtitle: Publish With Impunity
   email: email@domain.com
-  accept_comments: true
   approve_comments: true
-  comment_age: 
+  comment_age: 30
   timezone: UTC

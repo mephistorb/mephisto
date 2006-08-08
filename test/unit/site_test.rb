@@ -16,7 +16,7 @@ class SiteTest < Test::Unit::TestCase
   end
 
   def test_should_create_section_without_accepting_comments
-    site = Site.new :host => 'foo', :accept_comments => false
+    site = Site.new :host => 'foo', :comment_age => -1
     assert site.valid?, site.errors.full_messages.to_sentence
     assert !site.accept_comments?
     assert !site.approve_comments?

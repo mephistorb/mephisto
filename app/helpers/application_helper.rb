@@ -30,4 +30,16 @@ module ApplicationHelper
   def gravatar_url_for(user, size = 80)
     "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(user.email)}&default=http://#{request.host_with_port}/images/avatar.gif"
   end
+
+  def comment_expiration_options
+    [['Not allowed', -1],
+     ['Never', 0], 
+     ['24 hours after publishing',     1],
+     ['1 week after publishing',       7],
+     ['2 weeks after publishing',      14],
+     ['1 month after publishing',      30],
+     ['3 months after publishing',     90],
+     ['6 months after publishing',     180],
+     ['1 year after publishing',       365]]
+  end
 end

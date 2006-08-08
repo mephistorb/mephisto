@@ -27,7 +27,7 @@ class Comment < Content
 
   protected
     def check_comment_expiration
-      raise Article::CommentNotAllowed unless article.comments_allowed?
+      raise Article::CommentNotAllowed unless article.accept_comments?
     end
 
     def update_counter_cache

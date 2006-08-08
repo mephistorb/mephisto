@@ -67,41 +67,14 @@ class ArticleTest < Test::Unit::TestCase
     assert !contents(:welcome).save_version?
   end
   
-  def test_should_set_comment_expiration
-    article = Article.new(:title => 'bar', :body => 'blah', :user_id => 1, :published_at => Time.now.utc, :site_id => 1)
-    assert article.valid?, article.errors.full_messages.to_sentence
-    assert_equal (article.published_at + 30.days), article.expire_comments_at
-  end
-
-  def test_should_set_explicit_comment_expiration
-    date = 5.minutes.from_now
-    article = Article.new(:title => 'bar', :body => 'blah', :user_id => 1, :published_at => Time.now.utc, :site_id => 1, :expire_comments_at => date)
-    assert article.valid?, article.errors.full_messages.to_sentence
-    assert_equal date, article.expire_comments_at
-  end
-  
-  def test_should_turn_off_comments
-    sites(:first).update_attributes(:accept_comments => false)
-    article = Article.new(:title => 'bar', :body => 'blah', :user_id => 1, :published_at => Time.now.utc, :site_id => 1)
-    assert article.valid?, article.errors.full_messages.to_sentence
-    assert_equal article.published_at, article.expire_comments_at
-  end
-
-  def test_should_set_no_comment_expiration
-    sites(:first).update_attributes(:comment_age => 0)
-    article = Article.new(:title => 'bar', :body => 'blah', :user_id => 1, :published_at => Time.now.utc, :site_id => 1)
-    assert article.valid?, article.errors.full_messages.to_sentence
-    assert_nil article.expire_comments_at
-  end
-  
   def test_comment_expiry
-    a = Article.new :expire_comments_at => 5.minutes.from_now.utc, :published_at => 5.minutes.from_now.utc
+    a = Article.new :comment_age => 10, :published_at => 5.days.from_now.utc
     def a.new_record?() false ; end
-    assert !a.comments_allowed?
-    a.published_at = 5.minutes.ago.utc
-    assert  a.comments_allowed?
-    a.expire_comments_at = 5.minutes.ago.utc
-    assert !a.comments_allowed?
+    assert !a.accept_comments?
+    a.published_at = 5.days.ago.utc
+    assert  a.accept_comments?
+    a.comment_age = 2
+    assert !a.accept_comments?
   end
 
   def test_empty_body

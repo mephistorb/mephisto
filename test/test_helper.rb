@@ -139,6 +139,13 @@ class Test::Unit::TestCase
       FileUtils.cp_r File.join(RAILS_ROOT, 'test/fixtures/themes/site-' + i), File.join(RAILS_ROOT, 'tmp/themes/site-' + i)
     end
   end
+
+  def assert_models_equal(expected_models, actual_models, message = nil)
+    to_test_param = lambda { |r| "<#{r.class}:#{r.to_param}>" }
+    full_message = build_message(message, "<?> expected but was\n<?>.\n", 
+      expected_models.collect(&to_test_param), actual_models.collect(&to_test_param))
+    assert_block(full_message) { expected_models == actual_models }
+  end
 end
 
 class ActionController::IntegrationTest

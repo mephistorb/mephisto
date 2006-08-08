@@ -5,7 +5,7 @@ module Mephisto
       include Reloadable
     
       def render(context)
-        return '' unless article.comments_allowed?
+        return '' unless article.accept_comments?
         result = []
         context.stack do
           if context['message'].blank? 

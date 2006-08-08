@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 39) do
+ActiveRecord::Schema.define(:version => 40) do
 
   create_table "assigned_sections", :force => true do |t|
     t.column "article_id", :integer
@@ -31,58 +31,58 @@ ActiveRecord::Schema.define(:version => 39) do
   end
 
   create_table "content_versions", :force => true do |t|
-    t.column "content_id",         :integer
-    t.column "version",            :integer
-    t.column "article_id",         :integer
-    t.column "user_id",            :integer
-    t.column "title",              :string
-    t.column "permalink",          :string
-    t.column "excerpt",            :text
-    t.column "body",               :text
-    t.column "excerpt_html",       :text
-    t.column "body_html",          :text
-    t.column "created_at",         :datetime
-    t.column "updated_at",         :datetime
-    t.column "published_at",       :datetime
-    t.column "author",             :string,   :limit => 100
-    t.column "author_url",         :string
-    t.column "author_email",       :string
-    t.column "author_ip",          :string,   :limit => 100
-    t.column "comments_count",     :integer,                 :default => 0
-    t.column "filters",            :text
-    t.column "updater_id",         :integer
-    t.column "versioned_type",     :string,   :limit => 20
-    t.column "site_id",            :integer
-    t.column "approved",           :boolean,                 :default => false
-    t.column "expire_comments_at", :datetime
-    t.column "parse_macros",       :boolean
+    t.column "content_id",     :integer
+    t.column "version",        :integer
+    t.column "article_id",     :integer
+    t.column "user_id",        :integer
+    t.column "title",          :string
+    t.column "permalink",      :string
+    t.column "excerpt",        :text
+    t.column "body",           :text
+    t.column "excerpt_html",   :text
+    t.column "body_html",      :text
+    t.column "created_at",     :datetime
+    t.column "updated_at",     :datetime
+    t.column "published_at",   :datetime
+    t.column "author",         :string,   :limit => 100
+    t.column "author_url",     :string
+    t.column "author_email",   :string
+    t.column "author_ip",      :string,   :limit => 100
+    t.column "comments_count", :integer,                 :default => 0
+    t.column "filters",        :text
+    t.column "updater_id",     :integer
+    t.column "versioned_type", :string,   :limit => 20
+    t.column "site_id",        :integer
+    t.column "approved",       :boolean,                 :default => false
+    t.column "parse_macros",   :boolean
+    t.column "comment_age",    :integer,                 :default => 0
   end
 
   create_table "contents", :force => true do |t|
-    t.column "article_id",         :integer
-    t.column "user_id",            :integer
-    t.column "title",              :string
-    t.column "permalink",          :string
-    t.column "excerpt",            :text
-    t.column "body",               :text
-    t.column "excerpt_html",       :text
-    t.column "body_html",          :text
-    t.column "created_at",         :datetime
-    t.column "updated_at",         :datetime
-    t.column "published_at",       :datetime
-    t.column "type",               :string,   :limit => 20
-    t.column "author",             :string,   :limit => 100
-    t.column "author_url",         :string
-    t.column "author_email",       :string
-    t.column "author_ip",          :string,   :limit => 100
-    t.column "comments_count",     :integer,                 :default => 0
-    t.column "filters",            :text
-    t.column "version",            :integer
-    t.column "updater_id",         :integer
-    t.column "site_id",            :integer
-    t.column "approved",           :boolean,                 :default => false
-    t.column "expire_comments_at", :datetime
-    t.column "parse_macros",       :boolean
+    t.column "article_id",     :integer
+    t.column "user_id",        :integer
+    t.column "title",          :string
+    t.column "permalink",      :string
+    t.column "excerpt",        :text
+    t.column "body",           :text
+    t.column "excerpt_html",   :text
+    t.column "body_html",      :text
+    t.column "created_at",     :datetime
+    t.column "updated_at",     :datetime
+    t.column "published_at",   :datetime
+    t.column "type",           :string,   :limit => 20
+    t.column "author",         :string,   :limit => 100
+    t.column "author_url",     :string
+    t.column "author_email",   :string
+    t.column "author_ip",      :string,   :limit => 100
+    t.column "comments_count", :integer,                 :default => 0
+    t.column "filters",        :text
+    t.column "version",        :integer
+    t.column "updater_id",     :integer
+    t.column "site_id",        :integer
+    t.column "approved",       :boolean,                 :default => false
+    t.column "parse_macros",   :boolean
+    t.column "comment_age",    :integer,                 :default => 0
   end
 
   create_table "events", :force => true do |t|
@@ -126,7 +126,6 @@ ActiveRecord::Schema.define(:version => 39) do
     t.column "host",              :string
     t.column "akismet_key",       :string,  :limit => 100
     t.column "akismet_url",       :string
-    t.column "accept_comments",   :boolean
     t.column "approve_comments",  :boolean
     t.column "comment_age",       :integer
     t.column "timezone",          :string

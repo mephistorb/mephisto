@@ -19,22 +19,12 @@
   <dd><%= check_box_tag :draft, '1', !@article.new_record? && !@published, :id => 'article-draft' %> Yes, save this article as a draft.</dd>
   <dt id="publish-date-lbl"<%= %( style="display:none") unless @article.new_record? || @published -%>><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
   <dd id="publish-date"<%= %( style="display:none") unless @article.new_record? || @published -%>><%= form.datetime_select :published_at, :discard_year => true %></dd>
-<% if @article.expire_comments_at && site.accept_comments? && site.comment_age.to_i > 0 %>
-  <dt><%= label_tag 'article_expire_comments_at', 'Expire Comments on this date:' %></dt>
-  <dd><%= form.datetime_select :expire_comments_at %></dd>
-<% end -%>
 </dl>
 <!-- /end optional fields -->
 
-
-
 <% content_for :sidebar do %>
-  
-
-
 <% if false %>
   <div class="sgroup" id="filetabs">
-
     <ul class="stabs">
       <li id="tab-latest"><a class="selected" href="#latest-files" title="Latest files uploaded">Latest files</a></li>
       <li id="tab-search"><a href="#search-files" title="Search for files">Search files</a></li>
@@ -63,12 +53,6 @@
       </div>
     </div>
     
-  </div>
-  
-  
-  <div class="sgroup">
-    <h3>Other options</h3>
-    <p><%= check_box_tag 'allow_comments' %> Allow comments</p>
   </div>
   <% end %>
 <% end %>

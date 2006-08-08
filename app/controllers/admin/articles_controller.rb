@@ -29,15 +29,13 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def new
-    @article = site.articles.build(:filters => current_user.filters, :parse_macros => current_user.parse_macros, :published_at => utc_to_local(Time.now.utc))
+    @article = site.articles.build(:comment_age => site.comment_age, :filters => current_user.filters, :parse_macros => current_user.parse_macros, :published_at => utc_to_local(Time.now.utc))
   end
 
   def edit
     @version   = params[:version] ? @article.find_version(params[:version]) : @article
     @published = @version.published?
-    [:published_at, :expire_comments_at].each do |attr|
-      @version.send("#{attr}=", utc_to_local(@version.send(attr) || Time.now.utc))
-    end
+    @version.published_at = utc_to_local(@version.published_at || Time.now.utc)
   end
 
   def create
@@ -98,7 +96,7 @@ class Admin::ArticlesController < Admin::BaseController
       @sections = site.sections.find :all, :order => 'name'
       home = @sections.find &:home?
       @sections.delete  home
-      @sections.unshift home
+      @sections.unshift home if home
     end
 
     def find_site_article
@@ -112,17 +110,15 @@ class Admin::ArticlesController < Admin::BaseController
     
     def check_for_new_draft
       params[:article] ||= {}
-      [:published_at, :expire_comments_at].each { |k| params[:article][k] = nil } unless params[:draft].blank?
+      params[:article][:published_at] = nil unless params[:draft].blank?
     end
     
     def convert_times_to_utc
       with_site_timezone do
-        [:published_at, :expire_comments_at].each do |attr|
-          date = Time.parse_from_attributes(params[:article], attr, :local)
-          next unless date
-          params[:article].delete_if { |k, v| k.to_s =~ /^#{attr}/ }
-          params[:article][attr] = date.utc
-        end
+        date = Time.parse_from_attributes(params[:article], :published_at, :local)
+        next unless date
+        params[:article].delete_if { |k, v| k.to_s =~ /^#{:published_at}/ }
+        params[:article][:published_at] = date.utc
       end
     end
     

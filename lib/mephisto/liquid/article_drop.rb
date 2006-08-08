@@ -17,7 +17,7 @@ module Mephisto
           'updated_at'       => article.site.timezone.utc_to_local(article.updated_at),
           'comments_count'   => article.comments_count,
           'author'           => article.user.to_liquid,
-          'comments_allowed' => article.comments_allowed?
+          'accept_comments'  => article.accept_comments?
         }
       end
 

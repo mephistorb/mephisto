@@ -98,17 +98,15 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_no_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
   end
   
-  def test_should_show_expire_comments_date_selector
+  def test_should_show_published_date_selector
     get :edit, :id => contents(:welcome).id
-    [:published_at, :expire_comments_at].each do |date_attr|
-      local_time = assigns(:article).send(date_attr)
-      assert_tag 'select', :attributes => { :name => "article[#{date_attr}(1i)]" }
-      [ :year, :month, :day, :hour, :min ].each_with_index do |attr, i|
-        value = local_time.send(attr)
-        assert_tag 'option', :attributes => { :selected => 'selected', :value => 
-          (i > 2 ? local_time.send(attr).to_s.rjust(2, '0') : value.to_s) }, 
-          :ancestor => { :tag => 'select', :attributes => { :name => "article[#{date_attr}(#{i+1}i)]" } }
-      end
+    local_time = assigns(:article).published_at
+    assert_tag 'select', :attributes => { :name => "article[#{:published_at}(1i)]" }
+    [ :year, :month, :day, :hour, :min ].each_with_index do |attr, i|
+      value = local_time.send(attr)
+      assert_tag 'option', :attributes => { :selected => 'selected', :value => 
+        (i > 2 ? local_time.send(attr).to_s.rjust(2, '0') : value.to_s) }, 
+        :ancestor => { :tag => 'select', :attributes => { :name => "article[#{:published_at}(#{i+1}i)]" } }
     end
   end
   
@@ -125,13 +123,10 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
 
   def test_should_update_article_with_correct_time
     Time.mock! Time.local(2005, 1, 1, 12, 0, 0) do
-      post :update, :id => contents(:welcome).id, :article => { 
-        'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10',
-        'expire_comments_at(1i)' => '2005', 'expire_comments_at(2i)' => '2', 'expire_comments_at(3i)' => '1', 'expire_comments_at(4i)' => '10' }
+      post :update, :id => contents(:welcome).id, :article => { 'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10' }
       assert_redirected_to :action => 'index'
       assert  assigns(:article).published?
       assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
-      assert_equal Time.local(2005, 2, 1, 9, 0, 0).utc, assigns(:article).expire_comments_at
     end
   end
 
@@ -173,6 +168,17 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_create_new_article_with_default_comment_age
+    [:first, :hostess, :garden].each do |site|
+      login_as :quentin do
+        host! sites(site).host
+        get :new
+        assert_response :success
+        assert_equal sites(site).comment_age, assigns(:article).comment_age, "error on #{sites(site).title}"
+      end
+    end
+  end
+
   def test_should_show_draft_checkbox_for_new_articles
     get :new
     assert_response :success
@@ -196,9 +202,8 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
 
   def test_should_create_article_draft
     assert_difference Article, :count do
-      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => 5.days.ago, :expire_comments_at => 5.days.ago }, :draft => '1'
+      post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => 5.days.ago }, :draft => '1'
       assert_nil @controller.params['published_at']
-      assert_nil @controller.params['expire_comments_at']
       assert_redirected_to :action => 'index'
       assert !assigns(:article).new_record?
       assert !assigns(:article).published?

@@ -62,26 +62,10 @@
     <dd><%= f.text_field :akismet_key %></dd>
     <dt><label>Blog url</label></dt> 
     <dd><%= f.text_field :akismet_url %></dd>
-    <dt><label for="site_accept_comments">Allow comments?</label></dt>
-    <dd><%= f.check_box 'accept_comments' %> Yes, I would like to accept comments.</dd>
-    <dt id="approve-comments-lbl" <%= %( style="display:none") unless @site.accept_comments? %>>
-      <label>Automatically approve comments?</label>
-    </dt>
-    <dd id="approve-comments" <%= %( style="display:none") unless @site.accept_comments? %>>
-      <label><%= f.check_box 'approve_comments' %> Yes, approve and publish all comments automatically.</label>
-    </dd>
-    <dt id="comment-age-lbl" <%= %( style="display:none") unless @site.accept_comments? %>>
-      <label>Close comments</label>
-    </dt>
-    <dd id="comment-age" <%= %( style="display:none") unless @site.accept_comments? %>>
-      <%= f.select :comment_age, [['Never', 0], 
-          ['24 hours after publishing',     1], 
-          ['1 week after publishing',       7], 
-          ['2 weeks after publishing',      14], 
-          ['1 month after publishing',      30], 
-          ['3 months after publishing',     90], 
-          ['6 months after publishing',     180], 
-          ['1 year after publishing',       365]] %>
+    <dt><label for="site_comment_age">Expire Comments</label></dt>
+    <dd><%= f.select :comment_age, comment_expiration_options %></dd>
+    <dd>
+      <label><%= f.check_box 'approve_comments' %> approve and publish all comments automatically.</label>
     </dd>
   </dl>
 </div>

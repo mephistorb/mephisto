@@ -8,6 +8,7 @@ module Mephisto
       def initialize(site)
         @site = site
         @site_liquid = [:id, :host, :subtitle, :title].inject({}) { |h, k| h.merge k.to_s => site.send(k) }
+        @site_liquid['accept_comments'] = @site.accept_comments?
       end
 
       def before_method(method)

@@ -25,6 +25,10 @@ class Site < ActiveRecord::Base
     comment.has_many :all_comments
   end
 
+  def accept_comments?
+    comment_age.to_i > -1
+  end
+
   def to_liquid
     Mephisto::Liquid::SiteDrop.new self
   end
@@ -47,7 +51,6 @@ class Site < ActiveRecord::Base
     end
 
     def set_default_comment_options
-      self.accept_comments  = true  unless accept_comments == false
       self.approve_comments = false unless approve_comments?
       self.comment_age      = 30    unless comment_age
       true

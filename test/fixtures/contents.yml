@@ -17,7 +17,7 @@ welcome:
   created_at: <%= 5.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
   published_at: <%= 3.days.ago.to_s(:db) %>
-  expire_comments_at: <%= 25.days.from_now.to_s(:db) %>
+  comment_age: 30
   user_id: 1
   comments_count: 1
   type: Article
@@ -32,7 +32,7 @@ another:
   created_at: <%= 4.days.ago.to_s(:db) %>
   updated_at: <%= 4.days.ago.to_s(:db) %>
   published_at: <%= 4.days.ago.to_s(:db) %>
-  expire_comments_at: <%= 3.days.ago.to_s(:db) %>
+  comment_age: 1
   user_id: 3
   type: Article
 welcome_comment:
@@ -59,6 +59,7 @@ future:
   created_at: <%= (4.days - 15.minutes).ago.to_s(:db) %>
   updated_at: <%= (4.days - 15.minutes).ago.to_s(:db) %>
   published_at: <%= (4.days - 15.minutes).from_now.to_s(:db) %>
+  comment_age: 30
   user_id: 1
   type: Article
 about:
@@ -73,9 +74,9 @@ about:
   created_at: <%= (4.days - 13.minutes).ago.to_s(:db) %>
   updated_at: <%= (4.days - 13.minutes).ago.to_s(:db) %>
   published_at: <%= (4.days - 13.minutes).ago.to_s(:db) %>
+  comment_age: 2
   user_id: 1
   type: Article
-  expire_comments_at: <%= 3.days.ago.utc.to_s :db %>
 site_map:
   id: 7
   site_id: 1
@@ -88,6 +89,7 @@ site_map:
   created_at: <%= (4.days - 5.minutes).ago.to_s(:db) %>
   updated_at: <%= (4.days - 5.minutes).ago.to_s(:db) %>
   published_at: <%= (4.days - 5.minutes).ago.to_s(:db) %>
+  comment_age: -1
   user_id: 1
   type: Article
 cupcake_welcome:
@@ -102,6 +104,7 @@ cupcake_welcome:
   created_at: <%= 5.days.ago.to_s(:db) %>
   updated_at: <%= 5.days.ago.to_s(:db) %>
   published_at: <%= 3.days.ago.to_s(:db) %>
+  comment_age: 30
   user_id: 1
   comments_count: 1
   type: Article
@@ -138,5 +141,6 @@ draft:
   body_html: This is a test draft
   created_at: <%= 1.day.ago.to_s(:db) %>
   updated_at: <%= 1.day.ago.to_s(:db) %>
+  comment_age: 30
   user_id: 1
   type: Article

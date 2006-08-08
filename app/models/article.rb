@@ -3,7 +3,7 @@ class Article < Content
   validates_presence_of :title, :user_id, :site_id
 
   before_validation { |record| record.set_default_filters! }
-  after_validation :set_comment_expiration
+  after_validation :convert_to_utc
   before_create :create_permalink
   after_save    :save_assigned_sections
 
@@ -92,7 +92,7 @@ class Article < Content
   end
 
   def has_section?(section)
-    (new_record? && section.name == 'home') || sections.include?(section)
+    (new_record? && section.home?) || sections.include?(section)
   end
 
   def section_ids=(new_sections)
@@ -110,8 +110,8 @@ class Article < Content
       :permalink => permalink }.merge(options)
   end
 
-  def comments_allowed?
-    status == :published && (expire_comments_at.nil? || expire_comments_at > Time.now.utc)
+  def accept_comments?
+    status == :published && (comment_age.to_i > -1) && (published_at + comment_age.to_i.days > Time.now.utc)
   end
 
   # leave out macro_filter, that is turned on/off with parse_macros?
@@ -141,12 +141,7 @@ class Article < Content
       self.permalink = title.to_s.gsub(/\W+/, ' ').strip.downcase.gsub(/\ +/, '-')
     end
 
-    def set_comment_expiration
-      if site.accept_comments?
-        self.expire_comments_at = published_at + site.comment_age.days if site.comment_age.to_i > 0
-      else
-        self.expire_comments_at = published_at
-      end unless !errors.empty? || published_at.nil? || expire_comments_at
+    def convert_to_utc
       self.published_at = published_at.utc if published_at
     end
     
