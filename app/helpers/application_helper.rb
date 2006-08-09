@@ -32,11 +32,11 @@ module ApplicationHelper
   end
 
   def comment_expiration_options
-    [['Not allowed', -1],
-     ['Never', 0], 
-     ['24 hours after publishing',     1],
-     ['1 week after publishing',       7],
-     ['1 month after publishing',      30],
-     ['3 months after publishing',     90]]
+    [['Are not allowed', -1],
+     ['Never expire', 0], 
+     ['Expire 24 hours after publishing',     1],
+     ['Expire 1 week after publishing',       7],
+     ['Expire 1 month after publishing',      30],
+     ['Expire 3 months after publishing',     90]]
   end
 end
