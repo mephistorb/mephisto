@@ -6,62 +6,20 @@
     </div>
     <hr class="hide" />
     <div class="secondary">
-      <h2>About this entry</h2>
+      <h2>Welcome</h2>
       <div class="featured">
-        <p>You&rsquo;re currently reading &ldquo;{{ article.title }},&rdquo; an entry on {{ site.title }}</p>
-        <dl>
-          <dt>Published:</dt>
-          <dd>{{ article.published_at | strftime: '%m.%d.%y / %H%p' }}</dd>
-        </dl>
-      {% if article.published_at != article.updated_at %}
-        <dl>
-          <dt>Updated:</dt>
-          <dd>{{ article.updated_at | strftime: '%m.%d.%y / %H%p' }}</dd>
-        </dl>
-      {% endif %}
-        <dl>
-          <dt>Sections:</dt>
-          <dd>
-{% for section in article.sections %}
-  {{ section.link }}
-{% endfor %}
-          </dd>
-        </dl>
+        <p>You&rsquo;re currently reading the page &ldquo;{{ article.title }}.</p>
+        <h2 style="margin-top: 10px;">Other pages</h2>
+        <ul class="dates">
+        {% for page in pages %}
+        {% if forloop.first != true %}
+          <li>{{ page | link_to_article }}</li>
+        {% endif %}
+        {% endfor %}
+        </ul>
       </div>
     </div>
     <div class="clear"></div>
   </div>
 </div>
 <!-- [END] #primary -->
-
-<hr class="hide" />
-<div id="ancillary">
-  <div class="inside">
-    <div class="block first">
-      <h2>About</h2>
-      <p>This is Signal vs. Noise, a weblog by 37signals about design, customer experience, entertainment, politics, Basecamp, Backpack, products we like, small business, ourselves, and more. Established 1999 in Chicago.</p>
-    </div>
-    
-    <div class="block">
-      <h2>Recently</h2>
-      <ul class="dates">
-        <li>
-        <a href="#"><span class="date">11.02</span> What Mena TrottÂs mom can... </a></li>
-      </ul>
-    </div>
-    
-    <div class="block">
-      <h2>Categories</h2>
-      <ul class="counts">
-      {% for section in sections.list %}
-        <li>
-          <a href="{{ section.url }}"><span class="count">11</span> {{ section.name }}
-        </a></li>
-      {% endfor %}
-      </ul>
-    </div>
-    
-    <div class="clear"></div>
-    
-  </div>
-</div>
