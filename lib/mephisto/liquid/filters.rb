@@ -8,7 +8,7 @@ module Mephisto
       end
       
       def link_to_page(page)
-        content_tag :a, page['title'], :href => page['url']
+        content_tag :a, page['title'], :href => page['permalink']
       end
 
       def link_to_comments(article)
