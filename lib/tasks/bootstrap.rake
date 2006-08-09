@@ -8,6 +8,21 @@ namespace :db do
       Rake::Task["db:bootstrap:copy_default_theme"].execute
       puts "copied default theme to #{site_dir}..."
     end
+    
+    mkdir_p File.join(RAILS_ROOT, 'log')
+    
+    puts
+    puts '=' * 80
+    puts "Thank you for trying out Mephisto 0.5: Thanos Edition!"
+    puts
+    puts "Now you can start the application with script/server, visit "
+    puts "http://mydomain.com/admin, and log in with admin / test."
+    puts
+    puts "For help, visit the following:"
+    puts "  Official Mephisto Site - http://mephistoblog.com"
+    puts "  The Mephisto Community Wiki - http://mephisto.stikipad.com/"
+    puts "  The Mephisto Google Group - http://groups.google.com/group/MephistoBlog"
+    puts
   end
   
   namespace :bootstrap do
