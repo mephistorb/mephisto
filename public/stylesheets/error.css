@@ -1,0 +1,15 @@
+body {
+  text-align:center;
+}
+
+#wrapper {
+  width:700px;
+  margin:0 auto;
+  text-align:left;
+}
+
+#logo {
+  text-align:center;
+}
+
+img { border-width:0; }
