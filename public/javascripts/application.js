@@ -161,12 +161,20 @@ var SectionForm = {
     if($('pages').className == 'sortable') {
       Sortable.destroy('pages');
       $('pages').className = '';
-      link.innerHTML = 'Reorder'
+      link.innerHTML = 'Reorder pages'
+      link.className = 'reorder';
+      document.getElementsByClassName('handle', 'pages').each(function(img) {
+        img.src = "/images/icons/arrow3_e.gif";
+      });
       this.saveSortable();
     } else {
       this.sortable = Sortable.create('pages', {handle:'handle'});
       $('pages').className = 'sortable';
-      link.innerHTML = 'Stop Reordering'
+      document.getElementsByClassName('handle', 'pages').each(function(img) {
+        img.src = "/images/icons/reorder.gif";
+      });
+      link.className = 'reordering';
+      link.innerHTML = 'Done Reordering'
     }
   },
 

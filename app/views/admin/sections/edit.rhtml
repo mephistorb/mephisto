@@ -17,16 +17,17 @@
 </ul>
 
 <% if @section.show_paged_articles? -%>
-<h3 class="tspace">Articles in <%=h @section.name %></h3>
+<h3 class="tspace">Articles in "<%=h @section.name %>" (<span class="hint"><%= link_to_function 'Reorder pages', "SectionForm.toggleSortable(this)" %></span>)</h3>
 <% if @section.articles.any? %>
-<p class="hint">
+<p>
   Drag the icons to the left to reorder the way in which these 
-  pages show up in the menu for this section.
+  pages show up in the menu for this section.  The top-most article is 
+  shown as the default content for this section.
 </p>
-<ul id="pages">
+<ul id="pages" style="margin-top: 5px;">
   <%= render :partial => 'page', :collection => @section.articles %>
 </ul>
-<p><%= link_to_function 'Reorder', "SectionForm.toggleSortable(this)" %></p>
+<p></p>
 <% else %>
 <p>You haven't created an pages(articles) for this section yet. <%= link_to 'Create one now', :controller => 'articles', :action => 'new' %></p>
 <% end %>

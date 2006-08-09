@@ -511,7 +511,6 @@ input[type='text']:focus, textarea:focus {
   list-style: none;
   padding: 5px 8px;
   margin: 0;
-  font-size: 90%;
   border-bottom: 1px dotted #C6F4F6;
 }
 
@@ -668,6 +667,10 @@ ul.stabs li a:hover {
   padding-left: 18px;
 }
 
+.reordering  {
+  background: green;
+  color: #fff !important;
+}
 
 /*
  *=SBAR FORMS
