@@ -1,7 +1,6 @@
 module Mephisto
   module Liquid
     class Textile < ::Liquid::Block
-      include Reloadable
       include Filters
       def render(context)
         @nodelist.collect do |token|

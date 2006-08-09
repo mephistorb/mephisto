@@ -1,7 +1,6 @@
 module Mephisto
   module Liquid
     class Head < ::Liquid::Block
-      include Reloadable
       include ActionView::Helpers::TagHelper
     
       def render(context)

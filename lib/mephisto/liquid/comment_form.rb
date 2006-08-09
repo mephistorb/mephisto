@@ -2,7 +2,6 @@ module Mephisto
   module Liquid
     class CommentForm < ::Liquid::Block
       cattr_accessor :article
-      include Reloadable
     
       def render(context)
         return '' unless article.accept_comments?

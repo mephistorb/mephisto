@@ -1,8 +1,6 @@
 module Mephisto
   module Liquid
     class SectionDrop < ::Liquid::Drop
-      include Reloadable
-
       attr_reader :section
 
       def initialize(section)

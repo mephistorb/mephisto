@@ -2,7 +2,7 @@ require 'tzinfo'
 require 'zip/zipfilesystem'
 require 'dispatcher'
 require 'coderay'
-RubyPants # load RubyPants
+require 'ruby_pants'
 
 class << Dispatcher
   def register_liquid_tags

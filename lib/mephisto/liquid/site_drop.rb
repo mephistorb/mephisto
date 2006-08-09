@@ -1,8 +1,6 @@
 module Mephisto
   module Liquid
     class SiteDrop < ::Liquid::Drop
-      include Reloadable
-
       attr_reader :site
 
       def initialize(site)

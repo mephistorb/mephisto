@@ -1,8 +1,6 @@
 module Mephisto
   module Liquid
     class ArticleDrop < ::Liquid::Drop
-      include Reloadable
-
       attr_reader :article
 
       def initialize(article, mode)
