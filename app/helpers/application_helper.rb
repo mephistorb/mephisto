@@ -36,10 +36,7 @@ module ApplicationHelper
      ['Never', 0], 
      ['24 hours after publishing',     1],
      ['1 week after publishing',       7],
-     ['2 weeks after publishing',      14],
      ['1 month after publishing',      30],
-     ['3 months after publishing',     90],
-     ['6 months after publishing',     180],
-     ['1 year after publishing',       365]]
+     ['3 months after publishing',     90]]
   end
 end
