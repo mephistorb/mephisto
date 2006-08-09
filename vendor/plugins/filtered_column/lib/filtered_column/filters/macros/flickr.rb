@@ -1,3 +1,4 @@
+require 'filter'
 module FilteredColumn
   module Filters
     module Macros
