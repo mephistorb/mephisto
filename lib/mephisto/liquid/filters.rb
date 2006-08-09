@@ -6,6 +6,10 @@ module Mephisto
       def link_to_article(article)
         content_tag :a, article['title'], :href => article['url']
       end
+      
+      def link_to_page(page)
+        content_tag :a, page['title'], :href => page['url']
+      end
 
       def link_to_comments(article)
         content_tag :a, pluralize(article['comments_count'], 'comment'), :href => article['url']

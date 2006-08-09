@@ -12,8 +12,8 @@
         <h2 style="margin-top: 10px;">Other pages</h2>
         <ul class="dates">
         {% for page in pages %}
-        {% if forloop.first != true %}
-          <li>{{ page | link_to_article }}</li>
+        {% if page.url != article.url %}
+          <li>{{ page | link_to_page }}</li>
         {% endif %}
         {% endfor %}
         </ul>
