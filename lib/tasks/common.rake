@@ -1,5 +1,5 @@
 desc "freeze rails edge"
-task :edge do
+task :deploy_edge do
   ENV['SHARED_PATH']  = '../../shared' unless ENV['SHARED_PATH']
   ENV['RAILS_PATH'] ||= File.join(ENV['SHARED_PATH'], 'rails')
   
