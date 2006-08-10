@@ -12,7 +12,7 @@
   	<div id="header">
 
 
-  	  <h1><a href="http://mephisto.yo">Mephisto</a></h1>
+  	  <h1><a href="http://mephistoblog.com">Mephisto</a></h1>
 
   	  <!-- div.nav -->	
   	  <div id="nav">
@@ -40,6 +40,14 @@
     	      <h2 style="margin: 10px 0">Installing Mephisto</h2>
     	      <p>Get Mephisto up and running like a pro!</p>
     	      
+            <p><strong>Note:</strong> We are targetting Rails v1.2 for the Mephisto 1.0 release.  So you will have to freeze to edge rails to get Mephisto working properly.</p>
+            
+            <pre><code>rake rails:freeze:edge REVISION=4727</code></pre>
+            
+            <p><small>Yes, revision 4727 is required temporarily until some oddities get worked out.</small></p>
+    	      
+    	      <p>See the latest directions on the <a href="http://mephisto.stikipad.com/help/show/Installing+Mephisto">Mephisto Wiki</a>.</p>
+    	      
     	      <ol style="padding-left: 20px">
     	        <li>Create a database named <strong>mephisto</strong> (or one of your choosing).</li>
     	        <li>Open <strong>config/database.example.yml</strong> and set your database credentials.</li>
@@ -48,6 +56,13 @@
     	        <li>Run <strong>rake db:bootstrap</strong> from a terminal of some sorts</li>
     	        <li>Login to your administration at <strong>http://domain.com/admin</strong> with the username: <strong>admin</strong> and password: <strong>test</strong></li>
     	      </ol>
+    	      
+    	      <h3>For help, visit the following:</h3>
+    	      <ul style="padding-left: 20px">
+    	        <li><a href="http://mephistoblog.com">Official Mephisto Site</a></li>
+    	        <li><a href="http://mephisto.stikipad.com">The Mephisto Community Wiki</a></li>
+    	        <li><a href="http://groups.google.com/group/MephistoBlog">The Mephisto Google Group</a></li>
+    	      </ul>
     	    </div>
     	    <div id="shadow"></div>
     	  </div>

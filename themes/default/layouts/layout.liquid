@@ -44,8 +44,8 @@
       <div class="block">
         <h2>Categories</h2>
         <ul class="counts">
-{% for section in sections.list %}
-          <li><a href="{{ section.url }}"><span class="count">9</span>{{ section.name }}</a></li>
+{% for section in site.sections %}
+          <li><a href="{{ section.url }}"><span class="count">{{ section.articles_count }}</span>{{ section.name }}</a></li>
 {% endfor %}
         </ul>
       </div>
