@@ -203,7 +203,7 @@ input[type='text']:focus, textarea:focus {
 
 #nav li {
   float:left;
-  background: #3B8100 url(../images/tab-right.gif) no-repeat right top;
+  background: #997;
   margin: 0 10px 0 0;
 
 }

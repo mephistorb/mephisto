@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
   before_filter :find_article
 
   def show
-    show_article_with 'message' => 'Thank you for comment.  Your comment requires approval from the blog author before showing up.'
+    show_article_with 'message' => 'Thanks for the comment!'
   end
 
   def create
