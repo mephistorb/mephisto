@@ -1,12 +1,17 @@
 module Mephisto
   module Liquid
     class SiteDrop < ::Liquid::Drop
-      attr_reader :site
+      include DropMethods
+      
+      def site() @source end
+      def current_section() @current_section_liquid end
 
-      def initialize(site)
-        @site = site
-        @site_liquid = [:id, :host, :subtitle, :title].inject({}) { |h, k| h.merge k.to_s => site.send(k) }
-        @site_liquid['accept_comments'] = @site.accept_comments?
+      def initialize(source, section = nil)
+        @source                 = source
+        @current_section        = section
+        @current_section_liquid = section ? section.to_liquid : nil
+        @site_liquid = [:id, :host, :subtitle, :title].inject({}) { |h, k| h.merge k.to_s => @source.send(k) }
+        @site_liquid['accept_comments'] = @source.accept_comments?
       end
 
       def before_method(method)
@@ -14,7 +19,7 @@ module Mephisto
       end
 
       def sections
-        @sections ||= @site.sections.inject([]) { |all, s| all.send(s.home? ? :unshift : :<<, s.to_liquid) }
+        @sections ||= @source.sections.inject([]) { |all, s| all.send(s.home? ? :unshift : :<<, s.to_liquid(s == @current_section)) }
       end
       
       def blog_sections

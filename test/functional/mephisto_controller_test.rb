@@ -32,9 +32,14 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_list_on_home
     get_mephisto
     assert_response :success
-    assert_equal sites(:first), assigns(:site)
-    assert_equal sections(:home), assigns(:section)
+    assert_equal sites(:first),                            assigns(:site)
+    assert_equal sections(:home),                          assigns(:section)
     assert_equal [contents(:welcome), contents(:another)], assigns(:articles)
+    assert_equal sites(:first),                            liquid(:site).source
+    assert_equal sections(:home),                          liquid(:section).source
+    assert_equal sections(:home),                          liquid(:site).current_section.source
+    assert_equal [contents(:welcome), contents(:another)], liquid(:articles).collect(&:source)
+    assert liquid(:section).current
   end
 
   def test_should_show_paged_home
@@ -44,6 +49,8 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal sections(:cupcake_home),    assigns(:section)
     assert_equal contents(:cupcake_welcome), assigns(:article)
     assert_nil assigns(:articles)
+    assert liquid(:section).current
+    assert_equal sections(:cupcake_home), liquid(:site).current_section.source
     assert_response :success
   end
 

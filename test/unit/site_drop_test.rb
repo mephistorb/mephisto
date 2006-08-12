@@ -13,6 +13,17 @@ class SiteDropTest < Test::Unit::TestCase
 
   def test_should_list_all_sections
     assert_equal [sections(:home), sections(:about)], @site.sections.collect(&:section)
+    assert_equal [false, false],                      @site.sections.collect(&:current)
+  end
+  
+  def test_should_default_to_no_current_section
+    assert_nil @site.current_section
+  end
+  
+  def test_should_show_current_section
+    @site = Mephisto::Liquid::SiteDrop.new(sites(:first), sections(:about))
+    assert_equal sections(:about), @site.current_section.source
+    assert_equal [false, true], @site.sections.collect(&:current)
   end
   
   def test_should_list_only_blog_sections

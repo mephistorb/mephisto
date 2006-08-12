@@ -29,8 +29,8 @@ class Site < ActiveRecord::Base
     comment_age.to_i > -1
   end
 
-  def to_liquid
-    Mephisto::Liquid::SiteDrop.new self
+  def to_liquid(current_section = nil)
+    Mephisto::Liquid::SiteDrop.new self, current_section
   end
 
   def filters=(value)

@@ -6,6 +6,11 @@ class SectionDropTest < Test::Unit::TestCase
   def test_should_convert_section_to_drop
     assert_kind_of Liquid::Drop, sections(:home).to_liquid
   end
+  
+  def test_should_show_current_status
+    assert  sections(:home).to_liquid(true).current
+    assert !sections(:home).to_liquid.current
+  end
 
   def test_should_expose_section_fields
     [:id, :name, :path, :articles_count].each do |attr|

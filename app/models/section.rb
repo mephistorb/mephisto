@@ -52,8 +52,8 @@ class Section < ActiveRecord::Base
     end
   end
 
-  def to_liquid
-    Mephisto::Liquid::SectionDrop.new self
+  def to_liquid(current = false)
+    Mephisto::Liquid::SectionDrop.new self, current
   end
 
   def order!(*article_ids)

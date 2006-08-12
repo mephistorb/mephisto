@@ -42,7 +42,7 @@ class Template < Attachment
       layout_template     = (section && section.layout)   || templates['layout']
       preferred_template  = preferred_template ? preferred_template.attachment_data : ''
       layout_template     = layout_template    ? layout_template.attachment_data    : ''
-      assigns['site']     = site.to_liquid
+      assigns['site']     = site.to_liquid(section)
       assigns['content_for_layout'] = Liquid::Template.parse(preferred_template).render(assigns, :registers => {:controller => controller})
       Liquid::Template.parse(layout_template).render(assigns, :registers => {:controller => controller})
     end

@@ -29,6 +29,11 @@ class Test::Unit::TestCase
     @request.host = hostname
   end
 
+  def liquid(key = nil)
+    assigns = @controller.instance_variable_get(:@liquid_assigns)
+    key ? assigns[key.to_s] : assigns
+  end
+
   def assert_event_created(mode)
     assert_difference Event, :count do
       event = yield

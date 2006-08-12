@@ -1,11 +1,15 @@
 module Mephisto
   module Liquid
     class SectionDrop < ::Liquid::Drop
-      attr_reader :section
+      include DropMethods
+      
+      def section() @source end
+      def current() @current == true end
 
-      def initialize(section)
-        @section        = section
-        @section_liquid = [:id, :name, :path, :articles_count].inject({}) { |h, k| h.merge k.to_s => section.send(k) }
+      def initialize(source, current = false)
+        @source         = source
+        @current        = current
+        @section_liquid = [:id, :name, :path, :articles_count].inject({}) { |h, k| h.merge k.to_s => @source.send(k) }
       end
 
       def before_method(method)
@@ -13,19 +17,19 @@ module Mephisto
       end
       
       def url
-        @url ||= '/' + @section.to_url.join('/')
+        @url ||= '/' + @source.to_url.join('/')
       end
 
       def is_blog
-        @section.blog?
+        @source.blog?
       end
       
       def is_paged
-        @section.paged?
+        @source.paged?
       end
 
       def is_home
-        @section.home?
+        @source.home?
       end
     end
   end
