@@ -1,0 +1,3 @@
+* SVN *
+
+* Fix issue where Articles don't allow comments with comment_age = 0 [Rick]
