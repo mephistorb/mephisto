@@ -17,13 +17,3 @@ config.action_controller.perform_caching             = true
 
 # Disable delivery errors if you bad email addresses should just be ignored
 # config.action_mailer.raise_delivery_errors = false
-
-config.after_initialize do
-  require 'application' unless Object.const_defined?(:ApplicationController)
-  ReferencedPageCachingController.class_eval do
-    # The controller is disabled by default
-    self.enabled = true
-    include AuthenticatedSystem
-    before_filter :login_required
-  end
-end

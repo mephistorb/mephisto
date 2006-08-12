@@ -554,6 +554,11 @@ a#section-home {
   width: 200px;
 }
 
+#sbar input.filter[type=submit] {
+  margin:0 0 0 5px !important;
+  width:75px;
+}
+
 #sbar input[type=file], #sbar input[type=submit] {
   width: 100px;
   margin: 5px 0 !important;
@@ -748,6 +753,51 @@ dl.sform {
 }
 
 #article-list .date {
+  font-size: 80%;
+  font-style: italic;
+}
+
+#cached-pages div.pages { float:right; margin-right:1em; }
+#cached-pages div.pages a { text-decoration:underline; }
+
+#cached-pages-list { margin-top: 20px;}
+
+#cached-pages-list {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+#cached-pages-list th {
+  border-bottom: 4px solid #ccc;
+  text-align: left;
+}
+
+#cached-pages-list tr.odd {
+  background:#fff;
+}
+
+#cached-pages-list tr.even {
+  background:#e7e7e7;
+}
+
+#cached-pages-list tr.deleted td {
+  color:#aaa;
+  text-decoration: line-through;
+}
+
+#cached-pages-list td {
+  padding: 8px 10px;
+  border-bottom: 1px dotted #ccc;
+}
+
+#cached-pages-list a {
+  padding: 2px 0;
+  text-decoration: none;
+  border: none;
+}
+
+#cached-pages-list .date {
   font-size: 80%;
   font-style: italic;
 }

@@ -1,0 +1,2 @@
+page['cached-pages'].replace :file => "admin/cached_pages/pages"
+page.call 'Flash.notice', 'Page Cache has been successfully cleared'

@@ -1,5 +1,7 @@
 * SVN *
 
+* Port the ReferencedPageCaching controller to the Mephisto admin interface [DeLynn Berry]
+
 * Add extra site and search vars [Rick]
 
   {{ site.articles_per_page }}

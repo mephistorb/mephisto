@@ -1,0 +1,24 @@
+<% content_for :action_nav do %>
+<!-- begin action nav -->
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
+    <li><%= link_to_remote 'Clear All', :url => { :action => 'clear' } %></li>
+  </ul>
+</div>
+<!-- /end action nav -->
+<% end %>
+
+<div id="cached-pages">
+  <%= render(:file => "admin/cached_pages/pages") %>
+</div>
+
+
+<% content_for :sidebar do %>
+  <h3>Filter</h3>
+  <%= form_remote_tag :url => { :action => 'query' }, :html => { :id => 'query-form' } %>
+    <div>
+      <%= hidden_field_tag :page, params[:page] %>
+      <%= text_field_tag :query, "", :size => 35 %><%= submit_tag :Find, :class => "filter" %>
+    </div>
+  </form>
+<% end %>

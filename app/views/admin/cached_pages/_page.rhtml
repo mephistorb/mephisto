@@ -1,0 +1,9 @@
+<tr id="cached-page-<%= page.id %>" class="<%= cycle("odd","even") %>">
+  <td></td>
+  <td><%= h page.url %></div></td>
+  <td nowrap=nowrap class="time"><%= display_cached_page_date(page) %></td>
+  <td>
+    <span id="cached-page-link-<%= page.id %>"><%= link_to_remote 'Delete', {:url => { :action => 'destroy', :id => page }} , :class => "util" %></span>
+    <span id="cached-page-deleted-<%= page.id %>" style="display:none;">Deleted</span>
+  </td>
+</tr>
