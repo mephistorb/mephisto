@@ -1,5 +1,12 @@
 * SVN *
 
+* Add extra site and search vars [Rick]
+
+  {{ site.articles_per_page }}
+
+  {{ search_string }}
+  {{ search_count }}
+
 * Identify current section in Liquid [Rick]
 
   {{ site.current_section }}

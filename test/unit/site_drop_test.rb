@@ -35,7 +35,7 @@ class SiteDropTest < Test::Unit::TestCase
   end
 
   def test_liquid_keys
-    [:host, :subtitle, :title].each do |attr|
+    [:host, :subtitle, :title, :articles_per_page].each do |attr|
       assert_equal sites(:first).send(attr), @site.before_method(attr)
     end
   end

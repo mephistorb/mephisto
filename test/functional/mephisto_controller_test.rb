@@ -119,6 +119,9 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_search_entries
     get :search, :q => 'another'
     assert_equal [contents(:another)], assigns(:articles)
+    assert_equal sites(:first).articles_per_page, liquid(:site).before_method(:articles_per_page)
+    assert_equal 'another', liquid(:search_string)
+    assert_equal 1, liquid(:search_count)
   end
 
   def test_should_show_entry

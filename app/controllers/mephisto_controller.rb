@@ -21,7 +21,8 @@ class MephistoController < ApplicationController
   def search
     conditions     = ['published_at <= :now AND title LIKE :q OR excerpt LIKE :q OR body LIKE :q', 
                      { :now => Time.now.utc, :q => "%#{params[:q]}%" }]
-    @article_pages = Paginator.new self, site.articles.count(conditions), site.articles_per_page, params[:page]
+    search_count   = site.articles.count(conditions)
+    @article_pages = Paginator.new self, search_count, site.articles_per_page, params[:page]
     @articles      = site.articles.find(:all, :conditions => conditions, :order => 'published_at DESC',
                        :include => [:user, :sections],
                        :limit   =>  @article_pages.items_per_page,
@@ -30,7 +31,8 @@ class MephistoController < ApplicationController
     render_liquid_template_for(:search, 'articles'      => @articles,
                                         'previous_page' => paged_search_url_for(@article_pages.current.previous),
                                         'next_page'     => paged_search_url_for(@article_pages.current.next),
-                                        'search_string' => params[:q])
+                                        'search_string' => params[:q],
+                                        'search_count'  => search_count)
   end
 
   def show
