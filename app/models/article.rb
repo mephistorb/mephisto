@@ -111,7 +111,11 @@ class Article < Content
   end
 
   def accept_comments?
-    status == :published && (comment_age.to_i > -1) && (published_at + comment_age.to_i.days > Time.now.utc)
+    status == :published && (comment_age > -1) && (comment_age == 0 || comments_expired_at > Time.now.utc)
+  end
+
+  def comments_expired_at
+    published_at + comment_age.days
   end
 
   # leave out macro_filter, that is turned on/off with parse_macros?
