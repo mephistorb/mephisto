@@ -12,6 +12,7 @@ class Site < ActiveRecord::Base
   has_many  :templates
   has_many  :resources
   has_many  :attachments, :extend => Theme
+  has_many  :assets, :order => 'created_at desc', :conditions => 'parent_id is null'
   
   serialize :filters, Array
   

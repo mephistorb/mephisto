@@ -15,7 +15,7 @@ class Admin::SettingsControllerTest < Test::Unit::TestCase
 
   def test_should_show_settings
     get :index
-    assert_tag :tag => 'input', :attributes => { :id => 'site_title', :value => sites(:first).title }
+    assert_tag 'input', :attributes => { :id => 'site_title', :value => sites(:first).title }
   end
 
   def test_should_update_settings
