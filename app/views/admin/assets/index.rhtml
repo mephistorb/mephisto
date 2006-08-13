@@ -25,22 +25,12 @@
 <div id="filelist">
   <h3 class="divider">Recently uploaded</h3>
   <ul id="recentfiles" class="clear">
+  <% @recent.each do |asset| -%>
     <li>
-      <h4>A picture</h4>
-      <img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" />
+      <h4><%= asset_title_for(asset) %></h4>
+      <%= image_tag asset.public_filename(:thumb), :width => '120' %>
     </li>
-    <li>
-      <h4>A great picture</h4>
-      <img src="../images/earthy.gif" title="Dashboard" alt="Dashboard" />
-    </li>
-    <li>
-      <h4>A super great picture</h4>
-      <img src="../images/doclarge.png" title="Dashboard" alt="Dashboard" />
-    </li>
-    <li>
-      <h4>Ninjariffic</h4>
-      <img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" />
-    </li>
+  <% end -%>
   </ul>
   
   <h3 class="divider">Your files</h3>

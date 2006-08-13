@@ -9,7 +9,11 @@ module ApplicationHelper
   def avatar_for(user, options = {})
     image_tag gravatar_url_for(user), {:class => 'avatar'}.merge(options)
   end
- 
+
+  def asset_title_for(asset)
+    asset.title.blank? ? asset.filename : asset.title
+  end
+
   def todays_short_date
     utc_to_local(Time.now.utc).to_ordinalized_s(:stub)
   end
