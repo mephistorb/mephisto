@@ -10,8 +10,6 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @article  = site.articles.find_by_permalink(params[:year], params[:month], params[:day], params[:permalink])
-    
     show_404 and return unless @article
     if request.get? || params[:comment].blank?
       redirect_to(article_url(@article.hash_for_permalink)) and return
