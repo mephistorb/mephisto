@@ -14,9 +14,37 @@ class AssetTest < Test::Unit::TestCase
   def test_should_upload_file
     process_upload
     now = Time.now
+    assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png')
+    assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_thumb.png')
+    assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_tiny.png')
+  end
+
+  def test_should_upload_file_in_multi_sites_mode
+    Site.multi_sites_enabled = true
+    process_upload
+    now = Time.now
     assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png')
     assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_thumb.png')
     assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_tiny.png')
+  ensure
+    Site.multi_sites_enabled = false
+  end
+
+  def test_should_show_correct_public_filename
+    process_upload
+    now   = Time.now
+    asset = Asset.find(1)
+    assert_equal File.join('/assets', now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png'), asset.public_filename
+  end
+
+  def test_should_show_correct_public_filename_in_multi_sites_mode
+    Site.multi_sites_enabled = true
+    process_upload
+    now   = Time.now
+    asset = Asset.find(1)
+    assert_equal File.join('/assets', now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png'), asset.public_filename
+  ensure
+    Site.multi_sites_enabled = false
   end
 
   def test_should_set_site_id

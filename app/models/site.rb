@@ -1,4 +1,6 @@
 class Site < ActiveRecord::Base
+  cattr_accessor :multi_sites_enabled
+
   has_many  :sections do
     def home
       Section.find_by_path 'home'
