@@ -9,7 +9,7 @@ class FeedController < ApplicationController
     sections.delete(last) if last =~ /\.xml$/
     
     @section  = site.sections.find_by_path(sections.blank? ? 'home' : sections.join('/'))
-    @articles = @section.articles.find_by_date(:limit => 15)
+    @articles = @section.articles.find_by_date(:limit => 15, :include => :user)
     cached_references      << @section
     self.cached_references += @articles
   end
