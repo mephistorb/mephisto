@@ -4,7 +4,23 @@
       <li><%= link_to "Upload asset", :controller => 'assets' %></li>
     </ul>
   </div>
+  
+  <div id="filter">
+    <ul class="clear" id="type">
+      <li><a href="#" title="Test">Pictures</a></li>
+      <li><a href="#" title="Documents">Documents</a></li>
+      <li class="sep"><a href="#" title="Movies">Movies</a></li>
+    </ul>
+    <ul id="attributes">
+      <li><a href="#" title="Tags">Tags</a></li>
+      <li><a href="#" title="Title">Title</a></li>
+      <li><a href="#" title="Date">Date</a></li>
+      <li><input type="search" /></li>
+    </ul>
+  </div>
 <% end %>
+
+
 
 <div id="filelist">
   <h3 class="divider">Recently uploaded</h3>

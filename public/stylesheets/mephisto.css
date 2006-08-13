@@ -1140,6 +1140,60 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
  *=ASSET MANAGEMENT
  */
 
+#filter {
+  background: url(../images/search-bg.gif) repeat-x;
+  border-bottom: 1px solid #81aec4;
+  padding: 0;
+  line-height: 100%;
+  margin-top: -20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+#filter ul {
+  list-style: none;
+  margin: 0;
+  padding: 7px 5px;
+}
+
+#filter ul li {
+  list-style: none;
+  padding: 0;
+  float: left;
+}
+
+#filter ul li a {
+  float: left;
+  display: block;
+  border: none;
+  text-decoration: none;
+  padding: 4px 6px 5px 0;
+  margin: 0 10px 0 9px;
+  color: #333;
+  text-shadow: 2px 2px #fff;
+  font-weight: bold;
+}
+
+#filter li a:hover, #filter li:hover a {
+  color: #fff;
+  text-shadow: 2px 2px #578;
+  background: transparent url(../images/attribute-pressed.gif) 100% 50%  no-repeat;
+}
+
+#filter li:hover {
+  background: transparent url(../images/attribute-pressed-left.gif) 0 50%  no-repeat;
+}
+
+#filter ul#attributes {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#filter li.sep {
+  border-right: 1px solid #578;
+}
+
 #assets, #files {
   list-style: none;
   margin-top: 5px;
