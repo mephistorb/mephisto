@@ -65,6 +65,11 @@ class Test::Unit::TestCase
     end
   end
 
+  def assert_file_exists(file, message = nil)
+    message ||= "File not found: #{file}"
+    assert File.file?(file), message
+  end
+
   # Sets the current user in the session from the user fixtures.
   def login_as(user)
     @request.session[:user] = user ? users(user).id : nil

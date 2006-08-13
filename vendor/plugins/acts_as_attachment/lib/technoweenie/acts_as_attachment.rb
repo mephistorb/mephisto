@@ -147,14 +147,14 @@ module Technoweenie # :nodoc:
 
       # Creates or updates the thumbnail for the current attachment.
       def create_or_update_thumbnail(file_name_suffix, *size)
-        thumb = thumbnail_class.find_or_create_by_thumbnail_and_parent_id file_name_suffix.to_s, id
-        thumb.attributes = {
-          :content_type    => content_type, 
-          :filename        => thumbnail_name_for(file_name_suffix), 
-          :attachment_data => resize_image_to(size)
-        }
-        thumb.save!
-        thumb
+        returning thumbnail_class.find_or_initialize_by_thumbnail_and_parent_id(file_name_suffix.to_s, id) do |thumb|
+          thumb.attributes = {
+            :content_type    => content_type, 
+            :filename        => thumbnail_name_for(file_name_suffix), 
+            :attachment_data => resize_image_to(size)
+          }
+          thumb.save!
+        end
       end
 
       # This method handles the uploaded file object.  If you set the field name to uploaded_data, you don't need
