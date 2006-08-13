@@ -1,0 +1,12 @@
+<%= render :partial => "action_nav" %>
+<% form_for :asset, :url => asset_url(@asset), :html => { :multipart => true, :method => :put } do |f| %>
+  <h3>Edit Asset</h3>
+<div>
+  <%= link_to asset_image_for(@asset, :thumb), @asset.public_filename %>
+</div>
+<%= render :partial => "form", :object => f %>
+<p class="btns">
+  <%= submit_tag 'Save Asset' %>
+  or <%= link_to 'cancel', assets_path %>
+</p>
+<% end -%>

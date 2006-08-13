@@ -1,10 +1,6 @@
-<% content_for :action_nav do %>
-  <div id="page-nav">
-    <ul id="act-nav" class="clear">
-      <li><%= link_to "Upload asset", :controller => 'assets' %></li>
-    </ul>
-  </div>
-  
+<%= render :partial => "action_nav" %>
+
+<% content_for :action_nav do -%>
   <div id="filter">
     <ul class="clear" id="type">
       <li><a href="#" title="Test">Pictures</a></li>
@@ -18,9 +14,7 @@
       <li><input type="search" /></li>
     </ul>
   </div>
-<% end %>
-
-
+<% end -%>
 
 <div id="filelist">
   <h3 class="divider">Recently uploaded</h3>
@@ -28,39 +22,16 @@
   <% @recent.each do |asset| -%>
     <li>
       <h4><%= asset_title_for(asset) %></h4>
-      <%= image_tag asset.public_filename(:thumb), :width => '120' %>
+      <%= link_to asset_image_for(asset, :thumb), edit_asset_url(asset) %>
     </li>
   <% end -%>
   </ul>
   
   <h3 class="divider">Your files</h3>
   <ul id="files" class="clear">
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
-    <li><img src="../images/dashboard.png" title="Dashboard" alt="Dashboard" /></li>
+  <% @assets.each do |asset| -%>
+    <li><%= link_to asset_image_for(asset, :tiny), edit_asset_url(asset) %></li>
+  <% end -%>
   </ul>
   
 </div>
-
-
-<% content_for :sidebar do %>
-<div class="sgroup">
-  <h3>Search your files</h3>
-  <p>Search by tag or title</p>
-  <input class="searchbox" type="text" size="30" />
-  <%= submit_tag 'Search' %>
-</div>
-<% end %>
