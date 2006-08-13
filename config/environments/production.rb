@@ -17,3 +17,6 @@ config.action_controller.perform_caching             = true
 
 # Disable delivery errors if you bad email addresses should just be ignored
 # config.action_mailer.raise_delivery_errors = false
+
+# Enable if you want to host multiple sites on this app
+# Site.multi_sites_enabled = true

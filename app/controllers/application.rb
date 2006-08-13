@@ -37,8 +37,9 @@ class ApplicationController < ActionController::Base
 
     def set_cache_root
       @site ||= Site.find_by_host(request.host) || Site.find(:first, :order => 'id')
-      # prepping for site-specific page cache directories, DONT PANIC
-      #self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'sites', site.host])
+      if @site.multi_sites_enabled
+        self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'cache', site.host])
+      end
     end
 
     def with_site_timezone
