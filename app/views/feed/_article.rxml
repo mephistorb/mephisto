@@ -5,6 +5,9 @@ xm.entry do
   xm.id        "tag:#{request.host},#{article.published_at.to_date.to_s :db}:#{article.guid}"
   xm.published article.published_at.xmlschema
   xm.updated   article.published_at.xmlschema
+  article.sections.each do |section|
+    xm.category "term" => section.name unless section.home?
+  end
   xm.link "rel" => "alternate", "type" => "text/html", "href" => article_url(article.hash_for_permalink)
   xm.title     strip_tags(article.title)
   xm.summary   textilize(article.excerpt), 'type' => 'html' unless article.excerpt.blank?
