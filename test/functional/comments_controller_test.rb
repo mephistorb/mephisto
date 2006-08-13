@@ -49,7 +49,7 @@ class CommentsControllerTest < Test::Unit::TestCase
   end
 
   def test_should_add_comment_in_site
-    @request.host = 'cupcake.host'
+    host! 'cupcake.com'
     assert_difference Comment, :count do
       assert_difference contents(:cupcake_welcome), :comments_count do
         post :create, contents(:cupcake_welcome).hash_for_permalink.merge(:comment => {
@@ -64,7 +64,7 @@ class CommentsControllerTest < Test::Unit::TestCase
   end
   
   def test_should_not_add_comment_across_site
-    @request.host = 'cupcake.host'
+    host! 'cupcake.com'
     assert_no_difference Comment, :count do
       assert_no_difference contents(:welcome), :comments_count do
         assert_no_difference contents(:cupcake_welcome), :comments_count do

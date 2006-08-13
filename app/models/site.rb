@@ -16,8 +16,10 @@ class Site < ActiveRecord::Base
   
   serialize :filters, Array
   
+  before_validation :downcase_host
   before_validation :set_default_timezone
   before_validation_on_create :set_default_comment_options
+  validates_format_of     :host, :with => /^([a-z0-9]([-a-z0-9]*[a-z0-9])?\.)+((a[cdefgilmnoqrstuwxz]|aero|arpa)|(b[abdefghijmnorstvwyz]|biz)|(c[acdfghiklmnorsuvxyz]|cat|com|coop)|d[ejkmoz]|(e[ceghrstu]|edu)|f[ijkmor]|(g[abdefghilmnpqrstuwy]|gov)|h[kmnrtu]|(i[delmnoqrst]|info|int)|(j[emop]|jobs)|k[eghimnprwyz]|l[abcikrstuvy]|(m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|(n[acefgilopruz]|name|net)|(om|org)|(p[aefghklmnrstwy]|pro)|qa|r[eouw]|s[abcdeghijklmnortvyz]|(t[cdfghjklmnoprtvwz]|travel)|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])$/
   validates_uniqueness_of :host
 
   with_options :order => 'contents.created_at', :class_name => 'Comment' do |comment|
@@ -46,6 +48,10 @@ class Site < ActiveRecord::Base
   end
 
   protected
+    def downcase_host
+      self.host = host.to_s.downcase
+    end
+
     def set_default_timezone
       self.timezone = 'UTC' if read_attribute(:timezone).blank?
       true

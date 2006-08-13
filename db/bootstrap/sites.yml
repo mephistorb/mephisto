@@ -1,6 +1,6 @@
 default:
   id: 1
-  host: unusedfornow
+  host: unusedfornow.com
   title: Mephisto
   subtitle: Publish With Impunity
   email: email@domain.com

@@ -1,5 +1,9 @@
 * SVN *
 
+* Enhance the site host validations so it requires a valid domain name.
+
+* Add basic asset support [Justin, Rick]
+
 * fix user fixtures [Cristi Balan]
 
 * Add windows binary file support to acts as attachment [Cristi Balan]

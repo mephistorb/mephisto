@@ -12,7 +12,7 @@ class MephistoControllerTest < Test::Unit::TestCase
     @controller = MephistoController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-    host! 'test.host'
+    host! 'test.com'
   end
 
   def test_routing
@@ -43,7 +43,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_paged_home
-    host! 'cupcake.host'
+    host! 'cupcake.com'
     get_mephisto
     assert_equal sites(:hostess),            assigns(:site)
     assert_equal sections(:cupcake_home),    assigns(:section)
@@ -61,7 +61,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_error_on_bad_paged_url
-    host! 'cupcake.host'
+    host! 'cupcake.com'
     {'foobar/basd' => sections(:cupcake_home), 'about/foo' => sections(:cupcake_about)}.each do |path, section|
       get_mephisto path
       assert_equal sites(:hostess), assigns(:site)
@@ -83,7 +83,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
   
   def test_list_by_site_sections
-    host! 'cupcake.host'
+    host! 'cupcake.com'
     get_mephisto 'about'
     assert_equal sites(:hostess), assigns(:site)
     assert_equal sections(:cupcake_about), assigns(:section)
@@ -131,7 +131,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
   
   def test_should_show_site_entry
-    host! 'cupcake.host'
+    host! 'cupcake.com'
     date = 3.days.ago
     get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-cupcake'
     assert_equal contents(:cupcake_welcome).to_liquid['id'], assigns(:article)['id']

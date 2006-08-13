@@ -7,7 +7,7 @@
 first:
   id: 1
   title: Mephisto
-  host: test.host
+  host: test.com
   filters: "--- \n- :foo\n- :bar\n"
   approve_comments: false
   comment_age: 30
@@ -18,7 +18,7 @@ hostess:
   title: Cupcake
   subtitle: Your hostess
   filters: "--- \n- :foo\n- :bar\n"
-  host: cupcake.host
+  host: cupcake.com
   timezone: UTC
   approve_comments: false
   comment_age: 0
@@ -26,6 +26,6 @@ hostess:
 garden:
   id: 3
   title: walled garden
-  host: garden.host
+  host: garden.com
   timezone: UTC
   comment_age: -1

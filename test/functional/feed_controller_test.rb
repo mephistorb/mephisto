@@ -21,17 +21,17 @@ class FeedControllerTest < Test::Unit::TestCase
   end
   
   def test_feed_comes_from_site
-    @request.host = 'cupcake.host'    
+    host! 'cupcake.com'
     get :feed, :sections => ['about']
     assert_equal sections(:cupcake_about), assigns(:section)
     assert_equal [contents(:cupcake_welcome)], assigns(:articles)
   end
   
   def test_site_in_feed_links
-    @request.host = 'cupcake.host'
+    host! 'cupcake.com'
     get :feed, :sections => []
-    assert_equal sections(:cupcake_home), assigns(:section)
-    assert_equal [contents(:cupcake_welcome)], assigns(:articles)
-    assert_tag :tag => 'link', :attributes => {:href => 'http://cupcake.host/'}
+    assert_models_equal [sections(:cupcake_home)], [assigns(:section)]
+    assert_models_equal [contents(:cupcake_welcome)], assigns(:articles)
+    assert_tag 'link', :attributes => {:href => 'http://cupcake.com/'}
   end
 end
