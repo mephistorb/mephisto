@@ -312,6 +312,12 @@ module Technoweenie # :nodoc:
       def attachment_data
         filename = full_filename
         @attachment_data ||= File.file?(filename) ? File.read(filename) : nil
+
+        return @attachment_data if @attachment_data
+        File.open(filename, 'rb') do |file|
+          @attachment_data = file.read
+        end if File.file?(filename)
+        @attachment_data
       end
 
       # Gets the full path to the filename in this format:
@@ -369,7 +375,7 @@ module Technoweenie # :nodoc:
             # TODO Convert to streaming storage to prevent excessive memory usage
             # FileUtils.copy_stream is very efficient in regards to copies
             # OR - get the tmp filename for large files and do FileUtils.cp ? *agile*
-            File.open(full_filename, "w") do |file|
+            File.open(full_filename, "wb") do |file|
               file.write(attachment_data)
             end
           end

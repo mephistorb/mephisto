@@ -1,5 +1,13 @@
 * SVN *
 
+* fix user fixtures [Cristi Balan]
+
+* Add windows binary file support to acts as attachment [Cristi Balan]
+
+* escape HTML entered for comment author/url fields [Cristi Balan]
+
+* add category tags to the atom feed [Cristi Balan]
+
 * Port the ReferencedPageCaching controller to the Mephisto admin interface [DeLynn Berry]
 
 * Add extra site and search vars [Rick]
