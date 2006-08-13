@@ -41,6 +41,9 @@ class CommentTest < Test::Unit::TestCase
     assert_equal %Q{<a href="http://abc">rico</a>}, contents(:welcome_comment).author_link
     contents(:welcome_comment).author_url = 'https://abc'
     assert_equal %Q{<a href="https://abc">rico</a>}, contents(:welcome_comment).author_link
+    contents(:welcome_comment).author     = '<strong>rico</strong>'
+    contents(:welcome_comment).author_url = '<strong>https://abc</strong>'
+    assert_equal %Q{<a href="http://&lt;strong&gt;https://abc&lt;/strong&gt;">&lt;strong&gt;rico&lt;/strong&gt;</a>}, contents(:welcome_comment).author_link
   end
 
   def test_should_increment_comment_count_upon_approval

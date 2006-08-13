@@ -15,9 +15,9 @@ class Comment < Content
   end
 
   def author_link
-    return author if author_url.blank?
+    return CGI::escapeHTML(author) if author_url.blank?
     self.author_url = "http://" + author_url unless author_url =~ /^https?:\/\//
-    %Q{<a href="#{author_url}">#{author}</a>}
+    %Q{<a href="#{CGI::escapeHTML author_url}">#{CGI::escapeHTML author}</a>}
   end
   
   def approved=(value)

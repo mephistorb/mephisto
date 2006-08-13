@@ -3,7 +3,7 @@ module ApplicationHelper
 
   def author_link_for(comment)
     return comment.author if comment.author_url.blank?
-    link_to comment.author, "#{'http://' unless comment.author_url =~ /^https?:\/\//}#{comment.author_url}"
+    link_to h(comment.author), "#{'http://' unless comment.author_url =~ /^https?:\/\//}#{comment.author_url}"
   end
 
   def avatar_for(user, options = {})
