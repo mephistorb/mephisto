@@ -26,14 +26,12 @@
           <ul>
             <li><%= link_to 'Overview', :controller => '/admin/overview' %></li>
             <li><%= link_to 'Articles',  :controller => '/admin/articles' %></li>
+            <li><%= link_to 'Assets',  :controller => '/admin/assets' %></li>
           </ul>
           <ul id="nav-r">
             <li><%= link_to 'Sections', :controller => '/admin/sections' %></li>
             <li><%= link_to 'Design',     :controller => '/admin/design' %></li>
             <li><%= link_to "Users",      :controller => "users" %></li>
-            <% if ActionController::Base.perform_caching -%>
-            <li><%= link_to 'Caches', :controller => '/admin/cached_pages' %></li>
-            <% end -%>
           </ul>
         <% end -%>
       </div> 
