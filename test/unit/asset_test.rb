@@ -1,6 +1,5 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-ASSET_PATH = File.join(RAILS_ROOT, 'test/fixtures/assets')
 class AssetTest < Test::Unit::TestCase
   fixtures :sites, :assets
 

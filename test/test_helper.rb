@@ -1,8 +1,10 @@
 ENV["RAILS_ENV"] = "test"
 ENV['TZ'] = 'US/Central'
+
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 require File.expand_path(File.dirname(__FILE__) + "/actor")
+ASSET_PATH = File.join(RAILS_ROOT, 'test/fixtures/assets/tmp')
 
 Time.class_eval do
   class << self

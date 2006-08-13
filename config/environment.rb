@@ -12,7 +12,7 @@ Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
   
   # Skip frameworks you're not going to use
-  # config.frameworks -= [ :action_web_service, :action_mailer ]
+  config.frameworks -= [ :action_web_service ]
 
   # Add additional load paths for your own custom dirs
   config.load_paths += %W( #{RAILS_ROOT}/app/cachers )

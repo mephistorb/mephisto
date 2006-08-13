@@ -9,8 +9,8 @@ ActionController::Routing::Routes.draw do |map|
   end
   
   map.overview 'admin/overview.xml', :controller => 'admin/overview', :action => 'feed'
-  
-  map.admin   'admin', :controller => 'admin/overview', :action => 'index'
+  map.admin    'admin', :controller => 'admin/overview', :action => 'index'
+  map.resources :assets, :path_prefix => '/admin', :controller => 'admin/assets'
   
   map.connect ':controller/:action/:id/:version', :version => nil, :controller => /referenced_page_caching|routing_navigator|account|(admin\/\w+)/
   
