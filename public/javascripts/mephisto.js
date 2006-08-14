@@ -127,3 +127,114 @@ var Flash = {
   }
 }
 
+var ArticleForm = {
+  saveDraft: function() {
+    var isDraft = $F(this);
+    if(isDraft) Element.hide('publish-date-lbl', 'publish-date');
+    else Element.show('publish-date-lbl', 'publish-date');
+  }
+}
+
+var UserForm = {
+  toggle: function(chk) {
+    $('user-' + chk.getAttribute('value') + '-progress').show();
+    new Ajax.Request('/admin/users/' + (chk.checked ? 'enable' : 'destroy') + '/' + chk.getAttribute('value'));
+  }
+}
+
+var SectionForm = {
+  toggleSettings: function() {
+    Element.toggle('blog-options');
+  },
+
+  sortable: null,
+  toggleSortable: function(link) {
+    if($('pages').className == 'sortable') {
+      Sortable.destroy('pages');
+      $('pages').className = '';
+      link.innerHTML = 'Reorder pages'
+      link.className = 'reorder';
+      document.getElementsByClassName('handle', 'pages').each(function(img) {
+        img.src = "/images/icons/arrow3_e.gif";
+      });
+      this.saveSortable();
+    } else {
+      this.sortable = Sortable.create('pages', {handle:'handle'});
+      $('pages').className = 'sortable';
+      document.getElementsByClassName('handle', 'pages').each(function(img) {
+        img.src = "/images/icons/reorder.gif";
+      });
+      link.className = 'reordering';
+      link.innerHTML = 'Done Reordering'
+    }
+  },
+
+  saveSortable: function() {
+    var query = $$('#pages li').inject([], function(qu, li) {
+      qu.push('article_ids[]=' + li.getAttribute('id').substr(5));
+      return qu;
+    }).join('&')
+    new Ajax.Request('/admin/sections/order/' + Navigate.currentId(), {asynchronous:true, evalScripts:true, parameters:query});
+  }
+}
+
+var Spotlight = Class.create();
+Spotlight.prototype = {
+  initialize: function(form, searchbox) {
+    var options, types, attributes = [];
+    this.form = $(form);
+    var search = $(searchbox);
+    Event.observe(searchbox, 'click', function(e) { Event.element(e).value = '' });
+    search.setAttribute('autocomplete', 'off');
+    
+    new Form.Element.Observer(searchbox, 1,  this.search.bind(this));
+    
+    types = $A($('type').getElementsByTagName('LI'));
+    attributes = $A($('attributes').getElementsByTagName('LI'));
+    attributes = attributes.reject(function(e) { return e.id.length < 1 });
+    attributes.push(types);
+    attributes = attributes.flatten();
+    console.log(attributes);
+    attributes.each(function(attr) {
+      Event.observe(attr, 'click', this.onClick.bindAsEventListener(this));
+    }.bind(this));
+  },
+  
+  onClick: function(event) {
+    var element = Event.element(event), check;
+    if(element.tagName != 'LI') element = Event.findElement(event, 'LI');
+    var check = ($(element.id + '-check'));
+    
+    if(Element.hasClassName(element, 'pressed')) {
+      Element.removeClassName(element, 'pressed');
+      check.removeAttribute('checked');
+    } else {
+      Element.addClassName(element, 'pressed');
+      check.setAttribute('checked', 'checked');
+    }
+    
+    this.search();
+  },
+  
+  search: function() {
+    new Ajax.Request(this.form.action, {
+      asynchronous: true, 
+      evalScripts:  true, 
+      parameters:   Form.serialize(this.form)
+    }); 
+    return false;
+  }
+}
+
+Event.observe(window, 'load', function() {
+  new DropMenu('select');
+  new TinyTab('filetabs');
+  if($('filesearch')) new Spotlight('filesearchform', 'filesearch');
+  
+  // TODO: IE doesn't fire onchange for checkbox
+  var commentsView   = $('comments-view');
+  var articleDraft   = $('article-draft');
+  if(commentsView)   Event.observe(commentsView,   'change', ArticleForm.viewComments.bind(commentsView));
+  if(articleDraft)   Event.observe(articleDraft,   'change', ArticleForm.saveDraft.bind(articleDraft));
+});
+

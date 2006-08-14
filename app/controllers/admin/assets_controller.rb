@@ -1,5 +1,5 @@
 class Admin::AssetsController < Admin::BaseController
-  before_filter :find_asset, :except => [:index, :new, :create]
+  before_filter :find_asset, :except => [:index, :new, :create, :search]
 
   def index
     @assets = site.assets.find(:all, :order => 'created_at desc', :limit => 20)
@@ -22,6 +22,10 @@ class Admin::AssetsController < Admin::BaseController
     @asset.attributes = params[:asset]
     @asset.save!
     redirect_to assets_path
+  end
+  
+  def search
+    @assets = site.assets.find(:all, :order => 'created_at desc', :limit => 20)
   end
 
   protected

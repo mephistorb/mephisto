@@ -39,7 +39,7 @@ blockquote, h1, h2, h3, h4, h5, h6, a {
   min-width: 778px;
 }
 
-a:link, a:visited { color: #920; border-bottom: 1px dotted #ccc; text-decoration: none; }
+a:link, a:visited { outline: none; color: #920; border-bottom: 1px dotted #ccc; text-decoration: none; }
 
 a:hover {
   color: #d30;
@@ -1185,13 +1185,14 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 }
 
 #filter li.pressed a {
+  outline: none;
   color: #fff;
   text-shadow: 2px 2px #578;
-  background: transparent url(../images/attribute-pressed-left.gif) 100% 50%  no-repeat !important;
+  background: transparent url(../images/attribute-pressed.gif) 100% 50%  no-repeat !important;
 }
 
 #filter li.pressed  {
-  background: transparent url(../images/attribute-pressed.gif) 0 50%  no-repeat !important;
+  background: transparent url(../images/attribute-pressed-left.gif) 0 50%  no-repeat !important;
 }
 
 #filter ul#attributes {
@@ -1202,6 +1203,12 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 
 #filter li.sep {
   border-right: 1px solid #578;
+}
+
+#filesearch {
+  border: 1px solid #BCD;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
 }
 
 

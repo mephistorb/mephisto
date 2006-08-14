@@ -1,33 +1,36 @@
 <%= render :partial => "action_nav" %>
 
 <% content_for :action_nav do -%>
-<%= form_remote_tag %>
+<%= form_tag({:action => 'search' },:id => 'filesearchform') %>
   <div id="filter">
     <ul class="clear" id="type">
-      <li><a href="#" title="Test">Pictures</a></li>
-      <li><a href="#" title="Documents">Documents</a></li>
-      <li class="sep"><a href="#" title="Movies">Movies</a></li>
+      <li id="fmusic"><a href="#" title="Music">Music</a></li>
+      <li id="fmovies"><a href="#" title="Movies">Movies</a></li>
+      <li id="fpictures"><a href="#" title="Test">Pictures</a></li>
+      <li id="fdocuments" class="sep"><a href="#" title="Documents">Documents</a></li>
     </ul>
     <ul id="attributes">
-      <li><a href="#" title="Tags">Tags</a></li>
-      <li><a href="#" title="Title">Title</a></li>
-      <li><a href="#" title="Date">Date</a></li>
+      <li id="ctags"><a href="#" title="Tags">Tags</a></li>
+      <li id="ctitle"><a href="#" title="Title">Title</a></li>
+      <li id="cdate"><a href="#" title="Date">Date</a></li>
       <li><input type="search" name="q" id="filesearch" /></li>
     </ul>
     <div id="filter-options" style="display:none">
-      <%= check_box_tag 'filter[pictures]', 'pictures',  false, :id => 'filter-pictures' %>
-      <%= check_box_tag 'filter[documents]', 'documents', false, :id => 'filter-documents' %>
-      <%= check_box_tag 'filter[movies]', 'movies',    false, :id => 'filter-movies'%>
+      <%= check_box_tag 'filter[music]', 'music', false, :id => 'fmusic-check' %>
+      <%= check_box_tag 'filter[pictures]', 'pictures',  false, :id => 'fpictures-check' %>
+      <%= check_box_tag 'filter[documents]', 'documents', false, :id => 'fdocuments-check' %>
+      <%= check_box_tag 'filter[movies]', 'movies',    false, :id => 'fmovies-check'%>
       
-      <%= check_box_tag 'conditions[tags]', 'tags', false, :id => 'conditions-tags' %>
-      <%= check_box_tag 'conditions[title]', 'title', false, :id => 'conditions-title' %>
-      <%= check_box_tag 'conditions[date]', 'date', false, :id => 'conditions-date' %>
+      <%= check_box_tag 'conditions[tags]', 'tags', false, :id => 'ctags-check' %>
+      <%= check_box_tag 'conditions[title]', 'title', false, :id => 'ctitle-check' %>
+      <%= check_box_tag 'conditions[date]', 'date', false, :id => 'cdate-check' %>
     </div>
-    <% end_form_tag %>  
+    <%= end_form_tag %>  
   </div>
 <% end -%>
 
 <div id="filelist">
+  <% if @recent.any? %>
   <h3 class="divider">Recently uploaded</h3>
   <ul id="recentfiles" class="clear">
   <% @recent.each do |asset| -%>
@@ -46,5 +49,19 @@
     <% end -%>
     </ul>
   <% end %>
-  
+  <% else %>
+    <div class="empty">You haven't uploaded any files. <%= link_to 'Upload one now &raquo;', :action => 'new' %></div>
+  <% end %>
 </div>
+
+<div id="pagination">
+ 
+</div>
+
+
+<% content_for :sidebar do %>
+  <div class="sblock">
+    <h3>Searching files</h3>
+    <p>...</p>
+  </div>
+<% end %>

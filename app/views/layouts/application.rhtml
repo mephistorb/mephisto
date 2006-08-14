@@ -5,8 +5,7 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />   
     <title><%= site.title %>: Admin <%= controller.controller_name %></title>
     <%= stylesheet_link_tag 'mephisto' %>
-    <%= javascript_include_tag :defaults %>
-    <%= javascript_include_tag 'mephisto' %>
+    <%= javascript_include_tag 'prototype', 'effects', 'mephisto' %>
   </head>
   <body>
   
@@ -26,7 +25,9 @@
           <ul>
             <li><%= link_to 'Overview', :controller => '/admin/overview' %></li>
             <li><%= link_to 'Articles',  :controller => '/admin/articles' %></li>
+            <% if false %>
             <li><%= link_to 'Assets',  :controller => '/admin/assets' %></li>
+            <% end %>
           </ul>
           <ul id="nav-r">
             <li><%= link_to 'Sections', :controller => '/admin/sections' %></li>
