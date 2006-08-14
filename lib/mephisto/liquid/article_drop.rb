@@ -5,19 +5,20 @@ module Mephisto
       
       def article() @source end
 
-      def initialize(source, mode)
+      def initialize(source, options = {})
         @source         = source
         @article_liquid = { 
           'id'               => @source.id,
           'title'            => @source.title,
           'permalink'        => @source.permalink,
           'url'              => @source.full_permalink,
-          'body'             => @source.send(:body_for_mode, mode),
+          'body'             => @source.send(:body_for_mode, options[:mode] || :list),
           'published_at'     => @source.site.timezone.utc_to_local(@source.published_at),
           'updated_at'       => @source.site.timezone.utc_to_local(@source.updated_at),
           'comments_count'   => @source.comments_count,
           'author'           => @source.user.to_liquid,
-          'accept_comments'  => @source.accept_comments?
+          'accept_comments'  => @source.accept_comments?,
+          'is_page_home'     => (options[:page] == true)
         }
       end
 

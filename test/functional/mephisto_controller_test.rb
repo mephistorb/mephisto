@@ -145,11 +145,33 @@ class MephistoControllerTest < Test::Unit::TestCase
   
   def test_should_show_navigation_on_paged_sections
     get_mephisto 'about'
-    assert_tag :tag => 'ul', :attributes => { :id => 'nav' },
+    assert_tag 'ul', :attributes => { :id => 'nav' },
                :children => { :count => 3, :only => { :tag => 'li' } }
-    assert_tag :tag => 'ul', :attributes => { :id => 'nav' },
+    assert_tag 'ul', :attributes => { :id => 'nav' },
                :descendant => { :tag => 'a', :attributes => { :class => 'selected' } }
-    assert_tag :tag => 'a', :attributes => { :class => 'selected' }, :content => 'Home'
+    assert_tag 'a',  :attributes => { :class => 'selected' }, :content => 'Home'
+  end
+
+  def test_should_set_home_page_on_paged_sections
+    get_mephisto 'about'
+    assert_equal 3, liquid(:pages).size
+    [true, false, false].each_with_index do |expected, i|
+      assert_equal expected, liquid(:pages)[i][:is_page_home]
+    end
+  end
+
+  def test_should_set_paged_permalinks
+    get_mephisto 'about'
+    assert_tag 'a', :attributes => { :href => '/about', :class => 'selected' }, :content => 'Home'
+    assert_tag 'a', :attributes => { :href => '/about/about-this-page'       }, :content => 'About'
+    assert_tag 'a', :attributes => { :href => '/about/the-site-map'          }, :content => 'The Site Map'
+  end
+
+  def test_should_set_paged_permalinks
+    get_mephisto 'about/the-site-map'
+    assert_tag 'a', :attributes => { :href => '/about'                                    }, :content => 'Home'
+    assert_tag 'a', :attributes => { :href => '/about/about-this-page'                    }, :content => 'About'
+    assert_tag 'a', :attributes => { :href => '/about/the-site-map', :class => 'selected' }, :content => 'The Site Map'
   end
 
   def test_should_show_comments_form
@@ -162,7 +184,7 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'form',     :descendant => {                                                                                  
                :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author_email', :name => 'comment[author_email]' } }
     assert_tag :tag => 'form',     :descendant => { 
-               :tag => 'textarea', :attributes => {                  :id => 'comment_body',  :name => 'comment[body]'  } }
+               :tag => 'textarea', :attributes => {                  :id => 'comment_body',         :name => 'comment[body]'  } }
   end
 
   def test_should_show_daily_entries

@@ -99,8 +99,10 @@ class Article < Content
     @new_sections = new_sections
   end
 
-  def to_liquid(mode = :list)
-    Mephisto::Liquid::ArticleDrop.new self, mode
+  # :mode - single / list.  Specifies whether the body is only the excerpt or not
+  # :page - true / false.  Specifies whether the article is the main section page.
+  def to_liquid(options = {})
+    Mephisto::Liquid::ArticleDrop.new self, options
   end
 
   def hash_for_permalink(options = {})

@@ -8,7 +8,7 @@ module Mephisto
       end
       
       def link_to_page(page)
-        content_tag :a, page['title'], :href => page['permalink']
+        content_tag :a, page_title(page), page_anchor_options(page)
       end
 
       def link_to_comments(article)
@@ -17,6 +17,10 @@ module Mephisto
       
       def link_to_section(section)
         content_tag :a, section['name'], :href => section['url']
+      end
+
+      def page_title(page)
+        page['is_page_home'] ? 'Home' : page['title']
       end
 
       def escape_html(html)
@@ -79,7 +83,29 @@ module Mephisto
         earliest = controller.site.articles.find(:first, :order => 'published_at').published_at.beginning_of_month
       end
       
-      
+      private
+        # marks a page as class=selected
+        def page_anchor_options(page)
+          options = {:href => page_url(page)}
+          current_page_article.source == page.source ? options.update(:class => 'selected') : options
+        end
+
+        def page_url(page)
+          page[:is_page_home] ? current_page_section.url : [current_page_section.url, page[:permalink]].join('/')
+        end
+        
+        def current_page_section
+          @current_page_section ||= outer_context(:section)
+        end
+        
+        def current_page_article
+          @current_page_article ||= outer_context(:article)
+        end
+        
+        # pulls a variable out of the outermost context
+        def outer_context(key)
+          @context.assigns.last[key.to_s]
+        end
     end
   end
 end

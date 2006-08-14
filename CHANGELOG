@@ -1,5 +1,19 @@
 * SVN *
 
+* Bye bye PageNavigation block.
+
+  Change this:
+
+    {% pagenavigation %}
+      <li>{{ page.link }}</li>
+    {% endpagenavigation %}
+  
+  to:
+
+    {% for page in pages %}
+    <li>{{ page | link_to_page }}</li>
+    {% endfor %}
+
 * Enhance the site host validations so it requires a valid domain name.
 
 * Add basic asset support [Justin, Rick]

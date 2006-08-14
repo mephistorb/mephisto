@@ -50,7 +50,7 @@ class CommentsController < ApplicationController
     def show_article_with(assigns)
       Mephisto::Liquid::CommentForm.article = @article
       @comments = @article.comments.reject(&:new_record?).collect(&:to_liquid)
-      @article  = @article.to_liquid(:single)
+      @article  = @article.to_liquid(:mode => :single)
       render_liquid_template_for(:single, assigns.merge('articles' => [@article], 
                                           'article'  => @article, 
                                           'comments' => @comments))

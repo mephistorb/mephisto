@@ -41,7 +41,7 @@ class MephistoController < ApplicationController
     @comments = @article.comments.collect { |c| c.to_liquid }
     self.cached_references << @article
     Mephisto::Liquid::CommentForm.article = @article
-    @article  = @article.to_liquid(:single)
+    @article  = @article.to_liquid(:mode => :single)
     render_liquid_template_for(:single, 'articles' => [@article], 'article' => @article, 'comments' => @comments)
   end
 
@@ -83,9 +83,13 @@ class MephistoController < ApplicationController
     
       self.cached_references << @section << @article
       Mephisto::Liquid::CommentForm.article = @article
+      articles = []
+      @section.articles.each_with_index do |article, i|
+        articles << article.to_liquid(:page => i.zero?)
+      end
       render_liquid_template_for(template_type, 'section'          => @section.to_liquid(true),
-                                                'pages'            => @section.articles.collect(&:to_liquid),
-                                                'article'          => @article.to_liquid(:single),
+                                                'pages'            => articles,
+                                                'article'          => @article.to_liquid(:mode => :single),
                                                 'article_sections' => @article.sections.collect(&:to_liquid))
     end
 

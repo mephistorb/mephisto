@@ -4,7 +4,7 @@ class ArticleDropTest < Test::Unit::TestCase
   fixtures :sites, :sections, :contents, :assigned_sections, :users
   
   def setup
-    @article = Mephisto::Liquid::ArticleDrop.new(contents(:welcome), :single)
+    @article = Mephisto::Liquid::ArticleDrop.new(contents(:welcome), :mode => :single)
   end
   
   def test_should_convert_article_to_drop
