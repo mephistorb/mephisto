@@ -27,10 +27,9 @@ module FilteredColumn
         end
 
         protected
-          def process_macros?() true end
           def process_filters
             filtered_attributes.each do |attr_name|
-              send "#{attr_name}_html=", FilteredColumn::Processor.process_filters(filters_for_attribute(attr_name), send(attr_name), process_macros?)
+              send "#{attr_name}_html=", FilteredColumn::Processor.process_filters(filters_for_attribute(attr_name), send(attr_name))
             end
           end
           

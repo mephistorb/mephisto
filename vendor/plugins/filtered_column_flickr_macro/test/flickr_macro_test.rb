@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'abstract_unit')
 
-class MacroFilterTest < Test::Unit::TestCase
+class FlickrMacroTest < Test::Unit::TestCase
   def test_should_retrieve_macro
     assert_equal FlickrMacro, FilteredColumn.macros[:flickr_macro]
   end
