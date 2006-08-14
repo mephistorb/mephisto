@@ -13,7 +13,7 @@ class CodeMacroTest < Test::Unit::TestCase
     
     assert_equal expected, html
   end
-  
+
   def test_code_macro_without_language
     html = process_macros '<macro:code>assert_equal 4, 2 + 2</macro:code>'
     expected = '<pre><code>assert_equal 4, 2 + 2</code></pre>'

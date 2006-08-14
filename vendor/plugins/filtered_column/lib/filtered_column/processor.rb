@@ -10,14 +10,13 @@ module FilteredColumn
       ]
 
     class << self
-      def process_filters(filters, text_to_filter)
-        return '' if text_to_filter.blank?
-        process_macros(text_to_filter) if FilteredColumn.macros.any?
-        [filters].flatten.inject(text_to_filter) { |txt, filter_name| filter_text filter_name, txt }
+      def process_filters(filters, text)
+        return '' if text.blank?
+        process_macros(text) if FilteredColumn.macros.any?
+        [filters].flatten.inject(text) { |txt, filter_name| filter_text filter_name, txt }
       end
 
       def filter_text(filter_name, text_to_filter)
-        puts filter_name if FilteredColumn.filters[filter_name.to_sym].nil?
         FilteredColumn.filters[filter_name.to_sym].filter text_to_filter
       end
       

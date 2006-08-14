@@ -143,11 +143,6 @@ class Article < Content
   end
 
   protected
-    # used by FilteredColumn
-    def process_macros?
-      parse_macros?
-    end
-
     def create_permalink
       self.permalink = title.to_s.gsub(/\W+/, ' ').strip.downcase.gsub(/\ +/, '-')
     end
