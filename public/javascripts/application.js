@@ -14,9 +14,8 @@ var UserForm = {
 }
 
 var SectionForm = {
-  toggle_settings: function() {
-    Element.toggle('blog-options')
-    Element.toggle('paged-options')
+  toggleSettings: function() {
+    Element.toggle('blog-options');
   },
 
   sortable: null,
