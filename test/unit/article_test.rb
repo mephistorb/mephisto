@@ -40,7 +40,6 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal [], a.filters
     a.set_default_filters_from(users(:quentin))
     assert_equal [:textile_filter], a.filters
-    assert a.parse_macros?
   end
 
   def test_should_modify_filters

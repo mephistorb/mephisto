@@ -30,7 +30,7 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def new
-    @article = site.articles.build(:comment_age => site.comment_age, :filters => current_user.filters, :parse_macros => current_user.parse_macros, :published_at => utc_to_local(Time.now.utc))
+    @article = site.articles.build(:comment_age => site.comment_age, :filters => current_user.filters, :published_at => utc_to_local(Time.now.utc))
   end
 
   def edit

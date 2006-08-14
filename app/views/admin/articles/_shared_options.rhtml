@@ -18,7 +18,6 @@
         <select name="article[filters][]" id="article_filters">
         <%= options_for_select(filter_options, (@article.filters || []).first.to_s) %>
       </select>
-      <p><%= form.check_box :parse_macros %><label>Use macro filters</label></p>
     </dd>
     <dt><label for="article_comment_age">Comments</label></dt>
     <dd><%= form.select :comment_age, comment_expiration_options %></dd>

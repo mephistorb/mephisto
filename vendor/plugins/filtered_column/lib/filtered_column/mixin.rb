@@ -29,7 +29,7 @@ module FilteredColumn
         protected
           def process_filters
             filtered_attributes.each do |attr_name|
-              send "#{attr_name}_html=", FilteredColumn::Processor.process_filters(filters_for_attribute(attr_name), send(attr_name).dup)
+              send "#{attr_name}_html=", FilteredColumn::Processor.process_filters(filters_for_attribute(attr_name), send(attr_name).to_s.dup)
             end
           end
           

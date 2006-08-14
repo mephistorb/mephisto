@@ -120,18 +120,16 @@ class Article < Content
     published_at + comment_age.days
   end
 
-  # leave out macro_filter, that is turned on/off with parse_macros?
   def filters=(value)
     write_changed_attribute :filters, [value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq
   end
   
-  # factor in parse_macros?
   def filters
     read_attribute(:filters) || []
   end
 
   def set_filters_from(filtered_object)
-    self.attributes = { :filters => filtered_object.filters, :parse_macros => filtered_object.parse_macros? }
+    self.filters = filtered_object.filters
   end
 
   def set_default_filters_from(filtered_object)
