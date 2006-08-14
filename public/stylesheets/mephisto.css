@@ -1137,7 +1137,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 
 
 /*
- *=ASSET MANAGEMENT
+ *=FILTER
  */
 
 #filter {
@@ -1168,7 +1168,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   border: none;
   text-decoration: none;
   padding: 4px 6px 5px 0;
-  margin: 0 10px 0 9px;
+  margin: 0 6px 0 9px;
   color: #333;
   text-shadow: 2px 2px #fff;
   font-weight: bold;
@@ -1193,6 +1193,11 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 #filter li.sep {
   border-right: 1px solid #578;
 }
+
+
+/*
+ *=ASSET MANAGEMENT
+ */
 
 #assets, #files {
   list-style: none;
@@ -1264,6 +1269,10 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   font-style: italic;
   display: block;
   text-align: center;
+}
+
+#recentfiles h4 {
+  font-size: 90%;
 }
 /*
  *=MISC

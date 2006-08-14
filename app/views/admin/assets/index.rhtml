@@ -27,11 +27,13 @@
   <% end -%>
   </ul>
   
-  <h3 class="divider">Your files</h3>
-  <ul id="files" class="clear">
-  <% @assets.each do |asset| -%>
-    <li><%= link_to asset_image_for(asset, :tiny), edit_asset_url(asset) %></li>
-  <% end -%>
-  </ul>
+  <% if @assets.any? %>
+    <h3 class="divider">Your files</h3>
+    <ul id="files" class="clear">
+    <% @assets.each do |asset| -%>
+      <li><%= link_to asset_image_for(asset, :tiny), edit_asset_url(asset) %></li>
+    <% end -%>
+    </ul>
+  <% end %>
   
 </div>
