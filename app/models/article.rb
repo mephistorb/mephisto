@@ -122,12 +122,12 @@ class Article < Content
 
   # leave out macro_filter, that is turned on/off with parse_macros?
   def filters=(value)
-    write_changed_attribute :filters, ([value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq - [:macro_filter])
+    write_changed_attribute :filters, [value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq
   end
   
   # factor in parse_macros?
   def filters
-    (read_attribute(:filters) || []) + (parse_macros? ? [:macro_filter] : [])
+    read_attribute(:filters) || []
   end
 
   def set_filters_from(filtered_object)
@@ -143,6 +143,11 @@ class Article < Content
   end
 
   protected
+    # used by FilteredColumn
+    def process_macros?
+      parse_macros?
+    end
+
     def create_permalink
       self.permalink = title.to_s.gsub(/\W+/, ' ').strip.downcase.gsub(/\ +/, '-')
     end

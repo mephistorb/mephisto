@@ -4,7 +4,7 @@ class User < UserAuth
   acts_as_paranoid
 
   def filters=(value)
-    write_attribute :filters, ([value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq - [:macro_filter])
+    write_attribute :filters, [value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq
   end
 
   def to_liquid

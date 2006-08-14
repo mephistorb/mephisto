@@ -28,7 +28,7 @@ module ApplicationHelper
 
   # TODO: write a select helper in the filtered column plugin for this
   def filter_options
-    (FilteredColumn.default_filters - [:macro_filter]).inject([]) { |arr, key| arr << [FilteredColumn[key].filter_name, key.to_s] }.unshift(['Plain HTML', ''])
+    (FilteredColumn.filters.keys).inject([]) { |arr, key| arr << [FilteredColumn.filters[key].filter_name, key.to_s] }.unshift(['Plain HTML', ''])
   end
   
   def who(name)
