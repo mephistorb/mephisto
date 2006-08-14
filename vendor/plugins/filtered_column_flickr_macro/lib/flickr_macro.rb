@@ -10,7 +10,7 @@ class FlickrMacro < FilteredColumn::Macros::Base
     title   = attributes[:title]
     alt     = attributes[:alt]
 
-    flickr      = Flickr.new(KEY)
+    flickr      = Flickr.new(attributes[:key] || KEY)
     flickrimage = Flickr::Photo.new(img)
     sizes       = flickrimage.sizes
 
