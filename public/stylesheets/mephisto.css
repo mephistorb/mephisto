@@ -1167,7 +1167,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   display: block;
   border: none;
   text-decoration: none;
-  padding: 4px 6px 5px 0;
+  padding: 4px 8px 5px 0;
   margin: 0 6px 0 9px;
   color: #333;
   text-shadow: 2px 2px #fff;
@@ -1177,11 +1177,21 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 #filter li a:hover, #filter li:hover a {
   color: #fff;
   text-shadow: 2px 2px #578;
-  background: transparent url(../images/attribute-pressed.gif) 100% 50%  no-repeat;
+  background: transparent url(../images/attribute-bg.gif) 100% 50%  no-repeat;
 }
 
 #filter li:hover {
-  background: transparent url(../images/attribute-pressed-left.gif) 0 50%  no-repeat;
+  background: transparent url(../images/attribute-bg-left.gif) 0 50%  no-repeat;
+}
+
+#filter li.pressed a {
+  color: #fff;
+  text-shadow: 2px 2px #578;
+  background: transparent url(../images/attribute-pressed-left.gif) 100% 50%  no-repeat !important;
+}
+
+#filter li.pressed  {
+  background: transparent url(../images/attribute-pressed.gif) 0 50%  no-repeat !important;
 }
 
 #filter ul#attributes {

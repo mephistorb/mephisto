@@ -1,6 +1,7 @@
 <%= render :partial => "action_nav" %>
 
 <% content_for :action_nav do -%>
+<%= form_remote_tag %>
   <div id="filter">
     <ul class="clear" id="type">
       <li><a href="#" title="Test">Pictures</a></li>
@@ -11,8 +12,18 @@
       <li><a href="#" title="Tags">Tags</a></li>
       <li><a href="#" title="Title">Title</a></li>
       <li><a href="#" title="Date">Date</a></li>
-      <li><input type="search" /></li>
+      <li><input type="search" name="q" id="filesearch" /></li>
     </ul>
+    <div id="filter-options" style="display:none">
+      <%= check_box_tag 'filter[pictures]', 'pictures',  false, :id => 'filter-pictures' %>
+      <%= check_box_tag 'filter[documents]', 'documents', false, :id => 'filter-documents' %>
+      <%= check_box_tag 'filter[movies]', 'movies',    false, :id => 'filter-movies'%>
+      
+      <%= check_box_tag 'conditions[tags]', 'tags', false, :id => 'conditions-tags' %>
+      <%= check_box_tag 'conditions[title]', 'title', false, :id => 'conditions-title' %>
+      <%= check_box_tag 'conditions[date]', 'date', false, :id => 'conditions-date' %>
+    </div>
+    <% end_form_tag %>  
   </div>
 <% end -%>
 
