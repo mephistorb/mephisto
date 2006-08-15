@@ -1,0 +1,128 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'rake'
+require 'rake/testtask'
+require 'rake/rdoctask'
+require 'rake/gempackagetask'
+require 'rake/contrib/rubyforgepublisher'
+
+PKG_VERSION = "1.5.0"
+PKG_NAME = "liquid"
+PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
+
+PKG_FILES = FileList[
+    "lib/**/*", "test/**/*", "example/**/*" "[A-Z]*", "Rakefile", "init.rb"
+].exclude(/\bCVS\b|~$|\.svn/)
+
+desc "Default Task"
+task :default => [ :test ]
+
+desc "Delete tar.gz / zip / rdoc"
+task :cleanup => [ :rm_packages, :clobber_rdoc ]
+
+# Run the unit tests
+
+Rake::TestTask.new(:test) do |t|
+  t.libs << "lib"
+  t.libs << "test"
+  t.pattern = 'test/*_test.rb'
+  t.verbose = false
+end
+
+task :install => [:package] do
+  `gem install pkg/#{PKG_FILE_NAME}.gem`
+end
+
+task :syntax do 
+  filelist = Dir.glob('**/*.rb')
+  filelist.each do |file|
+    output = `ruby -c #{file}`
+    unless output =~ /Syntax OK/
+      puts "#{file}:"
+      puts "  #{output}"
+      return 
+    end
+  end
+  puts 'Syntax OK'  
+end
+
+# Genereate the RDoc documentation
+
+Rake::RDocTask.new { |rdoc|
+  rdoc.rdoc_dir = 'doc'
+  rdoc.title    = "Liquid templates library"
+  rdoc.options << '--line-numbers --inline-source'
+  rdoc.rdoc_files.include('README')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+}
+
+task :lines do
+  lines = 0
+  codelines = 0
+  Dir.foreach("lib") { |file_name| 
+    next unless file_name =~ /.*rb/
+    
+    f = File.open("lib/" + file_name)
+
+    while line = f.gets
+      lines += 1
+      next if line =~ /^\s*$/
+      next if line =~ /^\s*#/
+      codelines += 1
+    end
+  }
+  puts "Lines #{lines}, LOC #{codelines}"
+end
+
+
+# Publish beta gem  
+desc "Publish the gem on leetsoft"
+task :publish => [:rdoc, :package] do
+  Rake::SshFilePublisher.new("leetsoft.com", "dist/pkg", "pkg", "#{PKG_FILE_NAME}.zip").upload
+  Rake::SshFilePublisher.new("leetsoft.com", "dist/pkg", "pkg", "#{PKG_FILE_NAME}.tgz").upload
+  Rake::SshFilePublisher.new("leetsoft.com", "dist/gems", "pkg", "#{PKG_FILE_NAME}.gem").upload
+
+  `ssh tobi@leetsoft.com "mkdir -p dist/api/#{PKG_NAME}"`
+  Rake::SshDirPublisher.new("leetsoft.com", "dist/api/#{PKG_NAME}", "doc").upload
+  `ssh tobi@leetsoft.com './gemupdate'`
+  `rm -rf pkg/`
+  `rm -rf doc/`
+end
+
+
+spec = Gem::Specification.new do |s|
+  s.name = PKG_NAME
+  s.version = PKG_VERSION
+  s.summary = "A secure non evaling end user template engine with aesthetic markup"
+  s.has_rdoc = true
+  s.files = PKG_FILES
+
+  s.require_path = 'lib'
+  s.autorequire  = 'liquid'
+  s.author = "Tobias Luetke"
+  s.email = "tobi@leetsoft.com"
+  s.homepage = "http://dist.leetsoft.com/api/liquid"  
+end
+
+Rake::GemPackageTask.new(spec) do |p|
+  p.gem_spec = spec
+  p.need_tar = true
+  p.need_zip = true
+end
+
+# --- Ruby forge release manager by florian gross -------------------------------------------------
+RUBY_FORGE_PROJECT = 'liquid'
+RUBY_FORGE_USER = 'xal'
+
+RELEASE_NAME  = "REL-#{PKG_VERSION}"
+RUBY_FORGE_GROUPID = "1069"
+RUBY_FORGE_PACKAGEID = "1255"
+
+desc "Publish the release files to RubyForge."
+task :release => [:gem, :package] do
+#  files = ["zip", "tgz"].map { |ext| "pkg/#{PKG_FILE_NAME}.#{ext}" }
+
+  system("rubyforge login") 
+  system("rubyforge add_release #{PKG_NAME} #{PKG_NAME} 'REL #{PKG_VERSION}' pkg/#{PKG_NAME}-#{PKG_VERSION}.zip")
+  system("rubyforge add_release #{PKG_NAME} #{PKG_NAME} 'REL #{PKG_VERSION}' pkg/#{PKG_NAME}-#{PKG_VERSION}.tgz")
+end
