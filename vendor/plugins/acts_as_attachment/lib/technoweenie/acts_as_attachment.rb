@@ -310,10 +310,9 @@ module Technoweenie # :nodoc:
 
       # Gets the attachment data
       def attachment_data
-        filename = full_filename
-        @attachment_data ||= File.file?(filename) ? File.read(filename) : nil
-
         return @attachment_data if @attachment_data
+        
+        filename = full_filename
         File.open(filename, 'rb') do |file|
           @attachment_data = file.read
         end if File.file?(filename)
