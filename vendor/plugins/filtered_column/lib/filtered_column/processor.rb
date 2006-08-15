@@ -21,13 +21,13 @@ module FilteredColumn
       end
       
       def process_macros(text_to_filter)
+        #RAILS_DEFAULT_LOGGER.warn "PROCESSING MACROS: #{::FilteredColumn.macros.keys.inspect}"
         @@patterns.each do |pattern|
           text_to_filter.gsub!(pattern) do |match|
-            #puts "our match: #{$2}"
-            #puts "macros array: #{macros.inspect}"
+            #RAILS_DEFAULT_LOGGER.warn "our match: #{$2}"
             key = "#{$2}_macro".to_sym
             if !$2.blank? && FilteredColumn.macros.has_key?(key)
-              #puts "It has the key!"
+              #RAILS_DEFAULT_LOGGER.warn "It has the key!"
               FilteredColumn.macros[key].filter(hash_from_attributes($3), $4.to_s) 
             end
           end
