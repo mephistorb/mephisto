@@ -23,6 +23,22 @@ Time.class_eval do
   end
 end
 
+# TRUNCATE table to reset the id autonumber
+# needed for the asset tests
+case ActiveRecord::Base.connection
+  when ActiveRecord::ConnectionAdapters::MysqlAdapter
+    Fixtures.class_eval do
+      def delete_existing_fixtures
+        self.class.delete_existing_fixtures_for @connection, @table_name
+      end
+      
+      def self.delete_existing_fixtures_for(connection, table_name)
+        connection.delete  "TRUNCATE TABLE #{table_name}", 'Fixture Delete'
+        connection.execute "ALTER TABLE #{table_name} AUTO_INCREMENT = 1", 'Renumber Auto Increment'
+      end
+    end
+end
+
 class Test::Unit::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false

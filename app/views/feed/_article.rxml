@@ -10,6 +10,6 @@ xm.entry do
   end
   xm.link "rel" => "alternate", "type" => "text/html", "href" => article_url(article.hash_for_permalink)
   xm.title     strip_tags(article.title)
-  xm.summary   textilize(article.excerpt), 'type' => 'html' unless article.excerpt.blank?
-  xm.content   textilize(article.body),    'type' => 'html' unless article.body.blank?
+  xm.summary   article.excerpt_html, 'type' => 'html' unless article.excerpt_html.blank?
+  xm.content   article.body_html,    'type' => 'html' unless article.body_html.blank?
 end

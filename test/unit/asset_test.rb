@@ -33,7 +33,7 @@ class AssetTest < Test::Unit::TestCase
   def test_should_show_correct_public_filename
     process_upload
     now   = Time.now.utc
-    asset = Asset.find(1)
+    asset = Asset.find(:first, :conditions => 'parent_id is null')
     assert_equal File.join('/assets', now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png'), asset.public_filename
   end
 
@@ -41,7 +41,7 @@ class AssetTest < Test::Unit::TestCase
     Site.multi_sites_enabled = true
     process_upload
     now   = Time.now.utc
-    asset = Asset.find(1)
+    asset = Asset.find(:first, :conditions => 'parent_id is null')
     assert_equal File.join('/assets', now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png'), asset.public_filename
   ensure
     Site.multi_sites_enabled = false
@@ -101,7 +101,8 @@ class AssetTest < Test::Unit::TestCase
   
   protected
     def process_upload
-      sites(:first).assets.create(:filename => 'logo.png', :content_type => 'image/png', 
+      a = sites(:first).assets.create(:filename => 'logo.png', :content_type => 'image/png', 
         :attachment_data => IO.read(File.join(RAILS_ROOT, 'public/images/logo.png')))
+      assert_valid a
     end
 end

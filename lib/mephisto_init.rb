@@ -7,9 +7,9 @@ require 'ruby_pants'
 class << Dispatcher
   def register_liquid_tags
     Liquid::Template.register_filter(Mephisto::Liquid::Filters)
-    Liquid::Template.register_tag(:textile,        Mephisto::Liquid::Textile)
-    Liquid::Template.register_tag(:commentform,    Mephisto::Liquid::CommentForm)
-    Liquid::Template.register_tag(:head,           Mephisto::Liquid::Head)
+    Liquid::Template.register_tag(:textile,     Mephisto::Liquid::Textile)
+    Liquid::Template.register_tag(:commentform, Mephisto::Liquid::CommentForm)
+    Liquid::Template.register_tag(:head,        Mephisto::Liquid::Head)
   end
   
   def reset_application_with_plugins!

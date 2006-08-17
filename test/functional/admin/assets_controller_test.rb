@@ -12,6 +12,7 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     login_as :quentin
+    Fixtures.delete_existing_fixtures_for(Asset.connection, :assets)
   end
 
   def test_should_visit_index
@@ -20,6 +21,7 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
   end
 
   def test_should_sort_assets
+    
     assert_difference sites(:first).assets, :count, 21 do
       assert_difference Asset, :count, 63 do
         t = 5.months.ago.utc
@@ -48,16 +50,17 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
   def test_should_edit_asset
     login_as(:quentin) { process_upload }
     login_as :quentin
-    get :edit, :id => 1
+    get :edit, :id => Asset.find(1).id
     assert_response :success
   end
   
   def test_should_update_asset
     login_as(:quentin) { process_upload }
     login_as :quentin
-    post :update, :id => 1, :asset => { :title => 'foo bar' }
+    post :update, :id => Asset.find(1).id, :asset => { :title => 'foo bar' }
     #assert_redirected_to asset_path
-    assert_equal 'foo bar', Asset.find(1).title
+    assert_valid assigns(:asset)
+    assert_equal 'foo bar', assigns(:asset).title
   end
   
   def teardown
