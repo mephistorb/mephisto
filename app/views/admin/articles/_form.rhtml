@@ -18,7 +18,7 @@
   <dt><label for="article-draft">Save as Draft?</label></dt>
   <dd><%= check_box_tag :draft, '1', !@article.new_record? && !@published, :id => 'article-draft' %> Yes, save this article as a draft.</dd>
   <dt id="publish-date-lbl"<%= %( style="display:none") unless @article.new_record? || @published -%>><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
-  <dd id="publish-date"<%= %( style="display:none") unless @article.new_record? || @published -%>><%= form.datetime_select :published_at, :discard_year => true %></dd>
+  <dd id="publish-date"<%= %( style="display:none") unless @article.new_record? || @published -%>><%= form.datetime_select :published_at, {:start_year => 2005, :discard_year => true, :order => [:month, :day, :year] } %></dd>
 </dl>
 <!-- /end optional fields -->
 

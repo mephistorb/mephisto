@@ -8,12 +8,16 @@
     <%= options_for_select ['All', 'Unapproved', 'Approved'], params[:filter].to_s.humanize %>
   </select>
 </h3>
-<ul class="pagelist">
+
+<ul class="pagelist commentlist">
   <% if @comments.any? %>
   <% @comments.reverse.each_with_index do |comment, i| -%>
   <li class="event-comment<%= " shade" if (i % 2 > 0) %>" id="comment-<%= comment.id %>">
+    <% if false %>
+    <input type="checkbox" title="" />
+    <% end %>
     <a name="comment-<%= comment.id %>"></a> 
-    <blockquote><p>"<%= truncate strip_tags(comment.body), 255 %>"</p></blockquote>
+    <blockquote><p>"<%= strip_tags(comment.body) %>"</p></blockquote>
     <span class="meta">
       <cite>&mdash; <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %></cite>
       

@@ -107,6 +107,27 @@ img { border: 0;}
   font-style: normal;
 }
 
+blockquote p {
+  margin: 0 !important;
+  padding: 0 !important;
+  font: italic 110% "Times New Roman", serif;
+}
+
+.clear:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+
+.clear {display: inline-table;}
+
+/* Hides from IE-mac \*/
+* html .clear {height: 1%;}
+.clear {display: block;}
+/* End hide from IE-mac */
+
 /*
  *=FORMS
  */
@@ -1123,6 +1144,28 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   background: #eee;
 }
 
+.commentlist li {
+  position: relative;
+  padding: 20px;
+  padding-left: 70px;
+}
+
+.commentlist blockquote p {
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif !important;
+  line-height: 150%;
+}
+
+.commentlist input[type='checkbox'] {
+  position: absolute;
+  left: 3px;
+  top: 40%;
+  padding: 0;
+}
+
+.commentlist .event-comment {
+  background-position: 30px 50%;
+}
+
 /*
  *=PAGINATION
  */
@@ -1389,26 +1432,7 @@ ul.nobull li label {
   text-indent: -99999px;
 }
 
-blockquote p {
-  margin: 0 !important;
-  padding: 0 !important;
-  font: italic 110% "Times New Roman", serif;
-}
 
-.clear:after {
-    content: "."; 
-    display: block; 
-    height: 0; 
-    clear: both; 
-    visibility: hidden;
-}
-
-.clear {display: inline-table;}
-
-/* Hides from IE-mac \*/
-* html .clear {height: 1%;}
-.clear {display: block;}
-/* End hide from IE-mac */
 
 
 
@@ -1416,7 +1440,7 @@ blockquote p {
  *=ERRORS AND NOTICES
  */
 
-#flash-errors {
+#flash-errors, #errorExplanation {
   margin: 0 auto;
   background: #F69A91;
   padding: 10px;
@@ -1431,11 +1455,24 @@ blockquote p {
   text-align: center;
 }
 
+#errorExplanation ul, 
 #flash-notice ul, 
 #flash-errors ul,
 #flash-notice li,
 #flash-errors li {
   list-style: none;
+}
+
+#errorExplanation {
+  text-align: left;
+  border: 1px solid #F99;
+  background: #fdd;
+}
+
+#errorExplanation h2 {
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 /*

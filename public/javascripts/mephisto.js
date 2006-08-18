@@ -135,6 +135,12 @@ var ArticleForm = {
   }
 }
 
+Comments = {
+  filter: function() {
+    location.href = "?filter=" + $F(this).toLowerCase();
+  }
+}
+
 var UserForm = {
   toggle: function(chk) {
     $('user-' + chk.getAttribute('value') + '-progress').show();
@@ -234,7 +240,7 @@ Event.observe(window, 'load', function() {
   // TODO: IE doesn't fire onchange for checkbox
   var commentsView   = $('comments-view');
   var articleDraft   = $('article-draft');
-  if(commentsView)   Event.observe(commentsView,   'change', ArticleForm.viewComments.bind(commentsView));
+  if(commentsView)   Event.observe(commentsView,   'change', Comments.filter.bind(commentsView));
   if(articleDraft)   Event.observe(articleDraft,   'change', ArticleForm.saveDraft.bind(articleDraft));
 });
 
