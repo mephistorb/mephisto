@@ -9,7 +9,6 @@ module ApplicationHelper
   def avatar_for(user, options = {})
     image_tag gravatar_url_for(user), {:class => 'avatar'}.merge(options)
   end
-
   def asset_title_for(asset)
     asset.title.blank? ? asset.filename : asset.title
   end
@@ -35,8 +34,14 @@ module ApplicationHelper
     return current_user.login == name ? "You" : name
   end
 
-  def gravatar_url_for(user, size = 80)
-    "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(user.email)}&default=http://#{request.host_with_port}/images/avatar.gif"
+  if RAILS_ENV == 'development'
+    def gravatar_url_for(user, size = 80)
+      'avatar.gif'
+    end
+  else
+    def gravatar_url_for(user, size = 80)
+      "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(user.email)}&default=http://#{request.host_with_port}/images/avatar.gif"
+    end
   end
 
   def comment_expiration_options
