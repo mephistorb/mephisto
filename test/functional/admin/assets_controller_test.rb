@@ -51,6 +51,22 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     assert_response :success
     assert_models_equal [assets(:swf)], assigns(:recent)
   end
+  
+  def test_should_search_for_images_by_tag
+    xhr :get, :index, :q => 'ruby', :filter => { :image => '1' }, :conditions => { :tags => '1' }
+    assert_response :success
+    assert_models_equal [assets(:gif)], assigns(:recent)
+  end
+
+  def test_should_search_for_images_by_title
+    xhr :get, :index, :q => 'swf', :filter => { :image => '1' }
+    assert_response :success
+    assert_equal [], assigns(:recent)
+  end
+
+  #def test_should_search_for_images_by_title_and_tag
+  #  
+  #end
 
   def teardown
     FileUtils.rm_rf ASSET_PATH

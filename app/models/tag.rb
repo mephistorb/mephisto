@@ -11,6 +11,7 @@ class Tag < ActiveRecord::Base
     #   Tag.parse('a, b, c')
     #   # => ['a', 'b', 'c']
     def parse(list)
+      return list if list.is_a?(Array)
       list.split(',').collect! { |s| s.gsub(/[^\w\ ]+/, '').downcase.strip }.delete_if { |s| s.blank? }
     end
     

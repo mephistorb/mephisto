@@ -33,4 +33,8 @@ class TaggingTest < Test::Unit::TestCase
     end
     assert_models_equal [Tag[:foo], tags(:mongrel), tags(:rails)], assets(:gif).reload.tags
   end
+  
+  def test_should_find_by_tags
+    assert_models_equal [assets(:gif)], Asset.find_tagged_with('ruby, rails')
+  end
 end

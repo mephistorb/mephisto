@@ -36,14 +36,29 @@ class Admin::AssetsController < Admin::BaseController
     def find_asset
       @asset = site.assets.find(params[:id])
     end
-    
+
     def search_options
       unless params[:q].blank?
         params[:q].downcase!
         params[:q] << '%'
       end
-      returning :order => 'created_at desc', :limit => 20 do |options|
-        options[:conditions] = ['LOWER(title) LIKE :q or LOWER(filename) LIKE :q', {:q => params[:q]}] unless params[:q].blank?
+
+      returning :order => 'created_at desc', :limit => 20, :conditions => [] do |options|
+        unless params[:q].blank?
+          params[:conditions] = { :title => true } if params[:conditions].blank?
+          options[:conditions] << Asset.send(:sanitize_sql, ['(LOWER(title) LIKE :q or LOWER(filename) LIKE :q)', {:q => params[:q]}]) if params[:conditions].has_key?(:title)
+          
+          if params[:conditions].has_key?(:tags)
+            options[:joins] = "inner join taggings on taggings.taggable_id = assets.id and taggings.taggable_type = 'Asset' inner join tags on taggings.tag_id = tags.id"
+            options[:conditions] << Asset.send(:sanitize_sql, ['(tags.name IN (?))', Tag.parse(params[:q])])
+          end
+        end
+
+        if options[:conditions].blank?
+          options.delete(:conditions)
+        else
+          options[:conditions] = options[:conditions] * ' or '
+        end
       end
     end
 end

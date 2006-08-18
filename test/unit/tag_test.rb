@@ -7,6 +7,10 @@ class TagTest < Test::Unit::TestCase
     assert_equal %w(a b c), Tag.parse('a, b, c')
   end
 
+  def test_should_return_tag_array
+    assert_equal %w(a b c), Tag.parse(%w(a b c))
+  end
+
   def test_should_find_or_create_tags
     assert_difference Tag, :count do
       Tag.find_or_create %w(ruby rails foo)
