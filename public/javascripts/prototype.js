@@ -1617,7 +1617,6 @@ Abstract.EventObserver.prototype = {
   initialize: function(element, callback) {
     this.element  = $(element);
     this.callback = callback;
-
     this.lastValue = this.getValue();
     if (this.element.tagName.toLowerCase() == 'form')
       this.registerFormCallbacks();

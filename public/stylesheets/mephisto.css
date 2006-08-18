@@ -1254,6 +1254,28 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   border-right: 1px solid #fff;
 }
 
+.manual {
+  background: url(../images/manual-filter-bg.gif) repeat-x !important;
+  border-bottom: 1px solid #AA9 !important;
+  color: #332;
+}
+
+.manual #attributes li {
+  line-height: 200%;
+  font-weight: bold;
+  margin-right: 5px;
+  text-shadow: 2px 2px #fff;
+}
+
+.manual #attributes li:hover {
+  background: transparent;
+}
+
+#manualsearch, .manual select {
+  border: 1px solid #AA9;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+}
 
 /*
  *=ASSET MANAGEMENT

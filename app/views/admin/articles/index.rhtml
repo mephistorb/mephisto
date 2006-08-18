@@ -6,6 +6,30 @@
   </ul>
 </div>
 <!-- /end action nav -->
+<div id="filter" class="manual">
+  <%= start_form_tag({:action => 'search'}, :method => 'get', :id => 'article-search') %>
+  <ul class="clear">
+    <li><a href="#">&nbsp;</a></li>
+  </ul>
+  <ul id="attributes">
+    <li><label for="search">Show articles: (NOT IMPLEMENTED)</label></li>
+    <li>
+      <select name="conditions" id="conditionlist">
+        <%= options_for_select [
+          ['in section', 'section'],
+          ['whose title contains', 'title'],
+          ['whose text contains', 'body'],
+        ] %>
+      </select>
+      <select name="sections" id="sectionlist">
+        <option>&mdash;Select a section&mdash;</option>
+        <%= options_from_collection_for_select @sections, :id, :name %>
+      </select>
+    </li>
+    <li><input type="search" name="q" id="manualsearch" style="display:none" /></li>
+  </ul>
+  <%= end_form_tag %>
+</div>
 <% end %>
 
 <% if @articles.any? %>
@@ -30,8 +54,8 @@
 
 <!-- begin pagination -->
 <div id="pagination">
-  <%= link_to 'Previous page', { :page => @article_pages.current.previous } if @article_pages.current.previous %> | 
-  <%= link_to 'Next page', { :page => @article_pages.current.next } if @article_pages.current.next %> 
+  <%= link_to 'Newer articles  &laquo;', { :page => @article_pages.current.previous } if @article_pages.current.previous %> | 
+  <%= link_to 'Older articles &raquo;', { :page => @article_pages.current.next } if @article_pages.current.next %> 
 </div>
 <!-- /end pagination -->
 

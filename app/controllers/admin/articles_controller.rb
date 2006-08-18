@@ -18,6 +18,7 @@ class Admin::ArticlesController < Admin::BaseController
                        :limit   =>  @article_pages.items_per_page,
                        :offset  =>  @article_pages.current.offset)
     @comments = @site.unapproved_comments.count :all, :group => :article, :order => '1 desc'
+    @sections = site.sections.find(:all)
   end
 
   def show
