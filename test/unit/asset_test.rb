@@ -114,9 +114,17 @@ class AssetTest < Test::Unit::TestCase
   def test_should_set_tags
     assert_equal 'ruby', assets(:gif).tag
     assert_difference Tagging, :count do
-      assets(:gif).tag = 'ruby, rails'
+      assets(:gif).update_attribute :tag, 'ruby, rails'
     end
     assert_equal 'rails, ruby', assets(:gif).reload.tag
+  end
+
+  def test_should_set_tags_upon_asset_creation
+    a = nil
+    assert_difference Tagging, :count, 2 do
+      a = process_upload :tag => 'ruby, rails'
+    end
+    assert_equal 'rails, ruby', a.reload.tag
   end
 
   def setup
@@ -128,9 +136,10 @@ class AssetTest < Test::Unit::TestCase
   end
   
   protected
-    def process_upload
-      a = sites(:first).assets.create(:filename => 'logo.png', :content_type => 'image/png', 
-        :attachment_data => IO.read(File.join(RAILS_ROOT, 'public/images/logo.png')))
+    def process_upload(options = {})
+      a = sites(:first).assets.create(options.reverse_merge(:filename => 'logo.png', :content_type => 'image/png', 
+        :attachment_data => IO.read(File.join(RAILS_ROOT, 'public/images/logo.png'))))
       assert_valid a
+      a
     end
 end
