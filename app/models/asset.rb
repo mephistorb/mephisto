@@ -18,7 +18,7 @@ class Asset < ActiveRecord::Base
   end
 
   belongs_to :site
-  acts_as_attachment :storage => :file_system, :thumbnails => { :thumb => '120>', :tiny => '50>' }
+  acts_as_attachment :storage => :file_system, :thumbnails => { :thumb => '120>', :tiny => '50>' }, :max_size => 30.megabytes
   before_validation_on_create :set_site_from_parent
   validates_presence_of :site_id
   validates_as_attachment

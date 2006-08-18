@@ -10,7 +10,7 @@ class Site < ActiveRecord::Base
   has_many  :articles
   has_many  :events
   
-  has_many  :assets, :as => :attachable
+  has_many  :assets, :as => :attachable, :order => 'created_at desc'
   has_many  :templates
   has_many  :resources
   has_many  :attachments, :extend => Theme

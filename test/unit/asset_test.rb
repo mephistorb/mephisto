@@ -33,7 +33,7 @@ class AssetTest < Test::Unit::TestCase
   def test_should_show_correct_public_filename
     process_upload
     now   = Time.now.utc
-    asset = Asset.find(:first, :conditions => 'parent_id is null')
+    asset = Asset.find(:first, :conditions => 'id > 7', :order => 'created_at')
     assert_equal File.join('/assets', now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png'), asset.public_filename
   end
 
@@ -41,7 +41,7 @@ class AssetTest < Test::Unit::TestCase
     Site.multi_sites_enabled = true
     process_upload
     now   = Time.now.utc
-    asset = Asset.find(:first, :conditions => 'parent_id is null')
+    asset = Asset.find(:first, :conditions => 'id > 7', :order => 'created_at')
     assert_equal File.join('/assets', now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png'), asset.public_filename
   ensure
     Site.multi_sites_enabled = false
@@ -56,7 +56,7 @@ class AssetTest < Test::Unit::TestCase
   
   def test_should_ignore_thumbnails
     process_upload
-    assert_equal [Asset.find_by_filename('logo.png')], sites(:first).assets
+    assert_models_equal [Asset.find(:first, :conditions => 'id > 7', :order => 'created_at'), assets(:word), assets(:swf), assets(:pdf), assets(:mov), assets(:mp3), assets(:png), assets(:gif)], sites(:first).assets
   end
 
   def test_should_report_image_type

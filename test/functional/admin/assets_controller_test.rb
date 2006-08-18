@@ -12,7 +12,6 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     login_as :quentin
-    Fixtures.delete_existing_fixtures_for(Asset.connection, :assets)
   end
 
   def test_should_visit_index
@@ -21,7 +20,7 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
   end
 
   def test_should_sort_assets
-    
+    Fixtures.delete_existing_fixtures_for(Asset.connection, :assets)
     assert_difference sites(:first).assets, :count, 21 do
       assert_difference Asset, :count, 63 do
         t = 5.months.ago.utc
@@ -48,6 +47,7 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
   end
   
   def test_should_edit_asset
+    Fixtures.delete_existing_fixtures_for(Asset.connection, :assets)
     login_as(:quentin) { process_upload }
     login_as :quentin
     get :edit, :id => Asset.find(1).id
@@ -55,6 +55,7 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
   end
   
   def test_should_update_asset
+    Fixtures.delete_existing_fixtures_for(Asset.connection, :assets)
     login_as(:quentin) { process_upload }
     login_as :quentin
     post :update, :id => Asset.find(1).id, :asset => { :title => 'foo bar' }

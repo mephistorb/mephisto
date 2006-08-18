@@ -1,0 +1,59 @@
+# "content_type", :string
+# "filename",     :string
+# "size",         :integer
+# "parent_id",    :integer
+# "thumbnail",    :string
+# "width",        :integer
+# "height",       :integer
+# "site_id",      :integer
+# "created_at",   :datetime
+# "title",        :string
+gif:
+  id: 1
+  content_type: image/gif
+  filename: asset.gif
+  size: 2135
+  site_id: 1
+  created_at: <%= 11.minutes.ago.to_s :db %>
+png:
+  id: 2
+  content_type: image/png
+  filename: asset.png
+  size: 2361
+  site_id: 1
+  created_at: <%= 10.minutes.ago.to_s :db %>
+mp3:
+  id: 3
+  content_type: audio/mpeg
+  filename: asset.mp3
+  size: 252366
+  site_id: 1
+  created_at: <%= 9.minutes.ago.to_s :db %>
+mov:
+  id: 4
+  content_type: video/quicktime
+  filename: asset.mov
+  size: 235624
+  site_id: 1
+  created_at: <%= 8.minutes.ago.to_s :db %>
+pdf:
+  id: 5
+  content_type: application/pdf
+  filename: asset.pdf
+  size: 8246
+  site_id: 1
+  created_at: <%= 7.minutes.ago.to_s :db %>
+swf: 
+  id: 6
+  content_type: application/x-shockwave-flash
+  filename: asset.swf
+  size: 46234
+  site_id: 1
+  created_at: <%= 6.minutes.ago.to_s :db %>
+word:
+  id: 7
+  content_type: application/msword
+  filename: asset.doc
+  size: 23566
+  site_id: 1
+  created_at: <%= 5.minutes.ago.to_s :db %>
