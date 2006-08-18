@@ -7,7 +7,7 @@ quentin:
   activation_code: quentinscode # only if you're activating new signups
   created_at: <%= 5.days.ago.to_s :db %>
   updated_at: <%= 5.days.ago.to_s :db %>
-  filters: "--- \n- :textile_filter\n"
+  filter: textile_filter
   remember_token: quentintoken
   remember_token_expires_at: <%= 5.days.from_now.to_s :db %>
   # activated_at: <%= 5.days.ago.to_s :db %> # only if you're activating new signups
@@ -20,7 +20,7 @@ arthur:
   activation_code: arthurscode # only if you're activating new signups
   created_at: <%= 1.days.ago.to_s :db %>
   updated_at: <%= 1.days.ago.to_s :db %>
-  filters: "--- \n- :markdown_filter\n"
+  filter: markdown_filter
 aaron:
   id: 3
   login: aaron
@@ -31,4 +31,4 @@ aaron:
   created_at: <%= 1.days.ago.to_s :db %>
   updated_at: <%= 1.days.ago.to_s :db %>
   deleted_at: <%= 5.hours.ago.to_s :db %>
-  filters: "--- \n- :markdown_filter\n"
+  filter: markdown_filter

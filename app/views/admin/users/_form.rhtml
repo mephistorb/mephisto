@@ -2,10 +2,10 @@
   <dl class="setform clear">
     <dt><label for="user_login">Login</label></dt>
     <dd><%= f.text_field :login %></dd>
-    <dt><label for="user_filters">What markup type do you prefer?</label></dt>
+    <dt><label for="user_filter">What markup type do you prefer?</label></dt>
     <dd>
-      <select name="user[filters][]" id="user_filters">
-        <%= options_for_select(filter_options, (@user.filters || []).first.to_s) %>
+      <select name="user[filter]" id="user_filter">
+        <%= options_for_select(filter_options, @user.filter) %>
       </select>
     </dd>
     <dt><label for="user_email">Email address</label></dt>

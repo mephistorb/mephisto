@@ -13,10 +13,10 @@
 <div class="sgroup">
   <h3>Optional settings</h3>
   <dl class="sform">
-      <dt><label for="article_filters">Format with: </label></dt>
+      <dt><label for="article_filter">Format with: </label></dt>
       <dd>
-        <select name="article[filters][]" id="article_filters">
-        <%= options_for_select(filter_options, (@article.filters || []).first.to_s) %>
+        <select name="article[filter]" id="article_filter">
+        <%= options_for_select(filter_options, @article.filter) %>
       </select>
     </dd>
     <dt><label for="article_comment_age">Comments</label></dt>

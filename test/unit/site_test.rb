@@ -51,7 +51,7 @@ class SiteTest < Test::Unit::TestCase
   end
 
   def test_should_allow_empty_filter
-    sites(:first).update_attribute :filters, ['']
-    assert_equal [], sites(:first).reload.filters
+    sites(:first).update_attribute :filter, ''
+    assert_equal '', sites(:first).reload.filter
   end
 end

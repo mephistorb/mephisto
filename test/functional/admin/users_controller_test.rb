@@ -67,17 +67,17 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
 
   def test_should_highlight_correct_filter
     get :show, :id => users(:quentin).id
-    assert_tag :tag => 'select', :attributes => { :id => 'user_filters' },
+    assert_tag :tag => 'select', :attributes => { :id => 'user_filter' },
       :descendant => { :tag => 'option', :attributes => { :selected => 'selected', :value => 'textile_filter' } }
     get :show, :id => users(:arthur).id
-    assert_tag :tag => 'select', :attributes => { :id => 'user_filters' },
+    assert_tag :tag => 'select', :attributes => { :id => 'user_filter' },
       :descendant => { :tag => 'option', :attributes => { :selected => 'selected', :value => 'markdown_filter' } }
   end
 
   def test_should_save_new_filter
-    post :update, :id => '1', :user => { :filters => ['markdown_filter'] }
+    post :update, :id => '1', :user => { :filter => 'markdown_filter' }
     users(:quentin).reload
-    assert_equal :markdown_filter, users(:quentin).filters.first
+    assert_equal 'markdown_filter', users(:quentin).filter
   end
 
   def test_should_show_deleted_users

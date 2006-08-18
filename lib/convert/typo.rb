@@ -20,7 +20,7 @@ module Typo
             :login                    => typo_user.login,
             :password                 => newpass,
             :password_confirmation    => newpass,
-            :filters                  => [:textile_filter]
+            :filter                   => 'textile_filter'
           )
           unless new_user.valid?
             ActiveRecord::Base.logger.info "New user errors: #{new_user.errors.to_yaml}"
@@ -64,7 +64,7 @@ module Typo
         :user         => user,
         :updater      => user,
         :section_ids  => section_ids,
-        :filters      => [:textile_filter]
+        :filter       => 'textile_filter'
     end
 
     def create_comment(article, typo_comment)
@@ -77,7 +77,7 @@ module Typo
         :author_url   => typo_comment.url,
         :author_email => typo_comment.email,
         :author_ip    => typo_comment.ip,
-        :filters      => [:textile_filter]
+        :filter       => 'textile_filter'
       comment.approved = true
       comment.save
     end

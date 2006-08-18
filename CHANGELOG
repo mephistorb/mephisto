@@ -1,5 +1,7 @@
 * SVN *
 
+* Store filters as a single string field, remove the Serialize hacks.
+
 * Bye bye PageNavigation block.
 
   Change this:

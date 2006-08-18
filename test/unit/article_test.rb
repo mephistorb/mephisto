@@ -35,22 +35,26 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal '<p><em>bar</em></p>',            a.body_html
   end
 
-  def test_should_save_filters_from_user
+  def test_should_save_filter_from_user
     a = Article.new
-    assert_equal [], a.filters
-    a.set_default_filters_from(users(:quentin))
-    assert_equal [:textile_filter], a.filters
+    assert_nil a.filter
+    a.set_default_filter_from(users(:quentin))
+    assert_equal 'textile_filter', a.filter
   end
 
-  def test_should_modify_filters
-    assert_equal [:textile_filter], contents(:welcome).filters
-    contents(:welcome).filters = :markdown_filter
+  def test_should_modify_filter
+    assert_equal 'textile_filter', contents(:welcome).filter
+    assert_equal 'textile_filter', contents(:welcome_comment).filter
+    
+    contents(:welcome).filter = 'markdown_filter'
     contents(:welcome).save
-    assert_equal [:markdown_filter], contents(:welcome).reload.filters
+
+    assert_equal 'markdown_filter', contents(:welcome).reload.filter
+    assert_equal 'markdown_filter', contents(:welcome_comment).reload.filter
   end
 
   def test_should_cache_bluecloth
-    a = Article.create :title => 'simple Title', :user => users(:arthur), :body => "# bar\n\nfoo", :filters => [:markdown_filter], :site_id => 1
+    a = Article.create :title => 'simple Title', :user => users(:arthur), :body => "# bar\n\nfoo", :filter => 'markdown_filter', :site_id => 1
     assert_equal "<h1>bar</h1>\n\n<p>foo</p>", a.body_html
   end
 

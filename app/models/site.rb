@@ -15,9 +15,7 @@ class Site < ActiveRecord::Base
   has_many  :resources
   has_many  :attachments, :extend => Theme
   has_many  :assets, :order => 'created_at desc', :conditions => 'parent_id is null'
-  
-  serialize :filters, Array
-  
+
   before_validation :downcase_host
   before_validation :set_default_timezone
   before_validation_on_create :set_default_comment_options
@@ -36,10 +34,6 @@ class Site < ActiveRecord::Base
 
   def to_liquid(current_section = nil)
     Mephisto::Liquid::SiteDrop.new self, current_section
-  end
-
-  def filters=(value)
-    write_attribute :filters, [value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq
   end
 
   composed_of :timezone, :class_name => 'TZInfo::Timezone', :mapping => %w(timezone name)

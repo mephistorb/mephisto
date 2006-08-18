@@ -2,9 +2,10 @@ class Article < Content
   class CommentNotAllowed < StandardError; end
   validates_presence_of :title, :user_id, :site_id
 
-  before_validation { |record| record.set_default_filters! }
+  before_validation { |record| record.set_default_filter! }
   after_validation :convert_to_utc
   before_create :create_permalink
+  before_save   :pass_filter_to_comments
   after_save    :save_assigned_sections
 
   acts_as_versioned :if_changed => [:title, :body, :excerpt], :limit => 5 do
@@ -105,6 +106,11 @@ class Article < Content
     Mephisto::Liquid::ArticleDrop.new self, options
   end
 
+  def filter=(new_filter)
+    @old_filter ||= read_attribute :filter
+    write_attribute :filter, new_filter
+  end
+
   def hash_for_permalink(options = {})
     { :year      => published_at.year, 
       :month     => published_at.month, 
@@ -120,24 +126,16 @@ class Article < Content
     published_at + comment_age.days
   end
 
-  def filters=(value)
-    write_changed_attribute :filters, [value].flatten.collect { |v| v.blank? ? nil : v.to_sym }.compact.uniq
-  end
-  
-  def filters
-    read_attribute(:filters) || []
+  def set_filter_from(filtered_object)
+    self.filter = filtered_object.filter
   end
 
-  def set_filters_from(filtered_object)
-    self.filters = filtered_object.filters
+  def set_default_filter_from(filtered_object)
+    set_filter_from(filtered_object) if filter.blank?
   end
 
-  def set_default_filters_from(filtered_object)
-    set_filters_from(filtered_object) if read_attribute(:filters).blank?
-  end
-
-  def set_default_filters!
-    set_filters_from user if read_attribute(:filters).blank?
+  def set_default_filter!
+    set_default_filter_from user
   end
 
   protected
@@ -165,5 +163,12 @@ class Article < Content
     
     def body_for_mode(mode = :list)
       (mode == :single ? "#{excerpt_html}\n\n#{body_html}" : [excerpt_html, body_html].detect { |attr| !attr.blank? }.to_s).strip
+    end
+    
+    def pass_filter_to_comments
+      return unless @old_filter
+      comments.each { |c| c.update_attributes(:filter => filter) }
+      @old_filter = nil
+      true
     end
 end

@@ -11,11 +11,16 @@ class CommentTest < Test::Unit::TestCase
   def test_add_comment
     assert_difference Comment, :count do
       assert_difference contents(:welcome), :comments_count do
-        comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1'
+        comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'
         contents(:welcome).reload
         assert_equal comment.site_id = contents(:welcome).site_id
       end
     end
+  end
+  
+  def test_should_pass_filter_down_from_article
+    comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'
+    assert_equal 'textile_filter', comment.filter
   end
 
   def test_add_comment

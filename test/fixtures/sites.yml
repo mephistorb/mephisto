@@ -8,7 +8,7 @@ first:
   id: 1
   title: Mephisto
   host: test.com
-  filters: "--- \n- :foo\n- :bar\n"
+  filter: foo
   approve_comments: false
   comment_age: 30
   timezone: America/New_York
@@ -17,7 +17,7 @@ hostess:
   id: 2
   title: Cupcake
   subtitle: Your hostess
-  filters: "--- \n- :foo\n- :bar\n"
+  filter: foo
   host: cupcake.com
   timezone: UTC
   approve_comments: false

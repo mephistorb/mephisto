@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 43) do
+ActiveRecord::Schema.define(:version => 44) do
 
   create_table "assets", :force => true do |t|
     t.column "content_type", :string
@@ -62,12 +62,12 @@ ActiveRecord::Schema.define(:version => 43) do
     t.column "author_email",   :string
     t.column "author_ip",      :string,   :limit => 100
     t.column "comments_count", :integer,                 :default => 0
-    t.column "filters",        :text
     t.column "updater_id",     :integer
     t.column "versioned_type", :string,   :limit => 20
     t.column "site_id",        :integer
     t.column "approved",       :boolean,                 :default => false
     t.column "comment_age",    :integer,                 :default => 0
+    t.column "filter",         :string
   end
 
   create_table "contents", :force => true do |t|
@@ -88,21 +88,21 @@ ActiveRecord::Schema.define(:version => 43) do
     t.column "author_email",   :string
     t.column "author_ip",      :string,   :limit => 100
     t.column "comments_count", :integer,                 :default => 0
-    t.column "filters",        :text
-    t.column "updater_id",     :integer
     t.column "version",        :integer
+    t.column "updater_id",     :integer
     t.column "site_id",        :integer
     t.column "approved",       :boolean,                 :default => false
     t.column "comment_age",    :integer,                 :default => 0
+    t.column "filter",         :string
   end
 
   create_table "events", :force => true do |t|
     t.column "mode",       :string
-    t.column "user_id",    :integer
     t.column "article_id", :integer
     t.column "title",      :text
     t.column "body",       :text
     t.column "created_at", :datetime
+    t.column "user_id",    :integer
     t.column "author",     :string,   :limit => 100
     t.column "comment_id", :integer
     t.column "site_id",    :integer
@@ -132,7 +132,6 @@ ActiveRecord::Schema.define(:version => 43) do
     t.column "subtitle",          :string
     t.column "email",             :string
     t.column "ping_urls",         :text
-    t.column "filters",           :text
     t.column "articles_per_page", :integer,                :default => 15
     t.column "host",              :string
     t.column "akismet_key",       :string,  :limit => 100
@@ -140,6 +139,7 @@ ActiveRecord::Schema.define(:version => 43) do
     t.column "approve_comments",  :boolean
     t.column "comment_age",       :integer
     t.column "timezone",          :string
+    t.column "filter",            :string
   end
 
   create_table "users", :force => true do |t|
@@ -151,10 +151,10 @@ ActiveRecord::Schema.define(:version => 43) do
     t.column "activated_at",              :datetime
     t.column "created_at",                :datetime
     t.column "updated_at",                :datetime
-    t.column "filters",                   :text
     t.column "deleted_at",                :datetime
     t.column "remember_token",            :string
     t.column "remember_token_expires_at", :datetime
+    t.column "filter",                    :string
   end
 
 end

@@ -1,6 +1,6 @@
 class Comment < Content
   validates_presence_of :author, :author_ip, :article_id
-  before_create  { |comment| comment.site_id = comment.article.site_id }
+  after_validation_on_create  :snag_article_filter_and_site
   before_create  :check_comment_expiration
   before_save    :update_counter_cache
   before_destroy :decrement_counter_cache
@@ -26,6 +26,10 @@ class Comment < Content
   end
 
   protected
+    def snag_article_filter_and_site
+      self.attributes = { :site_id => article.site_id, :filter => article.filter }
+    end
+
     def check_comment_expiration
       raise Article::CommentNotAllowed unless article.accept_comments?
     end

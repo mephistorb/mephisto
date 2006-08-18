@@ -21,7 +21,7 @@ welcome:
   user_id: 1
   comments_count: 1
   type: Article
-  filters: "--- \n- :textile_filter\n"
+  filter: textile_filter
 another:
   id: 2
   site_id: 1
@@ -48,6 +48,7 @@ welcome_comment:
   author: rico
   author_ip: 1dfasd
   approved: true
+  filter: textile_filter
 future:
   id: 5
   site_id: 1
