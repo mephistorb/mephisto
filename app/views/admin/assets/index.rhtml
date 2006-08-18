@@ -4,10 +4,10 @@
 <%= form_tag({:action => 'search' },:id => 'filesearchform') %>
   <div id="filter">
     <ul class="clear" id="type">
-      <li id="fmusic"><a href="#" title="Music">Music</a></li>
+      <li id="faudio"><a href="#" title="Audio">Audio</a></li>
       <li id="fmovies"><a href="#" title="Movies">Movies</a></li>
       <li id="fpictures"><a href="#" title="Test">Pictures</a></li>
-      <li id="fdocuments" class="sep"><a href="#" title="Documents">Documents</a></li>
+      <li id="fothers" class="sep"><a href="#" title="Others">Others</a></li>
     </ul>
     <ul id="attributes">
       <li id="ctags"><a href="#" title="Tags">Tags</a></li>
@@ -16,14 +16,14 @@
       <li><input type="search" name="q" id="filesearch" /></li>
     </ul>
     <div id="filter-options" style="display:none">
-      <%= check_box_tag 'filter[music]', 'music', false, :id => 'fmusic-check' %>
-      <%= check_box_tag 'filter[pictures]', 'pictures',  false, :id => 'fpictures-check' %>
-      <%= check_box_tag 'filter[documents]', 'documents', false, :id => 'fdocuments-check' %>
-      <%= check_box_tag 'filter[movies]', 'movies',    false, :id => 'fmovies-check'%>
+      <%= check_box_tag 'filter', 'audio',    false, :id => 'fmusic-check' %>
+      <%= check_box_tag 'filter', 'pictures', false, :id => 'fpictures-check' %>
+      <%= check_box_tag 'filter', 'other',    false, :id => 'fothers-check' %>
+      <%= check_box_tag 'filter', 'movies',   false, :id => 'fmovies-check'%>
       
-      <%= check_box_tag 'conditions[tags]', 'tags', false, :id => 'ctags-check' %>
-      <%= check_box_tag 'conditions[title]', 'title', false, :id => 'ctitle-check' %>
-      <%= check_box_tag 'conditions[date]', 'date', false, :id => 'cdate-check' %>
+      <%= check_box_tag 'conditions', 'tags', false, :id => 'ctags-check' %>
+      <%= check_box_tag 'conditions', 'title', false, :id => 'ctitle-check' %>
+      <%= check_box_tag 'conditions', 'date', false, :id => 'cdate-check' %>
     </div>
     <%= end_form_tag %>  
   </div>

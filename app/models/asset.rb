@@ -4,6 +4,14 @@ class Asset < ActiveRecord::Base
   @@extra_content_types.each { |k, values| values.each &:freeze }
   cattr_reader :extra_content_types
 
+  @@movie_condition = sanitize_sql ['content_type LIKE ? OR content_type IN (?)', 'video%', extra_content_types[:movie]]
+  @@audio_condition = sanitize_sql ['content_type LIKE ? OR content_type IN (?)', 'audio%', extra_content_types[:audio]]
+  @@image_condition = sanitize_sql ['content_type IN (?)', Technoweenie::ActsAsAttachment.content_types]
+  @@other_condition = sanitize_sql [
+    'content_type NOT LIKE ? AND content_type NOT LIKE ? AND content_type NOT IN (?)',
+    'audio%', 'video%', (extra_content_types[:movie] + extra_content_types[:audio] + Technoweenie::ActsAsAttachment.content_types)]
+  cattr_reader *%w(movie audio image other).collect! { |t| "#{t}_condition".to_sym }
+
   class << self
     def movie?(content_type)
       content_type.to_s =~ /^video/ || extra_content_types[:movie].include?(content_type)
@@ -13,8 +21,13 @@ class Asset < ActiveRecord::Base
       content_type.to_s =~ /^audio/ || extra_content_types[:audio].include?(content_type)
     end
     
-    def document?(content_type)
+    def other?(content_type)
       ![:image, :movie, :audio].any? { |a| send("#{a}?", content_type) }
+    end
+
+    def find_all_by_content_types(types, *args)
+      types.collect! { |t| '(' + send("#{t}_condition") + ')' }
+      with_scope(:find => { :conditions => types.join(' OR ') }) { find *args }
     end
   end
 
@@ -36,7 +49,7 @@ class Asset < ActiveRecord::Base
   end
   alias_method_chain :public_filename, :host
 
-  [:movie, :audio, :document].each do |content|
+  [:movie, :audio, :other].each do |content|
     define_method("#{content}?") { self.class.send("#{content}?", content_type) }
   end
 

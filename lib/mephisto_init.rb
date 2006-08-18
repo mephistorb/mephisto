@@ -4,6 +4,13 @@ require 'dispatcher'
 require 'coderay'
 require 'ruby_pants'
 
+Inflector.inflections do |inflect|
+  #inflect.plural /^(ox)$/i, '\1en'
+  #inflect.singular /^(ox)en/i, '\1'
+  #inflect.irregular 'person', 'people'
+  inflect.uncountable %w( audio )
+end
+
 class << Dispatcher
   def register_liquid_tags
     Liquid::Template.register_filter(Mephisto::Liquid::Filters)

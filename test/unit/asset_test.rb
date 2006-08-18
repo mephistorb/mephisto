@@ -83,12 +83,32 @@ class AssetTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_report_document_type
+  def test_should_report_other_type
     a = Asset.new
     ['application/pdf', 'application/msword', 'text/html', 'application/x-gzip'].each do |content_type|
       a.content_type = content_type
-      assert a.document?, "#{content_type} was not a document"
+      assert a.other?, "#{content_type} was an image/movie/audio"
     end
+  end
+
+  def test_should_find_movies
+    assert_models_equal [assets(:swf), assets(:mov)], Asset.find_all_by_content_types([:movie], :all, :order => 'created_at desc')
+  end
+
+  def test_should_find_audio
+    assert_models_equal [assets(:mp3)], Asset.find_all_by_content_types([:audio], :all, :order => 'created_at desc')
+  end
+
+  def test_should_find_images
+    assert_models_equal [assets(:png), assets(:gif)], Asset.find_all_by_content_types([:image], :all, :order => 'created_at desc')
+  end
+
+  def test_should_find_others
+    assert_models_equal [assets(:word), assets(:pdf)], Asset.find_all_by_content_types([:other], :all, :order => 'created_at desc')
+  end
+
+  def test_should_find_others_and_audio
+    assert_models_equal [assets(:word), assets(:pdf), assets(:mp3)], Asset.find_all_by_content_types([:audio, :other], :all, :order => 'created_at desc')
   end
 
   def setup
