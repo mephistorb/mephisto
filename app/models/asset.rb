@@ -26,9 +26,13 @@ class Asset < ActiveRecord::Base
     end
 
     def find_all_by_content_types(types, *args)
-      types.collect! { |t| '(' + send("#{t}_condition") + ')' }
-      with_scope(:find => { :conditions => types.join(' OR ') }) { find *args }
+      with_scope(:find => { :conditions => types_to_conditions(types).join(' OR ') }) { find *args }
     end
+    
+    protected
+      def types_to_conditions(types)
+        types.collect! { |t| '(' + send("#{t}_condition") + ')' }
+      end
   end
 
   belongs_to :site

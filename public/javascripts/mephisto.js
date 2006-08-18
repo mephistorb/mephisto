@@ -200,7 +200,6 @@ Spotlight.prototype = {
     attributes = attributes.reject(function(e) { return e.id.length < 1 });
     attributes.push(types);
     attributes = attributes.flatten();
-    console.log(attributes);
     attributes.each(function(attr) {
       Event.observe(attr, 'click', this.onClick.bindAsEventListener(this));
     }.bind(this));
@@ -226,7 +225,8 @@ Spotlight.prototype = {
     new Ajax.Request(this.form.action, {
       asynchronous: true, 
       evalScripts:  true, 
-      parameters:   Form.serialize(this.form)
+      parameters:   Form.serialize(this.form),
+      method: 'get'
     }); 
     return false;
   }

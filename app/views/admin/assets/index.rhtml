@@ -1,7 +1,7 @@
 <%= render :partial => "action_nav" %>
 
 <% content_for :action_nav do -%>
-<%= form_tag({:action => 'search' },:id => 'filesearchform') %>
+<%= form_tag(assets_url,:id => 'filesearchform', :method => 'get') %>
   <div id="filter">
     <ul class="clear" id="type">
       <li id="faudio"><a href="#" title="Audio">Audio</a></li>
@@ -16,42 +16,21 @@
       <li><input type="search" name="q" id="filesearch" /></li>
     </ul>
     <div id="filter-options" style="display:none">
-      <%= check_box_tag 'filter', 'audio',    false, :id => 'fmusic-check' %>
-      <%= check_box_tag 'filter', 'pictures', false, :id => 'fpictures-check' %>
-      <%= check_box_tag 'filter', 'other',    false, :id => 'fothers-check' %>
-      <%= check_box_tag 'filter', 'movies',   false, :id => 'fmovies-check'%>
+      <%= check_box_tag 'filter[audio]',  '1', false, :id => 'faudio-check' %>
+      <%= check_box_tag 'filter[image]',  '1', false, :id => 'fpictures-check' %>
+      <%= check_box_tag 'filter[other]',  '1', false, :id => 'fothers-check' %>
+      <%= check_box_tag 'filter[movie]',  '1', false, :id => 'fmovies-check'%>
       
-      <%= check_box_tag 'conditions', 'tags', false, :id => 'ctags-check' %>
-      <%= check_box_tag 'conditions', 'title', false, :id => 'ctitle-check' %>
-      <%= check_box_tag 'conditions', 'date', false, :id => 'cdate-check' %>
+      <%= check_box_tag 'conditions[tags]',  '1', false, :id => 'ctags-check' %>
+      <%= check_box_tag 'conditions[title]', '1', false, :id => 'ctitle-check' %>
+      <%= check_box_tag 'conditions[date]',  '1', false, :id => 'cdate-check' %>
     </div>
     <%= end_form_tag %>  
   </div>
 <% end -%>
 
 <div id="filelist">
-  <% if @recent.any? %>
-  <h3 class="divider">Recently uploaded</h3>
-  <ul id="recentfiles" class="clear">
-  <% @recent.each do |asset| -%>
-    <li>
-      <h4><%= asset_title_for(asset) %></h4>
-      <%= link_to asset_image_for(asset, :thumb), edit_asset_url(asset) %>
-    </li>
-  <% end -%>
-  </ul>
-  
-  <% if @assets.any? %>
-    <h3 class="divider">Your files</h3>
-    <ul id="files" class="clear">
-    <% @assets.each do |asset| -%>
-      <li><%= link_to asset_image_for(asset, :tiny), edit_asset_url(asset) %></li>
-    <% end -%>
-    </ul>
-  <% end %>
-  <% else %>
-    <div class="empty">You haven't uploaded any files. <%= link_to 'Upload one now &raquo;', :action => 'new' %></div>
-  <% end %>
+<%= render :partial => "assets" %>
 </div>
 
 <div id="pagination">

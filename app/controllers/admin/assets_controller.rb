@@ -1,11 +1,20 @@
 class Admin::AssetsController < Admin::BaseController
-  before_filter :find_asset, :except => [:index, :new, :create, :search]
+  before_filter :find_asset, :except => [:index, :new, :create]
 
   def index
-    @assets = site.assets.find(:all, :order => 'created_at desc', :limit => 20)
+    options = { :order => 'created_at desc', :limit => 20 }
+    @types  = params[:filter].blank? ? [] : params[:filter].keys
+    @assets = @types.any? ?
+      site.assets.find_all_by_content_types(@types, :all, options) :
+      site.assets.find(:all, options)
     @recent = []
     4.times { @recent << @assets.shift }
     @recent.compact!
+    
+    respond_to do |format|
+      format.js
+      format.html
+    end
   end
   
   def new
@@ -22,10 +31,6 @@ class Admin::AssetsController < Admin::BaseController
     @asset.attributes = params[:asset]
     @asset.save!
     redirect_to assets_path
-  end
-  
-  def search
-    @assets = site.assets.find(:all, :order => 'created_at desc', :limit => 20)
   end
 
   protected

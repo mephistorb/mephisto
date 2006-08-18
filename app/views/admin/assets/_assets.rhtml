@@ -1,0 +1,22 @@
+  <% if @recent.any? %>
+  <h3 class="divider">Recently uploaded</h3>
+  <ul id="recentfiles" class="clear">
+  <% @recent.each do |asset| -%>
+    <li>
+      <h4><%= asset_title_for(asset) %></h4>
+      <%= link_to asset_image_for(asset, :thumb), edit_asset_url(asset) %>
+    </li>
+  <% end -%>
+  </ul>
+  
+  <% if @assets.any? %>
+    <h3 class="divider">Your files</h3>
+    <ul id="files" class="clear">
+    <% @assets.each do |asset| -%>
+      <li><%= link_to asset_image_for(asset, :tiny), edit_asset_url(asset) %></li>
+    <% end -%>
+    </ul>
+  <% end %>
+  <% else %>
+    <div class="empty">You haven't uploaded any files. <%= link_to 'Upload one now &raquo;', :action => 'new' %></div>
+  <% end %>

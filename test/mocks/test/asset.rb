@@ -8,4 +8,8 @@ class Asset < ActiveRecord::Base
   def base_path
     @base_path ||= File.join(RAILS_ROOT, 'test/fixtures/tmp')
   end
+  
+  class << self
+    public :types_to_conditions
+  end
 end
