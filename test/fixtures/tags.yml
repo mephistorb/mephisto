@@ -1,0 +1,12 @@
+ruby:
+  id: 1
+  name: ruby
+rails:
+  id: 2
+  name: rails
+mongrel:
+  id: 3
+  name: mongrel
+plugin:
+  id: 4
+  name: plugin
