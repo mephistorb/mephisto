@@ -23,4 +23,8 @@ class TagTest < Test::Unit::TestCase
     assert_equal tags(:ruby), 'ruby'
     assert_equal Tag.find_by_name('ruby'), tags(:ruby)
   end
+  
+  def test_should_select_tags_by_name
+    assert_equal tags(:ruby), Tag[:ruby]
+  end
 end

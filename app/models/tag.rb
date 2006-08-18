@@ -1,5 +1,11 @@
 class Tag < ActiveRecord::Base
+  has_many :taggings
+
   class << self
+    def [](tag)
+      find_by_name(tag.to_s)
+    end
+
     # parses a comma separated list of tags into tag names
     #
     #   Tag.parse('a, b, c')
