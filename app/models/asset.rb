@@ -1,11 +1,12 @@
 class Asset < ActiveRecord::Base
   # used for extra mime types that dont follow the convention
-  @@extra_content_types = { :audio => ['application/ogg'] }
+  @@extra_content_types = { :audio => ['application/ogg'], :movie => ['application/x-shockwave-flash'] }
+  @@extra_content_types.each { |k, values| values.each &:freeze }
   cattr_reader :extra_content_types
 
   class << self
     def movie?(content_type)
-      content_type.to_s =~ /^video/
+      content_type.to_s =~ /^video/ || extra_content_types[:movie].include?(content_type)
     end
     
     def audio?(content_type)
@@ -13,7 +14,7 @@ class Asset < ActiveRecord::Base
     end
     
     def document?(content_type)
-      !image?(content_type) && !movie?(content_type) && !audio?(content_type)
+      ![:image, :movie, :audio].any? { |a| send("#{a}?", content_type) }
     end
   end
 

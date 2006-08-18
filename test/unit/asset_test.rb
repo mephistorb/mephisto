@@ -69,7 +69,7 @@ class AssetTest < Test::Unit::TestCase
 
   def test_should_report_movie_type
     a = Asset.new
-    ['video/mpeg', 'video/quicktime'].each do |content_type|
+    ['video/mpeg', 'video/quicktime', 'application/x-shockwave-flash'].each do |content_type|
       a.content_type = content_type
       assert a.movie?, "#{content_type} was not a movie"
     end
