@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class AssetTest < Test::Unit::TestCase
-  fixtures :sites, :assets
+  fixtures :sites, :assets, :tags, :taggings
 
   def test_should_upload_and_create_asset_records
     assert_difference sites(:first).assets, :count do
@@ -109,6 +109,14 @@ class AssetTest < Test::Unit::TestCase
 
   def test_should_find_others_and_audio
     assert_models_equal [assets(:word), assets(:pdf), assets(:mp3)], Asset.find_all_by_content_types([:audio, :other], :all, :order => 'created_at desc')
+  end
+
+  def test_should_set_tags
+    assert_equal 'ruby', assets(:gif).tag
+    assert_difference Tagging, :count do
+      assets(:gif).tag = 'ruby, rails'
+    end
+    assert_equal 'rails, ruby', assets(:gif).reload.tag
   end
 
   def setup
