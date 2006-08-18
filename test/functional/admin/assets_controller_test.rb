@@ -40,6 +40,18 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     assert_models_equal [assets(:word), assets(:swf), assets(:pdf), assets(:mov)], assigns(:recent)
   end
 
+  def test_should_search_for_movies_by_title
+    xhr :get, :index, :filter => { :movie => '1' }, :q => 'swf'
+    assert_response :success
+    assert_models_equal [assets(:swf)], assigns(:recent)
+  end
+
+  def test_should_search_for_assets_by_title
+    xhr :get, :index, :q => 'swf'
+    assert_response :success
+    assert_models_equal [assets(:swf)], assigns(:recent)
+  end
+
   def teardown
     FileUtils.rm_rf ASSET_PATH
   end

@@ -15,6 +15,7 @@ gif:
   size: 2135
   site_id: 1
   created_at: <%= 11.minutes.ago.to_s :db %>
+  title: gif
 png:
   id: 2
   content_type: image/png
@@ -22,6 +23,7 @@ png:
   size: 2361
   site_id: 1
   created_at: <%= 10.minutes.ago.to_s :db %>
+  title: png
 mp3:
   id: 3
   content_type: audio/mpeg
@@ -29,6 +31,7 @@ mp3:
   size: 252366
   site_id: 1
   created_at: <%= 9.minutes.ago.to_s :db %>
+  title: mp3
 mov:
   id: 4
   content_type: video/quicktime
@@ -36,6 +39,7 @@ mov:
   size: 235624
   site_id: 1
   created_at: <%= 8.minutes.ago.to_s :db %>
+  title: mov
 pdf:
   id: 5
   content_type: application/pdf
@@ -43,6 +47,7 @@ pdf:
   size: 8246
   site_id: 1
   created_at: <%= 7.minutes.ago.to_s :db %>
+  title: pdf
 swf: 
   id: 6
   content_type: application/x-shockwave-flash
@@ -50,6 +55,7 @@ swf:
   size: 46234
   site_id: 1
   created_at: <%= 6.minutes.ago.to_s :db %>
+  title: swf
 word:
   id: 7
   content_type: application/msword
@@ -57,3 +63,4 @@ word:
   size: 23566
   site_id: 1
   created_at: <%= 5.minutes.ago.to_s :db %>
+  title: word
