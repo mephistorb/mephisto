@@ -246,6 +246,10 @@ var ArticleForm = {
     var isDraft = $F(this);
     if(isDraft) Element.hide('publish-date-lbl', 'publish-date');
     else Element.show('publish-date-lbl', 'publish-date');
+  },
+
+  getAvailableComments: function() {
+    return $$('ul.commentlist li').reject(function(div) { return !(div.visible() && !div.hasClassName('disabled') && div.id.match(/^comment-/)); }).collect(function(div) { return div.id.match(/comment-(\d+)/)[1] });
   }
 }
 
