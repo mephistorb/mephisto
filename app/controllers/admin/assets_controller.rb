@@ -12,8 +12,8 @@ class Admin::AssetsController < Admin::BaseController
     @recent.compact!
     
     respond_to do |format|
-      format.js
       format.html
+      format.js
     end
   end
   
