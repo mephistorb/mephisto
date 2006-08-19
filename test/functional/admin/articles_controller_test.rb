@@ -30,7 +30,31 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     get :index
     assert_equal 6, assigns(:articles).length
   end
-  
+
+  def test_should_search_article_titles
+    get :index, :q => 'future', :filter => 'title'
+    assert_response :success
+    assert_models_equal [contents(:future)], assigns(:articles)
+  end
+
+  def test_should_search_article_body
+    get :index, :q => 'welcome', :filter => 'body'
+    assert_response :success
+    assert_models_equal [contents(:welcome), contents(:another)], assigns(:articles)
+  end
+
+  def test_should_search_article_by_section
+    get :index, :filter => 'section', :section => '2'
+    assert_response :success
+    assert_models_equal [contents(:welcome), contents(:about), contents(:site_map)], assigns(:articles)
+  end
+
+  def test_should_search_article_by_section_and_title
+    get :index, :filter => 'title', :q => 'welcome', :section => '2'
+    assert_response :success
+    assert_models_equal [contents(:welcome)], assigns(:articles)
+  end
+
   def test_should_show_home_section_first
     get :new
     assert_no_tag :tag => 'input', :attributes => { :id => 'draft' }

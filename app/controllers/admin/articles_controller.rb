@@ -13,10 +13,10 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :load_sections, :only => [:new, :edit]
 
   def index
-    @article_pages = Paginator.new self, site.articles.count, 30, params[:page]
-    @articles      = site.articles.find(:all, :order => 'contents.published_at DESC', :include => :user,
+    @article_pages = Paginator.new self, site.articles.count(:all, article_options), 30, params[:page]
+    @articles      = site.articles.find(:all, article_options(:order => 'contents.published_at DESC', :select => 'contents.*', 
                        :limit   =>  @article_pages.items_per_page,
-                       :offset  =>  @article_pages.current.offset)
+                       :offset  =>  @article_pages.current.offset))
     @comments = @site.unapproved_comments.count :all, :group => :article, :order => '1 desc'
     @sections = site.sections.find(:all)
   end
@@ -127,5 +127,24 @@ class Admin::ArticlesController < Admin::BaseController
     
     def save_with_revision?
       params[:commit].to_s !~ /save without revision/i
+    end
+    
+    def article_options(options = {})
+      if @article_options.nil?
+        @article_options = {}
+        case params[:filter]
+          when 'title'
+            @article_options[:conditions] = Article.send(:sanitize_sql, ["LOWER(contents.title) LIKE ?", "%#{params[:q].downcase}%"])
+          when 'body'
+            @article_options[:conditions] = Article.send(:sanitize_sql, ["LOWER(contents.excerpt) LIKE :q OR LOWER(contents.body) LIKE :q", {:q => "%#{params[:q].downcase}%"}])
+          when 'section'
+        end unless params[:q].blank?
+        unless params[:section].blank?
+          @article_options[:joins]      = "INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id"
+          cond = Article.send(:sanitize_sql, ['assigned_sections.section_id = ?', params[:section]])
+          @article_options[:conditions] = @article_options[:conditions] ? "(#{@article_options[:conditions]}) AND (#{cond})" : cond
+        end
+      end
+      @article_options.merge options
     end
 end
