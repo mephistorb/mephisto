@@ -13,7 +13,7 @@
 
 <h2>Unapproved Comments</h2>
 
-<ul class="pagelist">
+<ul class="pagelist commentlist">
   <% @comments.reverse.each_with_index do |comment, i| -%>
   <li class="event-comment<%= " shade" if (i % 2 > 0) %>" id="comment-<%= comment.id %>">
     <h3><a name="comment-<%= comment.id %>"></a> <%= link_to comment.article.title, :controller => 'articles', :action => :edit, :id => comment.article %></h3>
