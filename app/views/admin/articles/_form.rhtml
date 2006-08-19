@@ -9,6 +9,8 @@
     <dd id="x-body" style="display:none"><%= form.text_area :excerpt, :rows => '8', :class => 'fat'  %></dd>
     <dt><label for="article_body">Write your article</label> <span class="hint">(<%= link_to_function 'Add an excerpt', %(Element.toggle('x-lbl', 'x-body')) %>)</span></dt>
     <dd><%= form.text_area :body, :class => 'fat'  %></dd>
+    <dt><label for="article_tag">Tags</label> <span class="hint">Enter one or more tags separated by a comma.</span></dt>
+    <dd><%= form.text_field :tag %></dd>
   </dl>
 </div>
 <!-- /end required fields -->

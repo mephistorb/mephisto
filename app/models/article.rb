@@ -1,5 +1,8 @@
 class Article < Content
   class CommentNotAllowed < StandardError; end
+  
+  include Mephisto::TaggableMethods
+  
   validates_presence_of :title, :user_id, :site_id
 
   before_validation { |record| record.set_default_filter! }
@@ -107,7 +110,8 @@ class Article < Content
   end
 
   def filter=(new_filter)
-    @old_filter ||= read_attribute :filter
+    return if new_filter == read_attribute(:filter)
+    @old_filter ||= read_attribute(:filter)
     write_attribute :filter, new_filter
   end
 
@@ -167,11 +171,13 @@ class Article < Content
     
     def pass_filter_to_comments
       return unless @old_filter
-      self.record_timestamps = false
+      self.record_timestamps  = false
+      CommentObserver.disabled = true
       comments.each { |c| c.update_attributes(:filter => filter) }
       @old_filter = nil
       true
     ensure
-      self.record_timestamps = true
+      self.record_timestamps   = true
+      CommentObserver.disabled = false
     end
 end

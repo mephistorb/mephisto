@@ -131,6 +131,23 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal User.find_with_deleted(3), contents(:another).user
   end
 
+  def test_should_set_tags
+    assert_equal '', contents(:welcome).tag
+    assert_difference Tagging, :count, 2 do
+      contents(:welcome).update_attribute :tag, 'ruby, rails'
+    end
+    assert_equal 'rails, ruby', contents(:welcome).reload.tag
+  end
+
+  def test_should_set_tags_upon_article_creation
+    a = nil
+    assert_difference Tagging, :count, 2 do
+      a = create_article :tag => 'ruby, rails', :body => 'foo'
+      assert_valid a
+    end
+    assert_equal 'rails, ruby', a.reload.tag
+  end
+
   protected
     def create_article(options = {})
       Article.create options.reverse_merge(:user_id => 1, :site_id => 1, :title => 'foo')

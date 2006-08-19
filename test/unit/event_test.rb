@@ -15,8 +15,10 @@ class EventTest < Test::Unit::TestCase
   end
 
   def test_should_create_edit_article_event
-    assert_event_created_for :welcome, 'edit' do |article|
-      article.update_attributes :title => 'foo', :body => 'bar', :updater => users(:quentin)
+    assert_difference Event, :count do
+      assert_event_created_for :welcome, 'edit' do |article|
+        article.update_attributes :title => 'foo', :body => 'bar', :updater => users(:quentin), :filter => 'markdown_filter'
+      end
     end
   end
 
