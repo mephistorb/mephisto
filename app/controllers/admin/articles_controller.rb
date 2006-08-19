@@ -138,10 +138,12 @@ class Admin::ArticlesController < Admin::BaseController
             @article_options[:conditions] = Article.send(:sanitize_sql, ["LOWER(contents.title) LIKE ?", "%#{params[:q].downcase}%"])
           when 'body'
             @article_options[:conditions] = Article.send(:sanitize_sql, ["LOWER(contents.excerpt) LIKE :q OR LOWER(contents.body) LIKE :q", {:q => "%#{params[:q].downcase}%"}])
-          when 'section'
+          when 'tags'
+            @article_options[:joins] = "INNER JOIN taggings ON taggings.taggable_id = contents.id and taggings.taggable_type = 'Content' INNER JOIN tags on taggings.tag_id = tags.id"
+            @article_options[:conditions] = Article.send(:sanitize_sql, ["tags.name IN (?)", Tag.parse(params[:q])])
         end unless params[:q].blank?
         if section_id > 0
-          @article_options[:joins]      = "INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id"
+          @article_options[:joins] = "#{@article_options[:joins]} INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id"
           cond = Article.send(:sanitize_sql, ['assigned_sections.section_id = ?', params[:section]])
           @article_options[:conditions] = @article_options[:conditions] ? "(#{@article_options[:conditions]}) AND (#{cond})" : cond
         end

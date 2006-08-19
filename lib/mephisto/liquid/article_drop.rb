@@ -31,6 +31,10 @@ module Mephisto
         @sections ||= @source.sections.inject([]) { |all, s| s.home? ? all : all << s.to_liquid } # your days are numbered, home section!
       end
 
+      def tags
+        @tags ||= @source.tags.collect(&:to_liquid)
+      end
+
       def blog_sections
         sections.select { |s| s.section.blog? }
       end

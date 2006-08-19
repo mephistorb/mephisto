@@ -3,3 +3,8 @@ ruby_gif:
   tag_id: 1
   taggable_id: 1
   taggable_type: Asset
+rails_another:
+  id: 2
+  tag_id: 2
+  taggable_id: 2
+  taggable_type: Content

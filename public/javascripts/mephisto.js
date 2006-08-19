@@ -425,7 +425,7 @@ Event.observe(window, 'load', function() {
   
   new SmartSearch('article-search', {
     'sectionlist, manualsearch': ['section'],
-    'manualsearch, sectionlist': ['title', 'body']
+    'manualsearch, sectionlist': ['title', 'body', 'tags']
   }, 'sectionlist');
 });
 

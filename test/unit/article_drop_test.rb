@@ -15,6 +15,10 @@ class ArticleDropTest < Test::Unit::TestCase
     assert_equal [sections(:about)], @article.sections.collect(&:section)
   end
   
+  def test_should_list_tags
+    assert_equal %w(rails), Mephisto::Liquid::ArticleDrop.new(contents(:another)).tags
+  end
+  
   def test_should_list_only_blog_sections
     sections(:home).update_attribute :path, 'foo'
     assert_equal [sections(:home)], @article.blog_sections.collect(&:section)

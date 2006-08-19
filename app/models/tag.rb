@@ -40,5 +40,6 @@ class Tag < ActiveRecord::Base
   end
   
   def to_s()     name end
-  def to_param() name end
+  alias to_param  to_s
+  alias to_liquid to_s
 end

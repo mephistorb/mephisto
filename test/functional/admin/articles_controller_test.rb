@@ -5,7 +5,7 @@ require 'admin/articles_controller'
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
 class Admin::ArticlesControllerTest < Test::Unit::TestCase
-  fixtures :contents, :sections, :assigned_sections, :users, :sites
+  fixtures :contents, :sections, :assigned_sections, :users, :sites, :tags, :taggings
 
   def setup
     @controller = Admin::ArticlesController.new
@@ -40,6 +40,12 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     get :index, :q => 'future', :filter => 'title'
     assert_response :success
     assert_models_equal [contents(:future)], assigns(:articles)
+  end
+
+  def test_should_search_article_tags
+    get :index, :q => 'rails', :filter => 'tags'
+    assert_response :success
+    assert_models_equal [contents(:another)], assigns(:articles)
   end
 
   def test_should_search_article_body
