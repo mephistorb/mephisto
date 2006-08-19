@@ -268,7 +268,7 @@ var SectionForm = {
   },
 
   sortable: null,
-  toggleSortable: function(link) {
+  toggleSortable: function(link, section_id) {
     if($('pages').className == 'sortable') {
       Sortable.destroy('pages');
       $('pages').className = '';
@@ -277,7 +277,7 @@ var SectionForm = {
       document.getElementsByClassName('handle', 'pages').each(function(img) {
         img.src = "/images/icons/arrow3_e.gif";
       });
-      this.saveSortable();
+      this.saveSortable(section_id);
     } else {
       this.sortable = Sortable.create('pages', {handle:'handle'});
       $('pages').className = 'sortable';
@@ -289,12 +289,12 @@ var SectionForm = {
     }
   },
 
-  saveSortable: function() {
+  saveSortable: function(section_id) {
     var query = $$('#pages li').inject([], function(qu, li) {
       qu.push('article_ids[]=' + li.getAttribute('id').substr(5));
       return qu;
     }).join('&')
-    new Ajax.Request('/admin/sections/order/' + Navigate.currentId(), {asynchronous:true, evalScripts:true, parameters:query});
+    new Ajax.Request('/admin/sections/order/' + section_id, {asynchronous:true, evalScripts:true, parameters:query});
   }
 }
 
