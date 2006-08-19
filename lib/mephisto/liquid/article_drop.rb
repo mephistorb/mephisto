@@ -13,6 +13,7 @@ module Mephisto
           'permalink'        => @source.permalink,
           'url'              => @source.full_permalink,
           'body'             => @source.send(:body_for_mode, options[:mode] || :list),
+          'excerpt'          => @source.excerpt_html,
           'published_at'     => @source.site.timezone.utc_to_local(@source.published_at),
           'updated_at'       => @source.site.timezone.utc_to_local(@source.updated_at),
           'comments_count'   => @source.comments_count,

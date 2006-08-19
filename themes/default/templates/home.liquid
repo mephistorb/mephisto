@@ -4,6 +4,7 @@
   {% if forloop.index < 3 %}
       <div class="story{% if forloop.first %} first{% endif %}">
         <h3>{{ article | link_to_article }}</h3>
+        {{ article.excerpt }}
         {{ article.body }}
         <div class="details">
           Posted on {{ article.published_at | format_date: 'stub', true }} | 

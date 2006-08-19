@@ -1,5 +1,7 @@
 * SVN *
 
+* [NEW] Added {{ article.excerpt }} liquid tag for accessing an articles excerpt.
+
 * Change - Article#body_for_mode only returns the body, not excerpt + body.  This means you'll have to do this in your templates
 if you want to show both:
 
