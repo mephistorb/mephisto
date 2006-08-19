@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ArticleDropTest < Test::Unit::TestCase
-  fixtures :sites, :sections, :contents, :assigned_sections, :users
+  fixtures :sites, :sections, :contents, :assigned_sections, :users, :tags, :taggings
   
   def setup
     @article = Mephisto::Liquid::ArticleDrop.new(contents(:welcome), :mode => :single)
