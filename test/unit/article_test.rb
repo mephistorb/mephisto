@@ -8,6 +8,11 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal 'this-is-a-tripped-out-title-1-well-not-really', a.permalink
   end
 
+  def test_should_set_permalink
+    a = create_article :title => 'This IS a Tripped out title!!.!1  (well/ not really)', :body => 'foo', :permalink => 'trippy'
+    assert_equal 'trippy', a.permalink
+  end
+
   def test_full_permalink
     date = 3.days.ago
     assert_equal ['', date.year, date.month, date.day, 'welcome-to-mephisto'].join('/'), contents(:welcome).full_permalink

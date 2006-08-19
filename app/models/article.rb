@@ -144,7 +144,7 @@ class Article < Content
 
   protected
     def create_permalink
-      self.permalink = title.to_s.gsub(/\W+/, ' ').strip.downcase.gsub(/\ +/, '-')
+      self.permalink = title.to_s.gsub(/\W+/, ' ').strip.downcase.gsub(/\ +/, '-') if permalink.blank?
     end
 
     def convert_to_utc
