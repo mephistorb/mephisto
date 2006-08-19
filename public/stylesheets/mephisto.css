@@ -1170,7 +1170,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
  *=PAGINATION
  */
 
-#pagination {
+#pagination, #top-pagination {
   background: #eee;
   margin: 20px 0;
   text-align: center;

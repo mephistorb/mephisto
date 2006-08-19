@@ -33,6 +33,18 @@
 <% end %>
 
 <% if @articles.any? %>
+<!-- begin pagination -->
+<% content_for :pagination do -%>
+<% if @article_pages.page_count > 1 -%>
+Pages: <strong><%= pagination_links @article_pages, :params => { :action => :index } %></strong>
+<% end -%>
+<% end -%>
+
+<div id="top-pagination">
+<%= yield :pagination %>
+</div>
+<!-- /end pagination -->
+
 <!-- begin article list -->
 <table id="article-list" cellspacing="0" cellpadding="0">
   <thead>
@@ -48,17 +60,16 @@
   </tbody>
 </table>
 <!-- /end article list -->
-<% else %>
-  <div class="empty">You have no articles.  <%= link_to "Create one now &raquo;", :action => "new" %></div>
-<% end %>
 
 <!-- begin pagination -->
 <div id="pagination">
-<% if @article_pages.page_count > 1 %>
-Pages: <strong><%= pagination_links @article_pages, :params => { :action => :index } %></strong>
-<% end %>
+<%= yield :pagination %>
 </div>
 <!-- /end pagination -->
+
+<% else %>
+  <div class="empty">You have no articles.  <%= link_to "Create one now &raquo;", :action => "new" %></div>
+<% end %>
 
 <% content_for :sidebar do %>
   <% if @comments.any? -%>
