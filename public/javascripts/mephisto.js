@@ -143,9 +143,21 @@ DropMenu.prototype = {
 }
 
 var TinyTab = Class.create();
+TinyTab.callbacks ={
+  'latest-files': function() {
+    if($('latest-assets').childNodes.length == 0)
+      new Ajax.Request('/admin/assets;latest');
+  },
+  'search-files': function(q) {
+    if(!q) return;
+    new Ajax.Request('/admin/assets;search', {parameters: 'q=' + escape(q)});
+  }
+};
+
 TinyTab.prototype = {
-  initialize: function(element) {
+  initialize: function(element, panels) {
     this.container = $(element);
+    this.tabPanelContainer = $(panels);
     if(!this.container) return;
     
     this.cachedElement;
@@ -162,6 +174,9 @@ TinyTab.prototype = {
       Event.observe(link, 'click', function(event) {
         var element = Event.element(event);
         var finding = element.getAttribute('href').split('#')[1];
+        
+        if(TinyTab.callbacks[finding]) TinyTab.callbacks[finding]();
+        
         this.tabPanels.each(function(element) { Element.hide(element) });
         
         if(this.cachedElement) {
@@ -178,13 +193,13 @@ TinyTab.prototype = {
       
       }.bindAsEventListener(this));
     }.bind(this));
-  }
+  },
 }
 
 Asset = {
   upload: function(form) {
     form = $(form);
-    form.action = "attach_asset"
+    form.action = "/admin/assets;upload"
     form.submit();
   }
 }
@@ -317,7 +332,7 @@ Spotlight.prototype = {
       check.setAttribute('checked', 'checked');
     }
     
-    return this.search();
+    this.search();
   },
   
   search: function(page) {
@@ -389,7 +404,7 @@ SmartSearch.prototype = {
 
 Event.observe(window, 'load', function() {
   new DropMenu('select');
-  new TinyTab('filetabs');
+  TinyTab.filetabs = new TinyTab('filetabs', 'tabpanels');
   if($('filesearch')) window.spotlight = new Spotlight('filesearchform', 'filesearch');
   
   // TODO: IE doesn't fire onchange for checkbox

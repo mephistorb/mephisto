@@ -56,7 +56,20 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     assert_equal 1, assigns(:count_by_conditions)
     assert_models_equal [assets(:swf)], assigns(:recent)
   end
-  
+
+  def test_should_find_recent_assets
+    xhr :post, :latest
+    assert_response :success
+    assert_models_equal [assets(:word), assets(:swf), assets(:pdf), assets(:mov), assets(:mp3), assets(:png)], assigns(:assets)
+  end
+
+  def test_should_search_for_assets_by_tag_or_title_default
+    xhr :post, :search, :q => 'ruby'
+    assert_response :success
+    assert_equal 1, assigns(:count_by_conditions)
+    assert_models_equal [assets(:gif)], assigns(:assets)
+  end
+
   def test_should_search_for_images_by_tag
     xhr :get, :index, :q => 'ruby', :filter => { :image => '1' }, :conditions => { :tags => '1' }
     assert_response :success

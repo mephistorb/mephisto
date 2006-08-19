@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.overview 'admin/overview.xml', :controller => 'admin/overview', :action => 'feed'
   map.admin    'admin', :controller => 'admin/overview', :action => 'index'
-  map.resources :assets, :path_prefix => '/admin', :controller => 'admin/assets'
+  map.resources :assets, :path_prefix => '/admin', :controller => 'admin/assets', :collection => { :latest => :post, :search => :post, :upload => :post }
   
   map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/
   

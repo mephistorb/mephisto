@@ -23,38 +23,32 @@
 <!-- /end optional fields -->
 
 <% content_for :sidebar do %>
-<% if false %>
-
   <div class="sgroup" id="filetabs">
     <ul class="stabs">
-      <li id="tab-latest"><a class="selected" href="#latest-files" title="Latest files uploaded">Latest files</a></li>
+      <li id="tab-latest"><a href="#latest-files" title="Latest files uploaded">Latest files</a></li>
       <li id="tab-search"><a href="#search-files" title="Search for files">Search files</a></li>
       <li id="tab-files"><a href="#upload-files" title="Upload new files">Upload</a></li>
     </ul>
     <div id="tabpanels">
-      <div class="tabpanel" id="latest-files">
-        <ul id="assets">
-          <% 1.upto(5) do |i| %>
-          <%= %(
-          <li id="a-#{i}">
-            <img src="/images/assets/preview-s.png" title="Cool Image, Uploaded July 1st 2006" />
-          </li>
-          ) %>
-          <% end %>
-        </ul>
+      <div class="tabpanel" id="latest-files" style="display:none">
+        <ul id="latest-assets"></ul>
       </div>
       <div class="tabpanel" id="search-files" style="display:none;">
         <p>Search by tag or title</p>
-        <input class="searchbox" type="text" size="30" />
-        <%= submit_tag 'Search' %>
+        <input class="searchbox" type="text" size="30" name="q" id="search-files-q" />
+        <input type="button" value="Search" onclick="TinyTab.callbacks['search-files']($F('search-files-q'))" />
+        <ul id="search-assets"></ul>
       </div>
       <div class="tabpanel" id="upload-files" style="display:none;">
-        <p><strong>1.</strong> <input type="file" size="15" /></p>
-        <p><strong>2.</strong> <input type="submit" value="Upload" /></p>
+        <p>
+          <strong>1.</strong>
+          <%= file_field_tag 'asset[uploaded_data]', :size => 15, :id => 'asset_uploaded_data' %>
+          <%= hidden_field_tag 'asset[article_id]', @article.id, :id => 'asset_article_id' unless @article.new_record? %>
+        </p>
+        <p><strong>2.</strong> <input type="button" value="Upload" onclick="Asset.upload('article-form');" /></p>
+        <p><em>Uploading this will lose your changes to this article.</em></p>
       </div>
     </div>
     
   </div>
-  <% end %>
-  
 <% end %>
