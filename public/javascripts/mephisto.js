@@ -142,6 +142,12 @@ DropMenu.prototype = {
   }
 }
 
+Object.extend(Array.prototype, {
+  toQueryString: function(name) {
+    return this.collect(function(item) { return name + "[]=" + encodeURIComponent(item) }).join('&');
+  }
+});
+
 var TinyTab = Class.create();
 TinyTab.callbacks ={
   'latest-files': function() {
