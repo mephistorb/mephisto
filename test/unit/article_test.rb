@@ -96,7 +96,7 @@ class ArticleTest < Test::Unit::TestCase
   
   def test_body_with_excerpt
     a = create_article :excerpt => 'excerpt', :body => 'body'
-    assert_equal "<p>excerpt</p>\n\n<p>body</p>", a.send(:body_for_mode, :single)
+    assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
     assert_equal '<p>excerpt</p>', a.send(:body_for_mode, :list)
   end
   

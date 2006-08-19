@@ -162,7 +162,7 @@ class Article < Content
     end
     
     def body_for_mode(mode = :list)
-      (mode == :single ? "#{excerpt_html}\n\n#{body_html}" : [excerpt_html, body_html].detect { |attr| !attr.blank? }.to_s).strip
+      (mode == :single ? [body_html, excerpt_html] : [excerpt_html, body_html]).detect { |attr| !attr.blank? }.to_s.strip
     end
     
     def pass_filter_to_comments

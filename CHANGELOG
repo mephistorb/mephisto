@@ -1,5 +1,13 @@
 * SVN *
 
+* Change - Article#body_for_mode only returns the body, not excerpt + body.  This means you'll have to do this in your templates
+if you want to show both:
+
+  {{ article.excerpt }}
+  {{ article.body }}
+
+* Activated Assets with searching and tagging.
+
 * Store filters as a single string field, remove the Serialize hacks.
 
 * Bye bye PageNavigation block.
