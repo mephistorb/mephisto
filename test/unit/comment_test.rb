@@ -19,8 +19,11 @@ class CommentTest < Test::Unit::TestCase
   end
   
   def test_should_pass_filter_down_from_article
+    old_times = contents(:welcome).comments.collect &:updated_at
     comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'
     assert_equal 'textile_filter', comment.filter
+    assert_valid comment
+    assert_equal old_times, contents(:welcome).comments(true).collect(&:updated_at)
   end
 
   def test_add_comment

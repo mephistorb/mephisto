@@ -167,8 +167,11 @@ class Article < Content
     
     def pass_filter_to_comments
       return unless @old_filter
+      self.record_timestamps = false
       comments.each { |c| c.update_attributes(:filter => filter) }
       @old_filter = nil
       true
+    ensure
+      self.record_timestamps = true
     end
 end
