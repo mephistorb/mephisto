@@ -30,6 +30,11 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     get :index
     assert_equal 6, assigns(:articles).length
   end
+  
+  def test_should_show_articles_with_empty_search
+    get :index, :q => '', :filter => 'title', :section => '0'
+    assert_equal 6, assigns(:articles).length
+  end
 
   def test_should_search_article_titles
     get :index, :q => 'future', :filter => 'title'

@@ -132,6 +132,7 @@ class Admin::ArticlesController < Admin::BaseController
     def article_options(options = {})
       if @article_options.nil?
         @article_options = {}
+        section_id       = params[:section].to_i
         case params[:filter]
           when 'title'
             @article_options[:conditions] = Article.send(:sanitize_sql, ["LOWER(contents.title) LIKE ?", "%#{params[:q].downcase}%"])
@@ -139,7 +140,7 @@ class Admin::ArticlesController < Admin::BaseController
             @article_options[:conditions] = Article.send(:sanitize_sql, ["LOWER(contents.excerpt) LIKE :q OR LOWER(contents.body) LIKE :q", {:q => "%#{params[:q].downcase}%"}])
           when 'section'
         end unless params[:q].blank?
-        unless params[:section].blank?
+        if section_id > 0
           @article_options[:joins]      = "INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id"
           cond = Article.send(:sanitize_sql, ['assigned_sections.section_id = ?', params[:section]])
           @article_options[:conditions] = @article_options[:conditions] ? "(#{@article_options[:conditions]}) AND (#{cond})" : cond

@@ -22,29 +22,17 @@
         ] %>
       </select>
       <select name="section" id="sectionlist">
-        <option>&mdash;Select a section&mdash;</option>
-        <%= options_from_collection_for_select @sections, :id, :name %>
+        <option value="0">&mdash;Select a section&mdash;</option>
+        <%= options_from_collection_for_select @sections, :id, :name, params[:section].to_i %>
       </select>
     </li>
-    <li><input type="search" name="q" id="manualsearch" style="display:none" /></li>
+    <li><%= text_field_tag 'q', params[:q], :id => 'manualsearch', :style => 'display:none' %></li>
   </ul>
   <%= end_form_tag %>
 </div>
 <% end %>
 
 <% if @articles.any? %>
-<!-- begin pagination -->
-<% content_for :pagination do -%>
-<% if @article_pages.page_count > 1 -%>
-Pages: <strong><%= pagination_links @article_pages, :params => { :action => :index } %></strong>
-<% end -%>
-<% end -%>
-
-<div id="top-pagination">
-<%= yield :pagination %>
-</div>
-<!-- /end pagination -->
-
 <!-- begin article list -->
 <table id="article-list" cellspacing="0" cellpadding="0">
   <thead>
@@ -63,7 +51,9 @@ Pages: <strong><%= pagination_links @article_pages, :params => { :action => :ind
 
 <!-- begin pagination -->
 <div id="pagination">
-<%= yield :pagination %>
+<% if @article_pages.page_count > 1 -%>
+Pages: <strong><%= pagination_links @article_pages, :params => { :action => :index } %></strong>
+<% end -%>
 </div>
 <!-- /end pagination -->
 
