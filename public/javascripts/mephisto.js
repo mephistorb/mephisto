@@ -193,7 +193,7 @@ TinyTab.prototype = {
       
       }.bindAsEventListener(this));
     }.bind(this));
-  },
+  }
 }
 
 Asset = {

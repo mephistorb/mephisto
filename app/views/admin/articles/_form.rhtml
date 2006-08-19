@@ -25,13 +25,15 @@
 <% content_for :sidebar do %>
   <div class="sgroup" id="filetabs">
     <ul class="stabs">
-      <li id="tab-latest"><a href="#latest-files" title="Latest files uploaded">Latest files</a></li>
+      <li id="tab-latest"><a href="#latest-files" class="selected" title="Latest files uploaded">Latest files</a></li>
       <li id="tab-search"><a href="#search-files" title="Search for files">Search files</a></li>
       <li id="tab-files"><a href="#upload-files" title="Upload new files">Upload</a></li>
     </ul>
     <div id="tabpanels">
-      <div class="tabpanel" id="latest-files" style="display:none">
-        <ul id="latest-assets"></ul>
+      <div class="tabpanel" id="latest-files">
+        <ul id="latest-assets">
+          <%= render :partial => "admin/assets/widget", :collection => @assets %>
+        </ul>
       </div>
       <div class="tabpanel" id="search-files" style="display:none;">
         <p>Search by tag or title</p>
