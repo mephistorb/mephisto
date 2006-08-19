@@ -44,6 +44,16 @@ module ApplicationHelper
     end
   end
 
+  def pagination_remote_links(paginator, options={}, html_options={})
+     name   = options[:name]    || ActionController::Pagination::DEFAULT_OPTIONS[:name]
+     params = (options[:params] || ActionController::Pagination::DEFAULT_OPTIONS[:params]).clone
+     
+     pagination_links_each(paginator, options) do |n|
+       params[name] = n
+       link_to_function n.to_s, "window.spotlight.search('#{n}')"
+     end
+  end
+
   def comment_expiration_options
     [['Are not allowed', -1],
      ['Never expire', 0], 

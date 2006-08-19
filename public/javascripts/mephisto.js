@@ -317,10 +317,11 @@ Spotlight.prototype = {
       check.setAttribute('checked', 'checked');
     }
     
-    this.search();
+    return this.search();
   },
   
-  search: function() {
+  search: function(page) {
+    $('page').value = page || '1';
     new Ajax.Request(this.form.action, {
       asynchronous: true, 
       evalScripts:  true, 
@@ -389,7 +390,7 @@ SmartSearch.prototype = {
 Event.observe(window, 'load', function() {
   new DropMenu('select');
   new TinyTab('filetabs');
-  if($('filesearch')) new Spotlight('filesearchform', 'filesearch');
+  if($('filesearch')) window.spotlight = new Spotlight('filesearchform', 'filesearch');
   
   // TODO: IE doesn't fire onchange for checkbox
   var commentsView   = $('comments-view');

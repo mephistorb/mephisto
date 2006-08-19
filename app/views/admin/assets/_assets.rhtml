@@ -20,3 +20,9 @@
   <% else %>
     <div class="empty">You haven't uploaded any files. <%= link_to 'Upload one now &raquo;', :action => 'new' %></div>
   <% end %>
+
+<% if @asset_pages.page_count > 1 %>
+  <div id="pagination">
+    Pages: <strong><%= pagination_remote_links @asset_pages, :params => { :action => :index } %></strong>
+  </div>
+<% end %>

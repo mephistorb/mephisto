@@ -16,6 +16,7 @@
       <li><input type="search" name="q" id="filesearch" /></li>
     </ul>
     <div id="filter-options" style="display:none">
+      <%= hidden_field_tag 'page', '1' %>
       <%= check_box_tag 'filter[audio]',  '1', false, :id => 'faudio-check' %>
       <%= check_box_tag 'filter[image]',  '1', false, :id => 'fpictures-check' %>
       <%= check_box_tag 'filter[other]',  '1', false, :id => 'fothers-check' %>
@@ -33,14 +34,13 @@
 <%= render :partial => "assets" %>
 </div>
 
-<div id="pagination">
- 
-</div>
-
 
 <% content_for :sidebar do %>
   <div class="sblock">
-    <h3>Searching files</h3>
-    <p>...</p>
+    <h3>Assets</h3>
+    <p>
+      You have a uploaded a total of <%= pluralize site.assets.count, 'asset'%>, using
+      <%= number_to_human_size site.assets.sum(:size) %>.
+    </p>
   </div>
 <% end %>

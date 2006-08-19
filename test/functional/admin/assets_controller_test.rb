@@ -17,6 +17,7 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
   def test_should_visit_index
     get :index
     assert_response :success
+    assert_equal 7, assigns(:count_by_conditions)
   end
 
   def test_should_upload_and_create_asset_records
@@ -31,36 +32,42 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
   def test_should_search_for_movies
     xhr :get, :index, :filter => { :movie => '1' }
     assert_response :success
+    assert_equal 2, assigns(:count_by_conditions)
     assert_models_equal [assets(:swf), assets(:mov)], assigns(:recent)
   end
 
   def test_should_search_for_movies_and_other
     xhr :get, :index, :filter => { :movie => '1', :other => '1' }
     assert_response :success
+    assert_equal 4, assigns(:count_by_conditions)
     assert_models_equal [assets(:word), assets(:swf), assets(:pdf), assets(:mov)], assigns(:recent)
   end
 
   def test_should_search_for_movies_by_title
     xhr :get, :index, :filter => { :movie => '1' }, :q => 'swf'
     assert_response :success
+    assert_equal 1, assigns(:count_by_conditions)
     assert_models_equal [assets(:swf)], assigns(:recent)
   end
 
   def test_should_search_for_assets_by_title
     xhr :get, :index, :q => 'swf'
     assert_response :success
+    assert_equal 1, assigns(:count_by_conditions)
     assert_models_equal [assets(:swf)], assigns(:recent)
   end
   
   def test_should_search_for_images_by_tag
     xhr :get, :index, :q => 'ruby', :filter => { :image => '1' }, :conditions => { :tags => '1' }
     assert_response :success
+    assert_equal 1, assigns(:count_by_conditions)
     assert_models_equal [assets(:gif)], assigns(:recent)
   end
 
   def test_should_search_for_images_by_title
     xhr :get, :index, :q => 'swf', :filter => { :image => '1' }
     assert_response :success
+    assert_equal 0, assigns(:count_by_conditions)
     assert_equal [], assigns(:recent)
   end
 

@@ -26,13 +26,16 @@ class Asset < ActiveRecord::Base
     end
 
     def find_all_by_content_types(types, *args)
-      with_scope(:find => { :conditions => types_to_conditions(types).join(' OR ') }) { find *args }
+      with_content_types(types) { find *args }
     end
-    
-    protected
-      def types_to_conditions(types)
-        types.collect! { |t| '(' + send("#{t}_condition") + ')' }
-      end
+
+    def with_content_types(types, &block)
+      with_scope(:find => { :conditions => types_to_conditions(types).join(' OR ') }, &block)
+    end
+
+    def types_to_conditions(types)
+      types.collect! { |t| '(' + send("#{t}_condition") + ')' }
+    end
   end
 
   include Mephisto::TaggableMethods
