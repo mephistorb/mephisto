@@ -1,15 +1,14 @@
 class Asset < ActiveRecord::Base
   # used for extra mime types that dont follow the convention
-  @@extra_content_types = { :audio => ['application/ogg'], :movie => ['application/x-shockwave-flash'] }
-  @@extra_content_types.each { |k, values| values.each &:freeze }
+  @@extra_content_types = { :audio => ['application/ogg'], :movie => ['application/x-shockwave-flash'] }.freeze
   cattr_reader :extra_content_types
 
-  @@movie_condition = sanitize_sql ['content_type LIKE ? OR content_type IN (?)', 'video%', extra_content_types[:movie]]
-  @@audio_condition = sanitize_sql ['content_type LIKE ? OR content_type IN (?)', 'audio%', extra_content_types[:audio]]
-  @@image_condition = sanitize_sql ['content_type IN (?)', Technoweenie::ActsAsAttachment.content_types]
-  @@other_condition = sanitize_sql [
+  @@movie_condition = sanitize_sql(['content_type LIKE ? OR content_type IN (?)', 'video%', extra_content_types[:movie]]).freeze
+  @@audio_condition = sanitize_sql(['content_type LIKE ? OR content_type IN (?)', 'audio%', extra_content_types[:audio]]).freeze
+  @@image_condition = sanitize_sql(['content_type IN (?)', Technoweenie::ActsAsAttachment.content_types]).freeze
+  @@other_condition = sanitize_sql([
     'content_type NOT LIKE ? AND content_type NOT LIKE ? AND content_type NOT IN (?)',
-    'audio%', 'video%', (extra_content_types[:movie] + extra_content_types[:audio] + Technoweenie::ActsAsAttachment.content_types)]
+    'audio%', 'video%', (extra_content_types[:movie] + extra_content_types[:audio] + Technoweenie::ActsAsAttachment.content_types)]).freeze
   cattr_reader *%w(movie audio image other).collect! { |t| "#{t}_condition".to_sym }
 
   class << self

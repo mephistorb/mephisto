@@ -1,5 +1,5 @@
 class Section < ActiveRecord::Base
-  ARTICLES_COUNT_SQL = 'INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id INNER JOIN sections ON sections.id = assigned_sections.section_id' unless defined?(ARTICLES_COUNT)
+  ARTICLES_COUNT_SQL = 'INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id INNER JOIN sections ON sections.id = assigned_sections.section_id'.freeze unless defined?(ARTICLES_COUNT)
   before_validation_on_create :create_path
   validates_presence_of   :name, :path, :site_id
   validates_uniqueness_of :path, :case_sensitive => false, :scope => :site_id

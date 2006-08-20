@@ -1,6 +1,6 @@
 class Attachment < ActiveRecord::Base
-  @@content_path = { 'text/css' => 'stylesheets', 'text/javascript' => 'javascripts' }
-  @@content_ext  = { 'text/css' => '.css',        'text/javascript' => '.js' }
+  @@content_path = { 'text/css' => 'stylesheets', 'text/javascript' => 'javascripts' }.freeze
+  @@content_ext  = { 'text/css' => '.css',        'text/javascript' => '.js' }.freeze
   cattr_accessor :content_path, :content_ext
 
   belongs_to :site

@@ -7,7 +7,7 @@ module FilteredColumn
     @@patterns = [
       /<(filter|macro):([_a-zA-Z0-9]+)([^>]*)\/>/,
       /<(filter|macro):([_a-zA-Z0-9]+)([^>]*)>(.*?)<\/(filter|macro):([_a-zA-Z0-9]+)>/m
-      ]
+      ].freeze
 
     class << self
       def process_filters(filters, text)

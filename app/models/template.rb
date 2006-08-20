@@ -14,7 +14,7 @@ class Template < Attachment
     :search  => [:search,   :archive, :index],
     :author  => [:author,   :archive, :index],
     :error   => [:error,    :index]
-  }
+  }.freeze
   
   @@template_types   = @@hierarchy.values.flatten.uniq << :layout
   cattr_reader :hierarchy, :template_types
