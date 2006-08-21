@@ -10,14 +10,17 @@ module FilteredColumn
       ].freeze
 
     class << self
-      def process_filters(filters, text)
+      def process_filter(filter_name, text)
         return '' if text.blank?
         process_macros(text) if FilteredColumn.macros.any?
-        [filters].flatten.inject(text) { |txt, filter_name| filter_text filter_name, txt }
+        filter_text filter_name, text
       end
 
       def filter_text(filter_name, text_to_filter)
-        FilteredColumn.filters[filter_name.to_sym].filter text_to_filter
+        return text_to_filter if filter_name.blank?
+        filter_class = FilteredColumn.filters[filter_name.to_sym]
+        return text_to_filter if filter_class.nil?
+        filter_class.filter text_to_filter
       end
       
       def process_macros(text_to_filter)

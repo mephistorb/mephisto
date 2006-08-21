@@ -9,7 +9,7 @@ Test::Unit::TestCase.class_eval do
     FilteredColumn::Processor.called_filters = []
     filtered = yield
     filtered.save if filtered
-    assert_equal filters.length, (FilteredColumn::Processor.called_filters & filters).length, "#{filters.join(', ')} expected, #{FilteredColumn::Processor.called_filters.join(', ')} called"
+    assert_equal filters.length, (FilteredColumn::Processor.called_filters & filters.collect(&:to_s)).length, "#{filters.join(', ')} expected, #{FilteredColumn::Processor.called_filters.join(', ')} called"
   end
 
   def assert_no_filters_called_on(klass, &block)
@@ -49,7 +49,7 @@ class Article < ActiveRecord::Base
   column :textile_and_markdown_body_html, :string
   column :no_textile_body,                :string
   column :no_textile_body_html,           :string
-  column :filters,                        :text
+  column :filter,                         :string
   column :sample_macro_body,              :string
   column :sample_macro_body_html,         :string
 
