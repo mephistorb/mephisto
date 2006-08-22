@@ -5,6 +5,7 @@ home:
   name: Home
   path: home
   articles_count: 3
+  template: home.liquid
 about:
   id: 2
   site_id: 1
@@ -18,6 +19,7 @@ cupcake_home:
   name: Home
   path: home
   show_paged_articles: true
+  template: home.liquid
   articles_count: 1
 cupcake_about:
   id: 4

@@ -31,9 +31,12 @@ class Site < ActiveRecord::Base
   end
 
   def render_liquid_for(section, template_type, assigns = {}, controller = nil)
-    preferred_template  = templates.find_preferred(template_type)
+    template_type       = :page if template_type == :section && section.show_paged_articles?
+    preferred_template  = section.template if [:page, :section].include?(template_type)
+    preferred_template  = preferred_template.blank? ? templates.find_preferred(template_type) : templates[preferred_template]
     preferred_template  = (preferred_template && preferred_template.file? && preferred_template.read).to_s
-    layout_template     = templates[(section && section.layout) || 'layout']
+    layout_template     = section && section.layout
+    layout_template     = templates[layout_template.blank? ? 'layout' : layout_template]
     layout_template     = (layout_template && layout_template.file? && layout_template.read).to_s
     assigns['site']     = to_liquid(section)
     assigns['content_for_layout'] = Liquid::Template.parse(preferred_template).render(assigns, :registers => {:controller => controller})

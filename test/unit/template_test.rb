@@ -29,7 +29,6 @@ class TemplateTest < Test::Unit::TestCase
   end
 
   def test_should_find_preferred_template
-    assert_template_name :home, :main
     assert_template_name :single
     assert_template_name :section
     assert_template_name :archive
@@ -41,11 +40,7 @@ class TemplateTest < Test::Unit::TestCase
   def test_should_find_fallback_templates
     sites(:first).templates[:error].unlink
     sites(:first).templates[:search].unlink
-    sites(:first).templates[:home].unlink
-    assert_template_name :section, :main
-    
     sites(:first).templates[:section].unlink
-    assert_template_name :archive, :main
     assert_template_name :archive, :section
     assert_template_name :archive, :search
     
@@ -55,7 +50,6 @@ class TemplateTest < Test::Unit::TestCase
 
     sites(:first).templates[:archive].unlink
     sites(:first).templates[:single].unlink
-    assert_template_name :index, :main
     assert_template_name :index, :single
     assert_template_name :index, :section
     assert_template_name :index, :archive
@@ -65,7 +59,7 @@ class TemplateTest < Test::Unit::TestCase
   end
 
   def test_should_find_custom
-    assert_equal ['author.liquid'], sites(:first).templates.custom
+    assert_equal ['author.liquid', 'home.liquid'], sites(:first).templates.custom
   end
 
   protected

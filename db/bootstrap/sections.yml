@@ -4,3 +4,4 @@ home:
   name: Home
   path: home
   articles_per_page: 15
+  template: home.liquid

@@ -2,11 +2,10 @@ module Mephisto
   module Attachments
     module TemplateMethods
       @@hierarchy = {
-        :main    => [:home,     :section, :archive, :index],
-        :single  => [:single,   :index],
         :section => [:section,  :archive, :index],
-        :archive => [:archive,  :index],
         :page    => [:page,     :single,  :index],
+        :single  => [:single,   :index],
+        :archive => [:archive,  :index],
         :search  => [:search,   :archive, :index],
         :error   => [:error,    :index]
       }.freeze

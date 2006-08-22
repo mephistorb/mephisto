@@ -5,15 +5,15 @@ class MephistoController < ApplicationController
   def list
     if params[:sections].blank?
       @section = site.sections.find_by_path('home')
-      @section.show_paged_articles? ? show_section_page_with(nil, :main) : list_section_articles_with(:main)
+      @section.show_paged_articles? ? show_section_page(nil) : list_section_articles
     else 
       @section, page_name = site.sections.find_section_and_page_name(params[:sections].dup)
       @section ||= site.sections.find_by_path('home')
       if @section.show_paged_articles? 
-        show_section_page_with(page_name, :page)
+        show_section_page(page_name)
       else
         show_404 and return unless page_name.blank?
-        list_section_articles_with(:section)
+        list_section_articles
       end
     end
   end
@@ -63,7 +63,7 @@ class MephistoController < ApplicationController
   end
 
   protected
-    def list_section_articles_with(template_type)
+    def list_section_articles
       @article_pages = Paginator.new self, @section.articles.size, @section.articles_per_page, params[:page]
       @articles      = @section.articles.find_by_date(
                          :include => [:user],
@@ -71,13 +71,14 @@ class MephistoController < ApplicationController
                          :offset  =>  @article_pages.current.offset)
     
       self.cached_references << @section
-      render_liquid_template_for(template_type, 'section'       => @section.to_liquid(true),
-                                                'articles'      => @articles,
-                                                'previous_page' => paged_section_url_for(@article_pages.current.previous),
-                                                'next_page'     => paged_section_url_for(@article_pages.current.next))
+      render_liquid_template_for(:page, 'section'       => @section.to_liquid(true),
+                                        'articles'      => @articles,
+                                        'previous_page' => paged_section_url_for(@article_pages.current.previous),
+                                        'next_page'     => paged_section_url_for(@article_pages.current.next))
     end
     
-    def show_section_page_with(page_name, template_type)
+    def show_section_page(page_name)
+      template_type = :section
       @article = page_name.nil? ? @section.articles.find_by_position : @section.articles.find_by_permalink(page_name)
       show_404 and return unless @article
     
@@ -87,10 +88,10 @@ class MephistoController < ApplicationController
       @section.articles.each_with_index do |article, i|
         articles << article.to_liquid(:page => i.zero?)
       end
-      render_liquid_template_for(template_type, 'section'          => @section.to_liquid(true),
-                                                'pages'            => articles,
-                                                'article'          => @article.to_liquid(:mode => :single),
-                                                'article_sections' => @article.sections.collect(&:to_liquid))
+      render_liquid_template_for(:section, 'section'          => @section.to_liquid(true),
+                                           'pages'            => articles,
+                                           'article'          => @article.to_liquid(:mode => :single),
+                                           'article_sections' => @article.sections.collect(&:to_liquid))
     end
 
     def paged_search_url_for(page)
