@@ -148,10 +148,12 @@ module Technoweenie # :nodoc:
       # Creates or updates the thumbnail for the current attachment.
       def create_or_update_thumbnail(file_name_suffix, *size)
         returning thumbnail_class.find_or_initialize_by_thumbnail_and_parent_id(file_name_suffix.to_s, id) do |thumb|
+          resized_image = resize_image_to(size)
+          return if resized_image.nil?
           thumb.attributes = {
             :content_type    => content_type, 
             :filename        => thumbnail_name_for(file_name_suffix), 
-            :attachment_data => resize_image_to(size)
+            :attachment_data => resized_image
           }
           thumb.save!
         end
