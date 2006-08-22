@@ -5,7 +5,7 @@ require 'admin/assets_controller'
 class Admin::AssetsController; def rescue_action(e) raise e end; end
 
 class Admin::AssetsControllerTest < Test::Unit::TestCase
-  fixtures :sites, :assets, :users
+  fixtures :sites, :assets, :users, :tags, :taggings
 
   def setup
     @controller = Admin::AssetsController.new

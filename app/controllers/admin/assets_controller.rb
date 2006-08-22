@@ -84,9 +84,8 @@ class Admin::AssetsController < Admin::BaseController
             options[:conditions] << Asset.send(:sanitize_sql, ['(LOWER(assets.title) LIKE :q or LOWER(assets.filename) LIKE :q)', {:q => params[:q]}]) if params[:conditions].has_key?(:title)
             
             if params[:conditions].has_key?(:tags)
-              options[:from] = "assets, taggings, tags"
-              options[:conditions] << Asset.send(:sanitize_sql, 
-                ["(assets.id = taggings.taggable_id and taggings.taggable_type = 'Asset' and taggings.tag_id = tags.id and tags.name IN (?))", Tag.parse(params[:q])])
+              options[:joins] = "LEFT OUTER JOIN taggings ON assets.id = taggings.taggable_id and taggings.taggable_type = 'Asset' LEFT OUTER JOIN tags ON taggings.tag_id = tags.id"
+              options[:conditions] << Asset.send(:sanitize_sql, ["(tags.name IN (?))", Tag.parse(params[:q])])
             end
           end
         
@@ -101,6 +100,6 @@ class Admin::AssetsController < Admin::BaseController
     def count_by_conditions
       type_conditions = @types.blank? ? nil : Asset.types_to_conditions(@types.dup).join(" OR ")
       @count_by_conditions ||= search_conditions[:conditions].blank? ? site.assets.count(:all, :conditions => type_conditions) :
-        Asset.count_by_sql("SELECT COUNT(DISTINCT assets.id) FROM #{search_conditions[:from]  || 'assets'} WHERE site_id = #{site.id} #{type_conditions && "and #{type_conditions}"} AND #{search_conditions[:conditions]}")
+        Asset.count_by_sql("SELECT COUNT(DISTINCT assets.id) FROM assets #{search_conditions[:joins]} WHERE site_id = #{site.id} #{type_conditions && "and #{type_conditions}"} AND #{search_conditions[:conditions]}")
     end
 end

@@ -25,6 +25,7 @@ end
 
 # TRUNCATE table to reset the id autonumber
 # needed for the asset tests
+# may have to rethink this...
 Fixtures.class_eval do
   case ActiveRecord::Base.connection
     when ActiveRecord::ConnectionAdapters::MysqlAdapter
@@ -36,9 +37,18 @@ Fixtures.class_eval do
         connection.delete  "TRUNCATE TABLE #{table_name}", 'Fixture Delete'
         connection.execute "ALTER TABLE #{table_name} AUTO_INCREMENT = 1", 'Renumber Auto Increment'
       end
-    else
+    when ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
+      def delete_existing_fixtures
+        self.class.delete_existing_fixtures_for @connection, @table_name
+      end
+      
       def self.delete_existing_fixtures_for(connection, table_name)
-        connection.delete  "DELETE TABLE #{table_name}", 'Fixture Delete'
+        connection.delete  "TRUNCATE TABLE #{table_name}", 'Fixture Delete'
+        connection.execute "SELECT setval('public.#{table_name}_id_seq', 1, false)", 'Renumber Auto Increment'
+      end
+    else # tests will fail because they cant find Asset.find(1) then
+      def self.delete_existing_fixtures_for(connection, table_name)
+        connection.delete  "DELETE FROM #{table_name}", 'Fixture Delete'
       end
   end
 end
