@@ -2,19 +2,17 @@ class AssetsController < ApplicationController
   session :off
   caches_page_with_references :show
   def show
-    content_type = Attachment.content_path.index(params[:dir])
-    @asset       = content_type ? 
-      Resource.find_by_content_type_and_filename(content_type, params[:path].first) : 
-      Resource.find_image(params[:path].first)
-    self.cached_references << @asset
+    file         = Pathname.new([params[:path], params[:ext]] * '.')
+    content_type = site.resources.content_type(file)
+    resource     = site.resources[file.to_s]
 
-    if @asset.nil?
+    if !resource.file?
       show_404
-    elsif @asset.image?
-      send_data @asset.attachment_data, :filename => @asset.filename, :type => @asset.content_type, :disposition => 'inline'
+    elsif site.resources.image?(file)
+      send_data resource.read, :filename => resource.basename.to_s, :type => content_type, :disposition => 'inline'
     else
-      headers['Content-Type'] = @asset.content_type
-      render :text => @asset.attachment_data
+      headers['Content-Type'] = content_type
+      render :text => resource.read
     end
   end
 end

@@ -3,11 +3,11 @@
 <p>Modify a template by selecting it from the list below.  Add a new layout by creating a Liquid template with an 
   *_layout suffix (e.g custom_layout).</p>
 <ul id="resources">
-  <% @templates.each do |template| -%>
-    <li><%= link_to template.filename, :controller => 'templates', :action => 'edit', :id => template %></li>
+  <% site.templates.each do |template| -%>
+    <li><%= link_to template.basename, :controller => 'templates', :action => 'edit', :filename => template.basename %></li>
   <% end -%>
-  <% @resources.each do |resource| -%>
-    <li><%= link_to resource.public_filename, :controller => 'resources', :action => 'edit', :id => resource %></li>
+  <% site.resources.reject { |r| site.resources.image?(r) }.each do |resource| -%>
+    <li><%= link_to resource.basename, :controller => 'resources', :action => 'edit', :filename => resource.basename %></li>
   <% end -%>
 </ul>
 
@@ -15,26 +15,27 @@
 
 <p>Select an image to use in your template.</p>
 <ul id="attachments">
-  <% @images.each do |image| -%>
-    <li id="image-<%= image.id %>"><%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), {:url => {:controller => 'resources', :action => 'remove', :id => image}}, :class => 'aicon', :title => 'Delete image' %> <%=  image.public_filename %> </li>
+  <% site.resources.select { |r| site.resources.image?(r) }.each do |image| -%>
+    <li><%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), 
+              {:url => {:controller => 'resources', :action => 'remove', :filename => image.basename}}, :class => 'aicon', :title => 'Delete image' %> <%=  image.basename %> </li>
   <% end -%>
 </ul>
 
 
 <div class="sbar-group box">
-  <% form_for :resource, @resource, :url => { :controller => 'resources', :action => 'upload', :id => nil }, :html => { :multipart => true } do |f| -%>
+  <%= start_form_tag({:controller => 'resources', :action => 'upload', :filename => nil }, { :multipart => true }) %>
   <dl class="sbar-form">
     <dt>
-      <label for="resource_uploaded_data">Upload new image</label>
+      <label for="resource">Upload new image</label>
       <p class="hint">Upload images to use in your templates</p>
       <span style="display:none;" id="upload-spinner"><img src="/images/icons/spinner-black.gif" /> uploading...</span>
     </dt>
     <dd>
-      1. <%= f.file_field :uploaded_data %><br />
+      1. <%= file_field_tag :resource %><br />
       2. <%= submit_tag 'Upload', :onclick => "Element.show('upload-spinner')" %>
     </dd>
   </dl>
-  <% end -%>
+  </form>
 </div>
 
 

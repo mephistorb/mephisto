@@ -1,4 +1,5 @@
 class Site < ActiveRecord::Base
+  include Mephisto::Attachments::AttachmentMethods
   cattr_accessor :multi_sites_enabled
 
   has_many  :sections do
@@ -11,9 +12,6 @@ class Site < ActiveRecord::Base
   has_many  :events
   
   has_many  :assets, :as => :attachable, :order => 'created_at desc'
-  has_many  :templates
-  has_many  :resources
-  has_many  :attachments, :extend => Theme
   has_many  :assets, :order => 'created_at desc', :conditions => 'parent_id is null'
 
   before_validation :downcase_host
@@ -30,6 +28,16 @@ class Site < ActiveRecord::Base
 
   def accept_comments?
     comment_age.to_i > -1
+  end
+
+  def render_liquid_for(section, template_type, assigns = {}, controller = nil)
+    preferred_template  = templates.find_preferred(template_type)
+    preferred_template  = (preferred_template && preferred_template.file? && preferred_template.read).to_s
+    layout_template     = templates[(section && section.layout) || 'layout']
+    layout_template     = (layout_template && layout_template.file? && layout_template.read).to_s
+    assigns['site']     = to_liquid(section)
+    assigns['content_for_layout'] = Liquid::Template.parse(preferred_template).render(assigns, :registers => {:controller => controller})
+    Liquid::Template.parse(layout_template).render(assigns, :registers => {:controller => controller})
   end
 
   def to_liquid(current_section = nil)

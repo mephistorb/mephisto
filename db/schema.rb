@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 47) do
+ActiveRecord::Schema.define(:version => 48) do
 
   create_table "assets", :force => true do |t|
     t.column "content_type", :string
@@ -21,20 +21,6 @@ ActiveRecord::Schema.define(:version => 47) do
     t.column "article_id", :integer
     t.column "section_id", :integer
     t.column "position",   :integer, :default => 1
-  end
-
-  create_table "attachments", :force => true do |t|
-    t.column "type",            :string,  :limit => 15
-    t.column "content_type",    :string,  :limit => 100
-    t.column "filename",        :string
-    t.column "db_file_id",      :integer
-    t.column "parent_id",       :integer
-    t.column "size",            :integer
-    t.column "width",           :integer
-    t.column "height",          :integer
-    t.column "attachable_id",   :integer
-    t.column "attachable_type", :string,  :limit => 20
-    t.column "site_id",         :integer
   end
 
   create_table "cached_pages", :force => true do |t|
@@ -88,8 +74,8 @@ ActiveRecord::Schema.define(:version => 47) do
     t.column "author_email",   :string
     t.column "author_ip",      :string,   :limit => 100
     t.column "comments_count", :integer,                 :default => 0
-    t.column "version",        :integer
     t.column "updater_id",     :integer
+    t.column "version",        :integer
     t.column "site_id",        :integer
     t.column "approved",       :boolean,                 :default => false
     t.column "comment_age",    :integer,                 :default => 0
@@ -98,11 +84,11 @@ ActiveRecord::Schema.define(:version => 47) do
 
   create_table "events", :force => true do |t|
     t.column "mode",       :string
+    t.column "user_id",    :integer
     t.column "article_id", :integer
     t.column "title",      :text
     t.column "body",       :text
     t.column "created_at", :datetime
-    t.column "user_id",    :integer
     t.column "author",     :string,   :limit => 100
     t.column "comment_id", :integer
     t.column "site_id",    :integer

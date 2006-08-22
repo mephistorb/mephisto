@@ -1,11 +1,14 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class AttachmentTest < Test::Unit::TestCase
-  fixtures :attachments, :sites
+  fixtures :sites
+
+  def setup
+    prepare_theme_fixtures
+  end
 
   def test_should_count_correct_assets
-    assert_equal 14, Attachment.count
-    assert_equal 12, sites(:first).attachments.count
-    assert_equal 1, sites(:hostess).attachments.count
+    assert_equal 13, sites(:first).attachments.size
+    assert_equal 1, sites(:hostess).attachments.size
   end
 end

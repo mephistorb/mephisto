@@ -5,7 +5,7 @@ require 'admin/templates_controller'
 class Admin::TemplatesController; def rescue_action(e) raise e end; end
 
 class Admin::TemplatesControllerTest < Test::Unit::TestCase
-  fixtures :attachments, :users, :cached_pages, :sections
+  fixtures :users, :sections, :sites
 
   def setup
     prepare_theme_fixtures
@@ -16,12 +16,12 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_edit_template_form
-    get :edit, :id => attachments(:layout).filename
+    get :edit, :filename => 'layout.liquid'
     assert_tag :tag => 'form'
-    assert_tag :tag => 'textarea', :attributes => { :id => 'template_attachment_data' }
+    assert_tag :tag => 'textarea', :attributes => { :id => 'data' }
   end
 
-  def test_should_require_template_id
+  def test_should_require_template_filename
     get :edit
     assert_redirected_to :action => 'index'
     assert flash[:error]
@@ -32,19 +32,18 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_require_posted_template
-    get :update, :id => attachments(:layout).filename, :template => { :filename => 'foo' }
+    get :update, :filename => 'layout.liquid'
     assert_redirected_to :action => 'edit'
     assert flash[:error]
     
-    post :update, :id => attachments(:layout).filename
+    post :update, :filename => 'layout.liquid'
     assert_redirected_to :action => 'edit'
     assert flash[:error]
   end
 
   def test_should_save_template
-    post :update, :id => attachments(:layout).filename, :template => { :filename => 'foo' }
+    post :update, :filename => 'layout.liquid', :data => 'foo'
     assert_response :success
-    attachments(:layout).reload
-    assert_equal 'foo', attachments(:layout).filename
+    assert_equal 'foo', sites(:first).templates['layout'].read
   end
 end

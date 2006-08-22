@@ -7,20 +7,19 @@
 <% end %>
 
 <div id="template-container">
-<% form_remote_for :template, @tmpl, :url => { :action => 'update', :id => @tmpl }, 
-     :html     => { :id => 'template-form' } do |f| -%>
-<%= render :partial => 'admin/design/form', :object => @tmpl, :locals => { 
-  :title  => @tmpl.filename,
-  :hint   => 'You can use HTML and Liquid in your template.',
-  :f      => f,
-  :labels => { :data     => %(Edit the source code for your <em class="highlight">#{@tmpl.filename}</em> template),
-               :filename => 'Title of your template' }
+<%= form_remote_tag :url => { :action => 'update', :filename => params[:filename] }, :html => { :id => 'template-form' } %>
+<%= render :partial => 'admin/design/form', :locals => { 
+  :attachment => @tmpl,
+  :title      => @tmpl.basename.to_s,
+  :hint       => 'You can use HTML and Liquid in your template.',
+  :labels     => { :data     => %(Edit the source code for your <em class="highlight">#{@tmpl.basename}</em> template),
+                   :filename => 'Title of your template' }
  } %>
 <p class="btns">
-  <%= submit_tag "Update #{@tmpl.filename}" %> or
+  <%= submit_tag "Update #{@tmpl.basename}" %> or
   <%= link_to "cancel", :controller => "design" %>
 </p>
-<% end -%>
+</form>
 </div>
 
 <%= render :partial => 'admin/design/sidebar' %>

@@ -1,6 +1,6 @@
 class AssetSweeper < ActionController::Caching::Sweeper
   include Mephisto::SweeperMethods
-  observe Resource
+  #observe Resource
   def after_save(record)
     return if controller.nil?
     pages = CachedPage.find_by_reference(record)

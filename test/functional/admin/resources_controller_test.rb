@@ -5,7 +5,7 @@ require 'admin/resources_controller'
 class Admin::ResourcesController; def rescue_action(e) raise e end; end
 
 class Admin::ResourcesControllerTest < Test::Unit::TestCase
-  fixtures :attachments, :users, :sites
+  fixtures :users, :sites
   def setup
     prepare_theme_fixtures
     @controller = Admin::ResourcesController.new
@@ -15,9 +15,9 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_edit_resource_form
-    get :edit, :id => attachments(:css).id
+    get :edit, :filename => 'style.css'
     assert_tag :tag => 'form'
-    assert_tag :tag => 'textarea', :attributes => { :id => 'resource_attachment_data' }
+    assert_tag :tag => 'textarea', :attributes => { :id => 'data' }
   end
 
   def test_should_require_resource_id
@@ -31,43 +31,40 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_require_posted_resource
-    get :update, :id => attachments(:css).id, :resource => { :filename => 'foo' }
+    get :update, :filename => 'style.css', :data => 'foo'
     assert_redirected_to :action => 'edit'
     assert flash[:error]
     
-    post :update, :id => attachments(:css).filename
+    post :update, :filename => 'style.css'
     assert_redirected_to :action => 'edit'
     assert flash[:error]
   end
 
   def test_should_save_resource
-    post :update, :id => attachments(:css).id, :resource => { :filename => 'foo', :attachment_data => "body {}\na {}" }
+    post :update, :filename => 'style.css', :data => 'body {}\na {}'
     assert_response :success
-    attachments(:css).reload
-    assert_equal 'foo.css',       attachments(:css).filename
-    assert_equal "body {}\na {}", attachments(:css).attachment_data
+    assert_equal "body {}\\na {}", sites(:first).resources['style.css'].read
   end
 
   def test_should_upload_resource
-    assert_attachment_created do
-      post :upload, :resource => { :uploaded_data => fixture_file_upload('/files/rails.png', 'image/png') }
-    end
-    
+    post :upload, :resource => fixture_file_upload('/files/rails.png', 'image/png')
+    assert_not_nil flash[:notice]
+    assert_nil     flash[:error]
     assert_redirected_to :controller => 'admin/design', :action => 'index'
+    assert sites(:first).resources['rails.png'].file?
   end
 
   def test_should_redirect_on_upload_get_request
-    assert_no_attachment_created do
-      get :upload, :resource => 'foo'
-      assert_redirected_to :controller => 'admin/design', :action => 'index'
-    end
+    get :upload, :resource => 'foo'
+    assert_nil     flash[:notice]
+    assert_not_nil flash[:error]
+    assert_redirected_to :controller => 'admin/design', :action => 'index'
   end
 
   def test_should_redirect_on_empty_upload
-    assert_no_attachment_created do
-      post :upload, :resource => { :uploaded_data => nil }
-    end
-    
+    post :upload, :resource => nil
+    assert_nil     flash[:notice]
+    assert_not_nil flash[:error]
     assert_redirected_to :controller => 'admin/design', :action => 'index'
   end
 end

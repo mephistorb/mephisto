@@ -5,7 +5,7 @@ require 'admin/design_controller'
 class Admin::DesignController; def rescue_action(e) raise e end; end
 
 class Admin::DesignControllerTest < Test::Unit::TestCase
-  fixtures :attachments, :users, :sections, :sites
+  fixtures :users, :sections, :sites
 
   def setup
     prepare_theme_fixtures
@@ -17,34 +17,26 @@ class Admin::DesignControllerTest < Test::Unit::TestCase
 
   def test_should_show_all_templates
     get :index
-    assert_equal 10, assigns(:templates).length
-    assert assigns(:templates).include?(attachments(:layout))
     assert_tag :tag => 'form', :attributes => { :action => '/admin/resources/upload' }
   end
 
   def test_should_create_template
-    assert_difference Template, :count do
-      post :create, :resource => { :attachment_data => 'this is liquid', :filename => 'my_little_pony' }, :resource_type => 'template'
-      t = sites(:first).templates.find :first, :order => 'id desc'
-      assert_equal '/templates/my_little_pony.liquid', t.public_filename
-      assert_redirected_to :controller => 'admin/templates', :action => 'edit', :id => 'my_little_pony'
-    end
+    post :create, :data => 'this is liquid', :filename => 'my_little_pony'
+    assert sites(:first).templates['my_little_pony'].file?
+    assert_equal 'this is liquid', sites(:first).templates['my_little_pony'].read
+    assert_redirected_to :controller => 'admin/templates', :action => 'edit', :filename => 'my_little_pony.liquid'
   end
 
   def test_should_create_css
-    assert_difference Resource, :count do
-      post :create, :resource => { :attachment_data => 'body {}', :filename => 'styles' }, :resource_type => 'CSS'
-      r = sites(:first).resources.find :first, :order => 'id desc'
-      assert_equal '/stylesheets/styles.css', r.public_filename
-      assert_redirected_to :controller => 'admin/resources', :action => 'edit', :id => r.id
-    end
+    post :create, :data => 'body {}', :filename => 'styles.css'
+    assert sites(:first).resources['styles.css'].file?
+    assert_equal 'body {}', sites(:first).resources['styles.css'].read
+    assert_redirected_to :controller => 'admin/resources', :action => 'edit', :filename => 'styles.css'
   end
 
   def test_should_show_form_on_invalid_creation_attempt
-    assert_no_difference Resource, :count do
-      post :create, :resource => { :attachment_data => 'body {}' }, :resource_type => 'CSS'
-      assert_template 'index'
-      assert_response :success
-    end
+    post :create, :data => 'body {}'
+    assert_template 'index'
+    assert_response :success
   end
 end

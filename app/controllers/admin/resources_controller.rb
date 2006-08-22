@@ -1,34 +1,34 @@
 class Admin::ResourcesController < Admin::BaseController
-  cache_sweeper :asset_sweeper
-  verify :params => :id, :only => [:edit, :update],
+  verify :params => :filename, :only => [:edit, :update],
          :add_flash   => { :error => 'Resource required' },
          :redirect_to => { :controller => 'design', :action => 'index' }
-  verify :method => :post, :params => :resource, :only => :update,
+  verify :method => :post, :params => :data, :only => :update,
          :add_flash   => { :error => 'Resource required' },
          :redirect_to => { :action => 'edit' }
   verify :method => :post, :params => :resource, :only => :upload,
          :add_flash   => { :error => 'Resource required' },
          :redirect_to => { :controller => 'design', :action => 'index' }
-         
-  with_options :except => :index do |c|
-    c.before_filter :find_templates_and_resources
-    c.before_filter :select_resource
-  end
-
+  
   def index
     redirect_to :controller => 'design'
   end
 
+  def edit
+    @resource = site.resources[params[:filename]]
+  end
+
   def update
+    site.resources.write params[:filename], params[:data]
+    self.class.expire_page('/' << site.resources[params[:filename]].relative_path_from(site.attachment_path).to_s)
     render :update do |page|
-      page.call 'Flash.notice', 'Resource updated successfully' if @resource.update_attributes(params[:resource])
+      page.call 'Flash.notice', 'Resource updated successfully'
     end
   end
 
   def upload
-    @resource = site.resources.build params[:resource]
-    if @resource.image? and @resource.save
-      flash[:notice] = "'#{@resource.filename}' was uploaded successfully."
+    if params[:resource] && Asset.image?(params[:resource].content_type) && (1..1.megabyte).include?(params[:resource].size)
+      @resource = site.resources.write File.basename(params[:resource].original_filename), params[:resource].read
+      flash[:notice] = "'#{@resource.basename}' was uploaded successfully."
     else
       flash[:error]  = "A bad or nonexistant image was uploaded."
     end
@@ -36,13 +36,9 @@ class Admin::ResourcesController < Admin::BaseController
   end
   
   def remove
+    site.resources[params[:filename]].unlink
     render :update do |page|
-      page.visual_effect :fade, "image-#{params[:id]}", :duration => 0.3 if Resource.find(params[:id]).destroy
+      page.visual_effect :fade, "image-#{params[:id]}", :duration => 0.3
     end
-  end
-
-  protected
-  def select_resource
-    @resource = @resources.detect { |r| r.id.to_s == params[:id] }
   end
 end

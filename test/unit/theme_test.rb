@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ThemeTest < Test::Unit::TestCase
-  fixtures :attachments, :sites
+  fixtures :sites
 
   def setup
     FileUtils.rm_rf THEME_ROOT
@@ -25,12 +25,6 @@ class ThemeTest < Test::Unit::TestCase
     'templates/section.liquid',
     'templates/single.liquid'
   ]
-
-  def test_should_select_theme_files
-    files = sites(:first).attachments.find_theme_files
-    assert_equal 12, files.length
-    assert files.include?(attachments(:layout))
-  end
 
   def test_should_export_files
     sites(:first).attachments.export 'foo', :to => THEME_ROOT

@@ -1,29 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
 class CachingTest < ActionController::IntegrationTest
-  fixtures :contents, :users, :sections, :assigned_sections, :sites, :attachments
+  fixtures :contents, :users, :sections, :assigned_sections, :sites
 
   def setup
     prepare_for_caching!
+    prepare_theme_fixtures
   end
-
-  #def test_should_not_expire_feeds_and_sections_on_new_unpublished_articles
-  #  visitor = visit
-  #  writer  = login_as :quentin
-  #  
-  #  visit_sections_and_feeds_with visitor
-  #
-  #  assert_no_difference Article, :count do
-  #    assert_difference Article::Draft, :count do
-  #      writer.create :title => 'This is a new article & title', :body => 'this is a new article body', 
-  #        :sections => [sections(:home)], :submit => :draft
-  #    end
-  #  end
-  #  
-  #  assert_cached section_url_for(:home)
-  #  assert_cached section_url_for(:about)
-  #  assert_cached feed_url_for(:home)
-  #  assert_cached feed_url_for(:about)
-  #end
 
   def test_should_expire_necessary_feeds_and_sections_when_publishing_article
     visitor = visit
@@ -209,7 +191,7 @@ class CachingTest < ActionController::IntegrationTest
     visit_sections_and_feeds_with visit
     assert_expires_pages section_url_for(:home), section_url_for(:about), feed_url_for(:home), feed_url_for(:about) do
       login_as :quentin do |writer|
-        writer.update_template attachments(:error), '<p>error!</p>'
+        writer.update_template sites(:first).templates[:error], '<p>error!</p>'
       end
     end
   end
@@ -254,6 +236,19 @@ class CachingTest < ActionController::IntegrationTest
 
     assert_cached section_url_for(:home)
     assert_cached feed_url_for(:home)
+  end
+
+  def test_should_expire_resource
+    visitor = visit
+    assert_caches_page '/images/rails-logo.png' do
+      visitor.read '/images/rails-logo.png'
+    end
+    
+    assert_expires_page 'images/rails-logo.png' do
+      login_as :quentin do |writer|
+        writer.update_resource sites(:first).resources['rails-logo.png'], 'foo'
+      end
+    end
   end
 
   protected

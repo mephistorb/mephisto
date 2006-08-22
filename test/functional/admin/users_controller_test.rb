@@ -5,7 +5,7 @@ require 'admin/users_controller'
 class Admin::UsersController; def rescue_action(e) raise e end; end
 
 class Admin::UsersControllerTest < Test::Unit::TestCase
-  fixtures :users, :attachments, :sites
+  fixtures :users, :sites
   def setup
     @controller = Admin::UsersController.new
     @request    = ActionController::TestRequest.new
@@ -54,10 +54,6 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
   def test_should_show_error_while_creating
     post :create, :user => { :email => 'foo', :password => 'tea', :password_confirmation => '' }
     assert_response :success
-  end
-
-  def test_should_not_upload_nonexistent_file
-    assert_no_attachment_created { test_should_update_email_and_password }
   end
 
   def test_should_show_correct_form_action

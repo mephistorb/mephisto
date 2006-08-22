@@ -40,9 +40,14 @@ module Mephisto
         assert_equal 200, status, "Updating section #{section.id}"
       end
       
-      def update_template(template, options = {})
-        post "/admin/templates/update/#{template.filename}", :template => (options.is_a?(Hash) ? options : { :attachment_data => options })
-        assert_equal 200, status, "Updating template #{template.filename}"
+      def update_resource(resource, data)
+        post "/admin/resources/update", :filename => resource.basename.to_s, :data => data
+        assert_equal 200, status, "Updating resource #{resource.basename}"
+      end
+      
+      def update_template(template, data)
+        post "/admin/templates/update", :filename => template.basename.to_s, :data => data
+        assert_equal 200, status, "Updating template #{template.basename}"
       end
 
       def revise(article, contents)

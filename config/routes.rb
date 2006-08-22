@@ -2,10 +2,10 @@ ActionController::Routing::Routes.draw do |map|
   map.feed    'feed/*sections', :controller => 'feed', :action => 'feed'
 
   map.with_options :controller => 'assets', :action => 'show' do |m|
-    m.connect ':dir/*path',       :dir => /stylesheets|javascripts|images/
-    m.css    'stylesheets/*path', :dir => 'stylesheets'
-    m.js     'javascripts/*path', :dir => 'javascripts'
-    m.images 'images/*path',      :dir => 'images'
+    m.connect ':dir/:path.:ext',       :dir => /stylesheets|javascripts|images/
+    m.css    'stylesheets/:path.:ext', :dir => 'stylesheets'
+    m.js     'javascripts/:path.:ext', :dir => 'javascripts'
+    m.images 'images/:path.:ext',      :dir => 'images'
   end
   
   map.overview 'admin/overview.xml', :controller => 'admin/overview', :action => 'feed'

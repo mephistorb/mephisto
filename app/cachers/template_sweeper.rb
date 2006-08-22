@@ -1,6 +1,6 @@
 class TemplateSweeper < ActionController::Caching::Sweeper
   include Mephisto::SweeperMethods
-  observe Template
+  #observe Template
 
   # only sweep updates, not creations
   # tagged 'lame hack'

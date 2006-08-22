@@ -1,25 +1,31 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ResourceTest < Test::Unit::TestCase
-  fixtures :attachments
+  fixtures :sites
 
   def setup
     prepare_theme_fixtures
   end
 
-  def test_should_ignore_templates_and_other_assets
-    assert_equal 2, Resource.count
+  def test_should_count_correct_assets
+    assert_equal 3, sites(:first).resources.size
+    assert_equal 0, sites(:hostess).resources.size
   end
 
-  def test_should_add_extension_if_necessary
-    assert_equal 'foo.txt.css', Resource.create(:content_type => 'text/css',        :filename => 'foo.txt', :attachment_data => 'foobar').filename
-    assert_equal 'foo.txt.js',  Resource.create(:content_type => 'text/javascript', :filename => 'foo.txt', :attachment_data => 'foobar').filename
-    assert_equal 'foo.css',     Resource.create(:content_type => 'text/css',        :filename => 'foo.css', :attachment_data => 'foobar').filename
-    assert_equal 'foo.js',      Resource.create(:content_type => 'text/javascript', :filename => 'foo.js',  :attachment_data => 'foobar').filename
+  def test_should_carry_site_reference
+    assert_equal sites(:first), sites(:first).resources.site
   end
 
-  def test_should_skip_extension_for_images
-    assert_equal 'foo.txt', Resource.create(:content_type => 'image/png', :filename => 'foo.txt', :attachment_data => 'foobar').filename
-    assert_equal 'foo.jpg', Resource.create(:content_type => 'image/png', :filename => 'foo.jpg', :attachment_data => 'foobar').filename
+  def test_should_add_resource
+    f = sites(:hostess).resources.write 'foo.css'
+    assert_equal (sites(:hostess).attachment_path + 'stylesheets/foo.css'), f
+    assert !f.file?
+  end
+
+  def test_should_add_and_create_resource
+    f = sites(:hostess).resources.write 'foo.css', 'foo'
+    assert_equal (sites(:hostess).attachment_path + 'stylesheets/foo.css'), f
+    assert_equal 'foo', f.read
+    assert f.file?
   end
 end

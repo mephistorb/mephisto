@@ -6,16 +6,15 @@
   </div>
 <% end %>
 
-<% form_for :resource, @resource, :url => { :action => 'create' } do |f| -%>
-<%= render :partial => 'form', :object => @resource, :locals => { 
-  :title  => 'Create a new template',
-  :hint   => 'You can use HTML and Liquid in your template.',
-  :f      => f,
-  :labels => { :data     => 'Template source code',
-               :filename => 'Name of your template' }
+<%= start_form_tag :action => 'create' %>
+<%= render :partial => 'form', :locals => { 
+  :attachment => nil, 
+  :title      => 'Create a new template',
+  :hint       => 'You can use HTML and Liquid in your template.',
+  :labels     => { :data     => 'Template source code',
+                   :filename => 'Name of your template' }
  } %>
 <p class="btns"><%= submit_tag 'Create template' %></p>
-<% end -%>
-
+</form>
 
 <%= render :partial => 'sidebar' %>

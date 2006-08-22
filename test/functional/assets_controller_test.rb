@@ -5,9 +5,9 @@ require 'assets_controller'
 class AssetsController; def rescue_action(e) raise e end; end
 
 class AssetsControllerTest < Test::Unit::TestCase
-  fixtures :attachments
-
+  fixtures :sites
   def setup
+    prepare_theme_fixtures
     @controller = AssetsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
@@ -15,32 +15,19 @@ class AssetsControllerTest < Test::Unit::TestCase
 
   def test_routing
     {:stylesheets => :css, :images => :png, :javascripts => :js}.each do |dir, ext|
-      assert_routing "#{dir}/foo/bar",    :controller => 'assets', :action => 'show', :dir => dir.to_s, :path => %w(foo bar)
-      assert_routing "#{dir}/foo.#{ext}", :controller => 'assets', :action => 'show', :dir => dir.to_s, :path => ["foo.#{ext}"]
+      assert_routing "#{dir}/foo.#{ext}", :controller => 'assets', :action => 'show', :dir => dir.to_s, :path => "foo", :ext => ext.to_s
     end
   end
 
   def test_should_find_css_by_full_path
-    get :show, :path => ['style.css'], :dir => 'stylesheets'
+    get :show, :path => 'style', :ext => 'css', :dir => 'stylesheets'
     assert_equal 'text/css', @response.headers['Content-Type']
-    assert_equal attachments(:css).attachment_data, @response.body
+    assert_equal sites(:first).resources['style.css'].read, @response.body
   end
 
   def test_should_find_js_by_full_path
-    get :show, :path => ['behavior.js'], :dir => 'javascripts'
+    get :show, :path => 'behavior', :ext => 'js', :dir => 'javascripts'
     assert_equal 'text/javascript', @response.headers['Content-Type']
-    assert_equal attachments(:js).attachment_data, @response.body
-  end
-
-  # need an image
-  #def test_should_find_image_by_full_path
-  #  get :show, :path => ['users', 'quentin.png'], :dir => 'images'
-  #  assert_equal 'image/png', @response.headers['Content-Type']
-  #  assert_equal attachments(:quentin).attachment_data, @response.body
-  #end
-  
-  def test_should_show_404_on_bad_asset
-    get :show, :path => ['foo', 'bar'], :dir => 'images'
-    assert_response :missing
+    assert_equal sites(:first).resources['behavior.js'].read, @response.body
   end
 end

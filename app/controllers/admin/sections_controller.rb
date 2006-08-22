@@ -31,7 +31,7 @@ class Admin::SectionsController < Admin::BaseController
 
   protected
     def find_and_sort_templates
-      @layouts, @templates = site.templates.find_custom.partition { |t| t.layout? }
+      @layouts, @templates = site.templates.partition { |t| t.dirname.to_s =~ /layouts$/ }
     end
     
     def find_and_reorder_sections

@@ -2,7 +2,7 @@ module Mephisto
   module SweeperMethods
     mattr_accessor :cache_sweeper_tracing
 
-    def expire_cached_pages(log_message, *pages)
+    def self.expire_cached_pages(log_message, controller, *pages)
       if cache_sweeper_tracing
         controller.logger.warn log_message
         controller.logger.warn "Expiring #{pages.size} page(s)"
@@ -14,6 +14,10 @@ module Mephisto
         pages.each { |p| controller.class.expire_page(p.url) }
         CachedPage.expire_pages(pages)
       end
+    end
+
+    def expire_cached_pages(log_message, *pages)
+      SweeperMethods.expire_cached_pages(log_message, controller, *pages)
     end
 
     def expire_overview_feed!

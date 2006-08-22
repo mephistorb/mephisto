@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
 
       status          = (assigns.delete(:status) || '200 OK')
       @liquid_assigns = assigns
-      render :text => site.templates.render_liquid_for(site, @section, template_type, assigns, self), :status => status
+      render :text => site.render_liquid_for(@section, template_type, assigns, self), :status => status
     end
 
     def show_error(message = 'An error occurred.', status = '500 Error')
