@@ -26,7 +26,7 @@ class Admin::ResourcesController < Admin::BaseController
   end
 
   def upload
-    if params[:resource] && Asset.image?(params[:resource].content_type) && (1..1.megabyte).include?(params[:resource].size)
+    if params[:resource] && Asset.image?(params[:resource].content_type.strip) && (1..1.megabyte).include?(params[:resource].size)
       @resource = site.resources.write File.basename(params[:resource].original_filename), params[:resource].read
       flash[:notice] = "'#{@resource.basename}' was uploaded successfully."
     else
