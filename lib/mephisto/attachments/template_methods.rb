@@ -11,7 +11,8 @@ module Mephisto
         :error   => [:error,    :index]
       }.freeze
     
-      @@template_types   = @@hierarchy.values.flatten.uniq << :layout
+      @@template_types = (@@hierarchy.values.flatten.uniq << :layout).collect! { |f| "#{f}.liquid" }
+      @@template_types.sort!
       mattr_reader :hierarchy, :template_types
 
       def [](template_name)
@@ -21,6 +22,10 @@ module Mephisto
     
       def find_preferred(template_type)
         hierarchy[template_type].collect { |t| self[t] }.detect(&:file?)
+      end
+      
+      def custom
+        @custom ||= collect { |p| p.basename.to_s } - template_types
       end
     end
   end

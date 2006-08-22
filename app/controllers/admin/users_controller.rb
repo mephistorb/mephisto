@@ -26,7 +26,7 @@ class Admin::UsersController < Admin::BaseController
       if @user.update_attributes(params[:user])
         page.call 'Flash.notice', 'Profile updated.'
       else
-        page.call 'Flash.error', "Save failed: #{@user.errors.full_messages.to_sentence}"
+        page.call 'Flash.errors', "Save failed: #{@user.errors.full_messages.to_sentence}"
       end
     end
   end

@@ -216,24 +216,25 @@ Asset = {
 // Ajax calls.
 //
 var Flash = {
-  // When given an error message, wrap it in a list 
+  // When given an flash message, wrap it in a list 
   // and show it on the screen.  This message will auto-hide 
-  // after a specified amount of miliseconds
-  error: function(message) {
-    new Effect.ScrollTo('flash-notice');
-    $('flash-errors').innerHTML = '';
-    $('flash-errors').innerHTML = "<ul>" + message + "</ul>";
-    new Effect.Appear('flash-errors', {duration: 0.3});
-    setTimeout(Flash.fadeError.bind(this), 5000);
+  // after a specified amount of milliseconds
+  show: function(flashType, message) {
+    new Effect.ScrollTo('flash-' + flashType);
+    $('flash-' + flashType).innerHTML = '';
+    if(message.toString().match(/<li/)) message = "<ul>" + message + '</ul>'
+    $('flash-' + flashType).innerHTML = message;
+    new Effect.Appear('flash-' + flashType, {duration: 0.3});
+    setTimeout(Flash['fade' + flashType[0].toUpperCase() + flashType.slice(1, flashType.length)].bind(this), 5000)
+  },
+  
+  errors: function(message) {
+    this.show('errors', message);
   },
 
   // Notice-level messages.  See Messenger.error for full details.
   notice: function(message) {
-    new Effect.ScrollTo('flash-notice');
-    $('flash-notice').innerHTML = '';
-    $('flash-notice').innerHTML = "<li>" + message + "</li>";
-    new Effect.Appear('flash-notice', {duration: 0.3});
-    setTimeout(Flash.fadeNotice.bind(this), 5000);
+    this.show('notice', message);
   },
   
   // Responsible for fading notices level messages in the dom    
@@ -422,6 +423,11 @@ Event.observe(window, 'load', function() {
   var articleDraft   = $('article-draft');
   if(commentsView)   Event.observe(commentsView,   'change', Comments.filter.bind(commentsView));
   if(articleDraft)   Event.observe(articleDraft,   'change', ArticleForm.saveDraft.bind(articleDraft));
+  
+  ['notice', 'errors'].each(function(flashType) {
+    var el = $('flash-' + flashType);
+    if(el.innerHTML != '') Flash.show(flashType, el.innerHTML);
+  })
   
   new SmartSearch('article-search', {
     'sectionlist, manualsearch': ['section'],

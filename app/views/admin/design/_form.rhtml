@@ -8,6 +8,7 @@
     <% if controller.action_name == 'index' -%>
     <dt>
       <%= label_tag :filename, labels[:filename] %>
+      <p class="hint">You can create one of three types of files: Liquid (*.liquid), CSS (*.css), and Javascript (*.js).</p>
     </dt>
     <dd><%= text_field_tag :filename, params[:filename] %></dd>
     <% end -%>

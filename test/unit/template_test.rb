@@ -64,6 +64,10 @@ class TemplateTest < Test::Unit::TestCase
     assert_template_name :index, :error
   end
 
+  def test_should_find_custom
+    assert_equal ['author.liquid'], sites(:first).templates.custom
+  end
+
   protected
     def assert_template_name(expected_template_name, template_type = nil, site = sites(:first))
       template_type ||= expected_template_name

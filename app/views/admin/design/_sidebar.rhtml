@@ -2,12 +2,21 @@
 <h3>Templates</h3>
 <p>Modify a template by selecting it from the list below.  Add a new layout by creating a Liquid template with an 
   *_layout suffix (e.g custom_layout).</p>
-<ul id="resources">
-  <% site.templates.each do |template| -%>
-    <li><%= link_to template.basename, :controller => 'templates', :action => 'edit', :filename => template.basename %></li>
+<ul id="attachments">
+  <% site.templates.template_types.each do |template| -%>
+    <li><%= link_to template, :controller => 'templates', :action => 'edit', :filename => template %></li>
   <% end -%>
-  <% site.resources.reject { |r| site.resources.image?(r) }.each do |resource| -%>
-    <li><%= link_to resource.basename, :controller => 'resources', :action => 'edit', :filename => resource.basename %></li>
+  <% site.templates.custom.each_with_index do |template, i| -%>
+    <li id="templates-<%= i %>">
+      <%= delete_link :templates, template, "templates-#{i}" %>
+      <%= link_to template, :controller => 'templates', :action => 'edit', :filename => template %>
+    </li>
+  <% end -%>
+  <% site.resources.reject { |r| site.resources.image?(r) }.each_with_index do |resource, i| -%>
+    <li id="resources-<%= i %>">
+      <%= delete_link :resources, resource.basename.to_s, "resources-#{i}" %>
+      <%= link_to resource.basename, :controller => 'resources', :action => 'edit', :filename => resource.basename %>
+    </li>
   <% end -%>
 </ul>
 
@@ -15,9 +24,8 @@
 
 <p>Select an image to use in your template.</p>
 <ul id="attachments">
-  <% site.resources.select { |r| site.resources.image?(r) }.each do |image| -%>
-    <li><%= link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), 
-              {:url => {:controller => 'resources', :action => 'remove', :filename => image.basename}}, :class => 'aicon', :title => 'Delete image' %> <%=  image.basename %> </li>
+  <% site.resources.select { |r| site.resources.image?(r) }.each_with_index do |image, i| -%>
+    <li id="images-<%= i %>"><%= delete_link :resources, image.basename.to_s, "images-#{i}" %> <%=  image.basename %> </li>
   <% end -%>
 </ul>
 

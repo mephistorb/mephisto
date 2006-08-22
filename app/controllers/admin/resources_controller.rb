@@ -36,9 +36,10 @@ class Admin::ResourcesController < Admin::BaseController
   end
   
   def remove
-    site.resources[params[:filename]].unlink
+    @resource = site.resources[params[:filename]]
     render :update do |page|
-      page.visual_effect :fade, "image-#{params[:id]}", :duration => 0.3
+      @resource.unlink if @resource.file?
+      page.visual_effect :fade, params[:context], :duration => 0.3
     end
   end
 end

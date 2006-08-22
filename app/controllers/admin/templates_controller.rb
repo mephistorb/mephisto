@@ -21,4 +21,19 @@ class Admin::TemplatesController < Admin::BaseController
       page.call 'Flash.notice', 'Template updated successfully'
     end
   end
+
+  def remove
+    @tmpl = site.templates[params[:filename]]
+    render :update do |page|
+      if !@tmpl.file?
+        page.flash.errors "File does not exist"
+        page.visual_effect :fade, params[:context], :duration => 0.3
+      elsif site.templates.custom.include?(@tmpl.basename.to_s)
+        @tmpl.unlink
+        page.visual_effect :fade, params[:context], :duration => 0.3
+      else
+        page.flash.errors "Cannot remove system template '#{params[:filename]}'"
+      end
+    end
+  end
 end

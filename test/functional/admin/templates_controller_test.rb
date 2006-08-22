@@ -46,4 +46,18 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
     assert_response :success
     assert_equal 'foo', sites(:first).templates['layout'].read
   end
+
+  def test_should_remove_custom_template
+    assert sites(:first).templates[:author].file?
+    post :remove, :filename => 'author.liquid'
+    assert_response :success
+    assert !sites(:first).templates[:author].file?
+  end
+
+  def test_should_protect_system_template_from_removal
+    assert sites(:first).templates[:layout].file?
+    post :remove, :filename => 'layout.liquid'
+    assert_response :success
+    assert sites(:first).templates[:layout].file?
+  end
 end

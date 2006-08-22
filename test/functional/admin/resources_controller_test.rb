@@ -67,4 +67,11 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
     assert_not_nil flash[:error]
     assert_redirected_to :controller => 'admin/design', :action => 'index'
   end
+
+  def test_should_remove_file
+    assert sites(:first).resources['rails-logo.png'].file?
+    post :remove, :filename => 'rails-logo.png'
+    assert_response :success
+    assert !sites(:first).resources['rails-logo.png'].file?
+  end
 end
