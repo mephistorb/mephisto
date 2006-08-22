@@ -96,6 +96,7 @@ class Article < Content
   end
 
   def has_section?(section)
+    return @new_sections.include?(section.id.to_s) if !@new_sections.blank?
     (new_record? && section.home?) || sections.include?(section)
   end
 

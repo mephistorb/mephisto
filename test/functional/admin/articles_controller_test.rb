@@ -112,7 +112,16 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       assert !assigns(:article).published?
     end
   end
-  
+
+  def test_should_show_correct_sections_on_invalid_create
+    assert_no_difference Article, :count do
+      post :create, :article =>  {:excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => {'2' => "true", '1' => ''}}, :submit => :save
+      assert_response :success
+      assert assigns(:article).new_record?
+      assert_tag :tag => 'input', :attributes => {:id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked'}
+    end
+  end
+
   def test_should_show_default_checked_sections
     get :new
     assert_response :success
