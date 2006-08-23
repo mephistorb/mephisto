@@ -18,9 +18,8 @@ class CommentsController < ApplicationController
     @comment = @article.comments.build(params[:comment].merge(:author_ip => request.remote_ip))
 
     if @comment.valid?
-      if site.approve_comments?
-        @comment.approved = true
-      elsif [:akismet_key, :akismet_url].all? { |attr| !site.send(attr).blank? }
+      @comment.approved = site.approve_comments?
+      if [:akismet_key, :akismet_url].all? { |attr| !site.send(attr).blank? }
         @comment.approved = Akismet.new(site.akismet_key, site.akismet_url).comment_check \
           :user_ip              => @comment.author_ip, 
           :user_agent           => request.user_agent, 
