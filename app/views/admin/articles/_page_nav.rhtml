@@ -29,6 +29,7 @@
     <li><a href="#">&nbsp;</a></li>
   </ul>
   <ul id="attributes">
+    <% unless controller.action_name == 'comments' %>
     <li><label for="search">Revision:</label></li>
     <li>
       <select name="filter" id="revisionnum">
@@ -36,6 +37,15 @@
         <%= options_from_collection_for_select @article.versions.reverse, :version, :version %>
       </select>
     </li>
+    <% end %>
+    <% if controller.action_name == 'comments' -%>
+    <li><label for="comments_view">Show comments:</label></li>
+    <li>
+      <select id="comments-view">
+        <%= options_for_select ['All', 'Unapproved', 'Approved'], params[:filter].to_s.humanize %>
+      </select>
+    </li>
+    <% end %>
   </ul>
 </div>
 <% end unless @article.new_record? && @article.comments.empty? -%>
