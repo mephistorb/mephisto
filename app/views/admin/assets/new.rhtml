@@ -1,6 +1,5 @@
 <%= render :partial => "action_nav" %>
 <% form_for :asset, :url => assets_url, :html => { :multipart => true } do |f| %>
-  <h3>Upload New Asset</h3>
 <%= render :partial => "form", :object => f %>
 <p class="btns">
   <%= submit_tag 'Upload Asset' %>

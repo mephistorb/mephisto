@@ -1315,34 +1315,20 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
  */
 
 #files, #recentfiles {
+  width: 100%;
   margin-bottom: 20px;
-  list-style: none;
-}
-
-#files li, #recentfiles li {
-  float: left;
-  margin-right: 10px;
   text-align: center;
-  margin-bottom: 10px;
-  width: 23%;
 }
 
-#recentfiles li img, #files li img {
-  max-width: 120px;
-  max-height: 120px;
-  overflow: hidden;
+#files td, #recentfiles td {
+  padding: 10px;
+  vertical-align: top;
+}
+
+#recentfiles img, #files img {
   background: #fff;
   padding: 5px;
   border: 1px solid #ccc;
-}
-
-#files li {
-  width: 20%;
-}
-
-#files li img {
-  max-width: 50px;
-  max-height: 50px;
 }
 
 #filelist #recentfiles span {
@@ -1356,6 +1342,41 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 #recentfiles h4 {
   font-size: 90%;
 }
+
+.file-tools {
+  list-style: none;
+  width: 60px;
+  margin: 0 auto 5px auto;
+}
+
+.file-tools li {
+  display: inline;
+}
+
+.file-tools li a {
+  display: block;
+  height: 8px;
+  width: 10px;
+  text-indent: -9999px;
+  float: left;
+  text-decoration: none;
+  border: none;
+  padding: 2px 2px 5px 2px;
+  background-repeat: no-repeat;
+  background-color: #f7f7f7;
+  margin-right: 5px;
+}
+
+.file-tools li a:hover {
+  background-color: #eee;
+}
+
+.file-tools li.fedit a   { background-image: url(../images/icons/8-em-pencil.png) }
+.file-tools li.fview a   { background-image: url(../images/icons/8-em-plus.png)   }
+.file-tools li.fbucket a { background-image: url(../images/icons/8-em-check.png)  }
+.file-tools li.fdelete a { background-image: url(../images/icons/8-em-cross.png)  }
+
+
 /*
  *=MISC
  */

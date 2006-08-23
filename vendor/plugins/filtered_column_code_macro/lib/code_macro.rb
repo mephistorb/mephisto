@@ -1,10 +1,9 @@
 require 'coderay'
 class CodeMacro < FilteredColumn::Macros::Base
   def self.filter(attributes, inner_text = '', text = '')
+    options = { :line_numbers => nil, :css => :class }.merge(attributes)
     begin
-      CodeRay.scan(inner_text, attributes[:lang].to_sym).div(
-        :line_numbers => :table, :css => :class
-      )
+      CodeRay.scan(inner_text, attributes[:lang].to_sym).div(options)
     rescue
       unless attributes[:lang].blank?
         logger.warn "CodeRay Error: #{$!.message}"

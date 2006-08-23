@@ -151,7 +151,7 @@ Object.extend(Array.prototype, {
 var TinyTab = Class.create();
 TinyTab.callbacks ={
   'latest-files': function() {
-    if($('latest-assets').childNodes.length == 0)
+    if($('assets').childNodes.length == 0)
       new Ajax.Request('/admin/assets;latest');
   },
   'search-files': function(q) {

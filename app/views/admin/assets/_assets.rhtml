@@ -1,24 +1,43 @@
   <% if @recent.any? %>
   <h3 class="divider">Recently uploaded</h3>
-  <ul id="recentfiles" class="clear">
-  <% @recent.each do |asset| -%>
-    <li>
-      <h4><%= asset_title_for(asset) %></h4>
-      <%= link_to asset_image_for(asset, :thumb), edit_asset_url(asset) %>
-    </li>
-  <% end -%>
-  </ul>
+  <table id="recentfiles">
+    <tr>
+    <% @recent.each do |asset| -%>
+      <td>
+        <ul class="file-tools clear">
+          <li class="fedit"><%= link_to 'Edit', edit_asset_url(asset), :title => 'Edit this file' %></li>
+          <li class="fdelete"><a href="#" title="Delete this file">Delete</a></li>
+          <li class="fbucket"><a href="#" title="Put in bucket">Add to bucket</a></li>
+        </ul>
+        <%= link_to(asset_image_for(asset, :thumb), asset.public_filename, :target => '_blank') %>
+      </td>
+    <% end -%>
+    </tr>
+  </table>
   
   <% if @assets.any? %>
-    <h3 class="divider">Your files</h3>
-    <ul id="files" class="clear">
-    <% @assets.each do |asset| -%>
-      <li><%= link_to asset_image_for(asset, :tiny), edit_asset_url(asset) %></li>
-    <% end -%>
-    </ul>
+    <h3 class="divider">Older files</h3>
+    <table id="files">
+    <% @assets.in_groups_of(5) do |assets_line| -%>
+    <tr>
+      <% assets_line.each do |asset| %>
+       <td>
+         <% if asset %>
+         <ul class="file-tools clear">
+           <li class="fedit"><%= link_to 'Edit', edit_asset_url(asset), :title => 'Edit this file' %></li>
+           <li class="fdelete"><a href="#" title="Delete this file">Delete</a></li>
+           <li class="fbucket"><a href="#" title="Put in bucket">Add to bucket</a></li>
+         </ul>
+         <%= link_to(asset_image_for(asset, :tiny), asset.public_filename, :target => '_blank') %>
+         <% end %>
+        </td>
+       <% end %>
+    </tr>
+    <% end %>
+    </table>
   <% end %>
   <% else %>
-    <div class="empty">You haven't uploaded any files. <%= link_to 'Upload one now &raquo;', :action => 'new' %></div>
+    <div class="empty" style="margin: 20px;">You have no files of this type or have yet to upload any files. <%= link_to 'Upload one now &raquo;', :action => 'new' %></div>
   <% end %>
 
 <% if @asset_pages.page_count > 1 %>

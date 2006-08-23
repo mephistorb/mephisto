@@ -37,10 +37,10 @@
 
 <% content_for :sidebar do %>
   <div class="sblock">
-    <h3>Assets</h3>
+    <h3>Some stats</h3>
     <p>
-      You have a uploaded a total of <%= pluralize site.assets.count, 'asset'%>, using
-      <%= number_to_human_size site.assets.sum(:size) %>.
+      You have a uploaded a total of <strong><%= pluralize site.assets.count, 'asset'%></strong>, using
+      <strong><%= number_to_human_size site.assets.sum(:size) %></strong>.
     </p>
   </div>
 <% end %>

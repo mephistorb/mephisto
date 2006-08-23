@@ -13,8 +13,8 @@ module ApplicationHelper
     asset.title.blank? ? asset.filename : asset.title
   end
 
-  def asset_image_for(asset, thumbnail = nil)
-    image_tag asset.public_filename(thumbnail)
+  def asset_image_for(asset, thumbnail = nil, options = {})
+    image_tag(asset.public_filename(thumbnail), { :title => "#{asset.title} \n #{asset.tags.join(', ')}" }.merge(options))
   end
 
   def todays_short_date

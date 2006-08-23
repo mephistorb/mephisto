@@ -82,8 +82,7 @@ module Mephisto
         # XXX cache this someday
         earliest = controller.site.articles.find(:first, :order => 'published_at').published_at.beginning_of_month
       end
-
-      
+       
       private
         # marks a page as class=selected
         def page_anchor_options(page)
