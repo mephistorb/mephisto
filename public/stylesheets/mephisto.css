@@ -480,7 +480,7 @@ input[type='text']:focus, textarea:focus {
 
 #revisions, #resources, 
 #attachments, #sections, 
-#pages {
+#pages, .dotlist {
   list-style: none;
   margin: 0 20px 0 5px;
 }
@@ -527,7 +527,8 @@ input[type='text']:focus, textarea:focus {
 }
 
 
-#attachments li, #sections li, #pages li {
+#attachments li, #sections li, 
+#pages li, .dotlist li {
   display: block;
   list-style: none;
   padding: 5px 8px;
@@ -535,11 +536,13 @@ input[type='text']:focus, textarea:focus {
   border-bottom: 1px dotted #C6F4F6;
 }
 
-#attachments li img, #sections li img, #pages li img {
+#attachments li img, #sections li img, 
+#pages li img, .dotlist li img {
   border: 0;
 }
 
-#attachments li a.aicon, #sections li a.aicon, #pages li a.aicon {
+#attachments li a.aicon, #sections li a.aicon, 
+#pages li a.aicon, .dotlist li a.aicon {
   margin-right: 10px;
 }
 
@@ -659,6 +662,7 @@ a#section-home {
   margin-right: 3px;
   outline: none;
   font-size: 90%;
+  padding-left: 18px;
 }
 
 .stabs li a.selected {
@@ -678,20 +682,10 @@ ul.stabs li a:hover {
   padding: 5px;
 }
 
-#tab-search a {
-  background: url(../images/icons/magnify.png) 3px 50% no-repeat;
-  padding-left: 18px;
-}
-
-#tab-files a {
-  background: url(../images/icons/updark.png) 3px 5px no-repeat;
-  padding-left: 18px;
-}
-
-#tab-latest a {
-  background: url(../images/icons/thumbs.png) 3px 5px no-repeat;
-  padding-left: 18px;
-}
+#tab-search a { background: url(../images/icons/magnify.png) 3px 50% no-repeat; }
+#tab-files a  { background: url(../images/icons/updark.png) 3px 5px no-repeat; }
+#tab-latest a { background: url(../images/icons/thumbs.png) 3px 5px no-repeat; }
+#tab-bucket a { background: url(../images/icons/cart.png) 3px 5px no-repeat; }
 
 .reordering  {
   background: green;
@@ -1292,7 +1286,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   margin-bottom: 5px;
 }
 
-#assets li a {
+#assets li a img {
   padding: 4px;
   background: #fff;
 }
@@ -1400,7 +1394,7 @@ h3.withcontrol {
 
 .divider {
   margin: 0 0 5px 0;
-  border-bottom: 1px dotted #bbb;
+  border-bottom: 5px double #bbb;
   padding: 0;
   font-size: 90%;
   font-family: Helvetica, Arial, sans-serif;

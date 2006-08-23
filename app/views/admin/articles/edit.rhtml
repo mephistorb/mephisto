@@ -3,20 +3,7 @@
 <% fields_for :article, @version do |f| -%>
 <% content_for :sidebar do %>
   <%= render :partial => 'shared_options', :locals => { :form => f } %>
-  
-  <div class="sgroup">
-    <h3>Revisions<% if params[:version] -%> (<%= link_to 'current', :action => :edit, :id => @article, :version => nil %>)<% end -%></h3>
-    <ul id="revisions">
-    <% @article.versions.reverse.each do |version| -%>
-      <li>
-        <%= link_to avatar_for(version.updater), {:action => 'edit', :id => @article, :version => version.version }, :title => 'Edit this revision' %>
-        <h4><%=h who(version.updater.login) %></h4>
-        edited this <%= time_ago_in_words version.updated_at %> ago.
-        <span class="rev-num"><%= version.version %></span>
-      </li>
-    <% end -%>
-    </ul>
-  </div>
+
   
 <% end %>
 <% end %>

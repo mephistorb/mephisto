@@ -10,6 +10,45 @@
     <% end %>
   </ul>
 </div>
+
+<div class="sgroup" id="filetabs">
+  <ul class="stabs">
+    <li id="tab-latest"><a href="#latest-files" class="selected" title="Latest files uploaded">Latest</a></li>
+    <li id="tab-search"><a href="#search-files" title="Search for files">Search</a></li>
+    <li id="tab-files"><a href="#upload-files" title="Upload new files">Upload</a></li>
+    <li id="tab-bucket"><a href="#bucket" title="Upload new files">Bucket</a></li>
+  </ul>
+  
+  <div id="tabpanels">
+    <div class="tabpanel" id="latest-files">
+      <ul id="assets">
+        <%= render :partial => "admin/assets/widget", :collection => @assets %>
+      </ul>
+    </div>
+    <div class="tabpanel" id="search-files" style="display:none;">
+      <p>Search by tag or title</p>
+      <input class="searchbox" type="text" size="30" name="q" id="search-files-q" />
+      <input type="button" value="Search" onclick="TinyTab.callbacks['search-files']($F('search-files-q'))" />
+      <ul id="search-assets"></ul>
+    </div>
+    <div class="tabpanel" id="upload-files" style="display:none;">
+      <p>
+        <strong>1.</strong>
+        <%= file_field_tag 'asset[uploaded_data]', :size => 15, :id => 'asset_uploaded_data' %>
+        <%= hidden_field_tag 'asset[article_id]', @article.id, :id => 'asset_article_id' unless @article.new_record? %>
+      </p>
+      <p><strong>2.</strong> <input type="button" value="Upload" onclick="Asset.upload('article-form');" /></p>
+      <p><em>Uploading this will lose your changes to this article.</em></p>
+    </div>
+    <div class="tabpanel" id="bucket" style="display:none;">
+      <ul id="assets">
+        <%= render :partial => "admin/assets/widget", :collection => @assets %>
+      </ul>
+    </div>
+  </div>
+  
+</div>
+
 <div class="sgroup">
   <h3>Optional settings</h3>
   <dl class="sform">

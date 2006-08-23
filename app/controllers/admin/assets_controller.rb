@@ -51,6 +51,12 @@ class Admin::AssetsController < Admin::BaseController
       redirect_to(:controller => 'articles', :action => 'edit', :id => article_id) :
       redirect_to(:controller => 'articles', :action => 'new')
   end
+  
+  def add_to_bucket
+    render :update do |page|
+      page['bucket'].update_html :partial => 'bucket_item'
+    end
+  end
 
   protected
     def find_asset

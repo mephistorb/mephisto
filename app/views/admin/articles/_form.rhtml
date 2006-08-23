@@ -8,7 +8,7 @@
     <dt id="x-lbl" style="display:none;"><%= form.label_for :excerpt %> <span class="hint">(<%= link_to_function 'Cancel', %(Element.toggle('x-lbl', 'x-body')) %>)</span></dt>
     <dd id="x-body" style="display:none"><%= form.text_area :excerpt, :rows => '8', :class => 'fat'  %></dd>
     <dt><label for="article_body">Write your article</label> <span class="hint">(<%= link_to_function 'Add an excerpt', %(Element.toggle('x-lbl', 'x-body')) %>)</span></dt>
-    <dd><%= form.text_area :body, :class => 'fat'  %></dd>
+    <dd><%= form.text_area :body, :class => 'fat', :rows => 25  %></dd>
     <dt><label for="article_tag">Tags</label> <span class="hint">Enter one or more tags separated by a comma.</span></dt>
     <dd><%= form.text_field :tag %></dd>
   </dl>
@@ -23,36 +23,3 @@
   <dd id="publish-date"<%= %( style="display:none") unless @article.new_record? || @published -%>><%= form.datetime_select :published_at, {:start_year => 2005, :discard_year => true, :order => [:month, :day, :year] } %></dd>
 </dl>
 <!-- /end optional fields -->
-
-<% content_for :sidebar do %>
-  <div class="sgroup" id="filetabs">
-    <ul class="stabs">
-      <li id="tab-latest"><a href="#latest-files" class="selected" title="Latest files uploaded">Latest files</a></li>
-      <li id="tab-search"><a href="#search-files" title="Search for files">Search files</a></li>
-      <li id="tab-files"><a href="#upload-files" title="Upload new files">Upload</a></li>
-    </ul>
-    <div id="tabpanels">
-      <div class="tabpanel" id="latest-files">
-        <ul id="assets">
-          <%= render :partial => "admin/assets/widget", :collection => @assets %>
-        </ul>
-      </div>
-      <div class="tabpanel" id="search-files" style="display:none;">
-        <p>Search by tag or title</p>
-        <input class="searchbox" type="text" size="30" name="q" id="search-files-q" />
-        <input type="button" value="Search" onclick="TinyTab.callbacks['search-files']($F('search-files-q'))" />
-        <ul id="search-assets"></ul>
-      </div>
-      <div class="tabpanel" id="upload-files" style="display:none;">
-        <p>
-          <strong>1.</strong>
-          <%= file_field_tag 'asset[uploaded_data]', :size => 15, :id => 'asset_uploaded_data' %>
-          <%= hidden_field_tag 'asset[article_id]', @article.id, :id => 'asset_article_id' unless @article.new_record? %>
-        </p>
-        <p><strong>2.</strong> <input type="button" value="Upload" onclick="Asset.upload('article-form');" /></p>
-        <p><em>Uploading this will lose your changes to this article.</em></p>
-      </div>
-    </div>
-    
-  </div>
-<% end %>

@@ -23,4 +23,19 @@
     </li>
   </ul>
 </div>
+
+<div id="filter" class="manual">
+  <ul class="clear">
+    <li><a href="#">&nbsp;</a></li>
+  </ul>
+  <ul id="attributes">
+    <li><label for="search">Revision:</label></li>
+    <li>
+      <select name="filter" id="revisionnum">
+        <option value="0">Newest</option>
+        <%= options_from_collection_for_select @article.versions.reverse, :version, :version %>
+      </select>
+    </li>
+  </ul>
+</div>
 <% end unless @article.new_record? && @article.comments.empty? -%>

@@ -257,6 +257,14 @@ var ArticleForm = {
 
   getAvailableComments: function() {
     return $$('ul.commentlist li').reject(function(div) { return !(div.visible() && !div.hasClassName('disabled') && div.id.match(/^comment-/)); }).collect(function(div) { return div.id.match(/comment-(\d+)/)[1] });
+  },
+  
+  getRevision: function() {
+    var rev = $F(this)
+    if(rev > 0)
+      location.href += "/" + $F(this);
+    else
+      location.href = location.href.match(/\/edit\/([0-9]+)/)[1];
   }
 }
 
@@ -421,6 +429,9 @@ Event.observe(window, 'load', function() {
   // TODO: IE doesn't fire onchange for checkbox
   var commentsView   = $('comments-view');
   var articleDraft   = $('article-draft');
+  var revisions      = $('revisionnum');
+  
+  if(revisions)      Event.observe(revisions, 'change', ArticleForm.getRevision.bind(revisions));
   if(commentsView)   Event.observe(commentsView,   'change', Comments.filter.bind(commentsView));
   if(articleDraft)   Event.observe(articleDraft,   'change', ArticleForm.saveDraft.bind(articleDraft));
   

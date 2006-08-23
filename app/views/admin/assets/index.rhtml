@@ -36,7 +36,18 @@
 
 
 <% content_for :sidebar do %>
-  <div class="sblock">
+  <div class="sgroup">
+    <h3>Your bucket <a href="#">(clear)</a></h3>
+    <p>Add files to your bucket temporarily in order to carry them with you when creating or revising articles.</p>
+    <ul id="assets">
+      <% @assets.each_with_index do |asset, i| %>
+      <li>
+        <%= link_to(asset_image_for(asset, :tiny), asset.public_filename, :target => '_blank') %>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="sgroup">
     <h3>Some stats</h3>
     <p>
       You have a uploaded a total of <strong><%= pluralize site.assets.count, 'asset'%></strong>, using

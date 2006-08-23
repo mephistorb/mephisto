@@ -1,5 +1,4 @@
   <% if @recent.any? %>
-  <h3 class="divider">Recently uploaded</h3>
   <table id="recentfiles">
     <tr>
     <% @recent.each do |asset| -%>
@@ -16,7 +15,7 @@
   </table>
   
   <% if @assets.any? %>
-    <h3 class="divider">Older files</h3>
+  <h3 class="divider">Older files</h3>
     <table id="files">
     <% @assets.in_groups_of(5) do |assets_line| -%>
     <tr>
