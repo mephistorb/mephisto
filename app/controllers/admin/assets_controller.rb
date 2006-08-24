@@ -1,5 +1,5 @@
 class Admin::AssetsController < Admin::BaseController
-  before_filter :find_asset, :except => [:index, :new, :create, :latest, :search, :upload]
+  before_filter :find_asset, :except => [:index, :new, :create, :latest, :search, :upload, :clear_bucket]
 
   def index
     search_assets 20
@@ -56,6 +56,15 @@ class Admin::AssetsController < Admin::BaseController
     @asset.destroy
     redirect_to assets_path
     flash[:notice] = "Deleted '#{@asset.filename}'"
+  end
+
+  # rjs
+  def add_bucket
+    (session[:bucket] ||= {})[@asset.public_filename] = [@asset.public_filename(:tiny), "#{@asset.title} \n #{@asset.tags.join(', ')}"]
+  end
+
+  def clear_bucket
+    session[:bucket] = nil
   end
 
   protected

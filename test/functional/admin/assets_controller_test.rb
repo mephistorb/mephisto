@@ -90,7 +90,21 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     end
     # fixed in edge
     #assert_redirected_to assets_path
-    assert_flash :notice
+    assert_not_nil flash[:notice]
+  end
+
+  def test_should_add_to_bucket
+    xhr :post, :add_bucket, :id => assets(:gif).id
+    assert_response :success
+    assert_equal 1, session[:bucket].size
+    assert_kind_of Array, session[:bucket][assets(:gif).public_filename]
+  end
+
+  def test_should_clear_bucket
+    @request.session[:bucket] = 'foo'
+    xhr :post, :clear_bucket
+    assert_response :success
+    assert_nil session[:bucket]
   end
 
   def teardown

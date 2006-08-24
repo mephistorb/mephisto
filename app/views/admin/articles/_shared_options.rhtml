@@ -21,7 +21,7 @@
   
   <div id="tabpanels">
     <div class="tabpanel" id="latest-files">
-      <ul id="assets">
+      <ul id="latest-assets">
         <%= render :partial => "admin/assets/widget", :collection => @assets %>
       </ul>
     </div>
@@ -41,8 +41,12 @@
       <p><em>Uploading this will lose your changes to this article.</em></p>
     </div>
     <div class="tabpanel" id="bucket" style="display:none;">
-      <ul id="assets">
-        <%= render :partial => "admin/assets/widget", :collection => @assets %>
+      <ul id="bucket-assets">
+        <% session[:bucket].each do |filename, values| -%>
+        <li>
+          <%= link_to(asset_image_tag(values.first, values.last), filename, :target => '_blank') %>
+        </li>
+        <% end unless session[:bucket].blank? %>
       </ul>
     </div>
   </div>

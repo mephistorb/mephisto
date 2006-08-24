@@ -600,7 +600,7 @@ a#section-home {
   overflow: hidden;
 }
 
-#revisions h4, #assets h4 {
+#revisions h4, #assets h4, #latest-assets h4, #bucket-assets h4 {
   font: bold 100% "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
   color: #333;
 }
@@ -1275,23 +1275,27 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
  *=ASSET MANAGEMENT
  */
 
-#assets, #files {
+#assets, #files, #latest-assets, #bucket-assets {
   list-style: none;
   margin-top: 5px;
 }
 
-#assets li, #files li {
+#assets li, #files li, #latest-assets li, #bucket-assets li {
   display: inline;
   margin-left: 5px;
   margin-bottom: 5px;
 }
 
-#assets li a img {
+#assets li a img,
+#latest-assets li a img,
+#bucket-assets li a img {
   padding: 4px;
   background: #fff;
 }
 
-#assets img {
+#assets img,
+#latest-assets img,
+#bucket-assets img {
   max-height: 50px;
   max-width: 50px;
   padding: 3px;
@@ -1299,7 +1303,9 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   border: 1px solid #8BCACD;
 }
 
-#assets span {
+#assets span,
+#latest-assets span,
+#bucket-assets span {
   display: block;
   font-size: 80%;
 }

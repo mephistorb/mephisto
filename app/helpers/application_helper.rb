@@ -14,7 +14,11 @@ module ApplicationHelper
   end
 
   def asset_image_for(asset, thumbnail = nil, options = {})
-    image_tag(asset.public_filename(thumbnail), { :title => "#{asset.title} \n #{asset.tags.join(', ')}" }.merge(options))
+    asset_image_tag asset.public_filename(thumbnail), "#{asset.title} \n #{asset.tags.join(', ')}", options
+  end
+
+  def asset_image_tag(filename, title, options = {})
+    image_tag(filename, { :title => title }.merge(options))
   end
 
   def todays_short_date

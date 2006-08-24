@@ -57,6 +57,11 @@ class Asset < ActiveRecord::Base
   end
   alias_method_chain :public_filename, :host
 
+  def title
+    t = read_attribute(:title)
+    t.blank? ? filename : t
+  end
+
   [:movie, :audio, :other].each do |content|
     define_method("#{content}?") { self.class.send("#{content}?", content_type) }
   end

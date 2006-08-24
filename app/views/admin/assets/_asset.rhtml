@@ -2,6 +2,6 @@
            <li class="fedit"><%= link_to 'Edit', edit_asset_path(asset), :title => 'Edit this file' %></li>
            <li class="fdelete"><%= link_to 'Delete', asset_path(asset), :tilte => 'Delete this asset', 
                                      :confirm => 'Are you sure you wish to delete this?', :method => :delete %></li>
-           <li class="fbucket"><a href="#" title="Put in bucket">Add to bucket</a></li>
+           <li class="fbucket"><%= link_to_remote 'Add to bucket', :url => add_bucket_asset_path(asset), :html => { :title => 'Add to bucket' }%></li>
          </ul>
          <%= link_to(asset_image_for(asset, :tiny), asset.public_filename, :target => '_blank') %>
