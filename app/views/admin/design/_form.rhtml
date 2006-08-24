@@ -4,7 +4,7 @@
       <%= label_tag :data, labels[:data] %>
       <p class="hint"><%= hint %></p>
     </dt>
-    <dd><%= text_area_tag :data, (attachment && attachment.file? ? attachment.read : params[:data]), :class => 'fat', :rows => 20 %></dd>
+    <dd><%= text_area_tag :data, h(attachment && attachment.file? ? attachment.read : params[:data]), :class => 'fat', :rows => 20 %></dd>
     <% if controller.action_name == 'index' -%>
     <dt>
       <%= label_tag :filename, labels[:filename] %>
