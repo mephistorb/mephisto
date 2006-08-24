@@ -66,7 +66,7 @@ class Admin::AssetsController < Admin::BaseController
     end
 
     def search_options
-      search_conditions.merge(:order => 'created_at desc', :limit => @asset_pages.items_per_page, :offset => @asset_pages.current.offset, :include => :site)
+      search_conditions.merge(:order => 'created_at desc', :limit => @asset_pages.items_per_page, :offset => @asset_pages.current.offset)
     end
 
     def search_conditions
@@ -78,28 +78,34 @@ class Admin::AssetsController < Admin::BaseController
       
       @search_conditions =
         returning :conditions => [] do |options|
+          options[:include] = [:site]
           unless params[:q].blank?
             params[:conditions] = { :title => true, :tags => true } if params[:conditions].blank?
-            options[:select] = 'distinct assets.*'
-            options[:conditions] << Asset.send(:sanitize_sql, ['(LOWER(assets.title) LIKE :q or LOWER(assets.filename) LIKE :q)', {:q => params[:q]}]) if params[:conditions].has_key?(:title)
+            if params[:conditions].has_key?(:title)
+              options[:conditions] << Asset.send(:sanitize_sql, ['(LOWER(assets.title) LIKE :q or LOWER(assets.filename) LIKE :q)', {:q => params[:q]}])
+            end
             
             if params[:conditions].has_key?(:tags)
-              options[:joins] = "LEFT OUTER JOIN taggings ON assets.id = taggings.taggable_id and taggings.taggable_type = 'Asset' LEFT OUTER JOIN tags ON taggings.tag_id = tags.id"
-              options[:conditions] << Asset.send(:sanitize_sql, ["(tags.name IN (?))", Tag.parse(params[:q])])
+              options[:include] << :tags
+              options[:conditions] << Asset.send(:sanitize_sql, ["(taggings.taggable_type = 'Asset' and tags.name IN (?))", Tag.parse(params[:q])])
             end
           end
         
           if options[:conditions].blank?
             options.delete(:conditions)
           else
-            options[:conditions] = options[:conditions] * ' or '
+            options[:conditions] *= ' OR ' 
           end
+          
         end
     end
     
     def count_by_conditions
       type_conditions = @types.blank? ? nil : Asset.types_to_conditions(@types.dup).join(" OR ")
       @count_by_conditions ||= search_conditions[:conditions].blank? ? site.assets.count(:all, :conditions => type_conditions) :
-        Asset.count_by_sql("SELECT COUNT(DISTINCT assets.id) FROM assets #{search_conditions[:joins]} WHERE site_id = #{site.id} #{type_conditions && "and #{type_conditions}"} AND #{search_conditions[:conditions]}")
+        Asset.count( 
+        :joins =>  search_conditions[:joins], 
+        :conditions => "site_id = #{site.id} #{type_conditions && "and #{type_conditions}"} AND #{search_conditions[:conditions]}", 
+        :include => search_conditions[:include])
     end
 end
