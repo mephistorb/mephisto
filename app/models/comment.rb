@@ -8,16 +8,7 @@ class Comment < Content
   attr_protected :approved
 
   def to_liquid
-    { 'id'         => id,
-      'author'     => author_link,
-      'body'       => body_html,
-      'created_at' => created_at }
-  end
-
-  def author_link
-    return CGI::escapeHTML(author) if author_url.blank?
-    self.author_url = "http://" + author_url unless author_url =~ /^https?:\/\//
-    %Q{<a href="#{CGI::escapeHTML author_url}">#{CGI::escapeHTML author}</a>}
+    Mephisto::Liquid::CommentDrop.new self
   end
   
   def approved=(value)

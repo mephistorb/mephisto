@@ -1,7 +1,9 @@
+require 'digest/md5'
 module Mephisto
   module Liquid
     module Filters
       include ActionView::Helpers::TagHelper
+      include ActionView::Helpers::AssetTagHelper
 
       def link_to_article(article)
         content_tag :a, article['title'], :href => article['url']
@@ -82,7 +84,15 @@ module Mephisto
         # XXX cache this someday
         earliest = controller.site.articles.find(:first, :order => 'published_at').published_at.beginning_of_month
       end
-       
+
+      def gravatar(comment, size=80, default=nil)
+        return '' unless comment['author_email']
+        url = "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(comment['author_email'])}"
+        url << "&default=#{default}" if default
+
+        image_tag url, :class => 'gravatar', :size => "#{size}x#{size}", :alt => comment['author']
+      end
+
       private
         # marks a page as class=selected
         def page_anchor_options(page)
