@@ -1,0 +1,38 @@
+welcome_1:
+  id: 1
+  article_id: 1
+  site_id: 1
+  title: Welcome to Mephisto!!!!!!
+  permalink: welcome-to-mephisto
+  excerpt: welcome summary
+  excerpt_html: welcome summary
+  body: welcome description
+  body_html: welcome description
+  created_at: <%= 5.days.ago.to_s(:db) %>
+  updated_at: <%= 5.days.ago.to_s(:db) %>
+  published_at: <%= 3.days.ago.to_s(:db) %>
+  comment_age: 30
+  user_id: 1
+  comments_count: 1
+  versioned_type: Article
+  filter: textile_filter
+  version: 1
+welcome_2:
+  id: 2
+  article_id: 1
+  site_id: 1
+  title: Welcome to Mephisto
+  permalink: welcome-to-mephisto
+  excerpt: welcome summary
+  excerpt_html: welcome summary
+  body: welcome description
+  body_html: welcome description
+  created_at: <%= 5.days.ago.to_s(:db) %>
+  updated_at: <%= 5.days.ago.to_s(:db) %>
+  published_at: <%= 3.days.ago.to_s(:db) %>
+  comment_age: 30
+  user_id: 1
+  comments_count: 1
+  versioned_type: Article
+  filter: textile_filter
+  version: 2

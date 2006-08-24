@@ -22,6 +22,7 @@ welcome:
   comments_count: 1
   type: Article
   filter: textile_filter
+  version: 2
 another:
   id: 2
   site_id: 1

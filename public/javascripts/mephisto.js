@@ -261,10 +261,9 @@ var ArticleForm = {
   
   getRevision: function() {
     var rev = $F(this)
-    if(rev > 0)
-      location.href += "/" + $F(this);
-    else
-      location.href = location.href.match(/\/edit\/([0-9]+)/)[1];
+    var url = '/admin/articles/edit/' + location.href.match(/\/edit\/([0-9]+)/)[1];
+    if(rev != '0') url += "/" + rev;
+    location.href = url;
   }
 }
 

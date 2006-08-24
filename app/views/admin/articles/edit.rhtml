@@ -3,8 +3,6 @@
 <% fields_for :article, @version do |f| -%>
 <% content_for :sidebar do %>
   <%= render :partial => 'shared_options', :locals => { :form => f } %>
-
-  
 <% end %>
 <% end %>
 

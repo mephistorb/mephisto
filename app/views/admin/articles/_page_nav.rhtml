@@ -34,7 +34,7 @@
     <li>
       <select name="filter" id="revisionnum">
         <option value="0">Newest</option>
-        <%= options_from_collection_for_select @article.versions.reverse, :version, :version %>
+        <%= options_from_collection_for_select @article.versions.reverse, :version, :version, params[:version].to_i %>
       </select>
     </li>
     <% end %>

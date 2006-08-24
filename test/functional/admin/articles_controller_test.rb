@@ -5,7 +5,7 @@ require 'admin/articles_controller'
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
 class Admin::ArticlesControllerTest < Test::Unit::TestCase
-  fixtures :contents, :sections, :assigned_sections, :users, :sites, :tags, :taggings
+  fixtures :contents, :content_versions, :sections, :assigned_sections, :users, :sites, :tags, :taggings
 
   def setup
     @controller = Admin::ArticlesController.new
@@ -31,7 +31,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_equal 6, assigns(:articles).length
   end
   
-  def test_should_show_articles_with_empty_search
+  def test_should_show_articles_with_empty_seartest_should_show_checked_sectionsch
     get :index, :q => '', :filter => 'title', :section => '0'
     assert_equal 6, assigns(:articles).length
   end
@@ -125,21 +125,31 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_show_default_checked_sections
     get :new
     assert_response :success
-    assert_tag    :tag => 'form',  :attributes => { :action => '/admin/articles/create' }
-    assert_tag    :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
-    assert_no_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
+    assert_tag    'form',  :attributes => { :action => '/admin/articles/create' }
+    assert_tag    'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
+    assert_no_tag 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
   end
   
+  def test_should_show_title
+    get :edit, :id => contents(:welcome).id
+    assert_response :success
+    assert_tag 'input', :attributes => { :id => 'article_title', :value => contents(:welcome).title }
+  end
+
+  def test_should_edit_article_version
+    get :edit, :id => contents(:welcome).id, :version => '1'
+    assert_tag 'input', :attributes => { :id => 'article_title', :value => contents(:welcome).title + '!!!!!!' }
+  end
+
   def test_should_show_checked_sections
     get :edit, :id => contents(:welcome).id
     assert_response :success
-    assert_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
-    assert_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}" }
+    assert_tag 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
+    assert_tag 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}" }
   
     get :edit, :id => contents(:another).id
     assert_response :success
-    assert_tag    :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
-    assert_no_tag :tag => 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
+    assert_tag  'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}", :checked => 'checked' }
   end
   
   def test_should_show_published_date_selector

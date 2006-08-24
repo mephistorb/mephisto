@@ -35,7 +35,7 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def edit
-    @version   = params[:version] ? @article.find_version(params[:version]) : @article
+    @version   = params[:version] ? @article.find_version(params[:version]) : @article or raise(ActiveRecord::RecordNotFound)
     @published = @version.published?
     @version.published_at = utc_to_local(@version.published_at || Time.now.utc)
   end

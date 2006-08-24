@@ -27,7 +27,7 @@ class Tagging < ActiveRecord::Base
     #   Tagging.add_to taggable, [Tag, Tag, Tag]
     def add_to(taggable, tags)
       (tags - taggable.tags).each do |tag|
-        tg= create! :taggable => taggable, :tag => tag
+        create! :taggable => taggable, :tag => tag
       end unless tags.empty?
     end
   end

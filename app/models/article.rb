@@ -1,8 +1,6 @@
 class Article < Content
   class CommentNotAllowed < StandardError; end
   
-  include Mephisto::TaggableMethods
-  
   validates_presence_of :title, :user_id, :site_id
 
   before_validation { |record| record.set_default_filter! }
@@ -13,11 +11,20 @@ class Article < Content
 
   acts_as_versioned :if_changed => [:title, :body, :excerpt], :limit => 5 do
     def self.included(base)
+      base.send :include, Mephisto::TaggableMethods
       base.belongs_to :updater, :class_name => '::User', :foreign_key => 'updater_id'
     end
 
     def published?
       !new_record? && !published_at.nil?
+    end
+
+    def pending?
+      published? && Time.now.utc < published_at
+    end
+    
+    def status
+      pending? ? :pending : :published
     end
   end
 
@@ -75,14 +82,6 @@ class Article < Content
       from, to = Time.delta(year, month, day)
       count :all, :conditions => ["published_at <= ? AND published_at BETWEEN ? AND ?", Time.now.utc, from, to]
     end
-  end
-  
-  def pending?
-    published? && Time.now.utc < published_at
-  end
-
-  def status
-    pending? ? :pending : :published
   end
 
   # Follow Mark Pilgrim's rules on creating a good ID

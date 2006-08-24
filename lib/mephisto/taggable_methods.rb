@@ -1,8 +1,8 @@
 module Mephisto
   module TaggableMethods
     def self.included(base)
-      base.has_many :taggings, :as => :taggable
-      base.has_many :tags, :through => :taggings, :order => 'tags.name'
+      base.has_many :taggings, :as => :taggable, :class_name => '::Tagging'
+      base.has_many :tags, :through => :taggings, :order => 'tags.name', :class_name => '::Tag'
       base.after_save :save_tags
       base.send :attr_writer, :tag
       base.extend ClassMethods
