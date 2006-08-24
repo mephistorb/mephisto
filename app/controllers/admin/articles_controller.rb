@@ -6,8 +6,8 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   observer      :article_observer, :comment_observer
-  before_filter :check_for_new_draft,  :only => [:create, :update]
   before_filter :convert_times_to_utc, :only => [:create, :update]
+  before_filter :check_for_new_draft,  :only => [:create, :update]
   
   before_filter :find_site_article, :only => [:edit, :update, :comments, :approve, :unapprove, :destroy]
   before_filter :load_sections, :only => [:new, :edit]
@@ -113,7 +113,8 @@ class Admin::ArticlesController < Admin::BaseController
     
     def check_for_new_draft
       params[:article] ||= {}
-      params[:article][:published_at] = nil unless params[:draft].blank?
+      params[:article][:published_at] = nil if params[:draft] == '1'
+      true
     end
     
     def convert_times_to_utc
