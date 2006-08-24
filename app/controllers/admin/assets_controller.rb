@@ -52,6 +52,12 @@ class Admin::AssetsController < Admin::BaseController
       redirect_to(:controller => 'articles', :action => 'new')
   end
 
+  def destroy
+    @asset.destroy
+    redirect_to assets_path
+    flash[:notice] = "Deleted '#{@asset.filename}'"
+  end
+
   protected
     def find_asset
       @asset = site.assets.find(params[:id])

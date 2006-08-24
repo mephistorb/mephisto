@@ -3,12 +3,7 @@
     <tr>
     <% @recent.each do |asset| -%>
       <td>
-        <ul class="file-tools clear">
-          <li class="fedit"><%= link_to 'Edit', edit_asset_url(asset), :title => 'Edit this file' %></li>
-          <li class="fdelete"><a href="#" title="Delete this file">Delete</a></li>
-          <li class="fbucket"><a href="#" title="Put in bucket">Add to bucket</a></li>
-        </ul>
-        <%= link_to(asset_image_for(asset, :thumb), asset.public_filename, :target => '_blank') %>
+        <%= render :partial => 'asset', :object => asset if asset %>
       </td>
     <% end -%>
     </tr>
@@ -21,14 +16,7 @@
     <tr>
       <% assets_line.each do |asset| %>
        <td>
-         <% if asset %>
-         <ul class="file-tools clear">
-           <li class="fedit"><%= link_to 'Edit', edit_asset_url(asset), :title => 'Edit this file' %></li>
-           <li class="fdelete"><a href="#" title="Delete this file">Delete</a></li>
-           <li class="fbucket"><a href="#" title="Put in bucket">Add to bucket</a></li>
-         </ul>
-         <%= link_to(asset_image_for(asset, :tiny), asset.public_filename, :target => '_blank') %>
-         <% end %>
+         <%= render :partial => 'asset', :object => asset if asset %>
         </td>
        <% end %>
     </tr>

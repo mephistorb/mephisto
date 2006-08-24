@@ -84,9 +84,14 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     assert_equal [], assigns(:recent)
   end
 
-  #def test_should_search_for_images_by_title_and_tag
-  #  
-  #end
+  def test_should_delete_asset
+    assert_difference Asset, :count, -1 do
+      delete :destroy, :id => assets(:gif).id
+    end
+    # fixed in edge
+    #assert_redirected_to assets_path
+    assert_flash :notice
+  end
 
   def teardown
     FileUtils.rm_rf ASSET_PATH
