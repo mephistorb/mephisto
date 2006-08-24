@@ -16,6 +16,7 @@ module Mephisto
       end
       
       def author_url
+        return nil if comment.author_url.blank?
         comment.author_url =~ /^https?:\/\// ? comment.author_url : "http://" + comment.author_url
       end
 

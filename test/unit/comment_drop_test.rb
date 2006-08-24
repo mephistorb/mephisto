@@ -20,6 +20,13 @@ class CommentDropTest < Test::Unit::TestCase
     assert_equal '<a href="http://test">rico</a>', @comment.author_link
   end
 
+  def test_should_check_for_existance_of_author_url
+    @comment.comment.author_url = nil
+    assert_nil @comment.author_url
+    @comment.comment.author_url = ''
+    assert_nil @comment.author_url
+  end
+
   def test_should_return_correct_author_link
     assert_equal '<span>rico</span>',                @comment.author_link
     @comment.comment.author_url = 'abc'
