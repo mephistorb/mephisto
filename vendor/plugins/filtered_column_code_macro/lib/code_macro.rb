@@ -1,7 +1,7 @@
 require 'coderay'
 class CodeMacro < FilteredColumn::Macros::Base
   def self.filter(attributes, inner_text = '', text = '')
-    options = { :line_numbers => nil, :css => :class }.merge(attributes)
+    options = { :line_numbers => attributes[:linenumbers].to_sym, :css => :class }
     begin
       CodeRay.scan(inner_text, attributes[:lang].to_sym).div(options)
     rescue

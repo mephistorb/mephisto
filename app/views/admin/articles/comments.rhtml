@@ -1,5 +1,8 @@
 <%= render :partial => "page_nav" %>
 
+
+<h3>Comments on "<%= link_to_article @article %>"</h3>
+
 <ul class="pagelist commentlist">
   <% if @comments.any? %>
   <% @comments.reverse.each_with_index do |comment, i| -%>
