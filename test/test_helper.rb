@@ -175,10 +175,12 @@ class Test::Unit::TestCase
     end
   end
 
+  THEME_ROOT = File.join(RAILS_ROOT, 'tmp/themes')
   def prepare_theme_fixtures
+    FileUtils.rm_rf THEME_ROOT
+    FileUtils.mkdir_p THEME_ROOT
     %w(1 2).each do |i|
-      FileUtils.rm_rf File.join(RAILS_ROOT, 'tmp/themes/site-' + i)
-      FileUtils.cp_r File.join(RAILS_ROOT, 'test/fixtures/themes/site-' + i), File.join(RAILS_ROOT, 'tmp/themes/site-' + i)
+      FileUtils.cp_r File.join(RAILS_ROOT, 'test/fixtures/themes/site-' + i), File.join(THEME_ROOT, 'site-' + i)
     end
   end
 
