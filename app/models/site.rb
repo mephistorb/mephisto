@@ -31,16 +31,10 @@ class Site < ActiveRecord::Base
   end
 
   def render_liquid_for(section, template_type, assigns = {}, controller = nil)
-    template_type       = :page if template_type == :section && section.show_paged_articles?
-    preferred_template  = section.template if [:page, :section].include?(template_type)
-    preferred_template  = preferred_template.blank? ? templates.find_preferred(template_type) : templates[preferred_template]
-    preferred_template  = (preferred_template && preferred_template.file? && preferred_template.read).to_s
-    layout_template     = section && section.layout
-    layout_template     = templates[layout_template.blank? ? 'layout' : layout_template]
-    layout_template     = (layout_template && layout_template.file? && layout_template.read).to_s
+    template_type       = set_template_type_for  section, template_type
     assigns['site']     = to_liquid(section)
-    assigns['content_for_layout'] = Liquid::Template.parse(preferred_template).render(assigns, :registers => {:controller => controller})
-    Liquid::Template.parse(layout_template).render(assigns, :registers => {:controller => controller})
+    assigns['content_for_layout'] = parse_template(set_preferred_template(section, template_type), assigns, controller)
+    parse_template(set_layout_template(section, template_type), assigns, controller)
   end
 
   def to_liquid(current_section = nil)
@@ -68,5 +62,23 @@ class Site < ActiveRecord::Base
       self.approve_comments = false unless approve_comments?
       self.comment_age      = 30    unless comment_age
       true
+    end
+    
+    def set_template_type_for(section, template_type)
+      template_type == :section && section.show_paged_articles? ? :page : template_type
+    end
+    
+    def set_preferred_template(section, template_type)
+      preferred_template = section.template if [:page, :section].include?(template_type)
+      preferred_template.blank? ? templates.find_preferred(template_type) : templates[preferred_template]
+    end
+    
+    def set_layout_template(section, template_type)
+      layout_template = section && section.layout
+      templates[layout_template.blank? ? 'layout' : layout_template]
+    end
+    
+    def parse_template(template, assigns, controller)
+      Liquid::Template.parse((template && template.file? && template.read).to_s).render(assigns, :registers => {:controller => controller})
     end
 end

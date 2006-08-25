@@ -31,6 +31,9 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_list_on_home
     get_mephisto
+    assert_preferred_template :home
+    assert_layout_template    :layout
+    assert_template_type      :section
     assert_response :success
     assert_equal sites(:first),                            assigns(:site)
     assert_equal sections(:home),                          assigns(:section)
@@ -45,6 +48,9 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_show_paged_home
     host! 'cupcake.com'
     get_mephisto
+    assert_preferred_template :home
+    assert_layout_template    :layout
+    assert_template_type      :page
     assert_equal sites(:hostess),            assigns(:site)
     assert_equal sections(:cupcake_home),    assigns(:section)
     assert_equal contents(:cupcake_welcome), assigns(:article)
@@ -56,6 +62,9 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_show_error_on_bad_blog_url
     get_mephisto 'foobar/basd'
+    assert_preferred_template :error
+    assert_layout_template    :layout
+    assert_template_type      :error
     assert_equal sites(:first), assigns(:site)
     assert_response :missing
   end
@@ -80,6 +89,9 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal sites(:first), assigns(:site)
     assert_equal sections(:about), assigns(:section)
     assert_equal contents(:welcome), assigns(:article)
+    assert_preferred_template :page
+    assert_layout_template    :layout
+    assert_template_type      :page
   end
   
   def test_list_by_site_sections
@@ -122,12 +134,18 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal sites(:first).articles_per_page, liquid(:site).before_method(:articles_per_page)
     assert_equal 'another', liquid(:search_string)
     assert_equal 1, liquid(:search_count)
+    assert_preferred_template :search
+    assert_layout_template    :layout
+    assert_template_type      :search
   end
 
   def test_should_show_entry
     date = 3.days.ago
     get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto'
     assert_equal contents(:welcome).to_liquid['id'], assigns(:article)['id']
+    assert_preferred_template :single
+    assert_layout_template    :layout
+    assert_template_type      :single
   end
   
   def test_should_show_site_entry
@@ -202,5 +220,17 @@ class MephistoControllerTest < Test::Unit::TestCase
   protected
     def get_mephisto(path = '')
       get :list, :sections => path.split('/')
+    end
+
+    def assert_preferred_template(expected)
+      assert_equal "#{expected}.liquid", assigns(:site).recent_preferred_template.basename.to_s
+    end
+    
+    def assert_layout_template(expected)
+      assert_equal "#{expected}.liquid", assigns(:site).recent_layout_template.basename.to_s
+    end
+    
+    def assert_template_type(expected)
+      assert_equal expected, assigns(:site).recent_template_type
     end
 end

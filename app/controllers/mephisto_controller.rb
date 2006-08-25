@@ -71,14 +71,13 @@ class MephistoController < ApplicationController
                          :offset  =>  @article_pages.current.offset)
     
       self.cached_references << @section
-      render_liquid_template_for(:page, 'section'       => @section.to_liquid(true),
-                                        'articles'      => @articles,
-                                        'previous_page' => paged_section_url_for(@article_pages.current.previous),
-                                        'next_page'     => paged_section_url_for(@article_pages.current.next))
+      render_liquid_template_for(:section, 'section'       => @section.to_liquid(true),
+                                           'articles'      => @articles,
+                                           'previous_page' => paged_section_url_for(@article_pages.current.previous),
+                                           'next_page'     => paged_section_url_for(@article_pages.current.next))
     end
     
     def show_section_page(page_name)
-      template_type = :section
       @article = page_name.nil? ? @section.articles.find_by_position : @section.articles.find_by_permalink(page_name)
       show_404 and return unless @article
     
@@ -88,10 +87,10 @@ class MephistoController < ApplicationController
       @section.articles.each_with_index do |article, i|
         articles << article.to_liquid(:page => i.zero?)
       end
-      render_liquid_template_for(:section, 'section'          => @section.to_liquid(true),
-                                           'pages'            => articles,
-                                           'article'          => @article.to_liquid(:mode => :single),
-                                           'article_sections' => @article.sections.collect(&:to_liquid))
+      render_liquid_template_for(:page, 'section'          => @section.to_liquid(true),
+                                        'pages'            => articles,
+                                        'article'          => @article.to_liquid(:mode => :single),
+                                        'article_sections' => @article.sections.collect(&:to_liquid))
     end
 
     def paged_search_url_for(page)
