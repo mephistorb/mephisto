@@ -58,20 +58,11 @@ class MetaWeblogApi < ActionWebService::API::Base
   api_method :newMediaObject,
     :expects => [ {:blogid => :string}, {:username => :string}, {:password => :string}, {:data => MetaWeblogStructs::MediaObject} ],
     :returns => [MetaWeblogStructs::Url]
-    
 end
 
-class MetaWeblogService < ActionWebService::Base
+class MetaWeblogService < XmlRpcService
   web_service_api MetaWeblogApi
   before_invocation :authenticate
-
-  attr_accessor :controller
-
-  delegate :site, :to => :controller
-
-  def initialize(controller)
-    @controller = controller
-  end
 
   def getCategories(blogid, username, password)
     site.sections.find(:all).collect &:name
@@ -135,34 +126,13 @@ class MetaWeblogService < ActionWebService::Base
       article.published? && article.full_permalink
     end
     
-    def server_url
-      controller.url_for(:only_path => false, :controller => "/")
-    end
-    
-    def pub_date(time)
-      time.strftime "%a, %e %b %Y %H:%M:%S %Z"
-    end
-    
-    def authenticate(name, args)
-      method = self.class.web_service_api.api_methods[name]
-    
-      # Coping with backwards incompatibility change in AWS releases post 0.6.2
-      begin
-        h = method.expects_to_hash(args)
-        raise "Invalid login" unless @user = User.authenticate(h[:username], h[:password])
-      rescue NoMethodError
-        username, password = method[:expects].index(:username=>String), method[:expects].index(:password=>String)
-        raise "Invalid login" unless @user = User.authenticate(args[username], args[password])
-      end
-    end
-    
     def post_it(article, user, password, struct, publish)
       article.attributes = {:updater => @user, :section_ids => Section.find(:all, :conditions => ['name IN (?)', struct['sections']]).collect(&:id),
         :body => struct['description'].to_s, :title => struct['title'].to_s, :excerpt => struct['mt_excerpt'].to_s}
 
       utc_date = Time.utc(struct['dateCreated'].year, struct['dateCreated'].month, struct['dateCreated'].day, struct['dateCreated'].hour, struct['dateCreated'].sec, struct['dateCreated'].min)
 
-      article.published_at = publish ? utc_date : nil
+      article.published_at = publish == 1 ? utc_date : nil
       article.save!
       article.id
     end

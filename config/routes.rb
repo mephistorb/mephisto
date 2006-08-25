@@ -13,6 +13,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :assets, :path_prefix => '/admin', :controller => 'admin/assets', :member => { :add_bucket => :post },
     :collection => { :latest => :post, :search => :post, :upload => :post, :clear_bucket => :post }
   
+  map.connect 'xmlrpc', :controller => 'backend', :action => 'xmlrpc' 
+  
   map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/
   
   map.comment ':year/:month/:day/:permalink/comment', :controller => 'comments', :action => 'create',

@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'meta_weblog_api'
+require 'movable_type_api'
 require 'backend_controller'
 
 # Re-raise errors caught by the controller.
@@ -98,6 +99,12 @@ class BackendControllerTest < Test::Unit::TestCase
   #   assert result['url'] =~ /#{media_object['name']}/
   #   assert File.unlink(File.expand_path(RAILS_ROOT) + "/public/images/#{media_object['name']}")
   # end
+
+  def test_should_show_filters
+    result  = invoke_layered :mt, :supportedTextFilters
+    filters = %w(textile_filter markdown_filter smartypants_filter)
+    result.each { |f| filters.include? f[:key] }
+  end
 
   def test_meta_weblog_fail_authentication
     args = [ 1, 'quentin', 'using a wrong password', 2 ]
