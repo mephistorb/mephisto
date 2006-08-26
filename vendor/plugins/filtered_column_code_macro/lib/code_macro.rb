@@ -5,13 +5,14 @@ class CodeMacro < FilteredColumn::Macros::Base
     RAILS_DEFAULT_LOGGER.info "LINE NUMBERS: #{line_numbers}"
     options = { :css => :class }.merge({:line_numbers => line_numbers })
     begin
-      CodeRay.scan(inner_text, attributes[:lang].to_sym).div(options)
+      CodeRay.scan(inner_text, attributes[:lang].to_sym).html(options)
     rescue
       unless attributes[:lang].blank?
-        logger.warn "CodeRay Error: #{$!.message}"
-        logger.debug $!.backtrace.join("\n")
+        RAILS_DEFAULT_LOGGER.warn "CodeRay Error: #{$!.message}"
+        RAILS_DEFAULT_LOGGER.debug $!.backtrace.join("\n")
       end
       "<pre><code>#{inner_text}</code></pre>"
     end
   end
 end
+
