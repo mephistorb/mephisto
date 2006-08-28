@@ -7,8 +7,8 @@ module Mephisto
 
       def initialize(source)
         @source         = source
-        @comment_liquid = %w(id author author_email author_ip body created_at).inject({}) { |l, a| l.update(a => comment.send(a)) }
-        @comment_liquid['is_approved'] = comment.approved?
+        @comment_liquid = %w(id author author_email author_ip created_at).inject({}) { |l, a| l.update(a => comment.send(a)) }
+        @comment_liquid.update 'is_approved' => comment.approved?, 'body' => comment.body_html
       end
 
       def before_method(method)

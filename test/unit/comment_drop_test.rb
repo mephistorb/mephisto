@@ -37,4 +37,10 @@ class CommentDropTest < Test::Unit::TestCase
     @comment.comment.author_url = '<strong>https://abc</strong>'
     assert_equal %Q{<a href="http://&lt;strong&gt;https://abc&lt;/strong&gt;">&lt;strong&gt;rico&lt;/strong&gt;</a>}, @comment.author_link
   end
+  
+  def test_should_show_filtered_text
+    comment  = contents(:welcome).comments.create :body => '*test* comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'
+    liquid   = comment.to_liquid
+    assert_equal '<p><strong>test</strong> comment</p>', liquid.before_method(:body)
+  end
 end
