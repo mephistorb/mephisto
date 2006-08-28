@@ -45,9 +45,7 @@ module Mephisto
 
       def textilize(text)
         return '' if text.blank?
-        textilized = RedCloth.new(text, [ :hard_breaks ])
-        textilized.hard_breaks = true if textilized.respond_to?("hard_breaks=")
-        textilized.to_html
+        RedCloth.new(text).to_html
       end
 
       def format_date(date, format, ordinalized = false)
@@ -63,16 +61,16 @@ module Mephisto
       end
       
       def img_tag(img, options = {})
-        tag 'img', {:src => "/images/#{img}", :alt => img.split('.').first }.merge(options)
+        tag 'img', {:src => asset_url(img), :alt => img.split('.').first }.merge(options)
       end
       
       def asset_url(asset)
         "/images/#{asset}"
       end
       
-      def stylesheet(stylesheet)
+      def stylesheet(stylesheet, options = {})
         stylesheet << '.css' unless stylesheet.include? '.'
-        tag 'link', :rel => 'stylesheet', :type => 'text/css', :href => "/stylesheets/#{stylesheet}"
+        tag 'link', options.merge(:rel => 'stylesheet', :type => 'text/css', :href => "/stylesheets/#{stylesheet}")
       end
       
       def javascript(javascript)
