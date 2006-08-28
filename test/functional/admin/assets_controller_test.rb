@@ -107,6 +107,14 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     assert_nil session[:bucket]
   end
 
+  def test_should_render_form_on_invalid_create
+    assert_no_difference Asset, :count do
+      post :create
+      assert_response :success
+      assert_template 'new'
+    end
+  end
+
   def teardown
     FileUtils.rm_rf ASSET_PATH
   end

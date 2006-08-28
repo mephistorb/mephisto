@@ -21,12 +21,16 @@ class Admin::AssetsController < Admin::BaseController
     @asset = site.assets.build(params[:asset])
     @asset.save!
     redirect_to assets_path
+  rescue ActiveRecord::RecordInvalid
+    render :action => 'new'
   end
 
   def update
     @asset.attributes = params[:asset]
     @asset.save!
     redirect_to assets_path
+  rescue ActiveRecord::RecordInvalid
+    render :action => 'edit'
   end
 
   def latest
