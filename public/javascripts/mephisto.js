@@ -205,7 +205,10 @@ TinyTab.prototype = {
 Asset = {
   upload: function(form) {
     form = $(form);
-    form.action = "/admin/assets;upload"
+    '/admin/articles/edit/105'
+    article_id   = location.href.match(/\/edit\/([0-9]+)/);
+    form.action  = "/admin/articles/upload"
+    if(article_id) form.action += "/" + article_id[1]
     form.submit();
   }
 }

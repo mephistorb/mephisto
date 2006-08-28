@@ -49,16 +49,6 @@ class Admin::AssetsControllerUploadTest < Test::Unit::TestCase
     assert_equal 'foo bar', assigns(:asset).title
   end
 
-  def test_should_upload_asset
-    post :upload, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }
-    assert_redirected_to :controller => 'admin/articles', :action => 'new'
-  end
-
-  def test_should_upload_asset_and_redirect_to_article
-    post :upload, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png'), :article_id => 1 }
-    assert_redirected_to :controller => 'admin/articles', :action => 'edit', :id => '1'
-  end
-
   def teardown
     FileUtils.rm_rf ASSET_PATH
   end

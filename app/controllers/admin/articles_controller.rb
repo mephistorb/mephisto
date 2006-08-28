@@ -1,16 +1,16 @@
 class Admin::ArticlesController < Admin::BaseController
-  with_options :only => [:create, :update, :destroy] do |c|
+  with_options :only => [:create, :update, :destroy, :upload] do |c|
     c.before_filter :set_default_section_ids
     c.cache_sweeper :article_sweeper, :section_sweeper, :assigned_section_sweeper
     cache_sweeper   :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
   end
 
   observer      :article_observer, :comment_observer
-  before_filter :convert_times_to_utc, :only => [:create, :update]
-  before_filter :check_for_new_draft,  :only => [:create, :update]
+  before_filter :convert_times_to_utc, :only => [:create, :update, :upload]
+  before_filter :check_for_new_draft,  :only => [:create, :update, :upload]
   
   before_filter :find_site_article, :only => [:edit, :update, :comments, :approve, :unapprove, :destroy]
-  before_filter :load_sections, :only => [:new, :edit]
+  before_filter :load_sections, :only => [:new, :edit, :upload]
 
   def index
     @article_pages = Paginator.new self, site.articles.count(:all, article_options), 30, params[:page]
@@ -42,13 +42,12 @@ class Admin::ArticlesController < Admin::BaseController
 
   def create
     @article = current_user.articles.create params[:article].merge(:updater => current_user, :site => site)
-      
-    if @article.new_record?
-      load_sections
-      render :action => 'new'
-    else
-      redirect_to :action => 'index'
-    end
+    
+    @article.save!
+    redirect_to :action => 'index'
+  rescue ActiveRecord::RecordInvalid
+    load_sections
+    render :action => 'new'
   end
   
   def update
@@ -91,6 +90,21 @@ class Admin::ArticlesController < Admin::BaseController
   def destroy_comment
     @comments = site.all_comments.find :all, :conditions => ['id in (?)', [params[:comment]].flatten] rescue []
     Comment.transaction { @comments.each(&:destroy) } if @comments.any?
+  end
+
+  def upload
+    @asset   = site.assets.build(params[:asset])
+    @asset.save!
+  rescue ActiveRecord::RecordInvalid
+  ensure
+    @article = site.articles.find_by_id(params[:id])
+    if @article
+      @article.attributes = params[:article].merge(:updater => current_user)
+      render :action => 'edit'
+    else
+      @article = current_user.articles.create params[:article].merge(:updater => current_user, :site => site)
+      render :action => 'new'
+    end
   end
 
   protected

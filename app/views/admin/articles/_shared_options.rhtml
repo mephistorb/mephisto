@@ -35,10 +35,8 @@
       <p>
         <strong>1.</strong>
         <%= file_field_tag 'asset[uploaded_data]', :size => 15, :id => 'asset_uploaded_data' %>
-        <%= hidden_field_tag 'asset[article_id]', @article.id, :id => 'asset_article_id' unless @article.new_record? %>
       </p>
       <p><strong>2.</strong> <input type="button" value="Upload" onclick="Asset.upload('article-form');" /></p>
-      <p><em>Uploading this will lose your changes to this article.</em></p>
     </div>
     <div class="tabpanel" id="bucket" style="display:none;">
       <ul id="bucket-assets">

@@ -12,6 +12,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     login_as :quentin
+    FileUtils.mkdir_p ASSET_PATH
   end
 
   def test_should_require_login
@@ -275,6 +276,44 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_no_difference Article::Version, :count do
       post :update, :id => contents(:welcome).id, :article => { :title => 'Foo' }, :commit => 'Save without Revision'
     end
+  end
+
+  def test_should_upload_asset
+    assert_difference Asset, :count, 3 do
+      post :upload, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }
+      assert_response :success
+      assert_template 'new'
+    end
+  end
+
+  def test_should_upload_asset_and_redirect_to_article
+    assert_difference Asset, :count, 3 do
+      post :upload, :id => contents(:welcome).id, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }
+      assert_response :success
+      assert_template 'edit'
+      assert_equal contents(:welcome), assigns(:article)
+    end
+  end
+
+  def test_should_not_error_on_new_article_asset_upload
+    assert_no_difference Asset, :count do
+      post :upload
+      assert_response :success
+      assert_template 'new'
+    end
+  end
+
+  def test_should_not_error_on_article_asset_upload
+    assert_no_difference Asset, :count do
+      post :upload, :id => contents(:welcome).id
+      assert_response :success
+      assert_template 'edit'
+      assert_equal contents(:welcome), assigns(:article)
+    end
+  end
+  
+  def teardown
+    FileUtils.rm_rf ASSET_PATH
   end
 
   protected

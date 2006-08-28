@@ -47,15 +47,6 @@ class Admin::AssetsController < Admin::BaseController
     end
   end
 
-  def upload
-    article_id = params[:asset].delete(:article_id)
-    @asset = site.assets.build(params[:asset])
-    @asset.save!
-    article_id ? 
-      redirect_to(:controller => 'articles', :action => 'edit', :id => article_id) :
-      redirect_to(:controller => 'articles', :action => 'new')
-  end
-
   def destroy
     @asset.destroy
     redirect_to assets_path
