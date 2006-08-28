@@ -93,7 +93,7 @@ class Admin::AssetsController < Admin::BaseController
       
       @search_conditions =
         returning :conditions => [] do |options|
-          options[:include] = [:site]
+          options[:include] = []
           unless params[:q].blank?
             params[:conditions] = { :title => true, :tags => true } if params[:conditions].blank?
             if params[:conditions].has_key?(:title)
@@ -112,6 +112,7 @@ class Admin::AssetsController < Admin::BaseController
             options[:conditions] *= ' OR ' 
           end
           
+          options.delete(:include) if options[:include].empty?
         end
     end
     
