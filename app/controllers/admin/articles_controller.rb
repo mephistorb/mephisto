@@ -10,7 +10,7 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :check_for_new_draft,  :only => [:create, :update, :upload]
   
   before_filter :find_site_article, :only => [:edit, :update, :comments, :approve, :unapprove, :destroy]
-  before_filter :load_sections, :only => [:new, :edit, :upload]
+  before_filter :load_sections, :only => [:new, :edit]
 
   def index
     @article_pages = Paginator.new self, site.articles.count(:all, article_options), 30, params[:page]
@@ -97,6 +97,7 @@ class Admin::ArticlesController < Admin::BaseController
     @asset.save!
   rescue ActiveRecord::RecordInvalid
   ensure
+    load_sections # do this after the asset has been created
     @article = site.articles.find_by_id(params[:id])
     if @article
       @article.attributes = params[:article].merge(:updater => current_user)

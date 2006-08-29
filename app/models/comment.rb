@@ -5,6 +5,7 @@ class Comment < Content
   before_save    :update_counter_cache
   before_destroy :decrement_counter_cache
   belongs_to :article
+  has_one :event, :dependent => :destroy
   attr_protected :approved
 
   def to_liquid
