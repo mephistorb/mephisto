@@ -98,8 +98,8 @@ class Admin::ArticlesController < Admin::BaseController
   rescue ActiveRecord::RecordInvalid
   ensure
     load_sections # do this after the asset has been created
-    @article = site.articles.find_by_id(params[:id])
-    if @article
+    if params[:id]
+      @article = site.articles.find(params[:id])
       @article.attributes = params[:article].merge(:updater => current_user)
       render :action => 'edit'
     else

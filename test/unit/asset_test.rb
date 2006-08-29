@@ -7,6 +7,8 @@ class AssetTest < Test::Unit::TestCase
     assert_difference sites(:first).assets, :count do
       assert_difference Asset, :count, 3 do # asset + 2 thumbnails
         process_upload
+        asset = Asset.find(:first, :conditions => 'id > 7', :order => 'created_at')
+        assert_equal 2, asset.thumbnails_count
       end
     end
   end

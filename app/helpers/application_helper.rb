@@ -9,16 +9,22 @@ module ApplicationHelper
   def avatar_for(user, options = {})
     image_tag gravatar_url_for(user), {:class => 'avatar'}.merge(options)
   end
+
   def asset_title_for(asset)
     asset.title.blank? ? asset.filename : asset.title
   end
 
-  def asset_image_for(asset, thumbnail = nil, options = {})
-    asset_image_tag asset.public_filename(thumbnail), "#{asset.title} \n #{asset.tags.join(', ')}", options
-  end
-
-  def asset_image_tag(filename, title, options = {})
-    image_tag(filename, { :title => title }.merge(options))
+  def asset_image_for(asset, thumbnail = :tiny, options = {})
+    options = options.reverse_merge(:title => "#{asset.title} \n #{asset.tags.join(', ')}")
+    if !asset.image?
+      # non-image icon
+      image_tag(asset.public_filename, options)
+    elsif asset.thumbnails_count.zero?
+      # no thumbnails
+      image_tag(asset.public_filename, options.update(:size => Array.new(2).fill(Asset.attachment_options[:thumbnails][thumbnail].to_i).join('x')))
+    else
+      image_tag(asset.public_filename(thumbnail), options)
+    end
   end
 
   def todays_short_date

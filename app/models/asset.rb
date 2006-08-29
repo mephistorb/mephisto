@@ -63,6 +63,10 @@ class Asset < ActiveRecord::Base
     t.blank? ? filename : t
   end
 
+  after_attachment_saved do |record|
+    Asset.update_all ['thumbnails_count = ?', record.thumbnails.count], ['id = ?', record.id] unless record.parent_id
+  end
+
   [:movie, :audio, :other].each do |content|
     define_method("#{content}?") { self.class.send("#{content}?", content_type) }
   end
