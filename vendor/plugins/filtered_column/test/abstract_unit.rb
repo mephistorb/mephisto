@@ -19,7 +19,7 @@ end
 
 class SampleMacro < FilteredColumn::Macros::Base
   def self.filter(attributes, inner_text = '')
-    "foo: #{attributes[:foo]} - flip: #{attributes[:flip]} - text: #{inner_text}"
+    "foo: #{attributes[:foo] || attributes[:foo_bar]} - flip: #{attributes[:flip]} - text: #{inner_text}"
   end
 end
 

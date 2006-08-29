@@ -15,10 +15,6 @@ Rails::Initializer.run do |config|
   # Skip frameworks you're not going to use
   # config.frameworks -= [ :action_web_service ]
 
-  # Add additional load paths for your own custom dirs
-  # config.load_paths += %W( #{RAILS_ROOT}/app/cachers )
-  
-  # rev 4728+
   config.autoload_paths += %W( #{RAILS_ROOT}/app/cachers )
 
   # Force all environments to use the same logger level 

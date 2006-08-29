@@ -1,13 +1,18 @@
 require 'coderay'
 class CodeMacro < FilteredColumn::Macros::Base
   def self.filter(attributes, inner_text = '', text = '')
-    line_numbers = attributes[:linenumbers] ? attributes[:linenumbers].to_sym : :table
-    RAILS_DEFAULT_LOGGER.info "LINE NUMBERS: #{line_numbers}"
-    options = { :css => :class }.merge({:line_numbers => line_numbers })
+    lang = attributes.delete(:lang)
+    attributes[:line_numbers] = :table unless attributes.has_key?(:line_numbers)
+    attributes.each do |key, value|
+      attributes[key] = value == 'nil' ? nil : value.to_sym rescue nil
+    end
+
     begin
-      CodeRay.scan(inner_text, attributes[:lang].to_sym).html(options)
+      CodeRay.scan(inner_text, lang.to_sym).html(attributes)
+    rescue ArgumentError
+      CodeRay.scan(inner_text, lang.to_sym).html(:line_numbers => :table)
     rescue
-      unless attributes[:lang].blank?
+      unless lang.blank?
         RAILS_DEFAULT_LOGGER.warn "CodeRay Error: #{$!.message}"
         RAILS_DEFAULT_LOGGER.debug $!.backtrace.join("\n")
       end
