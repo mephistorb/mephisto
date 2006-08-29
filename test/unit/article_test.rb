@@ -103,30 +103,6 @@ class ArticleTest < Test::Unit::TestCase
     assert  a.accept_comments?
   end
 
-  def test_empty_body
-    a = create_article
-    assert_equal '', a.send(:body_for_mode, :single)
-    assert_equal '', a.send(:body_for_mode, :list)
-  end
-  
-  def test_body_with_excerpt
-    a = create_article :excerpt => 'excerpt', :body => 'body'
-    assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
-    assert_equal '<p>excerpt</p>', a.send(:body_for_mode, :list)
-  end
-  
-  def test_only_body
-    a = create_article :body => 'body'
-    assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
-    assert_equal '<p>body</p>', a.send(:body_for_mode, :list)
-  end
-  
-  def test_only_body_with_empty_excerpt
-    a = create_article :body => 'body', :excerpt => ''
-    assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
-    assert_equal '<p>body</p>', a.send(:body_for_mode, :list)
-  end
-
   def test_should_set_published_to_utc
     a = create_article :body => 'body', :published_at => Time.now
     assert a.published_at.utc?

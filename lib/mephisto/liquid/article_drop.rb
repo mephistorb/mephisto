@@ -6,16 +6,17 @@ module Mephisto
       def article() @source end
 
       def initialize(source, options = {})
+        @options        = options
         @source         = source
         @article_liquid = { 
           'id'               => @source.id,
           'title'            => @source.title,
           'permalink'        => @source.permalink,
           'url'              => @source.full_permalink,
-          'body'             => @source.send(:body_for_mode, options[:mode] || :list),
+          'body'             => @source.body_html,
           'excerpt'          => @source.excerpt_html,
-          'published_at'     => @source.site.timezone.utc_to_local(@source.published_at),
-          'updated_at'       => @source.site.timezone.utc_to_local(@source.updated_at),
+          'published_at'     => (@source.site.timezone.utc_to_local(@source.published_at) rescue nil),
+          'updated_at'       => (@source.site.timezone.utc_to_local(@source.updated_at)   rescue nil),
           'comments_count'   => @source.comments_count,
           'author'           => @source.user.to_liquid,
           'accept_comments'  => @source.accept_comments?,
@@ -42,6 +43,17 @@ module Mephisto
       def page_sections
         sections.select { |s| s.section.paged? }
       end
+      
+      def content
+        @content ||= body_for_mode(@options[:mode] || :list)
+      end
+      
+      protected
+        def body_for_mode(mode)
+          contents = [before_method(:excerpt), before_method(:body)]
+          contents.reverse! if mode == :single
+          contents.detect { |content| !content.blank? }.to_s.strip
+        end
     end
   end
 end

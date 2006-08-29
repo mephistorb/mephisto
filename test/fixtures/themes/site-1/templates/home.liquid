@@ -4,5 +4,5 @@
   <h2>{{ article.title }}</h2>
   <p><span>{{ article.published_at | format_date: 'standard' }}</span></p>
   <p>{{ article | link_to_article }}</p>
-  <p>{{ article.body }}</p>
+  <p>{{ article.content }}</p>
 {% endfor %}

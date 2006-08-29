@@ -91,7 +91,7 @@ class Article < Content
   end
 
   def full_permalink
-    ['', published_at.year, published_at.month, published_at.day, permalink] * '/'
+    published? && ['', published_at.year, published_at.month, published_at.day, permalink] * '/'
   end
 
   def has_section?(section)
@@ -163,10 +163,6 @@ class Article < Content
       end
     
       @new_sections = nil
-    end
-    
-    def body_for_mode(mode = :list)
-      (mode == :single ? [body_html, excerpt_html] : [excerpt_html, body_html]).detect { |attr| !attr.blank? }.to_s.strip
     end
     
     def pass_filter_to_comments

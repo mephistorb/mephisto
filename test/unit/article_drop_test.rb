@@ -27,4 +27,32 @@ class ArticleDropTest < Test::Unit::TestCase
   def test_should_list_only_paged_sections
     assert_equal [sections(:about)], @article.page_sections.collect(&:section)
   end
+
+  def test_empty_body
+    assert contents(:welcome).update_attributes(:body => nil, :excerpt => nil), contents(:welcome).errors.full_messages.to_sentence
+    a = contents(:welcome).to_liquid
+    assert_equal '', a.send(:body_for_mode, :single)
+    assert_equal '', a.send(:body_for_mode, :list)
+  end
+  
+  def test_body_with_excerpt
+    assert contents(:welcome).update_attributes(:body => 'body', :excerpt => 'excerpt'), contents(:welcome).errors.full_messages.to_sentence
+    a = contents(:welcome).to_liquid
+    assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
+    assert_equal '<p>excerpt</p>', a.send(:body_for_mode, :list)
+  end
+  
+  def test_only_body
+    assert contents(:welcome).update_attributes(:body => 'body', :excerpt => nil), contents(:welcome).errors.full_messages.to_sentence
+    a = contents(:welcome).to_liquid
+    assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
+    assert_equal '<p>body</p>', a.send(:body_for_mode, :list)
+  end
+  
+  def test_only_body_with_empty_excerpt
+    assert contents(:welcome).update_attributes(:body => 'body', :excerpt => ''), contents(:welcome).errors.full_messages.to_sentence
+    a = contents(:welcome).to_liquid
+    assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
+    assert_equal '<p>body</p>', a.send(:body_for_mode, :list)
+  end
 end
