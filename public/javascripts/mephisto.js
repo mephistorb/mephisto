@@ -156,6 +156,7 @@ TinyTab.callbacks ={
   },
   'search-files': function(q) {
     if(!q) return;
+    $('spinner').show();
     new Ajax.Request('/admin/assets;search', {parameters: 'q=' + escape(q)});
   }
 };

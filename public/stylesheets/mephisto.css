@@ -1276,12 +1276,12 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
  *=ASSET MANAGEMENT
  */
 
-#assets, #files, #latest-assets, #bucket-assets {
+#assets, #files, #latest-assets, #bucket-assets, #search-assets {
   list-style: none;
   margin-top: 5px;
 }
 
-#assets li, #files li, #latest-assets li, #bucket-assets li {
+#assets li, #files li, #latest-assets li, #bucket-assets li, #search-assets li {
   display: inline;
   margin-left: 5px;
   margin-bottom: 5px;
@@ -1289,14 +1289,16 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 
 #assets li a img,
 #latest-assets li a img,
-#bucket-assets li a img {
+#bucket-assets li a img,
+#search-assets li a img {
   padding: 4px;
   background: #fff;
 }
 
 #assets img,
 #latest-assets img,
-#bucket-assets img {
+#bucket-assets img,
+#search-assets img {
   max-height: 50px;
   max-width: 50px;
   padding: 3px;
@@ -1306,7 +1308,8 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 
 #assets span,
 #latest-assets span,
-#bucket-assets span {
+#bucket-assets span,
+#search-assets span {
   display: block;
   font-size: 80%;
 }
