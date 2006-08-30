@@ -13,6 +13,6 @@ class FlickrMacroTest < Test::Unit::TestCase
   
   private
     def process_macros(text)
-      FilteredColumn::Processor.process_macros(text)
+      FilteredColumn::Processor.new(nil, text).filter
     end
 end

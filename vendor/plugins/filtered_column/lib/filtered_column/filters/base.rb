@@ -2,6 +2,9 @@ module FilteredColumn
   module Filters
     class Base
       class << self
+        def filter(text) text end
+        def escape(text) text end
+
         def filter_name
           set_name self.name.demodulize.gsub(/Filter$/, '')
         end

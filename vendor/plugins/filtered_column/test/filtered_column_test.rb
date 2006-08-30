@@ -6,7 +6,7 @@ class FilteredColumnTest < Test::Unit::TestCase
     :markdown => { :input  => "# bar\n\nfoo", :output => "<h1>bar</h1>\n\n<p>foo</p>" }
   }.each do |filter_name, values|
     define_method "test_should_filter_with_#{filter_name}" do
-      assert_equal values[:output], FilteredColumn::Processor.filter_text("#{filter_name}_filter", values[:input])
+      assert_equal values[:output], FilteredColumn::Processor.new("#{filter_name}_filter", values[:input]).filter
     end
 
     define_method "test_should_filter_model_attribute_with_#{filter_name}" do
@@ -39,5 +39,9 @@ class FilteredColumnTest < Test::Unit::TestCase
 
   def test_should_call_no_filters_with_no_data
     assert_no_filters_called_on(Article) { Article.new }
+  end
+  
+  def test_should_escape_textile_filter
+    assert_equal '<notextile>foo</notextile>', FilteredColumn::Filters::TextileFilter.escape('foo')
   end
 end

@@ -9,11 +9,19 @@ Test::Unit::TestCase.class_eval do
     FilteredColumn::Processor.called_filters = []
     filtered = yield
     filtered.save if filtered
-    assert_equal filters.length, (FilteredColumn::Processor.called_filters & filters.collect(&:to_s)).length, "#{filters.join(', ')} expected, #{FilteredColumn::Processor.called_filters.join(', ')} called"
+    assert_equal filters.length, (FilteredColumn::Processor.called_filters & filters).length, "#{filters.map(&:inspect).join(', ')} expected, #{FilteredColumn::Processor.called_filters.map(&:inspect).join(', ')} called"
   end
 
   def assert_no_filters_called_on(klass, &block)
     assert_filters_called_on &block
+  end
+
+  def process_filter(filter, text)
+    FilteredColumn::Processor.new(filter, text).filter
+  end
+  
+  def process_macros(text)
+    process_filter nil, text
   end
 end
 
@@ -25,14 +33,14 @@ end
 
 FilteredColumn.macros[:sample_macro] = SampleMacro
 
-class << FilteredColumn::Processor
+FilteredColumn::Processor.class_eval do
   @@called_filters = []
   cattr_accessor :called_filters
-  def filter_text_with_audit(filter_name, text_to_filter)
-    (called_filters << filter_name).uniq!
-    filter_text_without_audit(filter_name, text_to_filter)
+  def filter_with_audit
+    (called_filters << @filter.filter_key).uniq! if @filter
+    filter_without_audit
   end
-  alias_method_chain :filter_text, :audit
+  alias_method_chain :filter, :audit
 end
 
 class Article < ActiveRecord::Base
