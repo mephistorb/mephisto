@@ -36,7 +36,7 @@ task :deploy_edge do
 end
 
 def get_framework_for(*paths)
-  %w( railties actionpack activerecord actionmailer activesupport activeresource ).each do |framework|
+  %w( railties actionpack activerecord actionmailer activesupport activeresource actionwebservice ).each do |framework|
     paths.each { |path| mkdir_p "#{path}/#{framework}" }
     yield framework
   end

@@ -8,13 +8,10 @@ class CommentTest < Test::Unit::TestCase
     assert_equal [contents(:welcome_comment)], contents(:welcome).comments
   end
 
-  def test_add_comment
+  def test_should_add_comment_and_retrieve_site_id_from_article
     assert_difference Comment, :count do
-      assert_difference contents(:welcome), :comments_count do
-        comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'
-        contents(:welcome).reload
-        assert_equal comment.site_id = contents(:welcome).site_id
-      end
+      comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'
+      assert_equal contents(:welcome).site_id, comment.site_id
     end
   end
   
@@ -26,7 +23,7 @@ class CommentTest < Test::Unit::TestCase
     assert_equal old_times, contents(:welcome).comments(true).collect(&:updated_at)
   end
 
-  def test_add_comment
+  def test_should_process_textile_when_adding_comment
     c = contents(:welcome).comments.create :body => '*test* comment', :author => 'bob', :author_ip => '127.0.0.1'
     assert_equal "<p><strong>test</strong> comment</p>", c.body_html
   end

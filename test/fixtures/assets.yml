@@ -16,6 +16,7 @@ gif:
   site_id: 1
   created_at: <%= 11.minutes.ago.to_s :db %>
   title: gif
+  thumbnails_count: 1
 png:
   id: 2
   content_type: image/png
@@ -24,6 +25,7 @@ png:
   site_id: 1
   created_at: <%= 10.minutes.ago.to_s :db %>
   title: png
+  thumbnails_count: 0
 mp3:
   id: 3
   content_type: audio/mpeg

@@ -101,3 +101,14 @@ class Time
     return [from.midnight, to.midnight]
   end
 end
+
+# need to make pathname safe for windows!
+Pathname.class_eval do
+  def read(*args)
+    returning '' do |s|
+      File.open @path, 'rb' do |f|
+        s << f.read
+      end
+    end
+  end
+end

@@ -17,7 +17,6 @@ module ApplicationHelper
   def asset_image_for(asset, thumbnail = :tiny, options = {})
     options = options.reverse_merge(:title => "#{asset.title} \n #{asset.tags.join(', ')}")
     if asset.movie?
-      # non-image icon
       image_tag('/images/icons/video.png', options)
     elsif asset.audio?
       image_tag('/images/icons/audio.png', options)
@@ -25,9 +24,7 @@ module ApplicationHelper
       image_tag(asset.public_filename, {:class => 'pdf'}.merge(options))
     elsif asset.other?
       image_tag('/images/icons/doc.png', options)
-      
     elsif asset.thumbnails_count.zero?
-      # no thumbnails
       image_tag(asset.public_filename, options.update(:size => Array.new(2).fill(Asset.attachment_options[:thumbnails][thumbnail].to_i).join('x')))
     else
       image_tag(asset.public_filename(thumbnail), options)
