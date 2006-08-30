@@ -685,7 +685,7 @@ ul.stabs li a:hover {
 #tab-search a { background: url(../images/icons/magnify.png) 3px 50% no-repeat; }
 #tab-files a  { background: url(../images/icons/updark.png) 3px 5px no-repeat; }
 #tab-latest a { background: url(../images/icons/thumbs.png) 3px 5px no-repeat; }
-#tab-bucket a { background: url(../images/icons/cart.png) 3px 5px no-repeat; }
+#tab-bucket a { background: url(../images/icons/bucket.png) 3px 5px no-repeat; }
 
 .reordering  {
   background: green;
@@ -1271,6 +1271,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   border-right: 1px solid #fff;
 }
 
+
 /*
  *=ASSET MANAGEMENT
  */
@@ -1310,6 +1311,10 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   font-size: 80%;
 }
 
+#spin {
+  width:  20px; display:  block !important;
+}
+
 /*
  *=FIES
  */
@@ -1323,6 +1328,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 #files td, #recentfiles td {
   padding: 10px;
   vertical-align: top;
+  position:  relative;
 }
 
 #recentfiles img, #files img {
@@ -1339,7 +1345,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   text-align: center;
 }
 
-#recentfiles h4 {
+#recentfiles h4, #filelist h4 {
   font-size: 90%;
 }
 
@@ -1351,6 +1357,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 
 .file-tools li {
   display: inline;
+  position:  relative;
 }
 
 .file-tools li a {
@@ -1375,8 +1382,8 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 .file-tools li.fview a   { background-image: url(../images/icons/8-em-plus.png)   }
 .file-tools li.fbucket a { background-image: url(../images/icons/8-em-check.png)  }
 .file-tools li.fdelete a { background-image: url(../images/icons/8-em-cross.png)  }
-
-
+.pdf { width:  100px; height:  100px;}
+.fspin img { position: absolute; left: 40%; top: 40%;}
 /*
  *=MISC
  */

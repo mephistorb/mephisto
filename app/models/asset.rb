@@ -16,7 +16,7 @@ class Asset < ActiveRecord::Base
     def movie?(content_type)
       content_type.to_s =~ /^video/ || extra_content_types[:movie].include?(content_type)
     end
-    
+        
     def audio?(content_type)
       content_type.to_s =~ /^audio/ || extra_content_types[:audio].include?(content_type)
     end

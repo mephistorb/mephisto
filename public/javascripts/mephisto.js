@@ -357,6 +357,7 @@ Spotlight.prototype = {
   },
   
   search: function(page) {
+    $('spinner').show();
     $('page').value = page || '1';
     new Ajax.Request(this.form.action, {
       asynchronous: true, 

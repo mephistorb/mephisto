@@ -1,5 +1,11 @@
 * SVN *
 
+* Added link to the public homepage
+
+* Added spinner graphics for search request in assets area
+
+* Added icons for video, audio, and other docs
+
 * [CHANGED] Changed {{ article.body }} and added {{ article.content }}
 
   * {{ article.body }} is now always the article's body, regardless of what template is currently being rendered.

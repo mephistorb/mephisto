@@ -3,7 +3,7 @@
     <tr>
     <% @recent.each do |asset| -%>
       <td>
-        <%= render :partial => 'asset', :object => asset if asset %>
+        <%= render :partial => 'asset', :object => asset, :locals => {:size => :thumb} if asset %>
       </td>
     <% end -%>
     </tr>
