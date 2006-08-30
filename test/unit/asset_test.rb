@@ -93,6 +93,11 @@ class AssetTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_report_pdf_type
+    a = Asset.new :content_type => 'application/pdf'
+    assert a.pdf?, "#{a.content_type} was not a pdf"
+  end
+
   def test_should_find_movies
     assert_models_equal [assets(:swf), assets(:mov)], Asset.find_all_by_content_types([:movie], :all, :order => 'created_at desc')
   end

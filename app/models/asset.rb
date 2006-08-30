@@ -1,6 +1,6 @@
 class Asset < ActiveRecord::Base
   # used for extra mime types that dont follow the convention
-  @@extra_content_types = { :audio => ['application/ogg'], :movie => ['application/x-shockwave-flash'] }.freeze
+  @@extra_content_types = { :audio => ['application/ogg'], :movie => ['application/x-shockwave-flash'], :pdf => ['application/pdf'] }.freeze
   cattr_reader :extra_content_types
 
   # use #send due to a ruby 1.8.2 issue
@@ -23,6 +23,10 @@ class Asset < ActiveRecord::Base
     
     def other?(content_type)
       ![:image, :movie, :audio].any? { |a| send("#{a}?", content_type) }
+    end
+
+    def pdf?(content_type)
+      extra_content_types[:pdf].include? content_type
     end
 
     def find_all_by_content_types(types, *args)
@@ -67,7 +71,7 @@ class Asset < ActiveRecord::Base
     Asset.update_all ['thumbnails_count = ?', record.thumbnails.count], ['id = ?', record.id] unless record.parent_id
   end
 
-  [:movie, :audio, :other].each do |content|
+  [:movie, :audio, :other, :pdf].each do |content|
     define_method("#{content}?") { self.class.send("#{content}?", content_type) }
   end
 
