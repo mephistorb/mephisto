@@ -86,3 +86,21 @@ sqlite3_example:
 sqlite3_in_memory_example:
   adapter: sqlite3
   database: ":memory:"
+
+# Typo converter needs this
+# if you are going to convert, then make sure this is set correctly
+typo:
+  adapter: mysql
+  database: typo
+  username: 
+  password: 
+  host: localhost
+
+# WordPress converter needs this
+# if you are going to convert, then make sure this is set correctly
+wp:
+  adapter: mysql
+  database: wordpress
+  username: 
+  password: 
+  host: localhost
