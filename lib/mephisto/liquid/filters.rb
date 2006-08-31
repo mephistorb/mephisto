@@ -72,7 +72,12 @@ module Mephisto
         stylesheet << '.css' unless stylesheet.include? '.'
         tag 'link', options.merge(:rel => 'stylesheet', :type => 'text/css', :href => "/stylesheets/#{stylesheet}")
       end
-      
+
+      def stylesheet(stylesheet, media = nil)
+        stylesheet << '.css' unless stylesheet.include? '.'
+        tag 'link', :rel => 'stylesheet', :type => 'text/css', :href => "/stylesheets/#{stylesheet}", :media => media
+      end
+
       def javascript(javascript)
         javascript << '.js' unless javascript.include? '.'
         content_tag 'script', '', :type => 'text/javascript', :src => "/javascripts/#{javascript}"
