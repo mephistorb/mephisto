@@ -52,12 +52,16 @@ class Admin::AssetsController < Admin::BaseController
   def destroy
     @asset.destroy
     redirect_to assets_path
+    (session[:bucket] || {}).delete(@asset.public_filename)
     flash[:notice] = "Deleted '#{@asset.filename}'"
   end
 
   # rjs
   def add_bucket
-    (session[:bucket] ||= {})[@asset.public_filename] = [@asset.public_filename(:tiny), "#{@asset.title} \n #{@asset.tags.join(', ')}"]
+    if (session[:bucket] ||= {}).key?(@asset.public_filename)
+      render :nothing => true and return
+    end
+    session[:bucket][@asset.public_filename] = [@asset.public_filename(:tiny), "#{@asset.title} \n #{@asset.tags.join(', ')}"]
   end
 
   def clear_bucket

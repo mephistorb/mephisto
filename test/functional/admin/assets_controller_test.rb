@@ -93,9 +93,25 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     assert_not_nil flash[:notice]
   end
 
+  def test_should_delete_asset_and_remove_from_bucket
+    @request.session[:bucket] = {assets(:gif).public_filename => []}
+    delete :destroy, :id => assets(:gif).id
+    assert session[:bucket].empty?
+  end
+
   def test_should_add_to_bucket
     xhr :post, :add_bucket, :id => assets(:gif).id
     assert_response :success
+    assert_match /Flash\.notice/, @response.body
+    assert_equal 1, session[:bucket].size
+    assert_kind_of Array, session[:bucket][assets(:gif).public_filename]
+  end
+
+  def test_should_not_add_duplicate_asset_to_bucket
+    @request.session[:bucket] = {assets(:gif).public_filename => []}
+    xhr :post, :add_bucket, :id => assets(:gif).id
+    assert_response :success
+    assert_equal ' ', @response.body
     assert_equal 1, session[:bucket].size
     assert_kind_of Array, session[:bucket][assets(:gif).public_filename]
   end

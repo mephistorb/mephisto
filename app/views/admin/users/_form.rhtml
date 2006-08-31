@@ -12,7 +12,7 @@
     <dd><%= f.text_field :email %></dd>
     <% unless @user == current_user %>
     <dt><label for="user_deleted_at">Allow this user to login?</label></dt>
-    <dd><%= f.check_box :deleted_at, {},  @user.deleted_at.nil? %> Yes, allow this user to login.</dd>
+    <dd><label><%= f.check_box :deleted_at, {},  @user.deleted_at.nil? %> Yes, allow this user to login.</label></dd>
     <% end %>
   </dl>
 </div>
@@ -29,4 +29,4 @@
     <dd><%= f.password_field :password_confirmation %></dd>
   </dl>
 </div>
-<p class="btns"><%= submit_tag 'Save my profile' %></p>
+<p class="btns"><%= submit_tag(@user.new_record? ? 'Add new user' : 'Save my profile') %></p>
