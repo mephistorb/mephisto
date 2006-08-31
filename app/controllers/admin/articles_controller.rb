@@ -103,7 +103,7 @@ class Admin::ArticlesController < Admin::BaseController
       @article.attributes = params[:article].merge(:updater => current_user)
       render :action => 'edit'
     else
-      @article = current_user.articles.create params[:article].merge(:updater => current_user, :site => site)
+      @article = current_user.articles.build params[:article].merge(:updater => current_user, :site => site)
       render :action => 'new'
     end
   end

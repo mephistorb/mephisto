@@ -319,7 +319,23 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       assert_equal contents(:welcome), assigns(:article)
     end
   end
-  
+
+  def test_should_not_create_article_when_uploading_asset
+    Time.mock! Time.local(2005, 1, 1, 12, 0, 0) do
+      assert_no_difference Article, :count do
+        post :upload, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }, 
+          :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah",
+          'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10' }, :submit => :save
+        assert_response :success
+        assert_template 'new'
+        assert_valid assigns(:article)
+        assert assigns(:article).new_record?
+        assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
+        assert_equal users(:quentin), assigns(:article).updater
+      end
+    end
+  end
+
   def teardown
     FileUtils.rm_rf ASSET_PATH
   end
