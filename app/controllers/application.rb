@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
         ['/images/icons/video.png', options]
       elsif asset.audio?
         ['/images/icons/audio.png', options]
-      elsif asset.pdf? and request.env['HTTP_USER_AGENT'] =~ /webkit/i
-        [asset.public_filename, {:class => 'pdf'}.merge(options)]
+      elsif asset.pdf?
+        ['/images/icons/pdf.png', options]
       elsif asset.other?
         ['/images/icons/doc.png', options]
       elsif asset.thumbnails_count.zero?

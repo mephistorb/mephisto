@@ -27,13 +27,11 @@ class ApplicationHelperTest < Test::Unit::TestCase
   end
   
   def test_should_return_doc_icon_for_other
-    assert_match /doc\.png/, asset_image_for(assets(:pdf))
     assert_match /doc\.png/, asset_image_for(assets(:word))
   end
   
-  def test_should_return_pdf_preview_in_safari
-    controller.env['HTTP_USER_AGENT'] = 'Webkit'
-    assert_match assets(:pdf).public_filename, asset_image_for(assets(:pdf))
+  def test_should_return_pdf_icon
+    assert_match /pdf\.png/, asset_image_for(assets(:pdf))
   end
 
   def test_should_return_thumbnail
