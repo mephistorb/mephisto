@@ -7,6 +7,25 @@ class ApplicationController < ActionController::Base
   attr_reader    :site
 
   protected
+    # so not the best place for this...
+    def asset_image_args_for(asset, thumbnail = :tiny, options = {})
+      options = options.reverse_merge(:title => "#{asset.title} \n #{asset.tags.join(', ')}")
+      if asset.movie?
+        ['/images/icons/video.png', options]
+      elsif asset.audio?
+        ['/images/icons/audio.png', options]
+      elsif asset.pdf? and request.env['HTTP_USER_AGENT'] =~ /webkit/i
+        [asset.public_filename, {:class => 'pdf'}.merge(options)]
+      elsif asset.other?
+        ['/images/icons/doc.png', options]
+      elsif asset.thumbnails_count.zero?
+        [asset.public_filename, options.update(:size => Array.new(2).fill(Asset.attachment_options[:thumbnails][thumbnail].to_i).join('x'))]
+      else
+        [asset.public_filename(thumbnail), options]
+      end
+    end
+    helper_method :asset_image_args_for
+
     [:utc_to_local, :local_to_utc].each do |meth|
       define_method meth do |time|
         site.timezone.send(meth, time)

@@ -61,7 +61,8 @@ class Admin::AssetsController < Admin::BaseController
     if (session[:bucket] ||= {}).key?(@asset.public_filename)
       render :nothing => true and return
     end
-    session[:bucket][@asset.public_filename] = [@asset.public_filename(:tiny), "#{@asset.title} \n #{@asset.tags.join(', ')}"]
+    args = asset_image_args_for(@asset, :tiny, :title => "#{@asset.title} \n #{@asset.tags.join(', ')}")
+    session[:bucket][@asset.public_filename] = args
   end
 
   def clear_bucket

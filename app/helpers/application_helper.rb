@@ -15,20 +15,7 @@ module ApplicationHelper
   end
 
   def asset_image_for(asset, thumbnail = :tiny, options = {})
-    options = options.reverse_merge(:title => "#{asset.title} \n #{asset.tags.join(', ')}")
-    if asset.movie?
-      image_tag('/images/icons/video.png', options)
-    elsif asset.audio?
-      image_tag('/images/icons/audio.png', options)
-    elsif asset.pdf? and request.env['HTTP_USER_AGENT'] =~ /webkit/i
-      image_tag(asset.public_filename, {:class => 'pdf'}.merge(options))
-    elsif asset.other?
-      image_tag('/images/icons/doc.png', options)
-    elsif asset.thumbnails_count.zero?
-      image_tag(asset.public_filename, options.update(:size => Array.new(2).fill(Asset.attachment_options[:thumbnails][thumbnail].to_i).join('x')))
-    else
-      image_tag(asset.public_filename(thumbnail), options)
-    end
+    image_tag(*asset_image_args_for(asset, thumbnail, options))
   end
 
   def todays_short_date

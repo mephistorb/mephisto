@@ -45,7 +45,7 @@
       <ul id="bucket-assets">
         <% session[:bucket].each do |filename, values| -%>
         <li>
-          <%= link_to(image_tag(values.first, :title => values.last), filename, :target => '_blank') %>
+          <%= link_to(image_tag(*values), filename, :target => '_blank') %>
         </li>
         <% end unless session[:bucket].blank? %>
       </ul>

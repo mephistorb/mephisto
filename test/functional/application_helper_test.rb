@@ -1,6 +1,14 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'application_helper'
 
+ApplicationHelperTestController = Class.new ApplicationController do
+  # look at how i mock the action view request
+  def request() self end
+  def env
+    @env ||= {}
+  end
+end
+
 class ApplicationHelperTest < Test::Unit::TestCase
   fixtures :assets
   include ActionView::Helpers::TagHelper
@@ -24,7 +32,7 @@ class ApplicationHelperTest < Test::Unit::TestCase
   end
   
   def test_should_return_pdf_preview_in_safari
-    env['HTTP_USER_AGENT'] = 'Webkit'
+    controller.env['HTTP_USER_AGENT'] = 'Webkit'
     assert_match assets(:pdf).public_filename, asset_image_for(assets(:pdf))
   end
 
@@ -37,13 +45,15 @@ class ApplicationHelperTest < Test::Unit::TestCase
   end
 
   protected
-    def image_tag(path, options = {})
-      tag 'img', options.merge(:src => path)
+    def asset_image_args_for(*args)
+      controller.send(:asset_image_args_for, *args)
     end
     
-    # look at how i mock the action view request
-    def request() self end
-    def env
-      @env ||= {}
+    def controller
+      @controller ||= ApplicationHelperTestController.new
+    end
+  
+    def image_tag(path, options = {})
+      tag 'img', options.merge(:src => path)
     end
 end
