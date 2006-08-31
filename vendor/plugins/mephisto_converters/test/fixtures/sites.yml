@@ -1,0 +1,9 @@
+first:
+  id: 1
+  title: Mephisto
+  host: test.com
+  filter: foo
+  approve_comments: false
+  comment_age: 30
+  timezone: America/New_York
+  articles_per_page: 15

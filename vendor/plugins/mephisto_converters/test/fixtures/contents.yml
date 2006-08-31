@@ -1,0 +1,32 @@
+welcome:
+  id: 1
+  site_id: 1
+  title: Welcome to Mephisto
+  permalink: welcome-to-mephisto
+  excerpt: welcome summary
+  excerpt_html: welcome summary
+  body: welcome description
+  body_html: welcome description
+  created_at: <%= 5.days.ago.to_s(:db) %>
+  updated_at: <%= 5.days.ago.to_s(:db) %>
+  published_at: <%= 3.days.ago.to_s(:db) %>
+  comment_age: 30
+  user_id: 1
+  comments_count: 1
+  type: Article
+  filter: textile_filter
+  version: 2
+welcome_comment:
+  id: 3
+  site_id: 1
+  article_id: 1
+  body: This blogging tool rocks.
+  body_html: This blogging tool rocks.
+  created_at: <%= 3.days.ago.to_s(:db) %>
+  updated_at: <%= 3.days.ago.to_s(:db) %>
+  published_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
+  type: Comment
+  author: rico
+  author_ip: 1dfasd
+  approved: true
+  filter: textile_filter

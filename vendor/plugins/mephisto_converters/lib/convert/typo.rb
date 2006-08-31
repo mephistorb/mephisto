@@ -5,31 +5,36 @@ require 'convert/typo/comment'
 require 'convert/typo/category'
 require 'convert/typo/user'
 module Typo
+  @@new_user_password = 'mephistomigrator'
+  mattr_accessor :new_user_password
+
   class << self
     # migrate users over, sorta ...
     def import_users
-      newpass = 'mephistomigrator'
       users = 0
-
       Typo::User.find(:all).each do |typo_user|
-        ActiveRecord::Base.logger.info "Creating new user for #{typo_user.login}"
-        unless ::User.find_by_login(typo_user.login)
-          typo_user.email = nil if typo_user.email.blank?
-          new_user = ::User.create(
-            :email => typo_user.email || "#{typo_user.login}@notfound.com",
-            :login                    => typo_user.login,
-            :password                 => newpass,
-            :password_confirmation    => newpass,
-            :filter                   => 'textile_filter'
-          )
-          unless new_user.valid?
-            ActiveRecord::Base.logger.info "New user errors: #{new_user.errors.to_yaml}"
-            raise "User creation failed (see log for details)"
-          end
-          users += 1
-        end
+        users += 1 if import_user(typo_user)
       end
       users
+    end
+
+    def import_user(typo_user)
+      ActiveRecord::Base.logger.info "Creating new user for #{typo_user.login}"
+      unless ::User.find_by_login(typo_user.login)
+        typo_user.email = nil if typo_user.email.blank?
+        new_user = ::User.create(
+          :email => typo_user.email || "#{typo_user.login}@notfound.com",
+          :login                    => typo_user.login,
+          :password                 => ::Typo.new_user_password,
+          :password_confirmation    => ::Typo.new_user_password,
+          :filter                   => 'textile_filter'
+        )
+        unless new_user.valid?
+          ActiveRecord::Base.logger.info "New user errors: #{new_user.errors.to_yaml}"
+          raise "User creation failed (see log for details)"
+        end
+        return new_user
+      end
     end
 
     def find_or_create_sections(typo_article)
