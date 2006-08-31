@@ -81,7 +81,7 @@ module WordPress
         :author_url   => wp_comment.comment_author_url,
         :author_email => wp_comment.comment_author_email,
         :author_ip    => wp_comment.comment_author_IP,
-        :filters      => 'textile_filter'
+        :filter       => 'textile_filter'
         comment.approved = (wp_comment.comment_approved.to_i == 1)
       comment.save!
     end
