@@ -3,7 +3,7 @@ home:
   id: 1
   site_id: 1
   name: Home
-  path: home
+  path: ''
   articles_count: 3
   template: home.liquid
 about:
@@ -17,7 +17,7 @@ cupcake_home:
   id: 3
   site_id: 2
   name: Home
-  path: home
+  path: ''
   show_paged_articles: true
   template: home.liquid
   articles_count: 1

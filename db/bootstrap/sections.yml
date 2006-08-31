@@ -2,6 +2,6 @@ home:
   id: 1
   site_id: 1
   name: Home
-  path: home
+  path: ''
   articles_per_page: 15
   template: home.liquid

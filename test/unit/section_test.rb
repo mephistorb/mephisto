@@ -5,13 +5,20 @@ class SectionTest < Test::Unit::TestCase
 
   def test_find_or_create_sanity_check
     assert_no_difference Section, :count do
-      assert_equal sections(:home), sites(:first).sections.find_or_create_by_path('home')
+      assert_equal sections(:home), sites(:first).sections.find_or_create_by_path('')
     end
     
     assert_difference Section, :count do 
       section = sites(:first).sections.create(:name => 'Foo')
       assert_equal sites(:first), section.site
     end
+  end
+
+  def test_should_not_allow_nil_path
+    assert_valid sections(:home)
+    sections(:home).path = nil
+    assert !sections(:home).valid?
+    assert sections(:home).errors.on(:path)
   end
 
   def test_should_create_path

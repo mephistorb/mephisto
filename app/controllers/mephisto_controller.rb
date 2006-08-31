@@ -4,11 +4,11 @@ class MephistoController < ApplicationController
 
   def list
     if params[:sections].blank?
-      @section = site.sections.find_by_path('home')
+      @section = site.sections.home
       @section.show_paged_articles? ? show_section_page(nil) : list_section_articles
     else 
       @section, page_name = site.sections.find_section_and_page_name(params[:sections].dup)
-      @section ||= site.sections.find_by_path('home')
+      @section ||= site.sections.home
       if @section.show_paged_articles? 
         show_section_page(page_name)
       else

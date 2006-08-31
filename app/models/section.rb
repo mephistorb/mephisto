@@ -1,7 +1,8 @@
 class Section < ActiveRecord::Base
   ARTICLES_COUNT_SQL = 'INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id INNER JOIN sections ON sections.id = assigned_sections.section_id'.freeze unless defined?(ARTICLES_COUNT)
   before_validation_on_create :create_path
-  validates_presence_of   :name, :path, :site_id
+  validates_presence_of   :name, :site_id
+  validates_exclusion_of  :path, :in => [nil]
   validates_uniqueness_of :path, :case_sensitive => false, :scope => :site_id
   belongs_to :site
   has_many :assigned_sections, :dependent => :delete_all
@@ -70,11 +71,11 @@ class Section < ActiveRecord::Base
   end
 
   def home?
-    path.to_s.downcase == 'home'
+    path.blank?
   end
 
   def to_url
-    path.blank? || home? ? [] : path.split('/')
+    path.split('/')
   end
 
   def paged?

@@ -4,7 +4,7 @@ class Site < ActiveRecord::Base
 
   has_many  :sections do
     def home
-      Section.find_by_path 'home'
+      find_by_path ''
     end
   end
 
