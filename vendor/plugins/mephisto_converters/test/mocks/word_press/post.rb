@@ -1,5 +1,5 @@
 require 'ostruct'
-require File.join(RAILS_ROOT, '/test/mocks/test/convert/word_press/category')
+require File.join(RAILS_ROOT, '/test/mocks/test/converters/word_press/category')
 module WordPress
   class Post
     POSTS = [

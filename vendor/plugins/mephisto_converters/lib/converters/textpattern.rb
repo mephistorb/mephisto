@@ -1,5 +1,5 @@
-require 'convert/textpattern/article'
-require 'convert/textpattern/comment'
+require 'converters/textpattern/article'
+require 'converters/textpattern/comment'
 module TextPattern
   def self.convert
     section = Section.find_by_path('home')

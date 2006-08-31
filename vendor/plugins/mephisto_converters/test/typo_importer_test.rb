@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/test_helper'
 require 'ostruct'
 
-require 'convert/typo'
+require 'converters/typo'
 class TypoImporterTest < Test::Unit::TestCase
   fixtures :sites, :sections, :contents, :users
 

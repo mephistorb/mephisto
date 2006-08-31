@@ -1,8 +1,8 @@
-require 'convert/word_press/post'
-require 'convert/word_press/comment'
-require 'convert/word_press/category'
-require 'convert/word_press/post_category'
-require 'convert/word_press/user'
+require 'converters/word_press/post'
+require 'converters/word_press/comment'
+require 'converters/word_press/category'
+require 'converters/word_press/post_category'
+require 'converters/word_press/user'
 module WordPress
   @@new_user_password = 'mephistomigrator'
   mattr_accessor :new_user_password

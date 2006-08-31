@@ -1,5 +1,9 @@
 * SVN *
 
+* Change conversion scripts to use Mephisto.convert_from instead:
+
+  Mephisto.convert_from :typo
+
 * Added spinner graphic for asset searches from article page
 
 * Added link to the public homepage

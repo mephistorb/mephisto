@@ -13,7 +13,7 @@ namespace :db do
     
     puts
     puts '=' * 80
-    puts "Thank you for trying out Mephisto 0.5: Thanos Edition!"
+    puts "Thank you for trying out Mephisto 0.6: Immortus Edition!"
     puts
     puts "Now you can start the application with script/server, visit "
     puts "http://mydomain.com/admin, and log in with admin / test."

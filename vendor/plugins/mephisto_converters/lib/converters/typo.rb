@@ -1,9 +1,9 @@
-require 'convert/typo/content'
-require 'convert/typo/page'
-require 'convert/typo/article'
-require 'convert/typo/comment'
-require 'convert/typo/category'
-require 'convert/typo/user'
+require 'converters/typo/content'
+require 'converters/typo/page'
+require 'converters/typo/article'
+require 'converters/typo/comment'
+require 'converters/typo/category'
+require 'converters/typo/user'
 module Typo
   @@new_user_password = 'mephistomigrator'
   mattr_accessor :new_user_password
