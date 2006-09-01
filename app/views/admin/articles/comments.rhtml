@@ -11,7 +11,9 @@
     <input type="checkbox" title="" />
     <% end %>
     <a name="comment-<%= comment.id %>"></a> 
+    <% unless comment.body.blank? -%>
     <blockquote><p>"<%= strip_tags(comment.body) %>"</p></blockquote>
+    <% end -%>
     <span class="meta">
       <cite>&mdash; <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %></cite>
       
