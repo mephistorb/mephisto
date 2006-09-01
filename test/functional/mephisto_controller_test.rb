@@ -192,6 +192,15 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_tag 'a', :attributes => { :href => '/about/the-site-map', :class => 'selected' }, :content => 'The Site Map'
   end
 
+  def test_should_sanitize_comment
+    date = 3.days.ago
+    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto'
+    evil = %(<p>rico&#8217;s evil <script>hi</script> and <a onclick="foo" href="#">linkage</a></p>)
+    good = %(<p>rico&#8217;s evil &lt;script>hi&lt;/script> and <a href='#'>linkage</a></p>)
+    assert !@response.body.include?(evil), "includes unsanitized code"
+    assert  @response.body.include?(good), "does not include sanitized code"
+  end
+
   def test_should_show_comments_form
     date = 3.days.ago
     get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto'
