@@ -102,6 +102,27 @@ class Test::Unit::TestCase
     assert File.file?(file), message
   end
 
+  def get_xpath(xpath)
+    if @rexml.nil?
+      @rexml = REXML::Document.new(@response.body)
+      assert @rexml
+    end
+ 
+    REXML::XPath.match(@rexml, xpath)
+  end
+ 
+  def assert_xpath(xpath, msg=nil)
+    assert !(get_xpath(xpath).empty?), "XPath '#{xpath}' was not matched: #{msg}"
+  end
+ 
+  def assert_not_xpath(xpath, msg=nil)
+    assert get_xpath(xpath).empty?, "XPath '#{xpath}' was matched: #{msg}"
+  end
+
+  def assert_atom_entries_size(entries)
+    assert_equal 1, get_xpath(%{/feed[@xmlns="http://www.w3.org/2005/Atom" and count(child::entry)=#{entries}]}).size, "Atom 1.0 feed has wrong number of feed/entry nodes"
+  end
+
   # Sets the current user in the session from the user fixtures.
   def login_as(user)
     @request.session[:user] = user ? users(user).id : nil

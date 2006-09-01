@@ -1,5 +1,11 @@
 * SVN *
 
+* Fix bug where atom feed content from textile was double encoded
+
+* sanitize atom feed content
+
+* 0.6 *
+
 * Change conversion scripts to use Mephisto.convert_from instead:
 
   Mephisto.convert_from :typo
