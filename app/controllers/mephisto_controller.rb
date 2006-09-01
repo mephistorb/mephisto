@@ -19,7 +19,7 @@ class MephistoController < ApplicationController
   end
 
   def search
-    conditions     = ['published_at <= :now AND title LIKE :q OR excerpt LIKE :q OR body LIKE :q', 
+    conditions     = ['(published_at IS NOT NULL AND published_at <= :now) AND (title LIKE :q OR excerpt LIKE :q OR body LIKE :q)', 
                      { :now => Time.now.utc, :q => "%#{params[:q]}%" }]
     search_count   = site.articles.count(conditions)
     @article_pages = Paginator.new self, search_count, site.articles_per_page, params[:page]

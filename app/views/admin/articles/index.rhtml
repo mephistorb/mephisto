@@ -23,7 +23,7 @@
         ] %>
       </select>
       <select name="section" id="sectionlist">
-        <option value="0">&mdash;Select a section&mdash;</option>
+        <option value="0">&mdash;All Sections&mdash;</option>
         <%= options_from_collection_for_select @sections, :id, :name, params[:section].to_i %>
       </select>
     </li>

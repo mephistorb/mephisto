@@ -139,6 +139,22 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_template_type      :search
   end
 
+  def test_should_search_and_not_find_draft
+    get :search, :q => 'draft'
+    assert_equal [], assigns(:articles)
+    assert_preferred_template :search
+    assert_layout_template    :layout
+    assert_template_type      :search
+  end
+
+  def test_should_search_and_not_find_future
+    get :search, :q => 'future'
+    assert_equal [], assigns(:articles)
+    assert_preferred_template :search
+    assert_layout_template    :layout
+    assert_template_type      :search
+  end
+
   def test_should_show_entry
     date = 3.days.ago
     get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto'

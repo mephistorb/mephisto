@@ -1,5 +1,7 @@
 * SVN *
 
+* Ignore drafts and articles published in the future when searching.
+
 * sanitize posted comments
 
 * Fix bug where atom feed content from textile was double encoded

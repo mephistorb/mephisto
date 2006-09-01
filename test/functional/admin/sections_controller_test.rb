@@ -19,7 +19,7 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
     assert_equal sites(:first), assigns(:site)
     assert_equal sections(:home), assigns(:home)
     assert_equal 2, assigns(:sections).length, "Sections: #{assigns(:sections).inspect}"
-    assert_equal 2, assigns(:article_count)['1']
+    assert_equal 3, assigns(:article_count)['1']
     assert_equal 3, assigns(:article_count)['2']
   end
 
