@@ -1,5 +1,7 @@
 * SVN *
 
+* dont bomb out on comment events without an event body
+
 * fix bug where you're unable to delete an empty comment
 
 * Ignore drafts and articles published in the future when searching.

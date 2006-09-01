@@ -3,7 +3,9 @@
   <%= link_to event.article.title, :controller => 'articles', :action => 'comments', :id => event.article_id, :anchor => "comment-#{event.comment_id}" %> received a comment.
   
   <span class="event-time"><%= event_time_for event, later %></span>
+  <% unless event.body.blank? -%>
   <blockquote><p>&quot;<%= truncate strip_tags(event.body), 100 %>&quot;</p></blockquote>
+  <% end -%>
   <span class="meta">
     &mdash; <%=h event.author %>
   </span>
