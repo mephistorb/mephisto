@@ -1,0 +1,30 @@
+SimplyBdd
+=========
+
+Allows you to use context and specify macros for creating TestCase classes
+
+context "New User" do
+  def setup
+    @user = User.new
+  end
+
+  specify "should be invalid without a username" do
+    assert !@user.valid?
+    @user.username = 'someusername'
+    assert_valid @user
+  end
+end
+
+This (dynamically) generates a class like:
+
+class NewUserTest < Test::Unit::TestCase
+  def setup
+    @user = User.new
+  end
+  
+  def test_should_be_invalid_without_a_username
+    assert !@user.valid?
+    @user.username = 'someusername'
+    assert_valid @user
+  end
+end
