@@ -1,5 +1,7 @@
 * SVN *
 
+* bad feed urls raise ActiveRecord::RecordNotFound, and return 404 in production
+
 * dont bomb out on comment events without an event body
 
 * fix bug where you're unable to delete an empty comment

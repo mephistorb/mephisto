@@ -36,6 +36,12 @@ class FeedControllerTest < Test::Unit::TestCase
     assert_atom_entries_size 1
     assert_tag 'link', :attributes => {:href => 'http://cupcake.com/'}
   end
+  
+  def test_should_return_record_not_found_for_bad_feed_urls
+    assert_raise ActiveRecord::RecordNotFound do
+      get :feed, :sections => %w(beastie boys)
+    end
+  end
 end
 
 context "Home Section Feed" do
