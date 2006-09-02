@@ -6,7 +6,7 @@ module FilteredColumn
   class Processor
     @@patterns = [
       /<(filter|macro|typo):([_a-zA-Z0-9]+)([^>]*)\/>/,
-      /<(filter|macro|typo):([_a-zA-Z0-9]+)([^>]*)>(.*?)<\/(filter|macro):([_a-zA-Z0-9]+)>/m
+      /<(filter|macro|typo):([_a-zA-Z0-9]+)([^>]*)>(.*?)<\/(filter|macro|typo):([_a-zA-Z0-9]+)>/m
       ].freeze
 
     def self.process_filter(filter_name, text)
