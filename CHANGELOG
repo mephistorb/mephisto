@@ -1,5 +1,7 @@
 * SVN *
 
+* fix odd timezone bug when saving articles
+
 * fix bug with <typo:code> macro
 
 * bad feed urls raise ActiveRecord::RecordNotFound, and return 404 in production

@@ -90,7 +90,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
           'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10' }, :submit => :save
         assert_redirected_to :action => 'index'
         assert  assigns(:article).published?
-        assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
+        assert_equal Time.utc(2005, 1, 1, 5, 0, 0), assigns(:article).published_at
         assert !assigns(:article).new_record?
         assert_equal users(:quentin), assigns(:article).updater
       end
@@ -181,7 +181,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       post :update, :id => contents(:welcome).id, :article => { 'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10' }
       assert_redirected_to :action => 'index'
       assert  assigns(:article).published?
-      assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
+      assert_equal Time.utc(2005, 1, 1, 5, 0, 0), assigns(:article).published_at
     end
   end
 
@@ -330,7 +330,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
         assert_template 'new'
         assert_valid assigns(:article)
         assert assigns(:article).new_record?
-        assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
+        assert_equal Time.utc(2005, 1, 1, 5, 0, 0), assigns(:article).published_at
         assert_equal users(:quentin), assigns(:article).updater
       end
     end
