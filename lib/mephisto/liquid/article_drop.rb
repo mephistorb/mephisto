@@ -1,6 +1,7 @@
 module Mephisto
   module Liquid
     class ArticleDrop < ::Liquid::Drop
+      include UrlMethods
       include DropMethods
       
       def article() @source end
@@ -12,7 +13,7 @@ module Mephisto
           'id'               => @source.id,
           'title'            => @source.title,
           'permalink'        => @source.permalink,
-          'url'              => @source.full_permalink,
+          'url'              => absolute_url(@source.full_permalink),
           'body'             => @source.body_html,
           'excerpt'          => @source.excerpt_html,
           'published_at'     => (@source.site.timezone.utc_to_local(@source.published_at) rescue nil),

@@ -2,6 +2,7 @@ require 'digest/md5'
 module Mephisto
   module Liquid
     module Filters
+      include UrlMethods
       include ActionView::Helpers::TagHelper
       include ActionView::Helpers::AssetTagHelper
 
@@ -36,7 +37,7 @@ module Mephisto
           singular
         elsif plural
           plural
-        elsif Object.const_defined?("Inflector")
+        elsif Object.const_defined?(:Inflector)
           Inflector.pluralize(singular)
         else
           singular + "s"
@@ -44,8 +45,7 @@ module Mephisto
       end
 
       def textilize(text)
-        return '' if text.blank?
-        RedCloth.new(text).to_html
+        text.blank? ? '' : RedCloth.new(text).to_html
       end
 
       def format_date(date, format, ordinalized = false)
@@ -64,23 +64,26 @@ module Mephisto
         tag 'img', {:src => asset_url(img), :alt => img.split('.').first }.merge(options)
       end
       
-      def asset_url(asset)
-        "/images/#{asset}"
+      def stylesheet_url(css)
+        absolute_url :stylesheets, css
       end
       
-      def stylesheet(stylesheet, options = {})
-        stylesheet << '.css' unless stylesheet.include? '.'
-        tag 'link', options.merge(:rel => 'stylesheet', :type => 'text/css', :href => "/stylesheets/#{stylesheet}")
+      def javascript_url(js)
+        absolute_url :javascripts, js
+      end
+      
+      def asset_url(asset)
+        absolute_url :images, asset
       end
 
       def stylesheet(stylesheet, media = nil)
         stylesheet << '.css' unless stylesheet.include? '.'
-        tag 'link', :rel => 'stylesheet', :type => 'text/css', :href => "/stylesheets/#{stylesheet}", :media => media
+        tag 'link', :rel => 'stylesheet', :type => 'text/css', :href => stylesheet_url(stylesheet), :media => media
       end
 
       def javascript(javascript)
         javascript << '.js' unless javascript.include? '.'
-        content_tag 'script', '', :type => 'text/javascript', :src => "/javascripts/#{javascript}"
+        content_tag 'script', '', :type => 'text/javascript', :src => javascript_url(javascript)
       end
       
       def month_list

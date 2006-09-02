@@ -1,5 +1,7 @@
 * SVN *
 
+* Use ActionController::AbstractRequest.relative_url_root for sites under a root path like /blog
+
 * fix odd timezone bug when saving articles
 
 * fix bug with <typo:code> macro

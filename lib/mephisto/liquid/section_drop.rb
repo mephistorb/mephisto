@@ -1,6 +1,7 @@
 module Mephisto
   module Liquid
     class SectionDrop < ::Liquid::Drop
+      include UrlMethods
       include DropMethods
       
       def section() @source end
@@ -17,7 +18,7 @@ module Mephisto
       end
       
       def url
-        @url ||= '/' + @source.to_url.join('/')
+        @url ||= absolute_url(*@source.to_url)
       end
 
       def is_blog
