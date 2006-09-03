@@ -36,7 +36,7 @@ end
 # Include your application configuration below
 require 'mephisto_init'
 
-# Set this if you're running on a root path
+# Set this if you're running under a sub directory
 # ActionController::AbstractRequest.relative_url_root = '/blog'
 
 # turn this on to get detailed cache sweeper logging in production mode

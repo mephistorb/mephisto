@@ -1,6 +1,8 @@
 namespace :db do
   desc "Loads a schema.rb file into the database and then loads the initial database fixtures."
-  task :bootstrap => ['db:schema:load', 'db:bootstrap:load'] do
+  task :bootstrap do
+    mkdir_p File.join(RAILS_ROOT, 'log')
+    %w(environment db:schema:load db:bootstrap:load tmp:create).each { |t| Rake::Task[t].execute }
     site_dir = File.join(RAILS_ROOT, 'themes/site-1')
     if File.exists?(site_dir)
       puts "skipping default theme creation..."
@@ -9,11 +11,9 @@ namespace :db do
       puts "copied default theme to #{site_dir}..."
     end
     
-    mkdir_p File.join(RAILS_ROOT, 'log')
-    
     puts
     puts '=' * 80
-    puts "Thank you for trying out Mephisto 0.6: Immortus Edition!"
+    puts "Thank you for trying out Mephisto #{Mephisto::Version::STRING}: #{Mephisto::Version::TITLE} Edition!"
     puts
     puts "Now you can start the application with script/server, visit "
     puts "http://mydomain.com/admin, and log in with admin / test."
