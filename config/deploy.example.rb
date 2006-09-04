@@ -19,7 +19,7 @@ set :repository, "http://svn.techno-weenie.net/projects/mephisto"
 # Use this to freeze your deployment to a specific rails version.  Uses the rake
 # init task run in after_symlink below.
 
-set :rails_version, 4393
+set :rails_version, 4928
 
 # TODO: test this works and I can remove the restart task and use the cleanup task
 # set :use_sudo, false

@@ -137,7 +137,7 @@ class Admin::ArticlesController < Admin::BaseController
         date = Time.parse_from_attributes(params[:article], :published_at, :local)
         next unless date
         params[:article].delete_if { |k, v| k.to_s =~ /^#{:published_at}/ }
-        params[:article][:published_at] = utc_to_local(date)
+        params[:article][:published_at] = local_to_utc(date)
       end
     end
     
