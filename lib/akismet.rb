@@ -14,7 +14,7 @@ class Akismet
   attr_accessor :proxy_host
 
   STANDARD_HEADERS = {
-    'User-Agent'   => 'Mephisto/0.1',
+    'User-Agent'   => 'Mephisto/' << Mephisto::Version::STRING,
     'Content-Type' => 'application/x-www-form-urlencoded'
   }
   
