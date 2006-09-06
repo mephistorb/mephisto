@@ -5,7 +5,7 @@ require 'admin/articles_controller'
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
 class Admin::ArticlesControllerTest < Test::Unit::TestCase
-  fixtures :contents, :content_versions, :sections, :assigned_sections, :users, :sites, :tags, :taggings
+  fixtures :contents, :content_versions, :sections, :assigned_sections, :users, :sites, :tags, :taggings, :memberships
 
   def setup
     @controller = Admin::ArticlesController.new

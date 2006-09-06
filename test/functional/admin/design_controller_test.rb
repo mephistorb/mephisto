@@ -5,7 +5,7 @@ require 'admin/design_controller'
 class Admin::DesignController; def rescue_action(e) raise e end; end
 
 class Admin::DesignControllerTest < Test::Unit::TestCase
-  fixtures :users, :sections, :sites
+  fixtures :users, :sections, :sites, :memberships
 
   def setup
     prepare_theme_fixtures

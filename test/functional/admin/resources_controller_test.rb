@@ -5,7 +5,7 @@ require 'admin/resources_controller'
 class Admin::ResourcesController; def rescue_action(e) raise e end; end
 
 class Admin::ResourcesControllerTest < Test::Unit::TestCase
-  fixtures :users, :sites
+  fixtures :users, :sites, :memberships
   def setup
     prepare_theme_fixtures
     @controller = Admin::ResourcesController.new

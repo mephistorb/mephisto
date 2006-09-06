@@ -5,7 +5,7 @@ require 'admin/templates_controller'
 class Admin::TemplatesController; def rescue_action(e) raise e end; end
 
 class Admin::TemplatesControllerTest < Test::Unit::TestCase
-  fixtures :users, :sections, :sites
+  fixtures :users, :sections, :sites, :memberships
 
   def setup
     prepare_theme_fixtures

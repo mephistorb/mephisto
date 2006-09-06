@@ -21,10 +21,10 @@ class XmlRpcService < ActionWebService::Base
       # Coping with backwards incompatibility change in AWS releases post 0.6.2
       begin
         h = method.expects_to_hash(args)
-        raise "Invalid login" unless @user = User.authenticate(h[:username], h[:password])
+        raise "Invalid login" unless @user = User.authenticate_for(controller.site, h[:username], h[:password])
       rescue NoMethodError
         username, password = method[:expects].index(:username=>String), method[:expects].index(:password=>String)
-        raise "Invalid login" unless @user = User.authenticate(args[username], args[password])
+        raise "Invalid login" unless @user = User.authenticate_for(controller.site, args[username], args[password])
       end
     end
 end

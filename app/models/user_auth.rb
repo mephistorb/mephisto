@@ -19,8 +19,9 @@ class UserAuth < ActiveRecord::Base
   # before_create :make_activation_code
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
-  def self.authenticate(login, password)
-    u = find_by_login(login) # need to get the salt
+  def self.authenticate_for(site, login, password)
+    u = find(:first, :select => 'users.*', :joins => 'left outer join memberships on users.id = memberships.user_id',
+      :conditions => ['users.login = ? and (memberships.site_id = ? or users.admin = ?)', login, site.id, true])
     u && u.authenticated?(password) ? u : nil
   end
 

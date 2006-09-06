@@ -5,7 +5,7 @@ require 'admin/sections_controller'
 class Admin::SectionsController; def rescue_action(e) raise e end; end
 
 class Admin::SectionsControllerTest < Test::Unit::TestCase
-  fixtures :sections, :users, :contents, :assigned_sections, :sites
+  fixtures :sections, :users, :contents, :assigned_sections, :sites, :memberships
 
   def setup
     @controller = Admin::SectionsController.new

@@ -5,7 +5,7 @@ require 'admin/users_controller'
 class Admin::UsersController; def rescue_action(e) raise e end; end
 
 class Admin::UsersControllerTest < Test::Unit::TestCase
-  fixtures :users, :sites
+  fixtures :users, :sites, :memberships
   def setup
     @controller = Admin::UsersController.new
     @request    = ActionController::TestRequest.new
@@ -20,8 +20,8 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
 
   def test_should_create_user
     assert_difference User, :count do
-      post :create, :user => { :login => 'bob', :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }
-      assert_equal assigns(:user), User.authenticate('bob', 'testy')
+      post :create, :user => { :login => 'bob', :email => 'foo', :password => 'testy', :password_confirmation => 'testy', :admin => true }
+      assert_equal assigns(:user), User.authenticate_for(sites(:first), 'bob', 'testy')
       assert_redirected_to :action => 'index'
       assert flash[:notice]
     end
@@ -31,7 +31,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     post :update, :id => users(:quentin).id, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }
     users(:quentin).reload
     assert_equal 'foo', users(:quentin).email
-    assert_equal users(:quentin), User.authenticate('quentin', 'testy')
+    assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin', 'testy')
     assert_response :success
   end
 
@@ -39,7 +39,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     post :update, :id => users(:quentin).id, :user => { :email => 'foo', :password => '', :password_confirmation => '' }
     users(:quentin).reload
     assert_equal 'foo', users(:quentin).email
-    assert_equal users(:quentin), User.authenticate('quentin', 'quentin')
+    assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin', 'quentin')
     assert_response :success
   end
 
@@ -47,7 +47,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     post :update, :id => users(:quentin).id, :user => { :email => 'foo', :password => 'tea', :password_confirmation => '' }
     users(:quentin).reload
     assert_equal 'quentin@example.com', users(:quentin).email
-    assert_equal users(:quentin), User.authenticate('quentin', 'quentin')
+    assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin', 'quentin')
     assert_response :success
   end
 

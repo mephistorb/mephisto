@@ -19,7 +19,7 @@ module AuthenticatedSystem
     
     def login_required
       username, passwd = get_auth_data
-      self.current_user ||= User.authenticate(username, passwd) || :false if username && passwd
+      self.current_user ||= User.authenticate_for(site, username, passwd) || :false if username && passwd
       logged_in? && authorized? ? true : access_denied
     end
 
@@ -47,7 +47,7 @@ module AuthenticatedSystem
     end
     
     def basic_auth_required
-      unless session[:user] = User.authenticate(*get_auth_data) 
+      unless session[:user] = User.authenticate_for(*get_auth_data.unshift(site)) 
         access_denied_with_basic_auth
       end 
     end
