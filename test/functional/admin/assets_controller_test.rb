@@ -24,7 +24,7 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     assert_difference sites(:first).assets, :count do
       assert_difference Asset, :count, 3 do # asset + 2 thumbnails
         process_upload
-        #assert_redirected_to asset_path
+        assert_redirected_to asset_path
       end
     end
   end
@@ -88,8 +88,8 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     assert_difference Asset, :count, -1 do
       delete :destroy, :id => assets(:gif).id
     end
-    # fixed in edge
-    #assert_redirected_to assets_path
+
+    assert_redirected_to assets_path
     assert_not_nil flash[:notice]
   end
 

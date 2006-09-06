@@ -44,7 +44,7 @@ class Admin::AssetsControllerUploadTest < Test::Unit::TestCase
     process_upload
     login_as :quentin
     post :update, :id => Asset.find(1).id, :asset => { :title => 'foo bar' }
-    #assert_redirected_to asset_path
+    assert_redirected_to assets_path
     assert_valid assigns(:asset)
     assert_equal 'foo bar', assigns(:asset).title
   end
