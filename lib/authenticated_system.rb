@@ -1,7 +1,7 @@
 module AuthenticatedSystem
   protected
     def logged_in?
-      (@current_user ||= session[:user] ? User.find_for_site(site, session[:user]) : :false).is_a?(User)
+      (@current_user ||= session[:user] ? User.find_by_site(site, session[:user]) : :false).is_a?(User)
     end
 
     def current_user

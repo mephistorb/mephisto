@@ -1,7 +1,7 @@
 class Admin::UsersController < Admin::BaseController
   MEMBER_ACTIONS = %w(show update).freeze unless const_defined?(:MEMBER_ACTIONS)
   before_filter :find_all_users, :only => [:index, :show, :new]
-  before_filter :find_user,      :only => [:show, :update]
+  before_filter :find_user,      :only => [:show, :update, :enable]
   def index
     @enabled, @disabled = @users.partition { |u| u.deleted_at.nil? }
     @users = @enabled + @disabled
@@ -33,24 +33,23 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def destroy
-    @user = User.find params[:id]
+    @user = site.user(params[:id])
     @user.destroy
-    @user = User.find_with_deleted params[:id] # reload
+    @user = site.user_with_deleted(params[:id]) # reload
   end
 
   def enable
-    @user = User.find_with_deleted params[:id]
     @user.deleted_at = nil
     @user.save!
   end
   
   protected
     def find_all_users
-      @users = User.find_with_deleted :all, :order => 'login'
+      @users = site.users_with_deleted
     end
     
     def find_user
-      @user = User.find_with_deleted params[:id]
+      @user = site.user_with_deleted(params[:id])
     end
     
     def authorized?

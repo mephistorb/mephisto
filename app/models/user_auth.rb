@@ -2,6 +2,9 @@ require 'digest/sha1'
 class UserAuth < ActiveRecord::Base
   set_table_name 'users'
   self.abstract_class = true
+  @@membership_options = {:select => 'distinct users.*, memberships.admin as site_admin', :order => 'users.login',
+    :joins => 'left outer join memberships on users.id = memberships.user_id'}
+
   # Virtual attribute for the unencrypted password
   attr_accessor :password
 
@@ -20,14 +23,26 @@ class UserAuth < ActiveRecord::Base
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate_for(site, login, password)
-    u = find(:first, :select => 'users.*, memberships.admin as site_admin', :joins => 'left outer join memberships on users.id = memberships.user_id',
-      :conditions => ['users.login = ? and (memberships.site_id = ? or users.admin = ?)', login, site.id, true])
+    u = find(:first, @@membership_options.merge(
+      :conditions => ['users.login = ? and (memberships.site_id = ? or users.admin = ?)', login, site.id, true]))
     u && u.authenticated?(password) ? u : nil
   end
 
-  def self.find_for_site(site, id)
-    find(:first, :select => 'users.*, memberships.admin as site_admin', :joins => 'left outer join memberships on users.id = memberships.user_id',
-      :conditions => ['users.id = ? and (memberships.site_id = ? or users.admin = ?)', id, site.id, true])
+  def self.find_by_site(site, id)
+    with_deleted_scope { find_by_site_with_deleted(site, id) }
+  end
+
+  def self.find_by_site_with_deleted(site, id)
+    find_with_deleted(:first, @@membership_options.merge(
+      :conditions => ['users.id = ? and (memberships.site_id = ? or users.admin = ?)', id, site.id, true]))
+  end
+
+  def self.find_all_by_site(site)
+    with_deleted_scope { find_all_by_site_with_deleted(site) }
+  end
+
+  def self.find_all_by_site_with_deleted(site)
+    find_with_deleted(:all, @@membership_options.merge(:conditions => ['memberships.site_id = ? or users.admin = ?', site.id, true])).uniq
   end
 
   # Encrypts some data with the salt.

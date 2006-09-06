@@ -45,7 +45,7 @@ class UserTest < Test::Unit::TestCase
 
   def test_should_find_admin_by_id
     [:first, :hostess, :garden].each do |s|
-      user = User.find_for_site(sites(s), users(:quentin).id)
+      user = User.find_by_site(sites(s), users(:quentin).id)
       assert_equal users(:quentin), user, "Unable to login to site: #{s}"
     end
   end
@@ -60,8 +60,8 @@ class UserTest < Test::Unit::TestCase
   end
   
   def test_should_find_member_by_site
-    first_member   = User.find_for_site(sites(:first), users(:arthur).id)
-    hostess_member = User.find_for_site(sites(:hostess), users(:arthur).id)
+    first_member   = User.find_by_site(sites(:first), users(:arthur).id)
+    hostess_member = User.find_by_site(sites(:hostess), users(:arthur).id)
     assert_equal users(:arthur), first_member
     assert_equal users(:arthur), hostess_member
     assert  first_member.site_admin?
