@@ -14,6 +14,10 @@ class Site < ActiveRecord::Base
   has_many  :assets, :as => :attachable, :order => 'created_at desc'
   has_many  :assets, :order => 'created_at desc', :conditions => 'parent_id is null'
 
+  has_many :memberships
+  has_many :members, :through => :memberships, :source => :user
+  has_many :admins,  :through => :memberships, :source => :user, :conditions => ['memberships.admin = ? or users.admin = ?', true, true]
+
   before_validation :downcase_host
   before_validation :set_default_timezone
   before_validation_on_create :set_default_comment_options

@@ -7,3 +7,4 @@ default:
   activated_at: <%= Time.now.utc.to_s :db %>
   created_at: <%= Time.now.utc.to_s :db %>
   updated_at: <%= Time.now.utc.to_s :db %>
+  admin: true

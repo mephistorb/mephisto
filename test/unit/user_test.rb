@@ -46,6 +46,10 @@ class UserTest < Test::Unit::TestCase
     assert_equal '', users(:quentin).reload.filter
   end
 
+  def test_should_find_admins
+    assert_models_equal [users(:quentin)], User.find_admins(:all)
+  end
+
   protected
     def create_user(options = {})
       User.create({ :login => 'quire', :email => 'quire@example.com', :password => 'quire', :password_confirmation => 'quire' }.merge(options))

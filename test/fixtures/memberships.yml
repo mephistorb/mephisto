@@ -1,0 +1,25 @@
+arthur_first:
+  id: 1
+  user_id: 2
+  site_id: 1
+  admin: true
+aaron_first:
+  id: 2
+  user_id: 3
+  site_id: 1
+  admin: false
+arthur_hostess:
+  id: 3
+  user_id: 2
+  site_id: 2
+  admin: false
+quentin_first:
+  id: 4
+  user_id: 1
+  site_id: 1
+  admin: false
+quentin_hostess:
+  id: 5
+  user_id: 1
+  site_id: 2
+  admin: true

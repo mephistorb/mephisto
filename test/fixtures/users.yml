@@ -11,6 +11,7 @@ quentin:
   remember_token: quentintoken
   remember_token_expires_at: <%= 5.days.from_now.to_s :db %>
   # activated_at: <%= 5.days.ago.to_s :db %> # only if you're activating new signups
+  admin: true
 arthur:
   id: 2
   login: arthur
