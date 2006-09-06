@@ -42,4 +42,7 @@ class Admin::ResourcesController < Admin::BaseController
       page.visual_effect :fade, params[:context], :duration => 0.3
     end
   end
+  
+  protected
+    alias authorized? admin?
 end

@@ -12,15 +12,22 @@ class Admin::DesignControllerTest < Test::Unit::TestCase
     @controller = Admin::DesignController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-    login_as :quentin
+  end
+
+  def test_should_allow_site_admin
+    login_as :arthur
+    get :index
+    assert_response :success
   end
 
   def test_should_show_all_templates
+    login_as :quentin
     get :index
     assert_tag :tag => 'form', :attributes => { :action => '/admin/resources/upload' }
   end
 
   def test_should_create_template
+    login_as :quentin
     post :create, :data => 'this is liquid', :filename => 'my_little_pony'
     assert sites(:first).templates['my_little_pony'].file?
     assert_equal 'this is liquid', sites(:first).templates['my_little_pony'].read
@@ -28,6 +35,7 @@ class Admin::DesignControllerTest < Test::Unit::TestCase
   end
 
   def test_should_create_css
+    login_as :quentin
     post :create, :data => 'body {}', :filename => 'styles.css'
     assert sites(:first).resources['styles.css'].file?
     assert_equal 'body {}', sites(:first).resources['styles.css'].read
@@ -35,6 +43,7 @@ class Admin::DesignControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_form_on_invalid_creation_attempt
+    login_as :quentin
     post :create, :data => 'body {}'
     assert_template 'index'
     assert_response :success

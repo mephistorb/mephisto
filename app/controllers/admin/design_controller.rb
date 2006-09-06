@@ -13,4 +13,7 @@ class Admin::DesignController < Admin::BaseController
       redirect_to :controller => 'templates', :action => 'edit', :filename => @tmpl.basename.to_s
     end
   end
+  
+  protected
+    alias authorized? admin?
 end

@@ -51,4 +51,6 @@ class Admin::UsersController < Admin::BaseController
     def find_user
       @user = User.find_with_deleted params[:id]
     end
+    
+    alias authorized? admin?
 end

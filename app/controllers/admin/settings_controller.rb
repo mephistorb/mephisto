@@ -8,4 +8,7 @@ class Admin::SettingsController < Admin::BaseController
       render :action => 'index'
     end
   end
+  
+  protected
+    alias authorized? admin?
 end

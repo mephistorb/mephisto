@@ -36,4 +36,7 @@ class Admin::TemplatesController < Admin::BaseController
       end
     end
   end
+  
+  protected
+    alias authorized? admin?
 end

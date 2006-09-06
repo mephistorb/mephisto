@@ -20,9 +20,14 @@ class UserAuth < ActiveRecord::Base
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate_for(site, login, password)
-    u = find(:first, :select => 'users.*', :joins => 'left outer join memberships on users.id = memberships.user_id',
+    u = find(:first, :select => 'users.*, memberships.admin as site_admin', :joins => 'left outer join memberships on users.id = memberships.user_id',
       :conditions => ['users.login = ? and (memberships.site_id = ? or users.admin = ?)', login, site.id, true])
     u && u.authenticated?(password) ? u : nil
+  end
+
+  def self.find_for_site(site, id)
+    find(:first, :select => 'users.*, memberships.admin as site_admin', :joins => 'left outer join memberships on users.id = memberships.user_id',
+      :conditions => ['users.id = ? and (memberships.site_id = ? or users.admin = ?)', id, site.id, true])
   end
 
   # Encrypts some data with the salt.

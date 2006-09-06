@@ -124,8 +124,11 @@ class Test::Unit::TestCase
   end
 
   # Sets the current user in the session from the user fixtures.
-  def login_as(user)
-    @request.session[:user] = user ? users(user).id : nil
+  def login_as(user, site = nil)
+    user = user ? users(user) : nil
+    site = sites(site || :first)
+    host! site.host
+    @request.session[:user] = user ? User.authenticate_for(site, user.login, user.login) : nil
     if block_given?
       yield
       reset!

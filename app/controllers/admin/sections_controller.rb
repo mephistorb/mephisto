@@ -53,4 +53,7 @@ class Admin::SectionsController < Admin::BaseController
       params[:section][:template] = nil if params[:section][:template] == '0'
       params[:section][:layout]   = nil if params[:section][:layout]   == '0'
     end
+    
+  protected
+    alias authorized? admin?
 end

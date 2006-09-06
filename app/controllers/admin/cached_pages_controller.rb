@@ -18,4 +18,7 @@ class Admin::CachedPagesController < Admin::BaseController
     CachedPage.delete_all
     query
   end
+  
+  protected
+    alias authorized? admin?
 end

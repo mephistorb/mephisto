@@ -43,11 +43,35 @@ class UserTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_find_admin_by_id
+    [:first, :hostess, :garden].each do |s|
+      user = User.find_for_site(sites(s), users(:quentin).id)
+      assert_equal users(:quentin), user, "Unable to login to site: #{s}"
+    end
+  end
+
   def test_should_authenticate_member
-    assert_equal users(:arthur), User.authenticate_for(sites(:first), 'arthur', 'arthur')
-    assert_equal users(:arthur), User.authenticate_for(sites(:hostess), 'arthur', 'arthur')
+    first_member   = User.authenticate_for(sites(:first), 'arthur', 'arthur')
+    hostess_member = User.authenticate_for(sites(:hostess), 'arthur', 'arthur')
+    assert_equal users(:arthur), first_member
+    assert_equal users(:arthur), hostess_member
+    assert  first_member.site_admin?
+    assert !hostess_member.site_admin?
   end
   
+  def test_should_find_member_by_site
+    first_member   = User.find_for_site(sites(:first), users(:arthur).id)
+    hostess_member = User.find_for_site(sites(:hostess), users(:arthur).id)
+    assert_equal users(:arthur), first_member
+    assert_equal users(:arthur), hostess_member
+    assert  first_member.site_admin?
+    assert !hostess_member.site_admin?
+  end
+
+  def test_should_not_authenticate_for_non_member
+    assert_nil User.authenticate_for(sites(:garden), 'arthur', 'arthur')
+  end
+
   def test_should_not_authenticate_expired
     assert_nil User.authenticate_for(sites(:first), 'aaron', 'aaron')
   end
