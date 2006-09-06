@@ -1,4 +1,5 @@
 class Admin::UsersController < Admin::BaseController
+  MEMBER_ACTIONS = %w(show update).freeze unless const_defined?(:MEMBER_ACTIONS)
   before_filter :find_all_users, :only => [:index, :show, :new]
   before_filter :find_user,      :only => [:show, :update]
   def index
@@ -52,5 +53,7 @@ class Admin::UsersController < Admin::BaseController
       @user = User.find_with_deleted params[:id]
     end
     
-    alias authorized? admin?
+    def authorized?
+      logged_in? && (admin? || (current_user.id.to_s == params[:id] && MEMBER_ACTIONS.include?(action_name)))
+    end
 end
