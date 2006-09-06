@@ -70,6 +70,12 @@ module Typo
         :updater      => user,
         :section_ids  => section_ids,
         :filter       => 'textile_filter'
+    rescue
+      msg = "Errored while converting Typo Article ##{typo_article.id}: '#{typo_article.title}'"
+      puts msg
+      RAILS_DEFAULT_LOGGER.warn msg
+      RAILS_DEFAULT_LOGGER.warn "#{$!.class.name}: #{$!.to_s}"
+      $!.backtrace.each { |b| RAILS_DEFAULT_LOGGER.warn " > #{b}" }
     end
 
     def create_comment(article, typo_comment)
@@ -81,10 +87,16 @@ module Typo
         :author       => typo_comment.author,
         :author_url   => typo_comment.url,
         :author_email => typo_comment.email,
-        :author_ip    => typo_comment.ip,
+        :author_ip    => typo_comment.ip || '127.0.0.1',
         :filter       => 'textile_filter'
       comment.approved = true
       comment.save
+    rescue
+      msg = "Errored while converting Typo Comment ##{typo_comment.id}"
+      puts msg
+      RAILS_DEFAULT_LOGGER.warn msg
+      RAILS_DEFAULT_LOGGER.warn "#{$!.class.name}: #{$!.to_s}"
+      $!.backtrace.each { |b| RAILS_DEFAULT_LOGGER.warn " > #{b}" }
     end
 
     def import_articles(site)
@@ -92,7 +104,7 @@ module Typo
       comments = 0
 
       Typo::Article.find_all_by_type('Article').each do |typo_article|
-        next if typo_article.body.blank? or typo_article.title.blank?
+        next if typo_article.body.blank? || typo_article.title.blank?
         
         article = create_article(site, typo_article)
         articles += 1
