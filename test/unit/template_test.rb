@@ -59,7 +59,7 @@ class TemplateTest < Test::Unit::TestCase
   end
 
   def test_should_find_custom
-    assert_equal ['author.liquid', 'home.liquid'], sites(:first).templates.custom
+    assert_equal ['author.liquid', 'home.liquid'], sites(:first).templates.custom.sort
   end
 
   protected

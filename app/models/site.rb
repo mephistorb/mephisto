@@ -99,6 +99,8 @@ class Site < ActiveRecord::Base
     end
     
     def parse_template(template, assigns, controller)
+      # give the include tag access to files in the site's fragments directory
+      Liquid::Template.file_system = Liquid::LocalFileSystem.new(File.join(attachment_base_path, 'fragments'))
       Liquid::Template.parse((template && template.file? && template.read).to_s).render(assigns, :registers => {:controller => controller})
     end
 end
