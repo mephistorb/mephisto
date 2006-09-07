@@ -8,7 +8,7 @@ module Mephisto
         :archive => [:archive,  :index],
         :search  => [:search,   :archive, :index],
         :error   => [:error,    :index]
-      }.freeze
+      }
     
       @@template_types = (@@hierarchy.values.flatten.uniq << :layout).collect! { |f| "#{f}.liquid" }
       @@template_types.sort!
