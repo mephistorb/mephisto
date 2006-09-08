@@ -36,14 +36,14 @@ module ApplicationHelper
   end
 
   def delete_link(file_type, resource, context)
-    link_to_remote image_tag('/images/icons/trash.gif', :class => 'iconb red'), 
+    link_to_remote image_tag('/images/mephisto/icons/trash.gif', :class => 'iconb red'), 
       {:url => {:controller => file_type.to_s, :action => 'remove', :filename => resource, :context => context}, :confirm => 'Are you sure?  This deletion will be permanent.'}, 
        :class => 'aicon', :title => 'Delete resource'
   end
 
   if RAILS_ENV == 'development'
     def gravatar_url_for(user, size = 80)
-      'avatar.gif'
+      'mephisto/avatar.gif'
     end
   else
     def gravatar_url_for(user, size = 80)

@@ -4,9 +4,9 @@
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />   
     <title>Mephisto: <%= controller.controller_name %> Admin</title>
-    <%= stylesheet_link_tag 'fullscreen' %>
-    <%= javascript_include_tag :defaults %>
-    <%= javascript_include_tag 'logger', 'mephisto' %>
+    <%= stylesheet_link_tag 'mephisto/fullscreen' %>
+    <%= javascript_include_tag 'mephisto/prototype', 'mephisto/effects' %>
+    <%= javascript_include_tag 'mephisto/logger', 'mephisto/mephisto' %>
   </head>
   <body id="body-<%= controller.controller_name %>">
   

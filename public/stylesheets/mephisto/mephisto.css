@@ -20,7 +20,7 @@ blockquote, h1, h2, h3, h4, h5, h6, a {
 }
 
 #header {
-  background: #211 url(../images/hdr-bg.gif) bottom left repeat-x;
+  background: #211 url(/images/mephisto/hdr-bg.gif) bottom left repeat-x;
   height: 142px;
   margin: 0;
   text-align: left;
@@ -100,7 +100,7 @@ img { border: 0;}
 .empty {
   padding: 10px;
   padding-left: 40px;
-  background: #eee url(../images/icons/minusb.gif) 10px 50% no-repeat; 
+  background: #eee url(/images/mephisto/icons/minusb.gif) 10px 50% no-repeat; 
 }
 .highlight {
   border-bottom: 3px double #ccc;
@@ -198,7 +198,7 @@ input[type='text']:focus, textarea:focus {
   color: #fff;
   text-decoration: none;
   text-indent: -9999px;
-  background: url(../images/logo.png) no-repeat;
+  background: url(/images/mephisto/logo.png) no-repeat;
   width: 111px;
   height: 39px;
   display: block;
@@ -232,7 +232,7 @@ input[type='text']:focus, textarea:focus {
 #nav a {
   float:left;
   display:block;
-  background: #997 url(../images/tab-bg.gif) repeat-x left top;
+  background: #997 url(/images/mephisto/tab-bg.gif) repeat-x left top;
   padding: 9px 20px;
   text-decoration: none;
   border: none;
@@ -300,7 +300,7 @@ input[type='text']:focus, textarea:focus {
 
 /* Page level (top of page)  */
 #page-nav {
-  background: url(../images/actnav-bg.gif) repeat-x;
+  background: url(/images/mephisto/actnav-bg.gif) repeat-x;
   margin: 0 0 20px 0;
   color: #fff;
   border-top: 1px solid #6fb4b6;
@@ -343,14 +343,14 @@ input[type='text']:focus, textarea:focus {
   border-right: none;
   border-left: 1px solid #98CED0;
   display: block;
-  background: url(../images/cog.gif) no-repeat;
+  background: url(/images/mephisto/cog.gif) no-repeat;
   padding: 11px 18px;
   outline: none;
   margin: 0 !important;
 }
 
 .down {
-  background: #ccc url(../images/cog-down.gif) no-repeat !important;
+  background: #ccc url(/images/mephisto/cog-down.gif) no-repeat !important;
   border-left: 1px solid #5aa !important;
 }
 
@@ -362,7 +362,7 @@ input[type='text']:focus, textarea:focus {
   z-index: 9999;
   padding: 0 5px 5px 0;
   margin: 0;
-  background: url(../images/shadow.png) bottom right no-repeat;
+  background: url(/images/mephisto/shadow.png) bottom right no-repeat;
 }
 
 #select #options {
@@ -419,7 +419,7 @@ input[type='text']:focus, textarea:focus {
   top: 0;
   width: 3px;
   height: 17px;
-  background: url(../images/corner-shadow.gif) no-repeat;
+  background: url(/images/mephisto/corner-shadow.gif) no-repeat;
 }
 
 #main h2 {
@@ -513,7 +513,7 @@ input[type='text']:focus, textarea:focus {
 #revisions li a, #resources li a { border: none; text-decoration: none;}
 
 #resources li a {
-  background: url(../images/icons/document.gif) 0 50% no-repeat;
+  background: url(/images/mephisto/icons/document.gif) 0 50% no-repeat;
   text-decoration: underline;
   display: block;
   padding: 3px 0 3px 20px;
@@ -682,10 +682,10 @@ ul.stabs li a:hover {
   padding: 5px;
 }
 
-#tab-search a { background: url(../images/icons/magnify.png) 3px 50% no-repeat; }
-#tab-files a  { background: url(../images/icons/updark.png) 3px 5px no-repeat; }
-#tab-latest a { background: url(../images/icons/thumbs.png) 3px 5px no-repeat; }
-#tab-bucket a { background: url(../images/icons/bucket.png) 3px 5px no-repeat; }
+#tab-search a { background: url(/images/mephisto/icons/magnify.png) 3px 50% no-repeat; }
+#tab-files a  { background: url(/images/mephisto/icons/updark.png) 3px 5px no-repeat; }
+#tab-latest a { background: url(/images/mephisto/icons/thumbs.png) 3px 5px no-repeat; }
+#tab-bucket a { background: url(/images/mephisto/icons/bucket.png) 3px 5px no-repeat; }
 
 .reordering  {
   background: green;
@@ -818,7 +818,7 @@ dl.sform {
 }
 
 #invite {
-  background: url(../images/icons/review.gif) 0 50% no-repeat;
+  background: url(/images/mephisto/icons/review.gif) 0 50% no-repeat;
   padding: 5px 5px 5px 20px;
   border: none;
 }
@@ -862,12 +862,12 @@ dl.sform {
  */
 
 .round:before {
-  background: transparent url(../images/corners/tr.png) scroll no-repeat top right;
+  background: transparent url(/images/mephisto/corners/tr.png) scroll no-repeat top right;
   margin-bottom: -20px;
   height: 30px;
   display: block;
   border: none;
-  content: url(../images/corners/tl.png);
+  content: url(/images/mephisto/corners/tl.png);
   padding: 0;
   line-height: 0.1em;
   font-size: 1px;
@@ -878,22 +878,22 @@ dl.sform {
   display: block;
   line-height: 0.1;
   font-size: 1px;
-  content:  url(../images/corners/bl.png);
+  content:  url(/images/mephisto/corners/bl.png);
   margin: 0 0 -1px 0;
   height: 8px;
   background: white;
-  background: transparent url(../images/corners/br.png) scroll no-repeat bottom right ;
+  background: transparent url(/images/mephisto/corners/br.png) scroll no-repeat bottom right ;
   padding: 0;
 }
 
 /* Black backgrounds */
 .bround:before {
-  background: transparent url(../images/corners/btr.png) scroll no-repeat top right;
+  background: transparent url(/images/mephisto/corners/btr.png) scroll no-repeat top right;
   margin-bottom: -20px;
   height: 30px;
   display: block;
   border: none;
-  content: url(../images/corners/btl.png);
+  content: url(/images/mephisto/corners/btl.png);
   padding: 0;
   line-height: 0.1em;
   font-size: 1px;
@@ -904,11 +904,11 @@ dl.sform {
   display: block;
   line-height: 0.1;
   font-size: 1px;
-  content:  url(../images/corners/bbl.png);
+  content:  url(/images/mephisto/corners/bbl.png);
   margin: 0 0 -1px 0;
   height: 8px;
   background: white;
-  background: transparent url(../images/corners/bbr.png) scroll no-repeat bottom right ;
+  background: transparent url(/images/mephisto/corners/bbr.png) scroll no-repeat bottom right ;
   padding: 0;
 }
 
@@ -1084,10 +1084,10 @@ li.event-article, .event-none {
   background-position: 2% 50%;
 }
 
-li.event-revision { background-image: url(../images/icons/article-edit.gif); }
-li.event-comment  { background-image: url(../images/icons/commentb.gif); }
-li.event-article  { background-image: url(../images/icons/articleb.gif); }
-.event-none     { background-image: url(../images/icons/minusb.gif); }
+li.event-revision { background-image: url(/images/mephisto/icons/article-edit.gif); }
+li.event-comment  { background-image: url(/images/mephisto/icons/commentb.gif); }
+li.event-article  { background-image: url(/images/mephisto/icons/articleb.gif); }
+.event-none     { background-image: url(/images/mephisto/icons/minusb.gif); }
 
 .shade { background-color: #eee; }
 
@@ -1178,7 +1178,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
  */
 
 #filter {
-  background: url(../images/search-bg.gif) repeat-x;
+  background: url(/images/mephisto/search-bg.gif) repeat-x;
   border-bottom: 1px solid #81aec4;
   padding: 0;
   line-height: 100%;
@@ -1214,22 +1214,22 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 #filter li a:hover, #filter li:hover a {
   color: #fff;
   text-shadow: 2px 2px #578;
-  background: transparent url(../images/attribute-bg.gif) 100% 50%  no-repeat;
+  background: transparent url(/images/mephisto/attribute-bg.gif) 100% 50%  no-repeat;
 }
 
 #filter li:hover {
-  background: transparent url(../images/attribute-bg-left.gif) 0 50%  no-repeat;
+  background: transparent url(/images/mephisto/attribute-bg-left.gif) 0 50%  no-repeat;
 }
 
 #filter li.pressed a {
   outline: none;
   color: #fff;
   text-shadow: 2px 2px #578;
-  background: transparent url(../images/attribute-pressed.gif) 100% 50%  no-repeat !important;
+  background: transparent url(/images/mephisto/attribute-pressed.gif) 100% 50%  no-repeat !important;
 }
 
 #filter li.pressed  {
-  background: transparent url(../images/attribute-pressed-left.gif) 0 50%  no-repeat !important;
+  background: transparent url(/images/mephisto/attribute-pressed-left.gif) 0 50%  no-repeat !important;
 }
 
 #filter ul#attributes {
@@ -1249,7 +1249,7 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
 }
 
 .manual {
-  background: url(../images/manual-filter-bg.gif) repeat-x !important;
+  background: url(/images/mephisto/manual-filter-bg.gif) repeat-x !important;
   border-bottom: 1px solid #AA9 !important;
   color: #332;
 }
@@ -1381,10 +1381,10 @@ li.event-article  { background-image: url(../images/icons/articleb.gif); }
   background-color: #eee;
 }
 
-.file-tools li.fedit a   { background-image: url(../images/icons/8-em-pencil.png) }
-.file-tools li.fview a   { background-image: url(../images/icons/8-em-plus.png)   }
-.file-tools li.fbucket a { background-image: url(../images/icons/8-em-check.png)  }
-.file-tools li.fdelete a { background-image: url(../images/icons/8-em-cross.png)  }
+.file-tools li.fedit a   { background-image: url(/images/mephisto/icons/8-em-pencil.png) }
+.file-tools li.fview a   { background-image: url(/images/mephisto/icons/8-em-plus.png)   }
+.file-tools li.fbucket a { background-image: url(/images/mephisto/icons/8-em-check.png)  }
+.file-tools li.fdelete a { background-image: url(/images/mephisto/icons/8-em-cross.png)  }
 .pdf { width:  100px; height:  100px;}
 .fspin img { position: absolute; left: 40%; top: 40%;}
 /*
@@ -1418,7 +1418,7 @@ h3.withcontrol {
 }
 
 .feed {
-  background: url(../images/icons/feed-icon-12x12.gif) 0 50% no-repeat;
+  background: url(/images/mephisto/icons/feed-icon-12x12.gif) 0 50% no-repeat;
   padding-left: 16px;
   border: none !important;
   color: #f60;
@@ -1427,7 +1427,7 @@ h3.withcontrol {
 .feed:hover { color: #000; }
 
 .searchbox {
-  background: #fff url(../images/icons/magnify.png) 5px 50% no-repeat;
+  background: #fff url(/images/mephisto/icons/magnify.png) 5px 50% no-repeat;
 }
 
 .right { float: right; }
@@ -1532,8 +1532,8 @@ ul.nobull li label {
  *=ICONS
  */
 
-.icon { background: url(../images/icons/bg_rounded.gif);}
-.iconb { background: url(../images/icons/bg_roundedb.gif); vertical-align: middle;}
+.icon { background: url(/images/mephisto/icons/bg_rounded.gif);}
+.iconb { background: url(/images/mephisto/icons/bg_roundedb.gif); vertical-align: middle;}
 
 
 .green { background-color: #9c0;} 
