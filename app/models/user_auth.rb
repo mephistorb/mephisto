@@ -37,12 +37,12 @@ class UserAuth < ActiveRecord::Base
       :conditions => ['users.id = ? and (memberships.site_id = ? or users.admin = ?)', id, site.id, true]))
   end
 
-  def self.find_all_by_site(site)
-    with_deleted_scope { find_all_by_site_with_deleted(site) }
+  def self.find_all_by_site(site, options = {})
+    with_deleted_scope { find_all_by_site_with_deleted(site, options) }
   end
 
-  def self.find_all_by_site_with_deleted(site)
-    find_with_deleted(:all, @@membership_options.merge(:conditions => ['memberships.site_id = ? or users.admin = ?', site.id, true])).uniq
+  def self.find_all_by_site_with_deleted(site, options = {})
+    find_with_deleted(:all, @@membership_options.merge(options.reverse_merge(:conditions => ['memberships.site_id = ? or users.admin = ?', site.id, true]))).uniq
   end
 
   # Encrypts some data with the salt.

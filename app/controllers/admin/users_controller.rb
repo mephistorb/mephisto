@@ -2,6 +2,7 @@ class Admin::UsersController < Admin::BaseController
   MEMBER_ACTIONS = %w(show update).freeze unless const_defined?(:MEMBER_ACTIONS)
   before_filter :find_all_users, :only => [:index, :show, :new]
   before_filter :find_user,      :only => [:show, :update, :enable]
+
   def index
     @enabled, @disabled = @users.partition { |u| u.deleted_at.nil? }
     @users = @enabled + @disabled

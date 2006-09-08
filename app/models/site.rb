@@ -24,12 +24,12 @@ class Site < ActiveRecord::Base
   validates_format_of     :host, :with => /^([a-z0-9]([-a-z0-9]*[a-z0-9])?\.)+((a[cdefgilmnoqrstuwxz]|aero|arpa)|(b[abdefghijmnorstvwyz]|biz)|(c[acdfghiklmnorsuvxyz]|cat|com|coop)|d[ejkmoz]|(e[ceghrstu]|edu)|f[ijkmor]|(g[abdefghilmnpqrstuwy]|gov)|h[kmnrtu]|(i[delmnoqrst]|info|int)|(j[emop]|jobs)|k[eghimnprwyz]|l[abcikrstuvy]|(m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|(n[acefgilopruz]|name|net)|(om|org)|(p[aefghklmnrstwy]|pro)|qa|r[eouw]|s[abcdeghijklmnortvyz]|(t[cdfghjklmnoprtvwz]|travel)|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])$/
   validates_uniqueness_of :host
 
-  def users
-    User.find_all_by_site self
+  def users(options = {})
+    User.find_all_by_site self, options
   end
   
-  def users_with_deleted
-    User.find_all_by_site_with_deleted self
+  def users_with_deleted(options = {})
+    User.find_all_by_site_with_deleted self, options
   end
   
   def user(id)
