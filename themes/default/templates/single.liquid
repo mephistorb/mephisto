@@ -66,7 +66,7 @@
       {{ form.name }}<label class="text" for="comment_author">Name (Required)</label><br />
       {{ form.email }}<label class="text" for="comment_author_email">Email (Required)</label><br />
       {{ form.url }}<label class="text" for="comment_author_url">Website</label><br />
-      <p><textarea name="comment[body]" class="commentbox"></textarea></p>
+      <p>{{ form.body }}</p>
       <div class="formactions">
         <input type="submit" value="Post comment" class="submit" />
       </div>

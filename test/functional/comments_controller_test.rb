@@ -125,4 +125,38 @@ class CommentsControllerTest < Test::Unit::TestCase
     post :create, contents(:welcome).hash_for_permalink
     assert_redirected_to contents(:welcome).hash_for_permalink(:controller => 'mephisto', :action => 'show')
   end
+
+  def test_should_show_comments_form_with_error_messages
+    date = 3.days.ago
+    post :create, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto', :comment => {
+      :author_url => 'http://foo', :author_email => 'foo@example.com', :body => 'test'
+    }
+    
+    assert_response :success
+    
+    assert_tag 'ul',   :attributes => { :id => 'comment-errors'  }
+    assert_tag 'form', :attributes => { :id => 'comment-form'    }
+    assert_no_tag 'p', :attributes => { :id => 'comment-message' }
+    assert_tag :tag => 'form',     :descendant => { 
+               :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author',       :name => 'comment[author]' } }
+    assert_tag :tag => 'form',     :descendant => {                                                                                  
+               :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author_url',   :name => 'comment[author_url]', :value => 'http://foo' } }
+    assert_tag :tag => 'form',     :descendant => {                                                                                  
+               :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author_email', :name => 'comment[author_email]', :value => 'foo@example.com' } }
+    assert_tag :tag => 'form',     :descendant => { 
+               :tag => 'textarea', :attributes => {                  :id => 'comment_body',         :name => 'comment[body]'  }, :content => 'test' }
+  end
+  
+  def test_should_show_comments_message_on_article_not_accepting_comments
+    date = 3.days.ago
+    post :create, :year => contents(:about).published_at.year, :month => contents(:about).published_at.month, :day => contents(:about).published_at.day, :permalink => contents(:about).permalink, :comment => {
+      :author_url => 'http://foo', :author_email => 'foo@example.com', :body => 'test'
+    }
+    
+    assert_response :success
+    
+    assert_no_tag 'ul',   :attributes => { :id => 'comment-errors'  }
+    assert_no_tag 'form', :attributes => { :id => 'comment-form'    }
+    assert_no_tag 'p',    :attributes => { :id => 'comment-message' }
+  end
 end

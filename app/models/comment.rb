@@ -1,5 +1,10 @@
+require 'uri'
+
 class Comment < Content
-  validates_presence_of :author, :author_ip, :article_id
+  validates_presence_of :author, :author_ip, :article_id, :body
+  validates_format_of :author_email, :with => /(\A(\s*)\Z)|(\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z)/i
+  before_validation :clean_up_author_email
+  before_validation :clean_up_author_url
   after_validation_on_create  :snag_article_filter_and_site
   before_create  :check_comment_expiration
   before_save    :update_counter_cache
@@ -15,6 +20,22 @@ class Comment < Content
   def approved=(value)
     @old_approved ||= approved? ? :true : :false
     write_attribute :approved, value
+  end
+
+  def clean_up_author_email
+    if value = read_attribute(:author_email) then
+      write_attribute :author_email, value.strip
+    end
+  end
+
+  def clean_up_author_url
+    if value = read_attribute(:author_url) then
+      value.strip!
+      if not value.blank?
+        value = 'http://' + value unless (URI::parse(value).scheme or value[0..0] == '/')
+      end
+      write_attribute :author_url, value
+    end
   end
 
   protected

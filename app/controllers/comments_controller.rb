@@ -36,7 +36,7 @@ class CommentsController < ApplicationController
     @comment.save!
     redirect_to comment_preview_url(@article.hash_for_permalink(:comment => @comment, :anchor => @comment.dom_id))
   rescue ActiveRecord::RecordInvalid
-    show_article_with 'errors' => @comment.errors.full_messages
+    show_article_with 'errors' => @comment.errors.full_messages, 'submitted' => params[:comment]
   rescue Article::CommentNotAllowed
     show_article_with 'errors' => ["Commenting has been disabled on this article"]
   end

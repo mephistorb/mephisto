@@ -63,4 +63,35 @@ class CommentTest < Test::Unit::TestCase
       contents(:welcome).reload
     end
   end
+
+  def test_should_clean_up_email_and_url
+    comments = contents(:welcome).comments
+    options = {:body => 'test', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'}
+    comment = comments.build options.merge(:author_email => '   bob@example.com   ')
+    assert_valid comment
+    assert_equal 'bob@example.com', comment.author_email
+    comment = comments.build options.merge(:author_url => '   ')
+    assert_valid comment
+    assert_equal '', comment.author_url
+    comment = comments.build options.merge(:author_url => ' /foo ')
+    assert_valid comment
+    assert_equal '/foo', comment.author_url
+    comment = comments.build options.merge(:author_url => '  http://example.com  ')
+    assert_valid comment
+    assert_equal 'http://example.com', comment.author_url
+    comment = comments.build options.merge(:author_url => '  example.com  ')
+    assert_valid comment
+    assert_equal 'http://example.com', comment.author_url
+  end
+
+  def test_should_validate_emails
+    comments = contents(:welcome).comments
+    options = {:body => 'test', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'}
+    comment = comments.build options.merge(:author_email => 'bob@example.com')
+    assert_valid comment
+    comment = comments.build options.merge(:author_email => 'bobexample.com')
+    assert !comment.valid?
+    comment = comments.build options.merge(:author_email => 'bob@example')
+    assert !comment.valid?
+  end
 end
