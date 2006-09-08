@@ -1,11 +1,11 @@
 <tr class="<%= article.status %>" id="article_<%= article.id %>">
   <td><%= image_tag "mephisto/icons/#{status_icon[article.status][1]}", :class => "#{status_icon[article.status][0]} icon", :title => "This article is #{article.status}", :alt => "#{article.status}" %></td>
   <td class="article_title"><%= link_to(article.title, {:action => 'edit', :id => article}) %></td>
-  <td>
+  <td class="ccount">
     <% if article.comments.size == 0 %>
       none
     <% else %>
-      <%= link_to pluralize(article.comments.size, 'comment'), { :action => 'comments', :id => article } %>
+      <%= link_to article.comments.size.to_s.rjust(2, '0'), { :action => 'comments', :id => article } %>
     <% end %>
   </td>
   <td><span class="date"><%= published_at_for article %></span></td>

@@ -835,6 +835,15 @@ dl.sform {
   margin: 20px 0;
 }
 
+
+.ccount a {
+  color: #478;
+}
+
+.ccount a:hover {
+  color: #000;
+}
+
 /*
  *=LIVE PREVIEW
  */
