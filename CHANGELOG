@@ -1,5 +1,10 @@
 * SVN *
 
+* Changed published_at_for to use ordinalized string
+
+* Changed published_at_for to use :mdy and :plain
+
+
 * 0.6.1 *
 
 * Use ActionController::AbstractRequest.relative_url_root for sites under a root path like /blog
@@ -21,6 +26,8 @@
 * Fix bug where atom feed content from textile was double encoded
 
 * sanitize atom feed content
+
+
 
 * 0.6 *
 
