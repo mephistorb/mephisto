@@ -40,7 +40,7 @@ class Comment < Content
 
   protected
     def snag_article_filter_and_site
-      self.attributes = { :site_id => article.site_id, :filter => article.filter }
+      self.attributes = { :site => article.site, :filter => article.site.filter }
     end
 
     def check_comment_expiration

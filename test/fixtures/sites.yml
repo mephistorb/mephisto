@@ -8,7 +8,7 @@ first:
   id: 1
   title: Mephisto
   host: test.com
-  filter: foo
+  filter: textile_filter
   approve_comments: false
   comment_age: 30
   timezone: America/New_York

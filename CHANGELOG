@@ -1,5 +1,7 @@
 * SVN *
 
+* Change comments so that the text filter is taken from the site, not the article
+
 * Integrate referenced page caching into the app.
 
 * Add Comment validations and better error messages [Geoff Davis]

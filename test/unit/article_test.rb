@@ -49,14 +49,21 @@ class ArticleTest < Test::Unit::TestCase
 
   def test_should_modify_filter
     assert_equal 'textile_filter', contents(:welcome).filter
+    
+    contents(:welcome).filter = 'markdown_filter'
+    contents(:welcome).save
+
+    assert_equal 'markdown_filter', contents(:welcome).reload.filter
+  end
+
+  def test_should_modify_filter_and_leave_comments_alone
     assert_equal 'textile_filter', contents(:welcome_comment).filter
     old_time = contents(:welcome_comment)
     
     contents(:welcome).filter = 'markdown_filter'
     contents(:welcome).save
 
-    assert_equal 'markdown_filter', contents(:welcome).reload.filter
-    assert_equal 'markdown_filter', contents(:welcome_comment).reload.filter
+    assert_equal 'textile_filter', contents(:welcome_comment).reload.filter
   end
 
   def test_should_modify_filter_and_not_modify_comment_timestamps

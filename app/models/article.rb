@@ -6,7 +6,6 @@ class Article < Content
   before_validation { |record| record.set_default_filter! }
   after_validation :convert_to_utc
   before_create :create_permalink
-  before_save   :pass_filter_to_comments
   after_save    :save_assigned_sections
 
   acts_as_versioned :if_changed => [:title, :body, :excerpt], :limit => 5 do
@@ -163,17 +162,5 @@ class Article < Content
       end
     
       @new_sections = nil
-    end
-    
-    def pass_filter_to_comments
-      return unless @old_filter
-      self.record_timestamps  = false
-      CommentObserver.disabled = true
-      comments.each { |c| c.update_attributes(:filter => filter) }
-      @old_filter = nil
-      true
-    ensure
-      self.record_timestamps   = true
-      CommentObserver.disabled = false
     end
 end
