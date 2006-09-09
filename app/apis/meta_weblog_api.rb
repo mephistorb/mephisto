@@ -6,7 +6,7 @@ module MetaWeblogStructs
     member :url,                :string
     member :link,               :string
     member :permaLink,          :string
-    member :sections,          [:string]
+    member :categories,         [:string]
     member :mt_text_more,       :string
     member :mt_excerpt,         :string
     member :mt_keywords,        :string
@@ -109,7 +109,7 @@ class MetaWeblogService < XmlRpcService
       :url               => article_url(article).to_s,
       :link              => article_url(article).to_s,
       :permaLink         => article.permalink.to_s,
-      :sections          => article.sections.collect { |c| c.name },
+      :categories        => article.sections.collect { |c| c.name },
       :mt_text_more      => article.body.to_s,
       :mt_excerpt        => article.excerpt.to_s,
       # :mt_keywords       => article.keywords.to_s,
@@ -117,7 +117,7 @@ class MetaWeblogService < XmlRpcService
       # :mt_allow_pings    => article.allow_pings? ? 1 : 0,
       # :mt_convert_breaks => (article.text_filter.name.to_s rescue ''),
       # :mt_tb_ping_urls   => article.pings.collect { |p| p.url },
-      :dateCreated       => (article.published_at.to_formatted_s(:db) rescue "")
+      :dateCreated       => (article.published_at rescue "")
       )
   end
 
@@ -127,12 +127,11 @@ class MetaWeblogService < XmlRpcService
     end
     
     def post_it(article, user, password, struct, publish)
-      article.attributes = {:updater => @user, :section_ids => Section.find(:all, :conditions => ['name IN (?)', struct['sections']]).collect(&:id),
+      article.attributes = {:updater => @user, :section_ids => Section.find(:all, :conditions => ['name IN (?)', struct['categories']]).collect(&:id),
         :body => struct['description'].to_s, :title => struct['title'].to_s, :excerpt => struct['mt_excerpt'].to_s}
+      utc_date = Time.utc(struct['dateCreated'].year, struct['dateCreated'].month, struct['dateCreated'].day, struct['dateCreated'].hour, struct['dateCreated'].sec, struct['dateCreated'].min) rescue article.published_at
 
-      utc_date = Time.utc(struct['dateCreated'].year, struct['dateCreated'].month, struct['dateCreated'].day, struct['dateCreated'].hour, struct['dateCreated'].sec, struct['dateCreated'].min)
-
-      article.published_at = publish == 1 ? utc_date : nil
+      article.published_at = publish == true ? utc_date : nil
       article.save!
       article.id
     end

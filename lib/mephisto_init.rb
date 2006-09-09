@@ -3,6 +3,7 @@ require 'zip/zipfilesystem'
 require 'dispatcher'
 require 'coderay'
 require 'ruby_pants'
+require 'xmlrpc_patch'
 
 Inflector.inflections do |inflect|
   #inflect.plural /^(ox)$/i, '\1en'

@@ -28,6 +28,7 @@ class BackendControllerTest < Test::Unit::TestCase
 
     result = invoke_layered :metaWeblog, :getPost, *args
     assert_equal 'Welcome to Mephisto', result['title'], result.inspect
+    assert_equal %w(About Home), result['categories']
   end
 
   def test_meta_weblog_get_recent_posts
@@ -54,9 +55,9 @@ class BackendControllerTest < Test::Unit::TestCase
     article.published_at = post_time
 
     struct = MetaWeblogService.new(@controller).article_dto_from(article)
-    invoke_layered :metaWeblog, :editPost, contents(:welcome).id, 'quentin', 'quentin', struct, 1
+    invoke_layered :metaWeblog, :editPost, contents(:welcome).id, 'quentin', 'quentin', struct, true
 
-    assert_equal post_time.to_s(:db), struct['dateCreated']
+    assert_equal post_time, struct['dateCreated']
 
     assert_equal 'Modified!', article.reload.title
     assert_equal "<p>this is a <strong>test</strong></p>", article.body_html, article.inspect
