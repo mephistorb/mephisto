@@ -297,14 +297,14 @@ var SectionForm = {
       link.innerHTML = 'Reorder pages'
       link.className = 'reorder';
       document.getElementsByClassName('handle', 'pages').each(function(img) {
-        img.src = "/images/icons/arrow3_e.gif";
+        img.src = "/images/mephisto/icons/arrow3_e.gif";
       });
       this.saveSortable(section_id);
     } else {
       this.sortable = Sortable.create('pages', {handle:'handle'});
       $('pages').className = 'sortable';
       document.getElementsByClassName('handle', 'pages').each(function(img) {
-        img.src = "/images/icons/reorder.gif";
+        img.src = "/images/mephisto/icons/reorder.gif";
       });
       link.className = 'reordering';
       link.innerHTML = 'Done Reordering'

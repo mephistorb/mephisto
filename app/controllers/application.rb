@@ -12,13 +12,13 @@ class ApplicationController < ActionController::Base
     def asset_image_args_for(asset, thumbnail = :tiny, options = {})
       options = options.reverse_merge(:title => "#{asset.title} \n #{asset.tags.join(', ')}")
       if asset.movie?
-        ['/images/icons/video.png', options]
+        ['/images/mephisto/icons/video.png', options]
       elsif asset.audio?
-        ['/images/icons/audio.png', options]
+        ['/images/mephisto/icons/audio.png', options]
       elsif asset.pdf?
-        ['/images/icons/pdf.png', options]
+        ['/images/mephisto/icons/pdf.png', options]
       elsif asset.other?
-        ['/images/icons/doc.png', options]
+        ['/images/mephisto/icons/doc.png', options]
       elsif asset.thumbnails_count.zero?
         [asset.public_filename, options.update(:size => Array.new(2).fill(Asset.attachment_options[:thumbnails][thumbnail].to_i).join('x'))]
       else
