@@ -12,6 +12,7 @@ module Mephisto
       end
       if pages.any?
         pages.each { |p| controller.class.expire_page(p.url) }
+        CachedPage.expire_pages(controller.site, pages)
       end
     end
 
