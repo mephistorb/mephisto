@@ -1,8 +1,8 @@
          <ul class="file-tools clear">
            <li class="fedit"><%= link_to 'Edit', edit_asset_path(asset), :title => 'Edit this file' %></li>
-           <li class="fdelete"><%= link_to 'Delete', asset_path(asset), :tilte => 'Delete this asset', 
+           <li class="fdelete"><%= link_to 'Delete', asset_path(asset), :title => 'Delete this asset', 
                                      :confirm => 'Are you sure you wish to delete this?', :method => :delete %></li>
-           <li class="fbucket"><%= link_to_remote 'Add to bucket', :url => add_bucket_asset_path(asset), :html => { :title => 'Add to bucket' }%></li>
+           <li class="fbucket"><%= link_to_remote('Add to bucket', {:url => add_bucket_asset_path(asset)}, { :title => 'Add to bucket' }) %></li>
          </ul>
          <%= link_to(asset_image_for(asset, size || :tiny), asset.public_filename, :target => '_blank') %>
          <%= "<h4>#{truncate(asset.title, 20)}</h4>" if !asset.image? %>
