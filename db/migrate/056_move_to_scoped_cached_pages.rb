@@ -20,5 +20,6 @@ class MoveToScopedCachedPages < ActiveRecord::Migration
     pages.each do |page|
       ActionController::Base.expire_page "/#{prefix}#{page.url}"
     end
+    CachedPage.destroy_all ['id in (?)', pages.collect(&:id)]
   end
 end

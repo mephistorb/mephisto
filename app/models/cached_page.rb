@@ -11,7 +11,7 @@ class CachedPage < ActiveRecord::Base
   @@current_scope_conditions = { :find => { :conditions => "cleared_at IS NULL OR cleared_at < updated_at" } }
   cattr_reader :current_scope_conditions
   belongs_to :site
-  validates_uniqueness_of :url
+  validates_uniqueness_of :url, :scope => :site_id
 
   class << self
     def with_current_scope(&block)
