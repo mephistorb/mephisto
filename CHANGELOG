@@ -1,5 +1,9 @@
 * SVN *
 
+* Integrate referenced page caching into the app.
+
+* Add Comment validations and better error messages [Geoff Davis]
+
 * Changed published_at_for to use ordinalized string
 
 * Changed published_at_for to use :mdy and :plain
