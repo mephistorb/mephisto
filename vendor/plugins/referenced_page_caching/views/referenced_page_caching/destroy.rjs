@@ -1,1 +1,0 @@
-page["cached-page-#{params[:id]}"].addClassName('deleted')

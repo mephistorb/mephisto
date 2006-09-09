@@ -1,1 +1,0 @@
-page['cached-pages'].replace :partial => "cached_pages"
