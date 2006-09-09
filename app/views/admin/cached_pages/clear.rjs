@@ -1,2 +1,10 @@
-page['cached-pages'].replace :file => "admin/cached_pages/pages"
+page.select('#cached-pages tr').each do |tr|
+  tr.addClassName('deleted')
+end
+page.select('#cached-pages .cached-page-link').each do |span|
+  span.toggle
+end
+page.select('#cached-pages .cached-page-deleted').each do |span|
+  span.toggle
+end
 page.call 'Flash.notice', 'Page Cache has been successfully cleared'

@@ -1,3 +1,3 @@
 page["cached-page-#{params[:id]}"].addClassName('deleted')
-page.toggle("cached-page-link-#{params[:id]}","cached-page-deleted-#{params[:id]}")
+page.toggle("cached-page-link-#{params[:id]}", "cached-page-deleted-#{params[:id]}")
 page.call 'Flash.notice', 'Cached Page has been successfully deleted'

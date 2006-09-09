@@ -775,44 +775,44 @@ dl.sform {
 #cached-pages div.pages { float:right; margin-right:1em; }
 #cached-pages div.pages a { text-decoration:underline; }
 
-#cached-pages-list { margin-top: 20px;}
+#cached-pages { margin-top: 20px;}
 
-#cached-pages-list {
+#cached-pages {
   margin: 0;
   padding: 0;
   width: 100%;
 }
 
-#cached-pages-list th {
+#cached-pages th {
   border-bottom: 4px solid #ccc;
   text-align: left;
 }
 
-#cached-pages-list tr.odd {
+#cached-pages tr.odd {
   background:#fff;
 }
 
-#cached-pages-list tr.even {
+#cached-pages tr.even {
   background:#e7e7e7;
 }
 
-#cached-pages-list tr.deleted td {
+#cached-pages tr.deleted td {
   color:#aaa;
   text-decoration: line-through;
 }
 
-#cached-pages-list td {
+#cached-pages td {
   padding: 8px 10px;
   border-bottom: 1px dotted #ccc;
 }
 
-#cached-pages-list a {
+#cached-pages a {
   padding: 2px 0;
   text-decoration: none;
   border: none;
 }
 
-#cached-pages-list .date {
+#cached-pages .date {
   font-size: 80%;
   font-style: italic;
 }

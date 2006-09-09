@@ -12,7 +12,6 @@ module Mephisto
       end
       if pages.any?
         pages.each { |p| controller.class.expire_page(p.url) }
-        CachedPage.expire_pages(pages)
       end
     end
 
@@ -26,7 +25,7 @@ module Mephisto
       end
       controller.class.expire_page overview_path
     end
-    
+
     def expire_assigned_sections!(record)
       record.send :save_assigned_sections
       record.sections.each do |section|

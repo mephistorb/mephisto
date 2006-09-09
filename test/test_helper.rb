@@ -5,6 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 require File.expand_path(File.dirname(__FILE__) + "/actor")
 ASSET_PATH = File.join(RAILS_ROOT, 'test/fixtures/tmp/assets')
+require 'referenced_caching_test_helper'
 
 Time.class_eval do
   class << self
@@ -217,7 +218,7 @@ class Test::Unit::TestCase
 end
 
 class ActionController::IntegrationTest
-  include Caboose::Caching::ReferencedCachingTestHelper
+  include Mephisto::Caching::ReferencedCachingTestHelper
   
   # creates a session as a logged on user
   def login_as(login)

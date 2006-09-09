@@ -145,7 +145,7 @@ class AssetTest < Test::Unit::TestCase
   protected
     def process_upload(options = {})
       a = sites(:first).assets.create(options.reverse_merge(:filename => 'logo.png', :content_type => 'image/png', 
-        :attachment_data => IO.read(File.join(RAILS_ROOT, 'public/images/logo.png'))))
+        :attachment_data => IO.read(File.join(RAILS_ROOT, 'public/images/mephisto/logo.png'))))
       assert_valid a
       a
     end

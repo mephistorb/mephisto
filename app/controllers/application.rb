@@ -1,6 +1,7 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
+  include Mephisto::CachingMethods
   cattr_accessor :site_count
   before_filter  :set_cache_root
   helper_method  :site
