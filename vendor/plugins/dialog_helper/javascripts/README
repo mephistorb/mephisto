@@ -1,0 +1,56 @@
+INTRO
+These are simple Dialogs that popup with a Lightbox-like effect.  The look and feel is CSS driven, and it's easy to
+create your own custom dialogs.
+  
+  http://weblog.techno-weenie.net
+
+USAGE
+Start with some basic CSS:
+<style type="text/css">
+  #dialog {
+    background-color: #000;
+    opacity: 0.15;
+    filter:alpha(opacity=15);
+  }
+
+  #dialog-box {
+    width:500px;
+    padding:30px;
+    background-color:#fff;
+    border-style:solid;
+    border-color:#000;
+    border-width:5px;
+  }
+</style>
+
+<a href="#" onclick="Dialog.Confirm.create('Booya!', { onOkay: function() { alert('Booya!'); this.close(); } });">Booya!</a>
+
+Of course, use Behaviour or whatever you wish to make this unobtrusive.
+
+Here's a quick example of a custom subclass of Dialog:
+
+Dialog.FooBar = Class.create();
+Dialog.FooBar.prototype = Object.extend(new Dialog.Confirm(), {
+  defaultOptions: Object.extend(Object.extend({}, Dialog.Confirm.prototype.defaultOptions), {
+    // foo: '',
+    // bar: ''
+  }),
+
+  create: function() {
+    if($('dialog')) return;
+    this.setupDialog();
+    document.body.appendChild(dialog);
+    document.body.appendChild(dialog_box);
+    this.bindObservers();
+    new Effect.Appear(dialog_box, {duration:0.4});
+  }
+});
+
+new Dialog.FooBar({message: 'FooBar!', onOkay: function() { alert('Ok'); } });
+
+THANKS
+Prototype               - http://prototype.conio.net
+Scriptaculous           - http://script.aculo.us/
+Lightbox image overlays - http://www.huddletogether.com/projects/lightbox/
+
+This was adapted from my work on Ma.gnolia (http://ma.gnolia.com/)

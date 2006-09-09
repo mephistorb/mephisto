@@ -1,0 +1,16 @@
+10 Feb 2006
+
+* fixed that the dialog background doesn't scroll
+
+3 Feb 2006
+
+* added Dialog.Iframe
+* refactored Dialog.close method
+* fixed safari bug
+
+2 Feb 2006
+
+* Added element appearing/fading effects
+* Refactored code to make subclasses simpler
+
+1 Feb 2006 - Initial Release
