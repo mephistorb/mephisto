@@ -5,7 +5,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 require File.expand_path(File.dirname(__FILE__) + "/actor")
 ASSET_PATH = File.join(RAILS_ROOT, 'test/fixtures/tmp/assets')
-require 'referenced_caching_test_helper'
+require File.join(File.dirname(__FILE__), 'referenced_caching_test_helper')
 
 Time.class_eval do
   class << self

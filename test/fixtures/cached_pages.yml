@@ -1,0 +1,20 @@
+first:
+  id: 1
+  site_id: 1
+  url: /foo
+  references: "[[1:Article]]"
+  updated_at: <%= 5.minutes.ago.to_s :db %>
+first_cleared:
+  id: 2
+  site_id: 1
+  url: /bar
+  references: "[[1:Article]][[1:Section]]"
+  updated_at: <%= 1.hour.ago.to_s :db %>
+  cleared_at: <%= 15.minutes.ago.to_s :db %>
+cupcake:
+  id: 3
+  site_id: 2
+  url: /foo
+  references: "[[8:Article]]"
+  updated_at: <%= 15.minutes.ago.to_s :db %>
+  

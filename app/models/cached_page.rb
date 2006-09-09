@@ -8,10 +8,16 @@
 #   end
 # 
 class CachedPage < ActiveRecord::Base
+  @@current_scope_conditions = { :find => { :conditions => "cleared_at IS NULL OR cleared_at < updated_at" } }
+  cattr_reader :current_scope_conditions
   belongs_to :site
   validates_uniqueness_of :url
 
   class << self
+    def with_current_scope(&block)
+      with_scope current_scope_conditions, &block
+    end
+
     # Finds all pages that this record refers to
     #
     #   CachedPage.find_by_reference  Foo.find(15)
@@ -26,7 +32,9 @@ class CachedPage < ActiveRecord::Base
     #   CachedPage.find_by_reference_keys ['Foo', 15], ['Bar', 17]
     #
     def find_by_reference_keys(*array_of_keys)
-      find :all, :conditions => [array_of_keys.collect { |r| "#{self.connection.quote_column_name('references')} LIKE ?" } * ' OR ', array_of_keys.collect { |r| "%[#{[r.last, r.first] * ':'}]%" }]
+      with_current_scope do
+        find :all, :conditions => [array_of_keys.collect { |r| "#{connection.quote_column_name('references')} LIKE ?" } * ' OR ', array_of_keys.collect { |r| "%[#{[r.last, r.first] * ':'}]%" }]
+      end
     end
 
     # Finds all pages that this record refers to
@@ -38,15 +46,16 @@ class CachedPage < ActiveRecord::Base
     end
 
     # Clears all references from this page
-    def expire_pages(pages)
-      delete_all ["id IN (?)", pages.collect(&:id)] unless pages.empty?
+    def expire_pages(site, pages)
+      update_all ['cleared_at = ?', Time.now.utc], ["site_id = ? and id IN (?)", site.id, pages.collect(&:id)] unless pages.empty?
     end
     
-    def create_by_url(url, references)
-      returning find_or_initialize_by_url(url) do |page|
+    def create_by_url(site, url, references)
+      returning find_or_initialize_by_site_id_and_url(site.id, url) do |page|
         [:compact!, :flatten!, :uniq!].each { |m| references.send m }
         references.collect! { |r| r.referenced_cache_key }
         page.references = references.join
+        page.cleared_at = nil
         page.save
       end
     end

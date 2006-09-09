@@ -29,7 +29,7 @@ module Mephisto # :nodoc:
       # is used.
       def cache_page_with_references
         return unless perform_caching && caching_allowed
-        CachedPage.create_by_url(url_for(:only_path => true, :skip_relative_url_root => true), cached_references)
+        CachedPage.create_by_url(site, url_for(:only_path => true, :skip_relative_url_root => true), cached_references)
       end
   end
 end
