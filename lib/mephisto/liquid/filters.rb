@@ -7,7 +7,7 @@ module Mephisto
       include ActionView::Helpers::AssetTagHelper
 
       def link_to_article(article)
-        content_tag :a, article['title'], :href => article['url']
+        content_tag :a, article['title'], :href => article.url
       end
       
       def link_to_page(page)
@@ -15,7 +15,7 @@ module Mephisto
       end
 
       def link_to_comments(article)
-        content_tag :a, pluralize(article['comments_count'], 'comment'), :href => article['url']
+        content_tag :a, pluralize(article['comments_count'], 'comment'), :href => article.url
       end
       
       def link_to_section(section)
@@ -23,7 +23,7 @@ module Mephisto
       end
 
       def page_title(page)
-        page['is_page_home'] ? 'Home' : page['title']
+        page['title']
       end
 
       def escape_html(html)
@@ -55,9 +55,9 @@ module Mephisto
 
       def format_date(date, format, ordinalized = false)
         if ordinalized
-          date ? date.to_ordinalized_s(format.to_sym) : nil
+          date ? date.to_time.to_ordinalized_s(format.to_sym) : nil
         else
-          date ? date.to_s(format.to_sym) : nil unless ordinalized
+          date ? date.to_time.to_s(format.to_sym) : nil unless ordinalized
         end
       end
       
@@ -90,11 +90,6 @@ module Mephisto
         javascript << '.js' unless javascript.include? '.'
         content_tag 'script', '', :type => 'text/javascript', :src => javascript_url(javascript)
       end
-      
-      def month_list
-        # XXX cache this someday
-        earliest = controller.site.articles.find(:first, :order => 'published_at').published_at.beginning_of_month
-      end
 
       def gravatar(comment, size=80, default=nil)
         return '' unless comment['author_email']
@@ -104,15 +99,21 @@ module Mephisto
         image_tag url, :class => 'gravatar', :size => "#{size}x#{size}", :alt => comment['author']
       end
 
+      def monthly_url(section, date = nil)
+        date ||= Time.now.utc.beginning_of_month
+        date   = Date.new(*date.split('-')) unless date.is_a?(Date)
+        section.url + "/#{@context['site']['archive_slug']}/#{date.year}/#{date.month}"
+      end
+
+      def page_url(page)
+        page[:is_page_home] ? current_page_section.url : [current_page_section.url, page[:permalink]].join('/')
+      end
+
       private
         # marks a page as class=selected
         def page_anchor_options(page)
           options = {:href => page_url(page)}
           current_page_article.source == page.source ? options.update(:class => 'selected') : options
-        end
-
-        def page_url(page)
-          page[:is_page_home] ? current_page_section.url : [current_page_section.url, page[:permalink]].join('/')
         end
         
         def current_page_section

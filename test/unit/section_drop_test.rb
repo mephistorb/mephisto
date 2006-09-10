@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class SectionDropTest < Test::Unit::TestCase
-  fixtures :sites, :sections
+  fixtures :sites, :sections, :contents
 
   def test_should_convert_section_to_drop
     assert_kind_of Liquid::Drop, sections(:home).to_liquid
@@ -23,5 +23,13 @@ class SectionDropTest < Test::Unit::TestCase
   def test_should_report_section_types
     assert Mephisto::Liquid::SectionDrop.new(sections(:home)).is_blog
     [:about, :cupcake_home, :cupcake_about].each { |s| assert Mephisto::Liquid::SectionDrop.new(sections(s)).is_paged }
+  end
+  
+  def test_should_get_earliest_article_published_date
+    assert_equal contents(:welcome).published_at.beginning_of_month.to_date, Mephisto::Liquid::SectionDrop.new(sections(:home)).earliest_month
+  end
+  
+  def test_should_get_month_array
+    assert_equal [contents(:welcome).published_at.beginning_of_month.to_date], Mephisto::Liquid::SectionDrop.new(sections(:home)).months
   end
 end
