@@ -66,12 +66,6 @@ class Article < Content
 
   class << self
     def find_all_in_month(year, month, options = {})
-      if year
-        month ||= '1'
-      else
-        year  = Time.now.utc.year
-        month = Time.now.utc.month
-      end
       find(:all, options.merge(:order => 'contents.published_at DESC', :conditions => ["contents.published_at <= ? AND contents.published_at BETWEEN ? AND ?", 
         Time.now.utc, *Time.delta(year.to_i, month.to_i)]))
     end

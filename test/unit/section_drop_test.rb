@@ -13,9 +13,11 @@ class SectionDropTest < Test::Unit::TestCase
   end
 
   def test_should_expose_section_fields
-    [:id, :name, :path, :articles_count].each do |attr|
+    [:id, :name, :path].each do |attr|
       assert_equal sections(:home).send(attr), Mephisto::Liquid::SectionDrop.new(sections(:home)).before_method(attr)
     end
+
+    assert_equal sections(:home).send(:read_attribute, :articles_count), Mephisto::Liquid::SectionDrop.new(sections(:home)).before_method(:articles_count)
   end
   
   def test_should_report_section_types

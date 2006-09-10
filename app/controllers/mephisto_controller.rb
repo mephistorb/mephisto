@@ -75,8 +75,16 @@ class MephistoController < ApplicationController
     end
 
     def dispatch_archives
-      @articles = @section.articles.find_all_in_month(@dispatch_path.shift, @dispatch_path.shift, :include => :user)
-      render_liquid_template_for(:archive, 'articles' => @articles, 'archive_date' => (@articles.first.published_at rescue nil))
+      year  = @dispatch_path.shift
+      month = @dispatch_path.shift
+      if year
+        month ||= '1'
+      else
+        year  = Time.now.utc.year
+        month = Time.now.utc.month
+      end
+      @articles = @section.articles.find_all_in_month(year, month, :include => :user)
+      render_liquid_template_for(:archive, 'articles' => @articles, 'archive_date' => Time.utc(year, month))
     end
 
     def dispatch_search

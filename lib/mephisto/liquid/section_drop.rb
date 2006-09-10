@@ -11,7 +11,7 @@ module Mephisto
         @source         = source
         @current        = current
         @section_liquid = [:id, :name, :path].inject({}) { |h, k| h.update k.to_s => @source.send(k) }
-        @section_liquid[:articles_count] = @source.send(:read_attribute, :articles_count)
+        @section_liquid['articles_count'] = @source.send(:read_attribute, :articles_count)
       end
 
       def before_method(method)
