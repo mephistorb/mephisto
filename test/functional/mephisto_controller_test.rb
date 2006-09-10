@@ -190,7 +190,7 @@ class MephistoControllerTest < Test::Unit::TestCase
                :children => { :count => 3, :only => { :tag => 'li' } }
     assert_tag 'ul', :attributes => { :id => 'nav' },
                :descendant => { :tag => 'a', :attributes => { :class => 'selected' } }
-    assert_tag 'a',  :attributes => { :class => 'selected' }, :content => 'Home'
+    assert_tag 'a',  :attributes => { :class => 'selected' }, :content => 'Welcome to Mephisto'
   end
 
   def test_should_set_home_page_on_paged_sections
@@ -203,14 +203,14 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_set_paged_permalinks
     dispatch 'about'
-    assert_tag 'a', :attributes => { :href => '/about', :class => 'selected' }, :content => 'Home'
+    assert_tag 'a', :attributes => { :href => '/about', :class => 'selected' }, :content => 'Welcome to Mephisto'
     assert_tag 'a', :attributes => { :href => '/about/about-this-page'       }, :content => 'About'
     assert_tag 'a', :attributes => { :href => '/about/the-site-map'          }, :content => 'The Site Map'
   end
 
   def test_should_set_paged_permalinks
     dispatch 'about/the-site-map'
-    assert_tag 'a', :attributes => { :href => '/about'                                    }, :content => 'Home'
+    assert_tag 'a', :attributes => { :href => '/about'                                    }, :content => 'Welcome to Mephisto'
     assert_tag 'a', :attributes => { :href => '/about/about-this-page'                    }, :content => 'About'
     assert_tag 'a', :attributes => { :href => '/about/the-site-map', :class => 'selected' }, :content => 'The Site Map'
   end
@@ -228,7 +228,7 @@ class MephistoControllerTest < Test::Unit::TestCase
     date = 3.days.ago
     dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
     assert_dispatch_action :single
-    assert_tag 'form', :attributes => { :id => 'comment-form', :action => "#{contents(:welcome).full_permalink}/comment#comment-form"}
+    assert_tag 'form', :attributes => { :id => 'comment-form', :action => "#{contents(:welcome).full_permalink}/comments#comment-form"}
     assert_tag :tag => 'form',     :descendant => { 
                :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author',       :name => 'comment[author]'       } }
     assert_tag :tag => 'form',     :descendant => {                                                                                  

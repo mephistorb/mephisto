@@ -19,7 +19,7 @@ module Mephisto
       end
       
       def link_to_section(section)
-        content_tag :a, section['name'], :href => section['url']
+        content_tag :a, section['name'], :href => section.url
       end
 
       def page_title(page)

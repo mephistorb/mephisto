@@ -21,15 +21,15 @@ class SectionDropTest < Test::Unit::TestCase
   end
   
   def test_should_report_section_types
-    assert Mephisto::Liquid::SectionDrop.new(sections(:home)).is_blog
-    [:about, :cupcake_home, :cupcake_about].each { |s| assert Mephisto::Liquid::SectionDrop.new(sections(s)).is_paged }
+    assert Mephisto::Liquid::SectionDrop.new(sections(:home))['is_blog']
+    [:about, :cupcake_home, :cupcake_about].each { |s| assert Mephisto::Liquid::SectionDrop.new(sections(s))['is_paged'] }
   end
   
   def test_should_get_earliest_article_published_date
-    assert_equal contents(:welcome).published_at.beginning_of_month.to_date, Mephisto::Liquid::SectionDrop.new(sections(:home)).earliest_month
+    assert_equal contents(:welcome).published_at.beginning_of_month.to_date, Mephisto::Liquid::SectionDrop.new(sections(:home))['earliest_month']
   end
   
   def test_should_get_month_array
-    assert_equal [contents(:welcome).published_at.beginning_of_month.to_date], Mephisto::Liquid::SectionDrop.new(sections(:home)).months
+    assert_equal [contents(:welcome).published_at.beginning_of_month.to_date], Mephisto::Liquid::SectionDrop.new(sections(:home))['months']
   end
 end
