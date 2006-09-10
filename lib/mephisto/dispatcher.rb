@@ -13,18 +13,18 @@ module Mephisto
           return [:single, nil, options.first]
         end
       end
+
+      # check for tags
+      return [:tags, nil] + path[1..-1] if path.first == site.tag_slug
       
+      # check for search
+      if path.first == site.search_slug
+        return (path.size == 1) ? [:search, nil] : [:error, nil]
+      end
+
       dispatch_type = :list
       section       = nil
       returning [] do |result|
-        # check for tags
-        return [:tags, nil] + path[1..-1] if path.first == site.tag_slug
-        
-        # check for search
-        if path.first == site.search_slug
-          return (path.size == 1) ? [:search, nil] : [:error, nil]
-        end
-        
         # look for the section in the path
         while section.nil? && path.any?
           section = site.sections.detect { |s| s.path == path.join('/') }
