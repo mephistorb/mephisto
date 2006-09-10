@@ -39,8 +39,8 @@ context "Custom Relative Url" do
   end
   
   specify "should join url pieces" do
-    assert_equal '/blog/foo', absolute_url(:foo)
-    assert_equal '/blog/foo/bar', absolute_url(:foo, :bar)
+    assert_equal '/blog/foo',              absolute_url(:foo)
+    assert_equal '/blog/foo/bar',          absolute_url(:foo, :bar)
     assert_equal '/blog/foo/bar/baz.html', absolute_url(:foo, :bar, 'baz.html')
   end
   

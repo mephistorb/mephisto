@@ -102,7 +102,12 @@ module Mephisto
       def monthly_url(section, date = nil)
         date ||= Time.now.utc.beginning_of_month
         date   = Date.new(*date.split('-')) unless date.is_a?(Date)
-        section.url + "/#{@context['site']['archive_slug']}/#{date.year}/#{date.month}"
+        File.join(section.url, @context['site']['archive_slug'], date.year.to_s, date.month.to_s)
+      end
+      
+      def tag_url(tags)
+        tags = [tags] ; tags.flatten!
+        absolute_url @context['site']['tag_slug'], *tags
       end
 
       def page_url(page)
@@ -117,16 +122,11 @@ module Mephisto
         end
         
         def current_page_section
-          @current_page_section ||= outer_context(:section)
+          @current_page_section ||= @context['section']
         end
         
         def current_page_article
-          @current_page_article ||= outer_context(:article)
-        end
-        
-        # pulls a variable out of the outermost context
-        def outer_context(key)
-          @context.assigns.last[key.to_s]
+          @current_page_article ||= @context['article']
         end
     end
   end
