@@ -21,7 +21,7 @@ module Mephisto
               'submit' => %(<input type="submit" value="Send" />)
             }
             
-            result << %(<form id="comment-form" method="post" action="#{context['article'].url}/comment#comment-form">#{[errors]+render_all(@nodelist, context)}</form>)
+            result << %(<form id="comment-form" method="post" action="#{context['article'].url}/comments#comment-form">#{[errors]+render_all(@nodelist, context)}</form>)
           else
             result << %(<p id="comment-message">#{context['message']}</p>)
           end
