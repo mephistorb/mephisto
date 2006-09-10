@@ -24,7 +24,7 @@ module Mephisto
       end
 
       def comment_on(article, comment)
-        post "#{article.full_permalink}/comment", :comment => comment
+        post "#{article.full_permalink}/comments", :comment => comment
       end
 
       def approve_comment(comment)

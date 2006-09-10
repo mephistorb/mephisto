@@ -31,18 +31,6 @@ class Section < ActiveRecord::Base
         block_given? ? yield : find(:all, options)
       end
     end
-    
-    # given a section name like ['about', 'site_map'], about is the section and site_map is a left over page_name
-    # returns [<#Section: about>, 'site_map']
-    def find_section_and_page_name(section_path)
-      page_name = []
-      section   = nil
-      while section.nil? && section_path.any?
-        section    = find_by_path(section_path.join('/'))
-        page_name << section_path.pop if section.nil?
-      end
-      [section, page_name.any? ? page_name.join('/') : nil]
-    end
 
     def articles_count
       Article.count :all, :group => :section_id, :joins => ARTICLES_COUNT_SQL
@@ -67,7 +55,7 @@ class Section < ActiveRecord::Base
   end
 
   def hash_for_url(options = {})
-    { :sections => to_url }.merge(options)
+    { :path => to_url }.merge(options)
   end
 
   def home?

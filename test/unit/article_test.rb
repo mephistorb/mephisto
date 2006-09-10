@@ -136,6 +136,12 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal 'rails, ruby', a.reload.tag
   end
 
+  def test_should_find_article_by_permalink
+    assert_equal contents(:welcome), sites(:first).articles.find_by_permalink(:id => contents(:welcome).id)
+    assert_equal contents(:welcome), sites(:first).articles.find_by_permalink(:permalink => contents(:welcome).permalink)
+    assert_equal contents(:welcome), sites(:first).articles.find_by_permalink(:year => contents(:welcome).year, :permalink => contents(:welcome).permalink)
+  end
+
   protected
     def create_article(options = {})
       Article.create options.reverse_merge(:user_id => 1, :site_id => 1, :title => 'foo')

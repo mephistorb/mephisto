@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     
       if assigns['articles'] && assigns['article'].nil?
         self.cached_references += assigns['articles']
-        assigns['articles']     = assigns['articles'].collect &:to_liquid
+        assigns['articles']     = assigns['articles'].collect { |a| a.to_liquid :site => site }
       end
 
       status          = (assigns.delete(:status) || '200 OK')

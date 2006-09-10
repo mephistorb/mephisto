@@ -12,7 +12,7 @@
     <!-- div.header -->
     <div id="header">
       <ul id="sec-nav">
-        <li><strong><%= link_to 'Blog', section_path([]) %></strong></li>
+        <li><strong><%= link_to 'Blog', dispatch_path([]) %></strong></li>
         <li><%= link_to 'Settings', :controller => 'settings' %></li>
         <li><%= link_to 'Account', :controller => 'users', :action => 'show', :id => current_user %></li>
         <li><%= link_to 'Logout', :controller => '/account', :action => 'logout' %></li>

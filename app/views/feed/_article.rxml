@@ -2,13 +2,13 @@ xm.entry do
   xm.author do
     xm.name article.user.login
   end
-  xm.id        "tag:#{request.host},#{article.published_at.to_date.to_s :db}:#{article.guid}"
+  xm.id        "tag:#{request.host_with_port},#{article.published_at.to_date.to_s :db}:#{article.id}"
   xm.published article.published_at.xmlschema
   xm.updated   article.published_at.xmlschema
   article.sections.each do |section|
     xm.category "term" => section.name unless section.home?
   end
-  xm.link "rel" => "alternate", "type" => "text/html", "href" => article_url(article.hash_for_permalink)
+  xm.link "rel" => "alternate", "type" => "text/html", "href" => "http://#{request.host_with_port}#{site.permalink_for(article)}"
   xm.title     strip_tags(article.title)
   unless article.excerpt_html.blank?
     xm << %{<summary type="html">#{sanitize_content article.excerpt_html}</summary>}

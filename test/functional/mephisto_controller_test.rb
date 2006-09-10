@@ -15,22 +15,9 @@ class MephistoControllerTest < Test::Unit::TestCase
     host! 'test.com'
   end
 
-  def test_routing
-    with_options :controller => 'mephisto' do |test|
-      test.assert_routing '',               :action => 'list',   :sections => []
-      test.assert_routing 'about',          :action => 'list',   :sections => %w(about)
-      test.assert_routing '2006',           :action => 'yearly', :year => '2006'
-      test.assert_routing '2006/01',        :action => 'month',  :year => '2006', :month => '01'
-      test.assert_routing '2006/01/page/1', :action => 'month',  :year => '2006', :month => '01', :page => '1'
-      test.assert_routing '2006/01/01',     :action => 'day',    :year => '2006', :month => '01', :day => '01'
-      test.assert_routing '2006/01/01/foo', :action => 'show',   :year => '2006', :month => '01', :day => '01', :permalink => 'foo'
-      test.assert_routing 'mephisto',       :action => 'list', :sections => %w(mephisto)
-      test.assert_routing 'stuff/mephisto', :action => 'list', :sections => %w(stuff mephisto)
-    end
-  end
-
   def test_should_list_on_home
-    get_mephisto
+    dispatch
+    assert_dispatch_action :list
     assert_preferred_template :home
     assert_layout_template    :layout
     assert_template_type      :section
@@ -47,7 +34,8 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_show_paged_home
     host! 'cupcake.com'
-    get_mephisto
+    dispatch
+    assert_dispatch_action :page
     assert_preferred_template :home
     assert_layout_template    :layout
     assert_template_type      :page
@@ -61,7 +49,8 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_error_on_bad_blog_url
-    get_mephisto 'foobar/basd'
+    dispatch 'foobar/basd'
+    assert_dispatch_action :error
     assert_preferred_template :error
     assert_layout_template    :layout
     assert_template_type      :error
@@ -71,45 +60,56 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_show_error_on_bad_paged_url
     host! 'cupcake.com'
-    {'foobar/basd' => sections(:cupcake_home), 'about/foo' => sections(:cupcake_about)}.each do |path, section|
-      get_mephisto path
-      assert_equal sites(:hostess), assigns(:site)
-      assert_equal section,         assigns(:section)
-      assert_response :missing
-    end
+    dispatch 'foobar/basd'
+    assert_dispatch_action :error
+    assert_equal sites(:hostess), assigns(:site)
+    assert_equal sections(:cupcake_home),         assigns(:section)
+    assert_response :missing
+  end
+
+  def test_should_show_error_on_bad_paged_section
+    host! 'cupcake.com'
+    dispatch 'about/foo'
+    assert_dispatch_action :page
+    assert_equal sites(:hostess), assigns(:site)
+    assert_equal sections(:cupcake_about),         assigns(:section)
+    assert_response :missing
   end
 
   def test_should_show_correct_feed_url
-    get_mephisto
+    dispatch
+    assert_dispatch_action :list
     assert_tag :tag => 'link', :attributes => { :type => 'application/atom+xml', :href => '/feed/atom.xml' }
   end
 
   def test_list_by_sections
-    get_mephisto 'about'
+    dispatch 'about'
     assert_equal sites(:first), assigns(:site)
     assert_equal sections(:about), assigns(:section)
     assert_equal contents(:welcome), assigns(:article)
     assert_preferred_template :page
     assert_layout_template    :layout
     assert_template_type      :page
+    assert_dispatch_action    :page
   end
   
   def test_list_by_site_sections
     host! 'cupcake.com'
-    get_mephisto 'about'
+    dispatch 'about'
     assert_equal sites(:hostess), assigns(:site)
     assert_equal sections(:cupcake_about), assigns(:section)
     assert_equal contents(:cupcake_welcome), assigns(:article)
   end
 
   def test_should_show_page
-    get_mephisto 'about/the-site-map'
+    dispatch 'about/the-site-map'
     assert_equal sections(:about), assigns(:section)
     assert_equal contents(:site_map), assigns(:article)
+    assert_dispatch_action :page
   end
 
   def test_should_render_liquid_templates_on_home
-    get_mephisto
+    dispatch
     assert_tag 'h1', :content => 'This is the layout'
     assert_tag 'p',  :content => 'home'
     assert_tag 'h2', :content => contents(:welcome).title
@@ -119,17 +119,19 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_time_in_correct_timezone
-    get_mephisto
+    dispatch
     assert_tag 'span', :content => assigns(:site).timezone.utc_to_local(contents(:welcome).published_at).to_s(:standard)
   end
 
   def test_should_render_liquid_templates_by_sections
-    get_mephisto 'about'
+    dispatch 'about'
+    assert_dispatch_action :page
     assert_tag :tag => 'h1', :content => contents(:welcome).title
   end
 
   def test_should_search_entries
-    get :search, :q => 'another'
+    dispatch 'search', :q => 'another'
+    assert_dispatch_action :search
     assert_equal [contents(:another)], assigns(:articles)
     assert_equal sites(:first).articles_per_page, liquid(:site).before_method(:articles_per_page)
     assert_equal 'another', liquid(:search_string)
@@ -140,7 +142,8 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_search_and_not_find_draft
-    get :search, :q => 'draft'
+    dispatch 'search', :q => 'draft'
+    assert_dispatch_action :search
     assert_equal [], assigns(:articles)
     assert_preferred_template :search
     assert_layout_template    :layout
@@ -148,7 +151,8 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_search_and_not_find_future
-    get :search, :q => 'future'
+    dispatch 'search', :q => 'future'
+    assert_dispatch_action :search
     assert_equal [], assigns(:articles)
     assert_preferred_template :search
     assert_layout_template    :layout
@@ -157,28 +161,31 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_show_entry
     date = 3.days.ago
-    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto'
+    dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
     assert_equal contents(:welcome).to_liquid['id'], assigns(:article)['id']
     assert_preferred_template :single
     assert_layout_template    :layout
     assert_template_type      :single
+    assert_dispatch_action    :single
   end
   
   def test_should_show_site_entry
     host! 'cupcake.com'
     date = 3.days.ago
-    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-cupcake'
+    dispatch "#{contents(:cupcake_welcome).year}/#{contents(:cupcake_welcome).month}/#{contents(:cupcake_welcome).day}/#{contents(:cupcake_welcome).permalink}"
+    assert_dispatch_action :single
+    assert_template_type   :single
     assert_equal contents(:cupcake_welcome).to_liquid['id'], assigns(:article)['id']
   end
   
   def test_should_show_error_on_bad_permalink
-    date = 3.days.ago
-    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-paradise'
+    dispatch "#{contents(:cupcake_welcome).year}/#{contents(:cupcake_welcome).month}/#{contents(:cupcake_welcome).day}/welcome-to-paradise"
     assert_response :missing
+    assert_dispatch_action :single
   end
   
   def test_should_show_navigation_on_paged_sections
-    get_mephisto 'about'
+    dispatch 'about'
     assert_tag 'ul', :attributes => { :id => 'nav' },
                :children => { :count => 3, :only => { :tag => 'li' } }
     assert_tag 'ul', :attributes => { :id => 'nav' },
@@ -187,7 +194,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_set_home_page_on_paged_sections
-    get_mephisto 'about'
+    dispatch 'about'
     assert_equal 3, liquid(:pages).size
     [true, false, false].each_with_index do |expected, i|
       assert_equal expected, liquid(:pages)[i][:is_page_home]
@@ -195,14 +202,14 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_set_paged_permalinks
-    get_mephisto 'about'
+    dispatch 'about'
     assert_tag 'a', :attributes => { :href => '/about', :class => 'selected' }, :content => 'Home'
     assert_tag 'a', :attributes => { :href => '/about/about-this-page'       }, :content => 'About'
     assert_tag 'a', :attributes => { :href => '/about/the-site-map'          }, :content => 'The Site Map'
   end
 
   def test_should_set_paged_permalinks
-    get_mephisto 'about/the-site-map'
+    dispatch 'about/the-site-map'
     assert_tag 'a', :attributes => { :href => '/about'                                    }, :content => 'Home'
     assert_tag 'a', :attributes => { :href => '/about/about-this-page'                    }, :content => 'About'
     assert_tag 'a', :attributes => { :href => '/about/the-site-map', :class => 'selected' }, :content => 'The Site Map'
@@ -210,7 +217,7 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_sanitize_comment
     date = 3.days.ago
-    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto'
+    dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
     evil = %(<p>rico&#8217;s evil <script>hi</script> and <a onclick="foo" href="#">linkage</a></p>)
     good = %(<p>rico&#8217;s evil &lt;script>hi&lt;/script> and <a href='#'>linkage</a></p>)
     assert !@response.body.include?(evil), "includes unsanitized code"
@@ -219,7 +226,8 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_show_comments_form
     date = 3.days.ago
-    get :show, :year => date.year, :month => date.month, :day => date.day, :permalink => 'welcome-to-mephisto'
+    dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
+    assert_dispatch_action :single
     assert_tag 'form', :attributes => { :id => 'comment-form', :action => "#{contents(:welcome).full_permalink}/comment#comment-form"}
     assert_tag :tag => 'form',     :descendant => { 
                :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author',       :name => 'comment[author]'       } }
@@ -231,21 +239,15 @@ class MephistoControllerTest < Test::Unit::TestCase
                :tag => 'textarea', :attributes => {                  :id => 'comment_body',         :name => 'comment[body]'  } }
   end
 
-  def test_should_show_daily_entries
-    date = 4.days.ago
-    get :day, :year => date.year, :month => date.month, :day => date.day
-    assert_models_equal [contents(:about), contents(:site_map), contents(:another)], assigns(:articles)
-  end
-
   def test_should_show_monthly_entries
     date = Time.now.utc - 4.days
-    get :month, :year => date.year, :month => date.month
+    dispatch "archives/#{date.year}/#{date.month}"
     assert_models_equal [contents(:welcome), contents(:about), contents(:site_map), contents(:another)], assigns(:articles)
   end
   
   protected
-    def get_mephisto(path = '')
-      get :list, :sections => path.split('/')
+    def dispatch(path = '', options = {})
+      get :dispatch, options.merge(:path => path.split('/'))
     end
 
     def assert_preferred_template(expected)
@@ -258,5 +260,9 @@ class MephistoControllerTest < Test::Unit::TestCase
     
     def assert_template_type(expected)
       assert_equal expected, assigns(:site).recent_template_type
+    end
+    
+    def assert_dispatch_action(expected)
+      assert_equal expected, assigns(:dispatch_action), "Dispatch action didn't match: #{assigns(:dispatch_path).inspect}"
     end
 end

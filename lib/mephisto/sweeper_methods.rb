@@ -30,7 +30,7 @@ module Mephisto
     def expire_assigned_sections!(record)
       record.send :save_assigned_sections
       record.sections.each do |section|
-        controller.expire_page :sections => section.to_url,      :controller => '/mephisto', :action => 'list'
+        controller.expire_page :path     => section.to_url,      :controller => '/mephisto', :action => 'dispatch'
         controller.expire_page :sections => section.to_feed_url, :controller => '/feed',     :action => 'feed'
       end
     end

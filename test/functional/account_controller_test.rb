@@ -39,7 +39,7 @@ class AccountControllerTest < Test::Unit::TestCase
     login_as :quentin
     get :logout
     assert_nil session[:user]
-    assert_redirected_to section_url
+    assert_redirected_to dispatch_path
     assert_response :redirect
   end
 

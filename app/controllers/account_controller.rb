@@ -27,6 +27,6 @@ class AccountController < ApplicationController
     cookies.delete :auth_token
     reset_session
     flash[:notice] = "You have been logged out."
-    redirect_back_or_default(:controller => 'mephisto', :action => 'list', :sections => [])
+    redirect_back_or_default(dispatch_path)
   end
 end

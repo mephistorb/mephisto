@@ -15,7 +15,28 @@ class Site < ActiveRecord::Base
     end
   end
 
-  has_many  :articles
+  has_many  :articles do
+    def find_by_permalink(options)
+      conditions = 
+        returning ["(contents.published_at IS NOT NULL AND contents.published_at <= ?)", Time.now.utc] do |cond|
+          if options[:year]
+            from, to = Time.delta(options[:year], options[:month], options[:day])
+            cond.first << ' AND (contents.published_at BETWEEN ? AND ?)'
+            cond << from << to
+          end
+          
+          [:id, :permalink].each do |attr|
+            if options[attr]
+              cond.first << " AND (contents.#{attr} = ?)"
+              cond << options[attr]
+            end
+          end
+        end
+      
+      find :first, :conditions => conditions
+    end
+  end
+  
   has_many  :events
   
   has_many  :cached_pages
@@ -79,6 +100,12 @@ class Site < ActiveRecord::Base
     @permalink_regex
   end
 
+  def permalink_for(article)
+    permalink_slug.split('/').inject [''] do |s, piece|
+      s << (piece =~ PERMALINK_VAR && PERMALINK_OPTIONS.keys.include?($1) ? article.send($1).to_s : piece)
+    end.join('/')
+  end
+
   def accept_comments?
     comment_age.to_i > -1
   end
@@ -102,6 +129,10 @@ class Site < ActiveRecord::Base
   end
 
   protected
+    def permalink_variable?(var)
+      var =~ PERMALINK_VAR && PERMALINK_OPTIONS.keys.include?(var)
+    end
+
     def check_permalink_slug
       permalink_slug.sub! /^\//, ''
       permalink_slug.sub! /\/$/, ''
@@ -109,6 +140,12 @@ class Site < ActiveRecord::Base
       errors.add :permalink_slug, 'cannot have blank paths' if pieces.any?(&:blank?)
       pieces.each do |p|
         errors.add :permalink_slug, "cannot contain '#{$1}' variable" if p =~ PERMALINK_VAR && !PERMALINK_OPTIONS.keys.include?($1)
+      end
+      unless pieces.include?(':id') || pieces.include?(':permalink')
+        errors.add :permalink_slug, "must contain either :permalink or :id"
+      end
+      if !pieces.include?(':year') && (pieces.include?(':month') || pieces.include?(':day'))
+        errors.add :permalink_slug, "must contain :year for any date-based permalinks"
       end
     end
 

@@ -62,12 +62,6 @@ class SectionTest < Test::Unit::TestCase
     assert_equal nil,                 sections(:about).articles.find_by_permalink('another-welcome-to-mephisto')
   end
 
-  def test_should_find_section_with_permalink_extra
-    assert_equal [sections(:about), nil],   sites(:first).sections.find_section_and_page_name(%w(about))
-    assert_equal [sections(:about), 'foo'], sites(:first).sections.find_section_and_page_name(%w(about foo))
-    assert_equal [nil, 'foo'],              sites(:first).sections.find_section_and_page_name(%w(foo))
-  end
-
   def test_should_include_home_section_by_default
     a = Article.new
     assert a.has_section?(sections(:home))
@@ -98,8 +92,8 @@ class SectionTest < Test::Unit::TestCase
   end
 
   def test_should_create_correct_section_url_hash
-    assert_equal({ :sections => [] },        sections(:home).hash_for_url)
-    assert_equal({ :sections => %w(about) }, sections(:about).hash_for_url)
+    assert_equal({ :path => [] },        sections(:home).hash_for_url)
+    assert_equal({ :path => %w(about) }, sections(:about).hash_for_url)
   end
 
   def test_should_return_correct_sections

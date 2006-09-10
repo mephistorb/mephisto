@@ -36,7 +36,12 @@ module Mephisto
         # check for archives
         if result[0] == site.archive_slug
           # only allow /archives, /archives/yyyy and /archives/yyyy/mm
-          dispatch_type = (result.size < 4 && year?(result[1]) && month?(result[2])) ? :archives : :error
+          if (result.size < 4 && year?(result[1]) && month?(result[2]))
+            dispatch_type = :archives
+            result.shift
+          else
+            dispatch_type = :error
+          end
         end
         
         # check for pages

@@ -65,32 +65,21 @@ class Article < Content
   end
 
   class << self
-    def find_by_permalink(year, month, day, permalink, options = {})
-      from, to = Time.delta(year, month, day)
-      find :first, options.merge(:conditions => ["contents.published_at <= ? AND contents.permalink = ? AND contents.published_at BETWEEN ? AND ?", 
-        Time.now.utc, permalink, from, to])
-    end
-    
-    def find_all_by_published_date(year, month, day = nil, options = {})
-      from, to = Time.delta(year, month, day)
+    def find_all_in_month(year, month, options = {})
+      if year
+        month ||= '1'
+      else
+        year  = Time.now.utc.year
+        month = Time.now.utc.month
+      end
       find(:all, options.merge(:order => 'contents.published_at DESC', :conditions => ["contents.published_at <= ? AND contents.published_at BETWEEN ? AND ?", 
-        Time.now.utc, from, to]))
-    end
-
-    def count_by_published_date(year, month, day = nil)
-      from, to = Time.delta(year, month, day)
-      count :all, :conditions => ["published_at <= ? AND published_at BETWEEN ? AND ?", Time.now.utc, from, to]
+        Time.now.utc, *Time.delta(year.to_i, month.to_i)]))
     end
   end
 
   [:year, :month, :day].each { |m| delegate m, :to => :published_at }
 
-  # Follow Mark Pilgrim's rules on creating a good ID
-  # http://diveintomark.org/archives/2004/05/28/howto-atom-id
-  def guid
-    "/#{self.class.to_s.underscore}#{full_permalink}"
-  end
-
+  # AX
   def full_permalink
     published? && ['', published_at.year, published_at.month, published_at.day, permalink] * '/'
   end
@@ -116,6 +105,7 @@ class Article < Content
     write_attribute :filter, new_filter
   end
 
+  # AX
   def hash_for_permalink(options = {})
     [:year, :month, :day, :permalink].inject(options) { |o, a| o.update a => send(a) }
   end

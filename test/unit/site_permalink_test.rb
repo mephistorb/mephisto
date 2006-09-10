@@ -20,6 +20,20 @@ context "Site Permalink Validations" do
     assert_match /blank/, @site.errors.on(:permalink_slug)
   end
   
+  specify "should require either permalink or id" do
+    @site.permalink_slug = ':year/:month/:day'
+    assert !@site.valid?
+    assert_equal "must contain either :permalink or :id", @site.errors.on(:permalink_slug)
+  end
+  
+  specify "should require at least year for any date based permalinks" do
+    %w(month day).each do |var|
+      @site.permalink_slug = ":#{var}/:id"
+      assert !@site.valid?
+      assert_equal "must contain :year for any date-based permalinks", @site.errors.on(:permalink_slug)
+    end
+  end
+  
   specify "should require valid attributes" do
     @site.permalink_slug = ':year/:month/:day/:permalink/:id'
     assert_valid @site
@@ -42,5 +56,24 @@ context "Site Permalink Regular Expression" do
     
     @site.permalink_slug = "articles/:id/:permalink"
     assert_equal Regexp.new(%(^articles\\/(\\d+)\\/([a-z0-9-]+)(\/comments(\/(\\d+))?)?$)), @site.permalink_regex(true)
+  end
+end
+
+context "Site Permalink Generation" do
+  fixtures :sites, :contents
+  
+  def setup
+    @site    = sites(:first)
+    @article = contents(:welcome)
+  end
+
+  specify "should generate correct permalink format" do
+    assert_equal "/#{@article.year}/#{@article.month}/#{@article.day}/#{@article.permalink}", @site.permalink_for(@article)
+  end
+  
+  specify "should generate custom id permalink" do
+    @site.permalink_slug = 'posts/:year/:id'
+    assert_valid @site
+    assert_equal "/posts/#{@article.year}/#{@article.id}", @site.permalink_for(@article)
   end
 end

@@ -85,7 +85,6 @@ class CachingTest < ActionController::IntegrationTest
     assert_caches_page contents(:welcome).full_permalink do
       visitor.read contents(:welcome)
     end
-    
     visitor.comment_on contents(:welcome), :author => 'approved bob', :body => 'what a wonderful post.'
     
     assert_not_cached contents(:welcome).full_permalink

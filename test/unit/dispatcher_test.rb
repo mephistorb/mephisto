@@ -8,11 +8,11 @@ context "Dispatcher" do
   end
 
   specify "should dispatch to home archives" do
-    assert_dispatch :archives, sections(:home), 'archives', %w(archives)
+    assert_dispatch :archives, sections(:home), %w(archives)
   end
 
   specify "should dispatch to home monthly archives" do
-    assert_dispatch :archives, sections(:home), 'archives', '2006', '9', %w(archives 2006 9)
+    assert_dispatch :archives, sections(:home), '2006', '9', %w(archives 2006 9)
   end
 
   specify "should error on invalid archive dispatch" do
@@ -59,6 +59,27 @@ context "Dispatcher" do
     assert_dispatch :comment, nil, options, '5', %w(2006 9 1 foo comments 5)
   end
 
+  specify "should not dispatch bad permalinks" do
+    assert_dispatch :error, sections(:home), 'entries', '5', 'foo-bar-baz', %w(entries 5 foo-bar-baz)
+    assert_dispatch :error, sections(:home), '200', '9', '1', 'foo', %w(200 9 1 foo)
+    assert_dispatch :error, sections(:home), '2006', '239', '1', 'foo', %w(2006 239 1 foo)
+    assert_dispatch :error, sections(:home), '2006', '9', '123', 'foo', %w(2006 9 123 foo)
+    assert_dispatch :error, sections(:home), '2006', '9', '1', 'a_b', %w(2006 9 1 a_b)
+    assert_dispatch :error, sections(:home), '2006', '9', '1', 'foo', 'boo', %w(2006 9 1 foo boo)
+    assert_dispatch :error, sections(:home), '2006', '9', '1', 'foo', 'comment', %w(2006 9 1 foo comment)
+  end
+
+  protected
+    def assert_dispatch(dispatch_type, section, *args)
+      path   = args.pop
+      result = Mephisto::Dispatcher.run sites(:first), path
+      assert_equal [dispatch_type, section, *args], result
+    end
+end
+
+context "Dispatcher Permalink Recognition" do
+  fixtures :sites
+
   specify "should recognize permalinks" do
     @site = sites(:first)
     
@@ -94,11 +115,4 @@ context "Dispatcher" do
     assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 1 foo boo))
     assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 1 foo comment))
   end
-
-  protected
-    def assert_dispatch(dispatch_type, section, *args)
-      path   = args.pop
-      result = Mephisto::Dispatcher.run sites(:first), path
-      assert_equal [dispatch_type, section, *args], result
-    end
 end
