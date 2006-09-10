@@ -78,6 +78,11 @@ class Site < ActiveRecord::Base
     User.find_by_site_with_deleted self, id
   end
   
+  def tags
+    Tag.find(:all, :conditions => ['contents.type = ? AND contents.site_id = ?', 'Article', id], :order => 'tags.name',
+      :joins => "INNER JOIN taggings ON taggings.tag_id = tags.id INNER JOIN contents ON (taggings.taggable_id = contents.id AND taggings.taggable_type = 'Content')")
+  end
+  
   def permalink_slug() @@permalink_slug end
   def archive_slug()   @@archive_slug   end
   def tag_slug()       @@tag_slug       end

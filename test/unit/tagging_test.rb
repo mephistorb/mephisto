@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TaggingTest < Test::Unit::TestCase
-  fixtures :taggings, :tags, :assets
+  fixtures :taggings, :tags, :assets, :contents, :sites
 
   def test_should_show_taggable_tags
     assert_models_equal [tags(:ruby)], assets(:gif).tags
@@ -36,5 +36,9 @@ class TaggingTest < Test::Unit::TestCase
   
   def test_should_find_by_tags
     assert_models_equal [assets(:gif)], Asset.find_tagged_with('ruby, rails')
+  end
+  
+  def test_should_find_tags_by_site
+    assert_models_equal [tags(:rails)], sites(:first).tags
   end
 end

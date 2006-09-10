@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class SiteDropTest < Test::Unit::TestCase
-  fixtures :sites, :sections
+  fixtures :sites, :sections, :tags, :taggings, :contents
   
   def setup
     @site = Mephisto::Liquid::SiteDrop.new(sites(:first))
@@ -32,6 +32,10 @@ class SiteDropTest < Test::Unit::TestCase
   
   def test_should_list_only_paged_sections
     assert_equal [sections(:about)], @site.page_sections.collect(&:section)
+  end
+
+  def test_should_list_tags
+    assert_equal %w(rails), @site.tags
   end
 
   def test_liquid_keys

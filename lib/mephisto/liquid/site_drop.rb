@@ -29,6 +29,10 @@ module Mephisto
       def page_sections
         sections.select { |s| s.section.paged? }
       end
+      
+      def tags
+        @tags ||= @source.tags.collect &:name
+      end
     end
   end
 end
