@@ -105,7 +105,9 @@ class MephistoController < ApplicationController
     end
     
     def dispatch_tags
-      raise NotImplementedError
+      @articles = site.articles.find_all_by_tags(@dispatch_path)
+      self.cached_references << @section
+      render_liquid_template_for(:archive, 'articles' => @articles)
     end
 
     def paged_search_url_for(page)

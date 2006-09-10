@@ -69,6 +69,11 @@ class Article < Content
       find(:all, options.merge(:order => 'contents.published_at DESC', :conditions => ["contents.published_at <= ? AND contents.published_at BETWEEN ? AND ?", 
         Time.now.utc, *Time.delta(year.to_i, month.to_i)]))
     end
+    
+    def find_all_by_tags(tag_names)
+      find(:all, :order => 'contents.published_at DESC', :include => [:tags, :user],
+        :conditions => ['(contents.published_at <= ? AND contents.published_at IS NOT NULL) AND tags.name IN (?)', Time.now.utc, tag_names])
+    end
   end
 
   [:year, :month, :day].each { |m| delegate m, :to => :published_at }

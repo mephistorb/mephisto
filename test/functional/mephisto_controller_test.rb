@@ -242,7 +242,14 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_show_monthly_entries
     date = Time.now.utc - 4.days
     dispatch "archives/#{date.year}/#{date.month}"
+    assert_dispatch_action :archives
     assert_models_equal [contents(:welcome), contents(:another)], assigns(:articles)
+  end
+  
+  def test_should_show_articles_by_tag
+    dispatch "tags/rails"
+    assert_dispatch_action :tags
+    assert_models_equal [contents(:another)], assigns(:articles)
   end
   
   protected
