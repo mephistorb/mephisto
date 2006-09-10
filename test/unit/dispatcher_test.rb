@@ -49,16 +49,40 @@ context "Dispatcher" do
     assert_dispatch :single, nil, options, %w(2006 9 1 foo)
   end
 
+  specify "should dispatch to comments" do
+    options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo'}
+    assert_dispatch :comments, nil, options, %w(2006 9 1 foo comments)
+  end
+  
+  specify "should dispatch to single comment" do
+    options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo'}
+    assert_dispatch :comment, nil, options, '5', %w(2006 9 1 foo comments 5)
+  end
+
   specify "should recognize permalinks" do
     @site = sites(:first)
     
     options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo'}
-    assert_equal options, Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo))
+    assert_equal [options, false, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo))
     
     @site.permalink_slug = 'entries/:id/:permalink'
     @site.permalink_regex(true)
     options = {:id => '5', :permalink => 'foo-bar-baz'}
-    assert_equal options, Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz))
+    assert_equal [options, false, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz))
+  end
+
+  specify "should recognize permalinks with comment" do
+    @site = sites(:first)
+    
+    options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo'}
+    assert_equal [options, true, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo comments))
+    assert_equal [options, true, '5'], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo comments 5))
+    
+    @site.permalink_slug = 'entries/:id/:permalink'
+    @site.permalink_regex(true)
+    options = {:id => '5', :permalink => 'foo-bar-baz'}
+    assert_equal [options, true, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz comments))
+    assert_equal [options, true, '5'], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz comments 5))
   end
 
   specify "should ignore unrecognized permalinks" do
@@ -67,6 +91,8 @@ context "Dispatcher" do
     assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 239 1 foo))
     assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 123 foo))
     assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 1 a_b))
+    assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 1 foo boo))
+    assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 1 foo comment))
   end
 
   protected

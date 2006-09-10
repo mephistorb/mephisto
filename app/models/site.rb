@@ -73,7 +73,7 @@ class Site < ActiveRecord::Base
           s << piece
         end
       end
-      @permalink_regex = Regexp.new("^#{r.join('\/')}$")
+      @permalink_regex = Regexp.new("^#{r.join('\/')}(\/comments(\/(\\d+))?)?$")
     end
     
     @permalink_regex

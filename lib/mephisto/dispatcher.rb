@@ -5,7 +5,13 @@ module Mephisto
 
     def self.run(site, path)
       if options = recognize_permalink(site, path)
-        return [:single, nil, options]
+        if options[1] && options[2]
+          return [:comment, nil, options.first, options.last]
+        elsif options[1]
+          return [:comments, nil, options.first]
+        else
+          return [:single, nil, options.first]
+        end
       end
       
       dispatch_type = :list
@@ -50,10 +56,12 @@ module Mephisto
     def self.recognize_permalink(site, path)
       full_path = path.join('/')
       if match = site.permalink_regex.match(full_path)
-        returning({}) do |options|
+        returning([{}]) do |result|
           site.permalink_variables.each_with_index do |var, i|
-            options[var] = match[i+1]
+            result.first[var] = match[i+1]
           end
+          result << !match[site.permalink_variables.size + 1].nil?
+          result <<  match[site.permalink_variables.size + 3]
         end
       end
     end
