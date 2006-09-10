@@ -43,6 +43,11 @@ module Mephisto
           singular + "s"
         end
       end
+      
+      # See: http://starbase.trincoll.edu/~crypto/resources/LetFreq.html
+      def word_count(text)
+        (text.split(/[^a-zA-Z]/).join(' ').size / 4.5).round
+      end
 
       def textilize(text)
         text.blank? ? '' : RedCloth.new(text).to_html

@@ -59,7 +59,8 @@ ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
   :stub      => '%B %d', # XXX what is the meaning of stub in this context?  (Basically it means short)
   :time_only => '%I:%M %p',
   :plain     => '%B %d %I:%M %p',
-  :mdy       => '%B %d, %Y'
+  :mdy       => '%B %d, %Y',
+  :my        => '%B %Y'
 
 # Time.now.to_ordinalized_s :long
 # => "February 28th, 2006 21:10"

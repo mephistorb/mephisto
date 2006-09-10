@@ -58,6 +58,7 @@ class MephistoController < ApplicationController
                   :limit   =>  @article_pages.items_per_page,
                   :offset  =>  @article_pages.current.offset)
     render_liquid_template_for(:archive, 'articles'      => @articles,
+                                         'archive_date'  => @articles.first.published_at,
                                          'previous_page' => paged_monthly_url_for(@article_pages.current.previous),
                                          'next_page'     => paged_monthly_url_for(@article_pages.current.next))
   end

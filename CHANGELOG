@@ -1,5 +1,9 @@
 * SVN *
 
+* Added 'my' option to format_date for use with archive_date
+
+* Added archive_date liquid tag for archive view
+
 * Change comments so that the text filter is taken from the site, not the article
 
 * Integrate referenced page caching into the app.
