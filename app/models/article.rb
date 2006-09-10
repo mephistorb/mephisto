@@ -83,6 +83,8 @@ class Article < Content
     end
   end
 
+  [:year, :month, :day].each { |m| delegate m, :to => :published_at }
+
   # Follow Mark Pilgrim's rules on creating a good ID
   # http://diveintomark.org/archives/2004/05/28/howto-atom-id
   def guid
@@ -115,10 +117,7 @@ class Article < Content
   end
 
   def hash_for_permalink(options = {})
-    { :year      => published_at.year, 
-      :month     => published_at.month, 
-      :day       => published_at.day, 
-      :permalink => permalink }.merge(options)
+    [:year, :month, :day, :permalink].inject(options) { |o, a| o.update a => send(a) }
   end
 
   def accept_comments?

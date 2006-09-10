@@ -1,6 +1,9 @@
 require File.join(RAILS_ROOT, 'app/models/site')
-Site.class_eval do
+class Site
   attr_reader :recent_template_type, :recent_preferred_template, :recent_layout_template
+  attr_writer :permalink_slug
+
+  def permalink_slug() @permalink_slug || @@permalink_slug end
 
   def attachment_base_path
     @attachment_base_path ||= File.join(RAILS_ROOT, 'tmp/themes', "site-#{id}")

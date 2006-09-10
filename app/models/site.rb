@@ -1,4 +1,11 @@
 class Site < ActiveRecord::Base
+  PERMALINK_OPTIONS = { 'year' => '\d{4}', 'month' => '\d{1,2}', 'day' => '\d{1,2}', 'permalink' => '[a-z0-9-]+', 'id' => '\d+' }
+  PERMALINK_VAR     = /^:([a-z]+)$/
+  @@permalink_slug  = ':year/:month/:day/:permalink'.freeze
+  @@archive_slug    = 'archives'.freeze
+  @@tag_slug        = 'tags'.freeze
+  @@search_slug     = 'search'.freeze
+
   include Mephisto::Attachments::AttachmentMethods
   cattr_accessor :multi_sites_enabled
 
@@ -25,6 +32,14 @@ class Site < ActiveRecord::Base
   before_validation_on_create :set_default_comment_options
   validates_format_of     :host, :with => /^([a-z0-9]([-a-z0-9]*[a-z0-9])?\.)+((a[cdefgilmnoqrstuwxz]|aero|arpa)|(b[abdefghijmnorstvwyz]|biz)|(c[acdfghiklmnorsuvxyz]|cat|com|coop)|d[ejkmoz]|(e[ceghrstu]|edu)|f[ijkmor]|(g[abdefghilmnpqrstuwy]|gov)|h[kmnrtu]|(i[delmnoqrst]|info|int)|(j[emop]|jobs)|k[eghimnprwyz]|l[abcikrstuvy]|(m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|(n[acefgilopruz]|name|net)|(om|org)|(p[aefghklmnrstwy]|pro)|qa|r[eouw]|s[abcdeghijklmnortvyz]|(t[cdfghjklmnoprtvwz]|travel)|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])$/
   validates_uniqueness_of :host
+  validate :check_permalink_slug
+  attr_reader :permalink_variables
+
+  with_options :order => 'contents.created_at', :class_name => 'Comment' do |comment|
+    comment.has_many :comments,            :conditions => ['contents.approved = ?', true]
+    comment.has_many :unapproved_comments, :conditions => ['contents.approved = ? or contents.approved is null', false]
+    comment.has_many :all_comments
+  end
 
   def users(options = {})
     User.find_all_by_site self, options
@@ -41,11 +56,27 @@ class Site < ActiveRecord::Base
   def user_with_deleted(id)
     User.find_by_site_with_deleted self, id
   end
+  
+  def permalink_slug() @@permalink_slug end
+  def archive_slug()   @@archive_slug   end
+  def tag_slug()       @@tag_slug       end
+  def search_slug()    @@search_slug    end
 
-  with_options :order => 'contents.created_at', :class_name => 'Comment' do |comment|
-    comment.has_many :comments,            :conditions => ['contents.approved = ?', true]
-    comment.has_many :unapproved_comments, :conditions => ['contents.approved = ? or contents.approved is null', false]
-    comment.has_many :all_comments
+  def permalink_regex(refresh = false)
+    if refresh || @permalink_regex.nil?
+      @permalink_variables = []
+      r = permalink_slug.split('/').inject [] do |s, piece|
+        if piece =~ PERMALINK_VAR
+          @permalink_variables << $1.to_sym
+          s << "(#{PERMALINK_OPTIONS[$1]})"
+        else
+          s << piece
+        end
+      end
+      @permalink_regex = Regexp.new("^#{r.join('\/')}$")
+    end
+    
+    @permalink_regex
   end
 
   def accept_comments?
@@ -71,6 +102,16 @@ class Site < ActiveRecord::Base
   end
 
   protected
+    def check_permalink_slug
+      permalink_slug.sub! /^\//, ''
+      permalink_slug.sub! /\/$/, ''
+      pieces = permalink_slug.split('/')
+      errors.add :permalink_slug, 'cannot have blank paths' if pieces.any?(&:blank?)
+      pieces.each do |p|
+        errors.add :permalink_slug, "cannot contain '#{$1}' variable" if p =~ PERMALINK_VAR && !PERMALINK_OPTIONS.keys.include?($1)
+      end
+    end
+
     def downcase_host
       self.host = host.to_s.downcase
     end
