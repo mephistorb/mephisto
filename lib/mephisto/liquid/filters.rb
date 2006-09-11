@@ -118,6 +118,15 @@ module Mephisto
         page[:is_page_home] ? current_page_section.url : [current_page_section.url, page[:permalink]].join('/')
       end
 
+      def find_section(path)
+        @context['site'].find_section(path)
+      end
+
+      def assign_to(value, name)
+        @context[name] = value
+        return nil
+      end
+
       private
         # marks a page as class=selected
         def page_anchor_options(page)

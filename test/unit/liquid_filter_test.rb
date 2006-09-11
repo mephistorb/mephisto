@@ -1,6 +1,20 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-context "Url Filter" do
+context "Basic Filters" do
+  include Mephisto::Liquid::Filters
+
+  def setup
+    @context = {}
+  end
+  
+  specify "should assign variable" do
+    assert_nil @context['foo']
+    assign_to 'blah', 'foo'
+    assert_equal 'blah', @context['foo']
+  end
+end
+
+context "Url Filters" do
   fixtures :sites, :sections, :contents
   include Mephisto::Liquid::Filters
 
@@ -17,7 +31,7 @@ context "Url Filter" do
     assert_equal "/archives/2006/1",       monthly_url(sections(:home).to_liquid, Date.new(2006, 1))
     assert_equal "/about/archives/2006/1", monthly_url(sections(:about).to_liquid, Date.new(2006, 1))
   end
-  
+
   specify "should generate paged url" do
     assert_equal "/about",                     page_url(contents(:welcome).to_liquid(:page => true))
     assert_equal "/about/welcome-to-mephisto", page_url(contents(:welcome).to_liquid)
@@ -39,5 +53,19 @@ context "Url Filter" do
   specify "should generate search urls" do
     assert_equal '/search?q=abc',        search_url('abc')
     assert_equal '/search?q=abc&page=2', search_url('abc', 2)
+  end
+end
+
+context "Drop Filters" do
+  fixtures :sites, :sections
+  include Mephisto::Liquid::Filters
+
+  def setup
+    @context = {'site' => sites(:first).to_liquid, 'section' => sections(:about).to_liquid}
+  end
+
+  specify "should find section by path" do
+    assert_equal sections(:home),  find_section('').source
+    assert_equal sections(:about), find_section('about').source
   end
 end

@@ -22,6 +22,18 @@ module Mephisto
         @sections ||= @source.sections.inject([]) { |all, s| all.send(s.home? ? :unshift : :<<, s.to_liquid(s == @current_section)) }
       end
       
+      def home_section
+        find_section ''
+      end
+      
+      def find_section(path)
+        @section_index ||= {}
+        return @section_index[path] if @section_index[path]
+        @section_index[path] ||= @current_section_liquid if @current_section && @current_section.path == path
+        @section_index[path] ||= @sections.detect { |s| s['path'] == path } if @sections
+        @section_index[path] ||= @source.sections.find_by_path(path).to_liquid
+      end
+      
       def blog_sections
         sections.select { |s| s.section.blog? }
       end

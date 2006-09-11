@@ -38,6 +38,14 @@ class SiteDropTest < Test::Unit::TestCase
     assert_equal %w(rails), @site.tags
   end
 
+  def test_should_find_home_section
+    assert_equal sections(:home), @site.home_section.source
+  end
+
+  def test_should_find_section_by_path
+    assert_equal sections(:about), @site.find_section('about').source
+  end
+
   def test_liquid_keys
     [:host, :subtitle, :title, :articles_per_page].each do |attr|
       assert_equal sites(:first).send(attr), @site.before_method(attr)
