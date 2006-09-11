@@ -57,7 +57,7 @@ context "Url Filters" do
 end
 
 context "Drop Filters" do
-  fixtures :sites, :sections
+  fixtures :sites, :sections, :contents, :assigned_sections
   include Mephisto::Liquid::Filters
 
   def setup
@@ -67,5 +67,12 @@ context "Drop Filters" do
   specify "should find section by path" do
     assert_equal sections(:home),  find_section('').source
     assert_equal sections(:about), find_section('about').source
+  end
+  
+  specify "should find latest articles by section" do
+    section = sections(:home).to_liquid
+    assert_models_equal [contents(:welcome), contents(:another)], latest_articles(section).collect(&:source)
+    assert_models_equal [contents(:welcome), contents(:another)], latest_articles(section, 2).collect(&:source)
+    assert_models_equal [contents(:welcome)],                     latest_article(section).collect(&:source)
   end
 end

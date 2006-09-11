@@ -122,9 +122,16 @@ module Mephisto
         @context['site'].find_section(path)
       end
 
+      def latest_articles(section, limit = nil)
+        section.latest_articles(limit || section['articles_per_page'])
+      end
+
+      def latest_article(section)
+        latest_articles section, 1
+      end
+
       def assign_to(value, name)
-        @context[name] = value
-        return nil
+        @context[name] = value ; nil
       end
 
       private

@@ -19,6 +19,16 @@ module Mephisto
         @section_liquid[method.to_s]
       end
       
+      def articles
+        @articles ||= latest_articles
+      end
+
+      def latest_articles(limit = nil)
+        returning @source.articles.find_by_date(:limit => (limit || @source.articles_per_page)) do |articles|
+          articles.collect! &:to_liquid
+        end
+      end
+
       def url
         @url ||= absolute_url(*@source.to_url)
       end
