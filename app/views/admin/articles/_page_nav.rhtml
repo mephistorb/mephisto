@@ -3,6 +3,9 @@
 <div id="page-nav">
   <ul id="act-nav" class="clear">
     <li><%= link_to_remote 'Delete this article', :url => {:action => 'destroy', :id => @article}, :confirm => 'Are you sure you want to delete this article?' %></li>
+  <% if controller.action_name == 'edit' -%>
+    <li><%= link_to('Preview', {:action => 'show', :id => @article}, {:target => '_blank'}) %></li>
+  <% end -%>
     <li id="select">
       <a class="trigger" id="cog" href="#">&nbsp;</a>
       <div id="optgroup" style="display: none">
