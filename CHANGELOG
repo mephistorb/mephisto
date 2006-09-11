@@ -1,5 +1,9 @@
 * SVN *
 
+* Liquid include tag support [Geoff Davis]
+
+* Experimental MetaWeblog Support [Corey Donohue, Patrick Lenz]
+
 * Added 'my' option to format_date for use with archive_date
 
 * Added archive_date liquid tag for archive view
