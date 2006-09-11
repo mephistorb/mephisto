@@ -241,6 +241,25 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       end
     end
   end
+  
+  def test_should_show_published_checkbox_checked_by_default
+    get :index
+    assert_response :success
+    assert_tag 'input', :attributes => { :id => 'published', :type => 'checkbox', :checked => 'checked' }
+  end
+
+  def test_should_show_published_checkbox_checked
+    get :index, :published => '1'
+    assert_response :success
+    assert_tag 'input', :attributes => { :id => 'published', :type => 'checkbox', :checked => 'checked' }
+  end
+
+  def test_should_show_published_checkbox_unchecked
+    get :index, :published => '0'
+    assert_response :success
+    assert_tag    'input', :attributes => { :id => 'published', :type => 'checkbox' }
+    assert_no_tag 'input', :attributes => { :id => 'published', :type => 'checkbox', :checked => 'checked' }
+  end
 
   def test_should_show_draft_checkbox_for_new_articles
     get :new

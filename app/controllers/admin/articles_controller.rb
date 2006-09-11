@@ -13,10 +13,19 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :load_sections, :only => [:new, :edit]
 
   def index
-    @article_pages = Paginator.new self, site.articles.count(:all, article_options), 30, params[:page]
-    @articles      = site.articles.find(:all, article_options(:order => 'contents.published_at DESC', :select => 'contents.*', 
-                       :limit   =>  @article_pages.items_per_page,
-                       :offset  =>  @article_pages.current.offset))
+    query = lambda do
+      @article_pages = Paginator.new self, site.articles.count(:all, article_options), 30, params[:page]
+      @articles      = site.articles.find(:all, article_options(:order => 'contents.published_at DESC', :select => 'contents.*', 
+                         :limit   =>  @article_pages.items_per_page,
+                         :offset  =>  @article_pages.current.offset))
+    end
+    
+    if params[:published] == '0'
+      Article.with_scope(:find => { :conditions => 'published_at is null' }, &query)
+    else
+      query.call
+    end
+    
     @comments = @site.unapproved_comments.count :all, :group => :article, :order => '1 desc'
     @sections = site.sections.find(:all)
   end

@@ -7,10 +7,10 @@
 </div>
 <!-- /end action nav -->
 <div id="filter" class="manual">
-  <%= start_form_tag({:action => 'index'}, :method => 'get', :id => 'article-search') %>
   <ul class="clear">
     <li><a href="#">&nbsp;</a></li>
   </ul>
+  <%= start_form_tag({:action => 'index'}, :method => 'get', :id => 'article-search') %>
   <ul id="attributes">
     <li><label for="search">Show articles:</label></li>
     <li>
@@ -29,7 +29,8 @@
     </li>
     <li><%= text_field_tag 'q', params[:q], :id => 'manualsearch', :style => 'display:none' %></li>
   </ul>
-  <%= end_form_tag %>
+    <div><%= hidden_field_tag :published, ((params[:published].nil? || params[:published] == '1') ? '1' : '0') %></div>
+  </form>
 </div>
 <% end %>
 
@@ -41,7 +42,7 @@
       <th scope="col" class="small-col">Status</th>
       <th scope="col">Article</th>
       <th scope="col">Comments</th>
-      <th scope="col">Published</th>
+      <th scope="col">Published <%= check_box_tag :article_published, '1', (params[:published].nil? || params[:published] == '1') %></th>
       <th scope="col">&nbsp;</th>
     </tr>
   </thead>

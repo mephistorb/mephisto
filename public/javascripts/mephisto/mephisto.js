@@ -434,10 +434,12 @@ Event.observe(window, 'load', function() {
   var commentsView   = $('comments-view');
   var articleDraft   = $('article-draft');
   var revisions      = $('revisionnum');
+  var published      = $('article_published');
   
-  if(revisions)      Event.observe(revisions, 'change', ArticleForm.getRevision.bind(revisions));
-  if(commentsView)   Event.observe(commentsView,   'change', Comments.filter.bind(commentsView));
-  if(articleDraft)   Event.observe(articleDraft,   'change', ArticleForm.saveDraft.bind(articleDraft));
+  if(revisions)    Event.observe(revisions,    'change', ArticleForm.getRevision.bind(revisions));
+  if(commentsView) Event.observe(commentsView, 'change', Comments.filter.bind(commentsView));
+  if(articleDraft) Event.observe(articleDraft, 'change', ArticleForm.saveDraft.bind(articleDraft));
+  if(published)    Event.observe(published,    'change', function() { $('published').value = $F(published) || '0' ; $('article-search').submit(); }.bind(published));
   
   ['notice', 'errors'].each(function(flashType) {
     var el = $('flash-' + flashType);
