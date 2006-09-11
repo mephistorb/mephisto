@@ -31,6 +31,11 @@ context "Site" do
     sites(:first).update_attribute :filter, ''
     assert_equal '', sites(:first).reload.filter
   end
+  
+  specify "should generate search url" do
+    assert_equal '/search?q=abc',        sites(:first).search_url('abc')
+    assert_equal '/search?q=abc&page=2', sites(:first).search_url('abc', 2)
+  end
 end
 
 context "Default Site Options" do

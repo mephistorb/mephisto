@@ -111,7 +111,7 @@ class MephistoController < ApplicationController
     end
 
     def paged_search_url_for(page)
-      page ? search_url(:q => params[:q], :page => page) : ''
+      page ? site.search_url(params[:q], page) : ''
     end
 
     def find_article

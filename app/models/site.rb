@@ -103,6 +103,10 @@ class Site < ActiveRecord::Base
     end.join('/')
   end
 
+  def search_url(query, page = nil)
+    "/#{search_path}?q=#{CGI::escapeHTML(query)}#{%(&page=#{CGI::escapeHTML(page.to_s)}) unless page.blank?}"
+  end
+
   def accept_comments?
     comment_age.to_i > -1
   end
