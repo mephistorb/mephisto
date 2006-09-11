@@ -1,13 +1,13 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TaggingTest < Test::Unit::TestCase
-  fixtures :taggings, :tags, :assets, :contents, :sites
+context "Asset Tagging" do
+  fixtures :taggings, :tags, :assets
 
-  def test_should_show_taggable_tags
+  specify "should show taggable tags" do
     assert_models_equal [tags(:ruby)], assets(:gif).tags
   end
 
-  def test_should_add_tags
+  specify "should add tags" do
     assert_difference Tagging, :count do
       assert_no_difference Tag, :count do
         Tagging.add_to assets(:gif), [tags(:rails)]
@@ -16,7 +16,7 @@ class TaggingTest < Test::Unit::TestCase
     assert_models_equal [tags(:rails), tags(:ruby)], assets(:gif).reload.tags
   end
 
-  def test_should_delete_tags
+  specify "should delete tags" do
     assert_difference Tagging, :count, -1 do
       assert_no_difference Tag, :count do
         Tagging.delete_from assets(:gif), [tags(:ruby)]
@@ -25,7 +25,7 @@ class TaggingTest < Test::Unit::TestCase
     assert_equal [], assets(:gif).reload.tags
   end
   
-  def test_should_change_tags
+  specify "should change tags" do
     assert_difference Tagging, :count, 2 do
       assert_difference Tag, :count do
         Tagging.set_on assets(:gif), 'rails, mongrel, foo'
@@ -33,12 +33,47 @@ class TaggingTest < Test::Unit::TestCase
     end
     assert_models_equal [Tag[:foo], tags(:mongrel), tags(:rails)], assets(:gif).reload.tags
   end
-  
-  def test_should_find_by_tags
+
+  specify "should find by tags" do
     assert_models_equal [assets(:gif)], Asset.find_tagged_with('ruby, rails')
   end
+end
+
+context "Article Tagging" do
+  fixtures :taggings, :tags, :contents, :sites
+
+  specify "should show taggable tags" do
+    assert_models_equal [tags(:rails)], contents(:another).tags
+  end
+
+  specify "should add tags" do
+    assert_difference Tagging, :count do
+      assert_no_difference Tag, :count do
+        Tagging.add_to contents(:another), [tags(:ruby)]
+      end
+    end
+    assert_models_equal [tags(:rails), tags(:ruby)], contents(:another).reload.tags
+  end
+
+  specify "should delete tags" do
+    assert_difference Tagging, :count, -1 do
+      assert_no_difference Tag, :count do
+        Tagging.delete_from contents(:another), [tags(:rails)]
+      end
+    end
+    assert_equal [], contents(:another).reload.tags
+  end
   
-  def test_should_find_tags_by_site
+  specify "should change tags" do
+    assert_difference Tagging, :count, 2 do
+      assert_difference Tag, :count do
+        Tagging.set_on contents(:another), 'ruby, mongrel, foo'
+      end
+    end
+    assert_models_equal [Tag[:foo], tags(:mongrel), tags(:ruby)], contents(:another).reload.tags
+  end
+
+  specify "should find by tags in site" do
     assert_models_equal [tags(:rails)], sites(:first).tags
   end
 end

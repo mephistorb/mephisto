@@ -19,7 +19,7 @@ class Tagging < ActiveRecord::Base
     #   Tagging.delete_from taggable, [Tag, Tag, Tag]
     def delete_from(taggable, tags)
       delete_all ['taggable_id = ? and taggable_type = ? and tag_id in (?)', 
-        taggable.id, taggable.class.name, tags.collect { |t| t.is_a?(Tag) ? t.id : t }] if tags.any?
+        taggable.id, taggable.class.base_class.name, tags.collect { |t| t.is_a?(Tag) ? t.id : t }] if tags.any?
     end
 
     # Adds tags to the taggable object
