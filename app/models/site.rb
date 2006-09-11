@@ -195,8 +195,9 @@ class Site < ActiveRecord::Base
     end
     
     def parse_template(template, assigns, controller)
+      raise Mephisto::MissingTemplateError, template unless template && template.file?
       # give the include tag access to files in the site's fragments directory
       Liquid::Template.file_system = Liquid::LocalFileSystem.new(File.join(attachment_base_path, 'templates'))
-      Liquid::Template.parse((template && template.file? && template.read).to_s).render(assigns, :registers => {:controller => controller})
+      Liquid::Template.parse(template.read.to_s).render(assigns, :registers => {:controller => controller})
     end
 end

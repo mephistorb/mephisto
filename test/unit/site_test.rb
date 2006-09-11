@@ -125,3 +125,18 @@ context "Site Validations" do
     assert_equal 'article/:id', @site.permalink_style
   end
 end
+
+context "Site Template" do
+  fixtures :sites
+
+  def setup
+    prepare_theme_fixtures
+  end
+
+  specify "should raise error on missing template" do
+    sites(:first).templates[:archive].unlink
+    assert_raise Mephisto::MissingTemplateError do
+      sites(:first).send(:parse_template, sites(:first).templates[:archive], {}, {})
+    end
+  end
+end
