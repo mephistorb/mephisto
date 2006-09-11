@@ -1,6 +1,24 @@
 * SVN *
 
+* Find articles in a section in Liquid
+
+  {{ section | latest_articles }}
+  
+  {{ 'about' | find_section | latest_article | assign_to: 'bio' }}
+  <div>{{ bio.body }}</div>
+
+* Find section by path in Liquid
+
+  {{ 'about' | find_section }}
+
+* Support for assigning liquid variables.
+
+  {{ 5 | assign_to: 'age' }} sets age = 5
+  {{ site.tags | assign_to 'tags' }} sets tags = site.tags
+
 * Liquid include tag support [Geoff Davis]
+
+  {% include 'foo' %} includes the '_foo.liquid' template.
 
 * Experimental MetaWeblog Support [Corey Donohue, Patrick Lenz]
 

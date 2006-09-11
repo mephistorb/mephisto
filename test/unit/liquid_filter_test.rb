@@ -50,6 +50,10 @@ context "Url Filters" do
     assert_equal "/tags/foo/bar", tag_url('foo', 'bar')
   end
   
+  specify "should generate tag links" do
+    assert_equal "<a href=\"/tags/foo\">foo</a>", link_to_tag('foo')
+  end
+  
   specify "should generate search urls" do
     assert_equal '/search?q=abc',        search_url('abc')
     assert_equal '/search?q=abc&page=2', search_url('abc', 2)
@@ -73,6 +77,6 @@ context "Drop Filters" do
     section = sections(:home).to_liquid
     assert_models_equal [contents(:welcome), contents(:another)], latest_articles(section).collect(&:source)
     assert_models_equal [contents(:welcome), contents(:another)], latest_articles(section, 2).collect(&:source)
-    assert_models_equal [contents(:welcome)],                     latest_article(section).collect(&:source)
+    assert_equal contents(:welcome), latest_article(section).source
   end
 end

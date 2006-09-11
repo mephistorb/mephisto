@@ -99,6 +99,10 @@ module Mephisto
         image_tag url, :class => 'gravatar', :size => "#{size}x#{size}", :alt => comment['author']
       end
 
+      def link_to_tag(tag)
+        content_tag :a, tag, :href => tag_url(tag)
+      end
+
       def monthly_url(section, date = nil)
         date ||= Time.now.utc.beginning_of_month
         date   = Date.new(*date.split('-')) unless date.is_a?(Date)
@@ -127,7 +131,7 @@ module Mephisto
       end
 
       def latest_article(section)
-        latest_articles section, 1
+        latest_articles(section, 1).first
       end
 
       def assign_to(value, name)
