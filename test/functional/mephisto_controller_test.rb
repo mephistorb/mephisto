@@ -129,6 +129,15 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'h1', :content => contents(:welcome).title
   end
 
+  def test_should_render_with_alternate_search_layout
+    sites(:first).update_attribute :search_layout, 'alt_layout.liquid'
+    dispatch 'search'
+    assert_dispatch_action :search
+    assert_preferred_template :search
+    assert_layout_template    :alt_layout
+    assert_template_type      :search
+  end
+
   def test_should_search_entries
     dispatch 'search', :q => 'another'
     assert_dispatch_action :search
@@ -249,9 +258,21 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_show_articles_by_tag
     dispatch "tags/rails"
     assert_dispatch_action :tags
+    assert_preferred_template :tag
+    assert_layout_template    :layout
+    assert_template_type      :tag
     assert_models_equal [contents(:another)], assigns(:articles)
   end
-  
+
+  def test_should_show_articles_by_tag_with_alternate_layout
+    sites(:first).update_attribute :tag_layout, 'alt_layout.liquid'
+    dispatch "tags"
+    assert_dispatch_action :tags
+    assert_preferred_template :tag
+    assert_layout_template    :alt_layout
+    assert_template_type      :tag
+  end
+
   protected
     def dispatch(path = '', options = {})
       get :dispatch, options.merge(:path => path.split('/'))

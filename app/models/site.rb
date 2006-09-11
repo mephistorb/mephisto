@@ -181,7 +181,16 @@ class Site < ActiveRecord::Base
     end
     
     def set_layout_template(section, template_type)
-      layout_template = section && section.layout
+      layout_template =
+        if section
+          section.layout
+        else
+          case template_type
+            when :tag    then tag_layout
+            when :search then search_layout
+          end
+        end
+
       templates[layout_template.blank? ? 'layout' : layout_template]
     end
     

@@ -8,7 +8,7 @@ class TemplateTest < Test::Unit::TestCase
   end
 
   def test_should_count_correct_assets
-    assert_equal 10, sites(:first).templates.size
+    assert_equal 12, sites(:first).templates.size
     assert_equal 1,  sites(:hostess).templates.size
   end
 
@@ -35,16 +35,15 @@ class TemplateTest < Test::Unit::TestCase
     assert_template_name :page
     assert_template_name :search
     assert_template_name :error
+    assert_template_name :tag
   end
 
   def test_should_find_fallback_templates
-    sites(:first).templates[:error].unlink
-    sites(:first).templates[:search].unlink
-    sites(:first).templates[:section].unlink
+    [:tag, :error, :search, :section].each { |t| sites(:first).templates[t].unlink }
     assert_template_name :archive, :section
     assert_template_name :archive, :search
+    assert_template_name :archive, :tag
     
-  
     sites(:first).templates[:page].unlink
     assert_template_name :single, :page
 
@@ -56,10 +55,11 @@ class TemplateTest < Test::Unit::TestCase
     assert_template_name :index, :page
     assert_template_name :index, :search
     assert_template_name :index, :error
+    assert_template_name :index, :tag
   end
 
   def test_should_find_custom
-    assert_equal ['author.liquid', 'home.liquid'], sites(:first).templates.custom.sort
+    assert_equal ['alt_layout.liquid', 'author.liquid', 'home.liquid'], sites(:first).templates.custom.sort
   end
 
   protected
