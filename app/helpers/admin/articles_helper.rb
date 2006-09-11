@@ -10,7 +10,7 @@ module Admin::ArticlesHelper
   def link_to_article(article)
     return '' unless article
     article.published? ?
-      link_to(h(article.title), article_url(article.hash_for_permalink)) :
+      link_to(h(article.title), site.permalink_for(article)) :
       h(article.title)
   end
 

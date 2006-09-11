@@ -3,7 +3,7 @@
 <div id="page-nav">
   <ul id="act-nav" class="clear">
     <li><%= link_to "General", '#general' %></li>
-    <li><%= link_to "Publishing", '#publish' %></li>
+    <% if false -%><li><%= link_to "Publishing", '#publish' %></li><% end -%>
     <li><%= link_to "Comments", '#spam' %></li>
     <% if ActionController::Base.perform_caching -%>
     <li><%= link_to 'Caches', :controller => '/admin/cached_pages' %></li>
