@@ -55,13 +55,13 @@
       <label for="site_search_path">Url that the search area is available at.</label>
     </dt>
     <dd><%= f.text_field :search_path %></dd>
-    <% if @templates.any? -%>
+    <% if @layouts.any? -%>
     <dt>
-      <label for="site_search_template">Template used by the search area</label>
+      <label for="site_search_layout">Layout template used by the search area</label>
     </dt>
     <dd>
-      <select name="site[search_template]">
-        <%= options_from_templates_for_select(@templates, @site.search_template) %>
+      <select name="site[search_layout]">
+        <%= options_from_templates_for_select(@layouts, @site.search_layout) %>
       </select>
     </dd>
     <% end -%>
@@ -69,13 +69,13 @@
       <label for="site_tag_path">Url that the tag area is available at.</label>
     </dt>
     <dd><%= f.text_field :tag_path %></dd>
-    <% if @templates.any? -%>
+    <% if @layouts.any? -%>
     <dt>
-      <label for="site_tag_template">Template used by the tag area</label>
+      <label for="site_tag_layout">Layout template used by the tag area</label>
     </dt>
     <dd>
-      <select name="site[tag_template]">
-        <%= options_from_templates_for_select(@templates, @site.tag_template) %>
+      <select name="site[tag_layout]">
+        <%= options_from_templates_for_select(@layouts, @site.tag_layout) %>
       </select>
     </dd>
     <% end -%>

@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 57) do
+ActiveRecord::Schema.define(:version => 58) do
 
   create_table "assets", :force => true do |t|
     t.column "content_type",     :string
@@ -141,8 +141,8 @@ ActiveRecord::Schema.define(:version => 57) do
     t.column "permalink_style",   :string
     t.column "search_path",       :string
     t.column "tag_path",          :string
-    t.column "search_template",   :string
-    t.column "tag_template",      :string
+    t.column "search_layout",     :string
+    t.column "tag_layout",        :string
   end
 
   create_table "taggings", :force => true do |t|

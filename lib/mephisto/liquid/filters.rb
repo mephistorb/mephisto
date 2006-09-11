@@ -105,9 +105,13 @@ module Mephisto
         File.join(section.url, section['archive_path'], date.year.to_s, date.month.to_s)
       end
       
-      def tag_url(tags)
+      def tag_url(*tags)
         tags = [tags] ; tags.flatten!
-        absolute_url @context['site']['tag_path'], *tags
+        absolute_url @context['site'].source.tag_url(*tags)
+      end
+
+      def search_url(query, page = nil)
+        absolute_url @context['site'].source.search_url(query, page)
       end
 
       def page_url(page)

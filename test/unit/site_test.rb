@@ -36,6 +36,12 @@ context "Site" do
     assert_equal '/search?q=abc',        sites(:first).search_url('abc')
     assert_equal '/search?q=abc&page=2', sites(:first).search_url('abc', 2)
   end
+  
+  specify "should generate tag url" do
+    assert_equal '/tags',         sites(:first).tag_url
+    assert_equal '/tags/foo',     sites(:first).tag_url('foo')
+    assert_equal '/tags/foo/bar', sites(:first).tag_url('foo', 'bar')
+  end
 end
 
 context "Default Site Options" do

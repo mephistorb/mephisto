@@ -107,6 +107,10 @@ class Site < ActiveRecord::Base
     "/#{search_path}?q=#{CGI::escapeHTML(query)}#{%(&page=#{CGI::escapeHTML(page.to_s)}) unless page.blank?}"
   end
 
+  def tag_url(*tags)
+    ['', tag_path, *tags] * '/'
+  end
+
   def accept_comments?
     comment_age.to_i > -1
   end

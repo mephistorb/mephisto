@@ -29,4 +29,15 @@ context "Url Filter" do
     assert_equal "/stylesheets/foo.css", stylesheet_url('foo.css')
     assert_equal "/images/foo.gif",      asset_url('foo.gif')
   end
+  
+  specify "should generate tag urls" do
+    assert_equal "/tags",         tag_url
+    assert_equal "/tags/foo",     tag_url('foo')
+    assert_equal "/tags/foo/bar", tag_url('foo', 'bar')
+  end
+  
+  specify "should generate search urls" do
+    assert_equal '/search?q=abc',        search_url('abc')
+    assert_equal '/search?q=abc&page=2', search_url('abc', 2)
+  end
 end

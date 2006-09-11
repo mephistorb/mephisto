@@ -7,7 +7,8 @@ module Mephisto
         :single  => [:single,   :index],
         :archive => [:archive,  :index],
         :search  => [:search,   :archive, :index],
-        :error   => [:error,    :index]
+        :error   => [:error,    :index],
+        :tag     => [:tag,      :archive, :index]
       }
     
       @@template_types = (@@hierarchy.values.flatten.uniq << :layout).collect! { |f| "#{f}.liquid" }
