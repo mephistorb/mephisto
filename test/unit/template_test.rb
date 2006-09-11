@@ -9,7 +9,7 @@ class TemplateTest < Test::Unit::TestCase
 
   def test_should_count_correct_assets
     assert_equal 12, sites(:first).templates.size
-    assert_equal 1,  sites(:hostess).templates.size
+    assert_equal 3,  sites(:hostess).templates.size
   end
 
   def test_should_carry_site_reference

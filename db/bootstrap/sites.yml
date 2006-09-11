@@ -8,3 +8,5 @@ default:
   comment_age: 30
   timezone: UTC
   permalink_style: ":year/:month/:day/:permalink"
+  tag_path: tags
+  search_path: search

@@ -1,4 +1,8 @@
+{% if tags %}
+<p>tags: {{ tags | join: ', ' }}</p>
+{% else %}
 <p>tag</p>
+{% endif %}
 
 {% for article in articles %}
   <p>{{ article | link_to_article }}</p>

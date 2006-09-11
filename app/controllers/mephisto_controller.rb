@@ -107,7 +107,7 @@ class MephistoController < ApplicationController
     def dispatch_tags
       @articles = site.articles.find_all_by_tags(@dispatch_path)
       self.cached_references << @section
-      render_liquid_template_for(:tag, 'articles' => @articles)
+      render_liquid_template_for(:tag, 'articles' => @articles, 'tags' => @dispatch_path)
     end
 
     def paged_search_url_for(page)
