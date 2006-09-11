@@ -86,7 +86,7 @@ context "Dispatcher Permalink Recognition" do
     options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo'}
     assert_equal [options, false, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo))
     
-    @site.permalink_slug = 'entries/:id/:permalink'
+    @site.permalink_style = 'entries/:id/:permalink'
     @site.permalink_regex(true)
     options = {:id => '5', :permalink => 'foo-bar-baz'}
     assert_equal [options, false, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz))
@@ -99,7 +99,7 @@ context "Dispatcher Permalink Recognition" do
     assert_equal [options, true, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo comments))
     assert_equal [options, true, '5'], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo comments 5))
     
-    @site.permalink_slug = 'entries/:id/:permalink'
+    @site.permalink_style = 'entries/:id/:permalink'
     @site.permalink_regex(true)
     options = {:id => '5', :permalink => 'foo-bar-baz'}
     assert_equal [options, true, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz comments))

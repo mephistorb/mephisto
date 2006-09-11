@@ -1,10 +1,6 @@
 class Site < ActiveRecord::Base
   PERMALINK_OPTIONS = { 'year' => '\d{4}', 'month' => '\d{1,2}', 'day' => '\d{1,2}', 'permalink' => '[a-z0-9-]+', 'id' => '\d+' }
   PERMALINK_VAR     = /^:([a-z]+)$/
-  @@permalink_slug  = ':year/:month/:day/:permalink'.freeze
-  @@archive_slug    = 'archives'.freeze
-  @@tag_slug        = 'tags'.freeze
-  @@search_slug     = 'search'.freeze
 
   include Mephisto::Attachments::AttachmentMethods
   cattr_accessor :multi_sites_enabled
@@ -49,11 +45,12 @@ class Site < ActiveRecord::Base
   has_many :admins,  :through => :memberships, :source => :user, :conditions => ['memberships.admin = ? or users.admin = ?', true, true]
 
   before_validation :downcase_host
-  before_validation :set_default_timezone
-  before_validation_on_create :set_default_comment_options
-  validates_format_of     :host, :with => /^([a-z0-9]([-a-z0-9]*[a-z0-9])?\.)+((a[cdefgilmnoqrstuwxz]|aero|arpa)|(b[abdefghijmnorstvwyz]|biz)|(c[acdfghiklmnorsuvxyz]|cat|com|coop)|d[ejkmoz]|(e[ceghrstu]|edu)|f[ijkmor]|(g[abdefghilmnpqrstuwy]|gov)|h[kmnrtu]|(i[delmnoqrst]|info|int)|(j[emop]|jobs)|k[eghimnprwyz]|l[abcikrstuvy]|(m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|(n[acefgilopruz]|name|net)|(om|org)|(p[aefghklmnrstwy]|pro)|qa|r[eouw]|s[abcdeghijklmnortvyz]|(t[cdfghjklmnoprtvwz]|travel)|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw])$/
+  before_validation :set_default_attributes
+  validates_presence_of :permalink_style, :search_path, :tag_path
+  validates_format_of     :search_path, :tag_path, :with => Format::STRING
+  validates_format_of     :host, :with => Format::DOMAIN
   validates_uniqueness_of :host
-  validate :check_permalink_slug
+  validate :check_permalink_style
   attr_reader :permalink_variables
 
   with_options :order => 'contents.created_at', :class_name => 'Comment' do |comment|
@@ -82,16 +79,11 @@ class Site < ActiveRecord::Base
     Tag.find(:all, :conditions => ['contents.type = ? AND contents.site_id = ?', 'Article', id], :order => 'tags.name',
       :joins => "INNER JOIN taggings ON taggings.tag_id = tags.id INNER JOIN contents ON (taggings.taggable_id = contents.id AND taggings.taggable_type = 'Content')")
   end
-  
-  def permalink_slug() @@permalink_slug end
-  def archive_slug()   @@archive_slug   end
-  def tag_slug()       @@tag_slug       end
-  def search_slug()    @@search_slug    end
 
   def permalink_regex(refresh = false)
     if refresh || @permalink_regex.nil?
       @permalink_variables = []
-      r = permalink_slug.split('/').inject [] do |s, piece|
+      r = permalink_style.split('/').inject [] do |s, piece|
         if piece =~ PERMALINK_VAR
           @permalink_variables << $1.to_sym
           s << "(#{PERMALINK_OPTIONS[$1]})"
@@ -106,7 +98,7 @@ class Site < ActiveRecord::Base
   end
 
   def permalink_for(article)
-    permalink_slug.split('/').inject [''] do |s, piece|
+    permalink_style.split('/').inject [''] do |s, piece|
       s << (piece =~ PERMALINK_VAR && PERMALINK_OPTIONS.keys.include?($1) ? article.send($1).to_s : piece)
     end.join('/')
   end
@@ -138,19 +130,19 @@ class Site < ActiveRecord::Base
       var =~ PERMALINK_VAR && PERMALINK_OPTIONS.keys.include?(var)
     end
 
-    def check_permalink_slug
-      permalink_slug.sub! /^\//, ''
-      permalink_slug.sub! /\/$/, ''
-      pieces = permalink_slug.split('/')
-      errors.add :permalink_slug, 'cannot have blank paths' if pieces.any?(&:blank?)
+    def check_permalink_style
+      permalink_style.sub! /^\//, ''
+      permalink_style.sub! /\/$/, ''
+      pieces = permalink_style.split('/')
+      errors.add :permalink_style, 'cannot have blank paths' if pieces.any?(&:blank?)
       pieces.each do |p|
-        errors.add :permalink_slug, "cannot contain '#{$1}' variable" if p =~ PERMALINK_VAR && !PERMALINK_OPTIONS.keys.include?($1)
+        errors.add :permalink_style, "cannot contain '#{$1}' variable" if p =~ PERMALINK_VAR && !PERMALINK_OPTIONS.keys.include?($1)
       end
       unless pieces.include?(':id') || pieces.include?(':permalink')
-        errors.add :permalink_slug, "must contain either :permalink or :id"
+        errors.add :permalink_style, "must contain either :permalink or :id"
       end
       if !pieces.include?(':year') && (pieces.include?(':month') || pieces.include?(':day'))
-        errors.add :permalink_slug, "must contain :year for any date-based permalinks"
+        errors.add :permalink_style, "must contain :year for any date-based permalinks"
       end
     end
 
@@ -158,14 +150,16 @@ class Site < ActiveRecord::Base
       self.host = host.to_s.downcase
     end
 
-    def set_default_timezone
+    def set_default_attributes
+      self.permalink_style = ':year/:month/:day/:permalink' if permalink_style.blank?
+      self.search_path     = 'search' if search_path.blank?
+      self.tag_path        = 'tags'   if tag_path.blank?
+      [:permalink_style, :search_path, :tag_path].each { |a| send(a).downcase! }
       self.timezone = 'UTC' if read_attribute(:timezone).blank?
-      true
-    end
-
-    def set_default_comment_options
-      self.approve_comments = false unless approve_comments?
-      self.comment_age      = 30    unless comment_age
+      if new_record?
+        self.approve_comments = false unless approve_comments?
+        self.comment_age      = 30    unless comment_age
+      end
       true
     end
     

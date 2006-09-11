@@ -117,4 +117,16 @@ class SectionTest < Test::Unit::TestCase
     assert sections(:home).blog?
     [:about, :cupcake_home, :cupcake_about].each { |s| assert sections(s).paged? }
   end
+  
+  def test_should_set_default_archive_path
+    s = Section.new
+    s.valid?
+    assert_equal 'archives', s.archive_path
+  end
+  
+  def test_should_downcase_archive_path
+    s = Section.new :archive_path => "OLD"
+    s.valid?
+    assert_equal 'old', s.archive_path
+  end
 end

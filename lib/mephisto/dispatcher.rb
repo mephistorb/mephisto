@@ -15,10 +15,10 @@ module Mephisto
       end
 
       # check for tags
-      return [:tags, nil] + path[1..-1] if path.first == site.tag_slug
+      return [:tags, nil] + path[1..-1] if path.first == site.tag_path
       
       # check for search
-      if path.first == site.search_slug
+      if path.first == site.search_path
         return (path.size == 1) ? [:search, nil] : [:error, nil]
       end
 
@@ -34,7 +34,7 @@ module Mephisto
         result.reverse!
         
         # check for archives
-        if result[0] == site.archive_slug
+        if result[0] == section.archive_path
           # only allow /archives, /archives/yyyy and /archives/yyyy/mm
           if (result.size < 4 && year?(result[1]) && month?(result[2]))
             dispatch_type = :archives

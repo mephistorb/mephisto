@@ -30,10 +30,6 @@ class Admin::SectionsController < Admin::BaseController
   end
 
   protected
-    def find_and_sort_templates
-      @layouts, @templates = site.templates.partition { |t| t.dirname.to_s =~ /layouts$/ }
-    end
-    
     def find_and_reorder_sections
       @article_count = site.sections.articles_count
       @sections      = site.sections.find :all

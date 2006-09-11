@@ -3,8 +3,8 @@
 <div id="page-nav">
   <ul id="act-nav" class="clear">
     <li><%= link_to "General", '#general' %></li>
-    <% if false -%><li><%= link_to "Publishing", '#publish' %></li><% end -%>
     <li><%= link_to "Comments", '#spam' %></li>
+    <li><%= link_to "Publishing", '#publish' %></li>
     <% if ActionController::Base.perform_caching -%>
     <li><%= link_to 'Caches', :controller => '/admin/cached_pages' %></li>
     <% end -%>
@@ -32,34 +32,9 @@
   </dl>
 </div>
 
-<% if false -%>
-<div id="publish" class="setgroup">
-  <h3>Publishing and reading</h3>
-  <dl class="setform">
-    <dt>
-      <label for="site_ping_urls">Urls to ping when publishing</label><br />
-      <span class="hint">Each one should be on a separate line.</span>
-    </dt>
-    <dd><%= text_area 'site', 'ping_urls', :rows => 5, :cols => 45 %></dd>
-    <dt><label for="site_articles_per_page">Articles shown on homepage</label></dt>
-    <dd><%= text_field 'site', 'articles_per_page', :class => 'tiny' %></dd>
-    <dt>
-      <label for="site_permalink_style">Permalink style</label>
-      <span class="hint">(How articles are linked to)</span>
-    </dt>
-    <dd>
-      <select name="permalink_style">
-        <%= options_for_select(%w(permalink year/month/permalink year/month/day/permalink section/permalink), '') %>
-      </select>
-    </dd>
-    
-  </dl>
-</div>
-<% end -%>
-
 <div id="spam" class="setgroup">
   <h3>Spam prevention</h3>
-  <p>At the moment Mephisto uses <%= link_to 'Akismet', 'http://akismet.com' %> to automatically handle spam.</p>
+  <p>At the moment Mephisto uses <%= link_to 'Akismet', 'http://akismet.com' %> to automatically handle spam.  If you leave out the Akismet settings, you can moderate new comments from the Overview.</p>
   <dl class="setform">
     <dt><label>Akismet API Key</label></dt> 
     <dd><%= f.text_field :akismet_key %></dd>
@@ -73,6 +48,44 @@
   </dl>
 </div>
 
+<div id="publish" class="setgroup">
+  <h3>Publishing and Reading</h3>
+  <dl class="setform">
+    <dt>
+      <label for="site_search_path">Url that the search area is available at.</label>
+    </dt>
+    <dd><%= f.text_field :search_path %></dd>
+    <% if @templates.any? -%>
+    <dt>
+      <label for="site_search_template">Template used by the search area</label>
+    </dt>
+    <dd>
+      <select name="site[search_template]">
+        <%= options_from_templates_for_select(@templates, @site.search_template) %>
+      </select>
+    </dd>
+    <% end -%>
+    <dt>
+      <label for="site_tag_path">Url that the tag area is available at.</label>
+    </dt>
+    <dd><%= f.text_field :tag_path %></dd>
+    <% if @templates.any? -%>
+    <dt>
+      <label for="site_tag_template">Template used by the tag area</label>
+    </dt>
+    <dd>
+      <select name="site[tag_template]">
+        <%= options_from_templates_for_select(@templates, @site.tag_template) %>
+      </select>
+    </dd>
+    <% end -%>
+    <dt>
+      <label for="permalink_style">Url style that the articles use.</label>
+      <span class="hint">Use the <code>:year</code>, <code>:month</code>, <code>:day</code>, <code>:permalink</code>, and <code>:id</code> in place of actual article values.</span>
+    </dt>
+    <dd><%= f.text_field :permalink_style %></dd>
+  </dl>
+</div>
 
 <p class="btns"><%= submit_tag 'Save and apply settings' %></p>
 <% end %>

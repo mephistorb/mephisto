@@ -13,6 +13,9 @@ first:
   comment_age: 30
   timezone: America/New_York
   articles_per_page: 15
+  permalink_style: ":year/:month/:day/:permalink"
+  search_path: search
+  tag_path: tags
 hostess:
   id: 2
   title: Cupcake
@@ -23,9 +26,15 @@ hostess:
   approve_comments: false
   comment_age: 0
   articles_per_page: 10
+  permalink_style: ":year/:month/:day/:permalink"
+  search_path: search
+  tag_path: tags
 garden:
   id: 3
   title: walled garden
   host: garden.com
   timezone: UTC
   comment_age: -1
+  permalink_style: ":year/:month/:day/:permalink"
+  search_path: search
+  tag_path: tags

@@ -5,3 +5,4 @@ home:
   path: ''
   articles_per_page: 15
   template: home.liquid
+  archive_path: archives

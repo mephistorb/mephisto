@@ -1,7 +1,9 @@
 class Section < ActiveRecord::Base
   ARTICLES_COUNT_SQL = 'INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id INNER JOIN sections ON sections.id = assigned_sections.section_id'.freeze unless defined?(ARTICLES_COUNT)
+  before_validation :set_archive_path
   before_validation_on_create :create_path
-  validates_presence_of   :name, :site_id
+  validates_presence_of   :name, :site_id, :archive_path
+  validates_format_of     :archive_path, :with => Format::STRING
   validates_exclusion_of  :path, :in => [nil]
   validates_uniqueness_of :path, :case_sensitive => false, :scope => :site_id
   belongs_to :site
@@ -83,6 +85,11 @@ class Section < ActiveRecord::Base
   end
   
   protected
+    def set_archive_path
+      self.archive_path = 'archives' if archive_path.blank?
+      archive_path.downcase!
+    end
+
     def create_path
       # nasty regex because i want to keep alpha numerics AND /'s
       self.path = self.class.permalink_for(name.to_s) if path.blank?

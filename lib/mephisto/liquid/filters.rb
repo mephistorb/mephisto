@@ -102,12 +102,12 @@ module Mephisto
       def monthly_url(section, date = nil)
         date ||= Time.now.utc.beginning_of_month
         date   = Date.new(*date.split('-')) unless date.is_a?(Date)
-        File.join(section.url, @context['site']['archive_slug'], date.year.to_s, date.month.to_s)
+        File.join(section.url, section['archive_path'], date.year.to_s, date.month.to_s)
       end
       
       def tag_url(tags)
         tags = [tags] ; tags.flatten!
-        absolute_url @context['site']['tag_slug'], *tags
+        absolute_url @context['site']['tag_path'], *tags
       end
 
       def page_url(page)

@@ -6,6 +6,7 @@ home:
   path: ''
   articles_count: 3
   template: home.liquid
+  archive_path: archives
 about:
   id: 2
   site_id: 1
@@ -13,6 +14,7 @@ about:
   path: about
   show_paged_articles: true
   articles_count: 3
+  archive_path: archives
 cupcake_home:
   id: 3
   site_id: 2
@@ -21,6 +23,7 @@ cupcake_home:
   show_paged_articles: true
   template: home.liquid
   articles_count: 1
+  archive_path: archives
 cupcake_about:
   id: 4
   site_id: 2
@@ -28,3 +31,4 @@ cupcake_about:
   path: about
   show_paged_articles: true
   articles_count: 1
+  archive_path: archives

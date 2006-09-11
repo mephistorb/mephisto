@@ -21,11 +21,23 @@
               (@section.show_paged_articles? ? '1' : '0') %>
       </select>
     </dd>
+    <dt>
+      <label for="section_archive_path">Url that the search area is available at.</label>
+      <span class="hint">Defaults to #{section_path}/<strong>archives</strong>/#{year}/#{month}</span>
+    </dt>
+    <dd><%= f.text_field :archive_path %></dd>
+    
     <% if @templates.any? -%>
     <dt><label for="section_template"><%= 'Paged ' if @section.show_paged_articles? %>Section Template</label></dt>
     <dd>
       <select name="section[template]">
         <%= options_from_templates_for_select(@templates, @section.template) %>
+      </select>
+    </dd>
+    <dt><label for="section_archive_template">Section Archive Template</label></dt>
+    <dd>
+      <select name="section[archive_template]">
+        <%= options_from_templates_for_select(@templates, @section.archive_template) %>
       </select>
     </dd>
     <% end -%>

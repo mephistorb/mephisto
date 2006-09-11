@@ -8,4 +8,9 @@ class Admin::BaseController < ApplicationController
   end
   
   helper_method :admin?
+
+  protected
+    def find_and_sort_templates
+      @layouts, @templates = site.templates.partition { |t| t.dirname.to_s =~ /layouts$/ }
+    end
 end

@@ -10,7 +10,7 @@ module Mephisto
         @source                 = source
         @current_section        = section
         @current_section_liquid = section ? section.to_liquid : nil
-        @site_liquid = [:id, :host, :subtitle, :title, :articles_per_page, :archive_slug, :tag_slug, :search_slug].inject({}) { |h, k| h.merge k.to_s => @source.send(k) }
+        @site_liquid = [:id, :host, :subtitle, :title, :articles_per_page, :tag_path, :search_path].inject({}) { |h, k| h.merge k.to_s => @source.send(k) }
         @site_liquid['accept_comments'] = @source.accept_comments?
       end
 

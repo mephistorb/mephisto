@@ -7,3 +7,6 @@ default:
   approve_comments: true
   comment_age: 30
   timezone: UTC
+  permalink_style: ":year/:month/:day/:permalink"
+  search_path: search
+  tag_path: tags

@@ -10,7 +10,7 @@ module Mephisto
       def initialize(source, current = false)
         @source         = source
         @current        = current
-        @section_liquid = [:id, :name, :path].inject({}) { |h, k| h.update k.to_s => @source.send(k) }
+        @section_liquid = [:id, :name, :path, :archive_path].inject({}) { |h, k| h.update k.to_s => @source.send(k) }
         @section_liquid['articles_count'] = @source.send(:read_attribute, :articles_count)
         {:is_blog => :blog?, :is_paged => :paged?, :is_home => :home?}.each { |k, v| @section_liquid[k.to_s] = @source.send(v) }
       end
