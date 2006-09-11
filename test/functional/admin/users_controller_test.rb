@@ -39,10 +39,13 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
   def test_should_create_user
     login_as :quentin
     assert_difference User, :count do
-      post :create, :user => { :login => 'bob', :email => 'foo', :password => 'testy', :password_confirmation => 'testy', :admin => true }
-      assert_equal assigns(:user), User.authenticate_for(sites(:first), 'bob', 'testy')
-      assert_redirected_to :action => 'index'
-      assert flash[:notice]
+      assert_difference Membership, :count do
+        post :create, :user => { :login => 'bob', :email => 'foo', :password => 'testy', :password_confirmation => 'testy', :admin => true }
+        assert_models_equal [sites(:first)], assigns(:user).sites
+        assert_equal assigns(:user), User.authenticate_for(sites(:first), 'bob', 'testy')
+        assert_redirected_to :action => 'index'
+        assert flash[:notice]
+      end
     end
   end
 

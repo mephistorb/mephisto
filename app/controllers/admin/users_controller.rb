@@ -14,13 +14,13 @@ class Admin::UsersController < Admin::BaseController
 
   def create
     @user = User.new params[:user]
-    if @user.save
-      flash[:notice] = "User created."
-      redirect_to :action => 'index'
-    else
-      flash[:error] = "Save failed."
-      render :action => 'new'
-    end
+    @user.save!
+    @user.sites << site
+    flash[:notice] = "User created."
+    redirect_to :action => 'index'
+  rescue ActiveRecord::RecordInvalid
+    flash[:error] = "Save failed."
+    render :action => 'new'
   end
 
   def update

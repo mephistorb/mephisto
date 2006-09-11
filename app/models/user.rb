@@ -3,7 +3,7 @@ class User < UserAuth
   has_many :articles
   acts_as_paranoid
 
-  has_many :memberships
+  has_many :memberships, :dependent => :destroy
   has_many :sites, :through => :memberships, :order => 'title, host'
 
   def self.find_admins(*args)
