@@ -7,7 +7,7 @@ module Mephisto
       include ActionView::Helpers::AssetTagHelper
 
       def link_to_article(article)
-        content_tag :a, article['title'], :href => article.url
+        content_tag :a, article['title'], :href => article['url']
       end
       
       def link_to_page(page)
@@ -15,11 +15,11 @@ module Mephisto
       end
 
       def link_to_comments(article)
-        content_tag :a, pluralize(article['comments_count'], 'comment'), :href => article.url
+        content_tag :a, pluralize(article['comments_count'], 'comment'), :href => article['url']
       end
       
       def link_to_section(section)
-        content_tag :a, section['name'], :href => section.url
+        content_tag :a, section['name'], :href => section['url'], :title => section['title']
       end
 
       def page_title(page)
@@ -122,8 +122,13 @@ module Mephisto
         page[:is_page_home] ? current_page_section.url : [current_page_section.url, page[:permalink]].join('/')
       end
 
-      def find_section(path)
+      def section(path)
         @context['site'].find_section(path)
+      end
+      
+      def child_sections(path_or_section)
+        path = path_or_section.is_a?(SectionDrop) ? path_or_section['path'] : path_or_section
+        @context['site'].find_child_sections(path)
       end
 
       def latest_articles(section, limit = nil)

@@ -69,10 +69,10 @@ context "Drop Filters" do
   end
 
   specify "should find section by path" do
-    assert_equal sections(:home),  find_section('').source
-    assert_equal sections(:about), find_section('about').source
+    assert_equal sections(:home),  section('').source
+    assert_equal sections(:about), section('about').source
   end
-  
+
   specify "should find latest articles by section" do
     section = sections(:home).to_liquid
     assert_models_equal [contents(:welcome), contents(:another)], latest_articles(section).collect(&:source)

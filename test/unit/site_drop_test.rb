@@ -4,7 +4,12 @@ class SiteDropTest < Test::Unit::TestCase
   fixtures :sites, :sections, :tags, :taggings, :contents
   
   def setup
-    @site = Mephisto::Liquid::SiteDrop.new(sites(:first))
+    @site = sites(:first).to_liquid
+  end
+
+  def test_equality
+    assert_equal @site, sites(:first)
+    assert_equal @site, sites(:first).to_liquid
   end
 
   def test_should_convert_site_to_drop

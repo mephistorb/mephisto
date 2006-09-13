@@ -3,6 +3,12 @@ require File.dirname(__FILE__) + '/../test_helper'
 class SectionDropTest < Test::Unit::TestCase
   fixtures :sites, :sections, :contents
 
+  def test_equality
+    section = sections(:home).to_liquid
+    assert_equal section, sections(:home)
+    assert_equal section, sections(:home).to_liquid
+  end
+
   def test_should_convert_section_to_drop
     assert_kind_of Liquid::Drop, sections(:home).to_liquid
   end

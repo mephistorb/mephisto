@@ -2,7 +2,7 @@ module Mephisto
   module Liquid
     class SiteDrop < ::Liquid::Drop
       include DropMethods
-      
+
       def site() @source end
       def current_section() @current_section_liquid end
 
@@ -32,6 +32,12 @@ module Mephisto
         @section_index[path] ||= @current_section_liquid if @current_section && @current_section.path == path
         @section_index[path] ||= @sections.detect { |s| s['path'] == path } if @sections
         @section_index[path] ||= @source.sections.find_by_path(path).to_liquid
+      end
+      
+      def find_child_sections(path)
+        returning @source.sections.find(:all, :conditions => ['path LIKE ?', "#{path}/%"]) do |sections|
+          sections.collect! &:to_liquid
+        end
       end
       
       def blog_sections
