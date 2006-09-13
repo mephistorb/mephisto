@@ -11,7 +11,7 @@
         <p>You&rsquo;re currently reading the page &ldquo;{{ article.title }}.</p>
         <h2 style="margin-top: 10px;">Other pages</h2>
         <ul class="dates">
-        {% for page in pages %}
+        {% for page in section.pages %}
         {% if page.url != article.url %}
           <li>{{ page | link_to_page }}</li>
         {% endif %}
