@@ -212,16 +212,24 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_set_paged_permalinks
     dispatch 'about'
-    assert_tag 'a', :attributes => { :href => '/about', :class => 'selected' }, :content => 'Welcome to Mephisto'
-    assert_tag 'a', :attributes => { :href => '/about/about-this-page'       }, :content => 'About'
-    assert_tag 'a', :attributes => { :href => '/about/the-site-map'          }, :content => 'The Site Map'
+    assert_select 'ul#nav' do
+      assert_select "a[href='/about']", 'Welcome to Mephisto' do
+        assert_select "[class='selected']"
+      end
+      assert_select "a[href='/about/about-this-page']", 'About this page'
+      assert_select "a[href='/about/the-site-map']", 'The Site Map'
+    end
   end
 
-  def test_should_set_paged_permalinks
+  def test_should_set_paged_permalinks_on_sub_page
     dispatch 'about/the-site-map'
-    assert_tag 'a', :attributes => { :href => '/about'                                    }, :content => 'Welcome to Mephisto'
-    assert_tag 'a', :attributes => { :href => '/about/about-this-page'                    }, :content => 'About'
-    assert_tag 'a', :attributes => { :href => '/about/the-site-map', :class => 'selected' }, :content => 'The Site Map'
+    assert_select 'ul#nav' do
+      assert_select "a[href='/about']", 'Welcome to Mephisto'
+      assert_select "a[href='/about/about-this-page']", 'About this page'
+      assert_select "a[href='/about/the-site-map']", 'The Site Map' do
+        assert_select "[class='selected']"
+      end
+    end
   end
 
   def test_should_sanitize_comment
