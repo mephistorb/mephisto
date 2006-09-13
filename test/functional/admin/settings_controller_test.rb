@@ -24,7 +24,14 @@ class Admin::SettingsControllerTest < Test::Unit::TestCase
     assert_equal 'foo', sites(:first).reload.title
     assert_redirected_to :action => 'index'
   end
-  
+
+  def test_should_clear_layouts
+    login_as :quentin
+    post :update, :site => { :title => 'foo', :search_layout => '-', :tag_layout => '-' }
+    assert_nil sites(:first).reload.search_layout
+    assert_nil sites(:first).tag_layout
+  end
+
   def test_should_allow_site_admin
     login_as :arthur
     get :index

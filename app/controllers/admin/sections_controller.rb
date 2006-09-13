@@ -3,7 +3,7 @@ class Admin::SectionsController < Admin::BaseController
   before_filter :find_and_sort_templates,   :only => [:index, :edit]
   before_filter :find_and_reorder_sections, :only => [:index, :edit]
   before_filter :find_section,              :only => [:destroy, :update, :order]
-  before_filter :preprocess_section_params, :only => [:create, :update]
+  clear_empty_templates_for :section, :template, :layout, :archive_template, :only => [:create, :update]
 
   def index
     @section = site.sections.build
@@ -44,12 +44,6 @@ class Admin::SectionsController < Admin::BaseController
     def find_section
       @section = site.sections.find params[:id]
     end
-    
-    def preprocess_section_params
-      params[:section][:template] = nil if params[:section][:template] == '0'
-      params[:section][:layout]   = nil if params[:section][:layout]   == '0'
-    end
-    
-  protected
+
     alias authorized? admin?
 end
