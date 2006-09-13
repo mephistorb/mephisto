@@ -245,15 +245,21 @@ class MephistoControllerTest < Test::Unit::TestCase
     date = 3.days.ago
     dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
     assert_dispatch_action :single
-    assert_tag 'form', :attributes => { :id => 'comment-form', :action => "#{contents(:welcome).full_permalink}/comments#comment-form"}
-    assert_tag :tag => 'form',     :descendant => { 
-               :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author',       :name => 'comment[author]'       } }
-    assert_tag :tag => 'form',     :descendant => {                                                                                  
-               :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author_url',   :name => 'comment[author_url]'   } }
-    assert_tag :tag => 'form',     :descendant => {                                                                                  
-               :tag => 'input',    :attributes => { :type => 'text', :id => 'comment_author_email', :name => 'comment[author_email]' } }
-    assert_tag :tag => 'form',     :descendant => { 
-               :tag => 'textarea', :attributes => {                  :id => 'comment_body',         :name => 'comment[body]'  } }
+    assert_select 'form#comment-form' do
+      assert_select "[action='#{contents(:welcome).full_permalink}/comments#comment-form}']", {}
+      assert_select "input[type='text']" do
+        assert_select "[id='comment_author']"
+        assert_select "[name='comment[author]']"
+      end
+      assert_select "input[type='text']:nth-of-type(1)" do
+        assert_select "[id='comment_author_email']"
+        assert_select "[name='comment[author_email]']"
+      end
+      assert_select "input[type='text']:nth-of-type(2)", {} do
+        assert_select "[id='comment_body']"
+        assert_select "[name='comment[body]']"
+      end
+    end
   end
 
   def test_should_show_monthly_entries

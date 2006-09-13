@@ -27,7 +27,7 @@ class MephistoController < ApplicationController
       Mephisto::Liquid::CommentForm.article = @article
       articles = []
       @section.articles.each_with_index do |article, i|
-        articles << article.to_liquid(:page => i.zero?)
+        articles << article.to_liquid(:page => i.zero?, :site => site)
       end
       render_liquid_template_for(:page, 'section' => @section.to_liquid(true),
                                         'pages'   => articles,
