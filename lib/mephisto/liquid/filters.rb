@@ -10,8 +10,8 @@ module Mephisto
         content_tag :a, article['title'], :href => article['url']
       end
       
-      def link_to_page(page)
-        content_tag :a, page_title(page), page_anchor_options(page)
+      def link_to_page(page, section = nil)
+        content_tag :a, page_title(page), page_anchor_options(page, section)
       end
 
       def link_to_comments(article)
@@ -118,8 +118,9 @@ module Mephisto
         absolute_url @context['site'].source.search_url(query, page)
       end
 
-      def page_url(page)
-        page[:is_page_home] ? current_page_section.url : [current_page_section.url, page[:permalink]].join('/')
+      def page_url(page, section = nil)
+        section ||= current_page_section
+        page[:is_page_home] ? section.url : [section.url, page[:permalink]].join('/')
       end
 
       def section(path)
@@ -143,11 +144,15 @@ module Mephisto
         @context[name] = value ; nil
       end
 
+      def assign_to_global(value, name)
+        @context.assigns.last[name] = value ; nil
+      end
+
       private
         # marks a page as class=selected
-        def page_anchor_options(page)
-          options = {:href => page_url(page)}
-          current_page_article.source == page.source ? options.update(:class => 'selected') : options
+        def page_anchor_options(page, section = nil)
+          options = {:href => page_url(page, section)}
+          current_page_article == page ? options.update(:class => 'selected') : options
         end
         
         def current_page_section
