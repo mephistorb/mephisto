@@ -29,6 +29,10 @@ module Mephisto
         @article_liquid[method.to_s]
       end
       
+      def comments
+        @comments ||= @source.comments.reject(&:new_record?).collect(&:to_liquid)
+      end
+      
       def sections
         @sections ||= @source.sections.inject([]) { |all, s| s.home? ? all : all << s.to_liquid } # your days are numbered, home section!
       end

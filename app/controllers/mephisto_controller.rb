@@ -25,12 +25,7 @@ class MephistoController < ApplicationController
     
       self.cached_references << @section << @article
       Mephisto::Liquid::CommentForm.article = @article
-      articles = []
-      @section.articles.each_with_index do |article, i|
-        articles << article.to_liquid(:page => i.zero?, :site => site)
-      end
       render_liquid_template_for(:page, 'section' => @section.to_liquid(true),
-                                        'pages'   => articles,
                                         'article' => @article.to_liquid(:mode => :single, :site => site))
     end
 
@@ -121,11 +116,10 @@ class MephistoController < ApplicationController
     def show_article_with(assigns = {})
       find_article if @article.nil?
       show_404 and return unless @article
-      @comments = @article.comments.reject(&:new_record?).collect(&:to_liquid)
       self.cached_references << @article
       Mephisto::Liquid::CommentForm.article = @article
       @article  = @article.to_liquid(:mode => :single, :site => site)
-      render_liquid_template_for(:single, assigns.merge('articles' => [@article], 'article' => @article, 'comments' => @comments))
+      render_liquid_template_for(:single, assigns.merge('articles' => [@article], 'article' => @article))
     end
 
     alias show_article show_article_with

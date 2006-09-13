@@ -4,7 +4,7 @@
   {{ article.body }}
 </div>
 <ul id="nav">
-{% for page in pages %}
+{% for page in section.pages %}
 <li>{{ page | link_to_page }}</li>
 {% endfor %}
 </ul>

@@ -6,7 +6,7 @@
 
 <h3>Comments</h3>
 <ul class="comments">
-{% for comment in comments %}
+{% for comment in article.comments %}
 <li id="comment_{{ comment.id }}">
   <p>{{ comment.body }}</p>
   <p>by {{ comment.author }} on {{ comment.created_at | format_date: 'short' }}</p>

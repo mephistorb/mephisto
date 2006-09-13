@@ -204,9 +204,9 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_set_home_page_on_paged_sections
     dispatch 'about'
-    assert_equal 3, liquid(:pages).size
+    assert_equal 3, liquid(:section).pages.size
     [true, false, false].each_with_index do |expected, i|
-      assert_equal expected, liquid(:pages)[i][:is_page_home]
+      assert_equal expected, liquid(:section).pages[i][:is_page_home]
     end
   end
 

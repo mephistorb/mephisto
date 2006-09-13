@@ -29,6 +29,15 @@ module Mephisto
         end
       end
 
+      def pages
+        return @pages if @pages
+        @pages = returning [] do |pages|
+          @source.articles.each_with_index do |article, i|
+            pages << article.to_liquid(:page => i.zero?, :site => @context['site'].source)
+          end
+        end
+      end
+
       def url
         @url ||= absolute_url(*@source.to_url)
       end
