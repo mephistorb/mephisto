@@ -2,7 +2,7 @@ class Admin::AssetsController < Admin::BaseController
   before_filter :find_asset, :except => [:index, :new, :create, :latest, :search, :upload, :clear_bucket]
 
   def index
-    search_assets 20
+    search_assets 24
     @recent = []
     4.times { @recent << @assets.shift }
     @recent.compact!

@@ -70,8 +70,8 @@ class Article < Content
         Time.now.utc, *Time.delta(year.to_i, month.to_i)]))
     end
     
-    def find_all_by_tags(tag_names)
-      find(:all, :order => 'contents.published_at DESC', :include => [:tags, :user],
+    def find_all_by_tags(tag_names, limit = 15)
+      find(:all, :order => 'contents.published_at DESC', :include => [:tags, :user], :limit => limit,
         :conditions => ['(contents.published_at <= ? AND contents.published_at IS NOT NULL) AND tags.name IN (?)', Time.now.utc, tag_names])
     end
   end

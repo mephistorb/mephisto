@@ -52,6 +52,11 @@
   <h3>Publishing and Reading</h3>
   <dl class="setform">
     <dt>
+      <label for="site_articles_per_page">Articles per page</label>
+      <span class="hint">Default article limit for search/tag pages.</span>
+    </dt>
+    <dd><%= f.text_field :articles_per_page, :class => 'tiny' %></dd>
+    <dt>
       <label for="site_search_path">Url that the search area is available at.</label>
     </dt>
     <dd><%= f.text_field :search_path %></dd>

@@ -13,7 +13,7 @@ class MephistoController < ApplicationController
 
   protected
     def dispatch_list
-      @articles = @section.articles.find_by_date(:include => :user)
+      @articles = @section.articles.find_by_date(:include => :user, :limit => @section.articles_per_page)
       self.cached_references << @section
       render_liquid_template_for(:section, 'section'  => @section.to_liquid(true),
                                            'articles' => @articles)
@@ -100,7 +100,7 @@ class MephistoController < ApplicationController
     end
     
     def dispatch_tags
-      @articles = site.articles.find_all_by_tags(@dispatch_path)
+      @articles = site.articles.find_all_by_tags(@dispatch_path, site.articles_per_page)
       self.cached_references << @section
       render_liquid_template_for(:tag, 'articles' => @articles, 'tags' => @dispatch_path)
     end
