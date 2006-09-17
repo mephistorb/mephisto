@@ -423,9 +423,9 @@ SmartSearch.prototype = {
 
 Event.addBehavior({
   '#filesearch':     function() { window.spotlight = new Spotlight('filesearchform', 'filesearch'); },
-  '#comments-view':  function() { Event.observe(this, 'change', Comments.filter.bind(commentsView)); },
-  '#article-draft':  function() { Event.observe(this, 'change', ArticleForm.saveDraft.bind(articleDraft)); },
-  '#revisionnum':    function() { Event.observe(this, 'change', ArticleForm.getRevision.bind(revisions)); },
+  '#comments-view':  function() { Event.observe(this, 'change', Comments.filter.bind(this)); },
+  '#article-draft':  function() { Event.observe(this, 'change', ArticleForm.saveDraft.bind(this)); },
+  '#revisionnum':    function() { Event.observe(this, 'change', ArticleForm.getRevision.bind(this)); },
   '#article-search': function() {
     new SmartSearch('article-search', [
       {keys: ['section'],               show: ['sectionlist'],  hide: ['manualsearch', 'searchsubmit']},
