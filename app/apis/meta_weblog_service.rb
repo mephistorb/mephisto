@@ -32,12 +32,14 @@ class MetaWeblogService < XmlRpcService
     true
   end
 
-  #def newMediaObject(blogid, username, password, data)
-  #  resource = @user.resources.create(:filename => data['name'], :created_at => Time.now)
-  #  resource.write_to_disk(data['bits'])
-  #
-  #  MetaWeblogStructs::Url.new("url" => controller.url_for(:controller => "/files/#{resource.filename}"))
-  #end
+  def newMediaObject(blogid, username, password, data)
+    asset = site.assets.create!(
+      :filename => data['name'],
+      :content_type => (data['type'] || guess_content_type_from(data['name'])),
+      :attachment_data => data['bits']
+      )
+    MetaWeblogStructs::Url.new("url" => asset.public_filename)
+  end
 
   def article_dto_from(article)
     MetaWeblogStructs::Article.new(
@@ -72,5 +74,13 @@ class MetaWeblogService < XmlRpcService
       article.published_at = publish == true ? utc_date : nil
       article.save!
       article.id
+    end
+    
+    def guess_content_type_from(name)
+      if name =~ /(png|gif|jpe?g)/i
+        "image/#{$1 == 'jpg' ? 'jpeg' : $1}"
+      else
+        'application/octet-stream'
+      end
     end
 end

@@ -14,6 +14,11 @@ class BackendControllerTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     @protocol   = :xmlrpc
+    FileUtils.mkdir_p ASSET_PATH
+  end
+  
+  def teardown
+    FileUtils.rm_rf ASSET_PATH
   end
 
   def test_meta_weblog_get_categories
@@ -87,19 +92,38 @@ class BackendControllerTest < Test::Unit::TestCase
     end
   end
 
-  # def test_meta_weblog_new_media_object
-  #   media_object = MetaWeblogStructs::MediaObject.new(
-  #     "name" => Digest::SHA1.hexdigest("upload-test--#{Time.now}--") + ".jpg",
-  #     "type" => "image/jpeg",
-  #     "bits" => Base64.encode64(File.open(File.expand_path(RAILS_ROOT) + "/public/images/shadow.png", "rb") { |f| f.read })
-  #   )
-  # 
-  #   args = [ 1, 'quentin', 'quentin', media_object ]
-  # 
-  #   result = invoke_layered :metaWeblog, :newMediaObject, *args
-  #   assert result['url'] =~ /#{media_object['name']}/
-  #   assert File.unlink(File.expand_path(RAILS_ROOT) + "/public/images/#{media_object['name']}")
-  # end
+  def test_should_upload_file_via_meta_weblog_new_media_object
+    now = Time.now.utc
+    media_object = new_media_object  
+
+    args = [ 1, 'quentin', 'quentin', media_object ]
+    result = invoke_layered :metaWeblog, :newMediaObject, *args
+    assert result['url'] =~ /#{media_object['name']}$/
+
+    assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, media_object['name'])
+  end
+  
+  def test_should_guess_content_type_for_gif
+    media_object = new_media_object 'type' => nil, :name => 'filename.gif'
+    assert_nil media_object['type']
+    
+    args = [ 1, 'quentin', 'quentin', media_object ]
+    result = invoke_layered :metaWeblog, :newMediaObject, *args
+    
+    new_asset = Asset.find :first, :order => 'created_at DESC'
+    assert_equal 'image/gif', new_asset.content_type
+  end
+
+  def test_should_guess_content_type_for_jpg
+    media_object = new_media_object 'type' => nil
+    assert_nil media_object['type']
+    
+    args = [ 1, 'quentin', 'quentin', media_object ]
+    result = invoke_layered :metaWeblog, :newMediaObject, *args
+    
+    new_asset = Asset.find :first, :order => 'created_at DESC'
+    assert_equal 'image/jpeg', new_asset.content_type
+  end
 
   def test_should_show_filters
     result  = invoke_layered :mt, :supportedTextFilters
@@ -112,4 +136,15 @@ class BackendControllerTest < Test::Unit::TestCase
     # This will be a little more useful with the upstream changes in [1093]
     assert_raise(XMLRPC::FaultException) { invoke_layered :metaWeblog, :getRecentPosts, *args }
   end
+  
+  protected
+  
+    def new_media_object(options = {})
+      MetaWeblogStructs::MediaObject.new(options.reverse_merge!(
+        'name' => Digest::SHA1.hexdigest("upload-test--#{Time.now}--") + ".jpg",
+        'type' => 'image/jpeg',
+        'bits' => Base64.encode64(File.open(File.expand_path(RAILS_ROOT) + '/public/images/mephisto/shadow.png', 'rb') { |f| f.read })
+      ))
+    end
+  
 end
