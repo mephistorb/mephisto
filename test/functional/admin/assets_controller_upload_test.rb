@@ -6,7 +6,7 @@ class Admin::AssetsController; def rescue_action(e) raise e end; end
 
 # special test suite that clears the assets table and assets
 class Admin::AssetsControllerUploadTest < Test::Unit::TestCase
-  fixtures :sites, :users
+  fixtures :sites, :users, :assets
 
   def setup
     @controller = Admin::AssetsController.new
@@ -30,7 +30,7 @@ class Admin::AssetsControllerUploadTest < Test::Unit::TestCase
     get :index
     assert_response :success
     assert_models_equal Asset.find(61, 58, 55, 52, :order => 'created_at desc'), assigns(:recent)
-    assert_models_equal Asset.find(*((4..51).to_a.in_groups_of(3).collect(&:first) << {:order => 'created_at desc'})), assigns(:assets)
+    assert_models_equal Asset.find(*(((4..51).to_a << 1).in_groups_of(3).collect(&:first) << {:order => 'created_at desc'})), assigns(:assets)
   end
   
   def test_should_edit_asset
