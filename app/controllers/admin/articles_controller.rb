@@ -13,18 +13,10 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :load_sections, :only => [:new, :edit]
 
   def index
-    query = lambda do
-      @article_pages = Paginator.new self, site.articles.count(:all, article_options), 30, params[:page]
-      @articles      = site.articles.find(:all, article_options(:order => 'contents.published_at DESC', :select => 'contents.*', 
-                         :limit   =>  @article_pages.items_per_page,
-                         :offset  =>  @article_pages.current.offset))
-    end
-    
-    if params[:published] == '0'
-      Article.with_scope(:find => { :conditions => 'published_at is null' }, &query)
-    else
-      query.call
-    end
+    @article_pages = Paginator.new self, site.articles.count(:all, article_options), 30, params[:page]
+    @articles      = site.articles.find(:all, article_options(:order => 'contents.published_at DESC', :select => 'contents.*', 
+                       :limit   =>  @article_pages.items_per_page,
+                       :offset  =>  @article_pages.current.offset))
     
     @comments = @site.unapproved_comments.count :all, :group => :article, :order => '1 desc'
     @sections = site.sections.find(:all)
@@ -166,7 +158,9 @@ class Admin::ArticlesController < Admin::BaseController
           when 'tags'
             @article_options[:joins] = "INNER JOIN taggings ON taggings.taggable_id = contents.id and taggings.taggable_type = 'Content' INNER JOIN tags on taggings.tag_id = tags.id"
             @article_options[:conditions] = Article.send(:sanitize_sql, ["tags.name IN (?)", Tag.parse(params[:q])])
-        end unless params[:q].blank?
+          when 'draft'
+            @article_options[:conditions] = 'published_at is null'
+        end unless params[:q].blank? && params[:filter] != 'draft'
         if section_id > 0
           @article_options[:joins] = "#{@article_options[:joins]} INNER JOIN assigned_sections ON contents.id = assigned_sections.article_id"
           cond = Article.send(:sanitize_sql, ['assigned_sections.section_id = ?', params[:section]])

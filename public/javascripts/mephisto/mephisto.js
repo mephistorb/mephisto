@@ -398,7 +398,7 @@ var SmartSearch = Class.create();
 SmartSearch.prototype = {
   initialize: function(form, conditions, triggersSubmit) {
     this.element = $(form);
-    this.conditions = $H(conditions);
+    this.conditions = $A(conditions);
     this.triggersSubmit = $(triggersSubmit);
     if(!this.element) return;
     
@@ -412,43 +412,41 @@ SmartSearch.prototype = {
     }
     
     this.conditions.each(function(condition) {
-      var items = condition.key.split(',');
-      var toShow = items[0].strip();
-      var toHide = items[1].strip();
-      if(condition.value.include($F(element))) {
-        Element.show(toShow);
-        Element.hide(toHide);
+      if(condition.keys.include($F(element))) {
+        $A(condition.show).each(function(e) { $(e).show(); });
+        $A(condition.hide).each(function(e) { $(e).hide(); });
       }
     }.bind(this));
     return false;
   }
 }
 
+Event.addBehavior({
+  '#filesearch':     function() { window.spotlight = new Spotlight('filesearchform', 'filesearch'); },
+  '#comments-view':  function() { Event.observe(this, 'change', Comments.filter.bind(commentsView)); },
+  '#article-draft':  function() { Event.observe(this, 'change', ArticleForm.saveDraft.bind(articleDraft)); },
+  '#revisionnum':    function() { Event.observe(this, 'change', ArticleForm.getRevision.bind(revisions)); },
+  '#article-search': function() {
+    new SmartSearch('article-search', [
+      {keys: ['section'],               show: ['sectionlist'],  hide: ['manualsearch', 'searchsubmit']},
+      {keys: ['title', 'body', 'tags'], show: ['manualsearch'], hide: ['sectionlist', 'searchsubmit']},
+      {keys: ['draft'],                 show: ['searchsubmit'], hide: ['manualsearch', 'sectionlist']}
+    ], 'sectionlist')
+  },
+  '#searchsubmit:click': function() { 
+    $('published').value = '0';
+    $('article-search').submit();
+  }
+});
 
-Event.observe(window, 'load', function() {
+Event.onReady(function() {
   new DropMenu('select');
   TinyTab.filetabs = new TinyTab('filetabs', 'tabpanels');
-  if($('filesearch')) window.spotlight = new Spotlight('filesearchform', 'filesearch');
-  
-  // TODO: IE doesn't fire onchange for checkbox
-  var commentsView   = $('comments-view');
-  var articleDraft   = $('article-draft');
-  var revisions      = $('revisionnum');
-  var published      = $('article_published');
-  
-  if(revisions)    Event.observe(revisions,    'change', ArticleForm.getRevision.bind(revisions));
-  if(commentsView) Event.observe(commentsView, 'change', Comments.filter.bind(commentsView));
-  if(articleDraft) Event.observe(articleDraft, 'change', ArticleForm.saveDraft.bind(articleDraft));
-  if(published)    Event.observe(published,    'change', function() { $('published').value = $F(published) || '0' ; $('article-search').submit(); }.bind(published));
-  
+
   ['notice', 'errors'].each(function(flashType) {
     var el = $('flash-' + flashType);
     if(el.innerHTML != '') Flash.show(flashType, el.innerHTML);
   })
   
-  new SmartSearch('article-search', {
-    'sectionlist, manualsearch': ['section'],
-    'manualsearch, sectionlist': ['title', 'body', 'tags']
-  }, 'sectionlist');
 });
 

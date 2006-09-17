@@ -20,6 +20,7 @@
           ['tagged with',          'tags'],
           ['whose title contains', 'title'],
           ['whose body contains',  'body'],
+          ['not published',        'draft']
         ] %>
       </select>
       <select name="section" id="sectionlist">
@@ -28,8 +29,9 @@
       </select>
     </li>
     <li><%= text_field_tag 'q', params[:q], :id => 'manualsearch', :style => 'display:none' %></li>
+    <li><input type="button" id="searchsubmit" value="Go" style="display:none" /></li>
   </ul>
-    <div><%= hidden_field_tag :published, ((params[:published].nil? || params[:published] == '1') ? '1' : '0') %></div>
+    <div><%= hidden_field_tag :published, 1 %></div>
   </form>
 </div>
 <% end %>
@@ -42,7 +44,7 @@
       <th scope="col" class="small-col">Status</th>
       <th scope="col">Article</th>
       <th scope="col">Comments</th>
-      <th scope="col">Published <%= check_box_tag :article_published, '1', (params[:published].nil? || params[:published] == '1') %></th>
+      <th scope="col">Published</th>
       <th scope="col">&nbsp;</th>
     </tr>
   </thead>
