@@ -1,5 +1,7 @@
 * SVN *
 
+* move liquid drops/filters to app/drops and app/filters
+
 * add multi-asset uploading capabilities.
 
 * add password resetting ability [Geoff Davis, Rick Olson]
