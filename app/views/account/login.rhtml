@@ -1,8 +1,8 @@
-<%= start_form_tag({}, { :id => 'login_form' }) %>
 <div class="little-box">
+<%= start_form_tag({:controller=>:account, :action=>:login}, { :id => 'login_form' }) %>
   <dl>
     <dt><%= label_tag 'login', 'Login' %></dt>
-    <dd><%= text_field_tag 'login', {}, :class => 'big' %></dd>
+    <dd><%= text_field_tag 'login', params[:login], :class => 'big' %></dd>
     <dt><%= label_tag 'password', 'Password' %></dt>
     <dd><%= password_field_tag 'password', {}, :class => 'big' %></dd>
     <dt></dt>
@@ -11,6 +11,11 @@
       <label for="remember_me">Remember Me</label>
     </dd>
   </dl>
-  <p class="btns"><%= submit_tag 'Sign in' %></p>
-</div>
+  <p class="btns"><%= submit_tag 'Sign in' %> or <a href="#" id="reset_password_link">reset password</a></p>
 <%= end_form_tag %>
+<%= start_form_tag({:action => 'forget'}, { :id => 'reset_password' }) %>
+  <p>Enter your email, and a brand new login key will be sent to you.  Click the link in the email to log in, and then change your password.</p>
+  <p><%= text_field_tag :email, params[:email], :class => 'big' %></p>
+  <p class="btns"><%= submit_tag 'Reset' %> or <a href="#" id="reset_password_cancel">cancel</a></p>
+</form>
+</div>

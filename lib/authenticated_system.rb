@@ -36,13 +36,20 @@ module AuthenticatedSystem
 
     # store current uri in  the session.
     # we can return to this location by calling return_location
-    def store_location
-      session[:return_to] = request.request_uri
+    # Options:
+    # * :overwrite - (default = true) Overwrite existing stored location
+    # * :uri - Return to the specified URI (defaults to request.request_uri)
+    def store_location(uri = nil)
+      session[:return_to] = uri || request.request_uri
     end
     
+    def location_stored?
+      !session[:return_to].nil?
+    end
+
     # move to the last store_location call or to the passed default one
     def redirect_back_or_default(default)
-      session[:return_to] ? redirect_to_url(session[:return_to]) : redirect_to(default)
+      location_stored? ? redirect_to_url(session[:return_to]) : redirect_to(default)
       session[:return_to] = nil
     end
     
@@ -60,14 +67,10 @@ module AuthenticatedSystem
     # When called with before_filter :login_from_cookie will check for an :auth_token
     # cookie and log the user back in if apropriate
     def login_from_cookie
-      return unless cookies[:auth_token] && !logged_in?
-      user = User.find_by_remember_token(cookies[:auth_token])
-      if user && user.remember_token?
-        user.remember_me
-        self.current_user = user
-        cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
-        flash[:notice] = "Logged in successfully"
-      end
+      return unless cookies[:token] && !logged_in?
+      self.current_user = site.user_by_token(cookies[:token])
+      cookies[:token] = { :value => self.current_user.reset_token! , :expires => self.current_user.token_expires_at } if logged_in?
+      true
     end
 
   private

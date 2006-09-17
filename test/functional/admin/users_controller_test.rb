@@ -40,7 +40,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     login_as :quentin
     assert_difference User, :count do
       assert_difference Membership, :count do
-        post :create, :user => { :login => 'bob', :email => 'foo', :password => 'testy', :password_confirmation => 'testy', :admin => true }
+        post :create, :user => { :login => 'bob', :email => 'foo@example.com', :password => 'testy', :password_confirmation => 'testy', :admin => true }
         assert_models_equal [sites(:first)], assigns(:user).sites
         assert_equal assigns(:user), User.authenticate_for(sites(:first), 'bob', 'testy')
         assert_redirected_to :action => 'index'
@@ -51,34 +51,34 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
 
   def test_should_update_email_and_password
     login_as :quentin
-    post :update, :id => users(:quentin).id, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }
+    post :update, :id => users(:quentin).id, :user => { :email => 'foo@example.com', :password => 'testy', :password_confirmation => 'testy' }
     users(:quentin).reload
-    assert_equal 'foo', users(:quentin).email
+    assert_equal 'foo@example.com', users(:quentin).email
     assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin', 'testy')
     assert_response :success
   end
 
   def test_should_update_email_and_password_as_site_member
     login_as :arthur, :hostess
-    post :update, :id => users(:arthur).id, :user => { :email => 'foo', :password => 'testy', :password_confirmation => 'testy' }
+    post :update, :id => users(:arthur).id, :user => { :email => 'foo@example.com', :password => 'testy', :password_confirmation => 'testy' }
     users(:arthur).reload
-    assert_equal 'foo', users(:arthur).email
+    assert_equal 'foo@example.com', users(:arthur).email
     assert_equal users(:arthur), User.authenticate_for(sites(:hostess), 'arthur', 'testy')
     assert_response :success
   end
 
   def test_should_leave_password_alone
     login_as :quentin
-    post :update, :id => users(:quentin).id, :user => { :email => 'foo', :password => '', :password_confirmation => '' }
+    post :update, :id => users(:quentin).id, :user => { :email => 'foo@example.com', :password => '', :password_confirmation => '' }
     users(:quentin).reload
-    assert_equal 'foo', users(:quentin).email
+    assert_equal 'foo@example.com', users(:quentin).email
     assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin', 'quentin')
     assert_response :success
   end
 
   def test_should_show_error_while_updating
     login_as :quentin
-    post :update, :id => users(:quentin).id, :user => { :email => 'foo', :password => 'tea', :password_confirmation => '' }
+    post :update, :id => users(:quentin).id, :user => { :email => 'foo@example.com', :password => 'tea', :password_confirmation => '' }
     users(:quentin).reload
     assert_equal 'quentin@example.com', users(:quentin).email
     assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin', 'quentin')
@@ -87,7 +87,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
 
   def test_should_show_error_while_creating
     login_as :quentin
-    post :create, :user => { :email => 'foo', :password => 'tea', :password_confirmation => '' }
+    post :create, :user => { :email => 'foo@example.com', :password => 'tea', :password_confirmation => '' }
     assert_response :success
   end
 
@@ -117,7 +117,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
   def test_should_show_deleted_users
     login_as :quentin
     get :index
-    assert_equal 3, assigns(:users).size
+    assert_equal 4, assigns(:users).size
     user_tag    = { :tag => 'li', :attributes => { :id => 'user-1', :class => 'clear' } }
     normal_tag  = { :tag => 'li', :attributes => { :id => 'user-2', :class => 'clear' } }
     deleted_tag = { :tag => 'li', :attributes => { :id => 'user-3', :class => 'clear deleted' } }

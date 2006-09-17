@@ -76,6 +76,29 @@ class UserTest < Test::Unit::TestCase
     assert_nil User.authenticate_for(sites(:first), 'aaron', 'aaron')
   end
 
+  def test_should_find_member_by_token
+    assert_equal users(:quentin), User.find_by_token(sites(:first), users(:quentin).token)
+  end
+
+  def test_should_not_find_member_by_expired_token
+    assert_nil User.find_by_token(sites(:first), users(:arthur).token)
+  end
+
+  def test_should_not_find_member_by_token_in_wrong_site
+    memberships(:quentin_first).destroy
+    users(:quentin).update_attribute :admin, false
+    assert_nil User.find_by_token(sites(:first), users(:quentin).token)
+  end
+
+  def test_should_find_member_by_email
+    assert_equal users(:quentin), User.find_by_email(sites(:first), users(:quentin).email)
+  end
+
+  def test_should_not_find_member_by_email_in_wrong_site
+    memberships(:arthur_first).destroy
+    assert_nil User.find_by_email(sites(:first), users(:arthur).email)
+  end
+
   def test_should_allow_empty_filter
     users(:quentin).update_attribute :filter, ''
     assert_equal '', users(:quentin).reload.filter

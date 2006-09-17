@@ -2,7 +2,7 @@ require 'uri'
 
 class Comment < Content
   validates_presence_of :author, :author_ip, :article_id, :body
-  validates_format_of :author_email, :with => /(\A(\s*)\Z)|(\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z)/i
+  validates_format_of :author_email, :with => Format::EMAIL
   before_validation :clean_up_author_email
   before_validation :clean_up_author_url
   after_validation_on_create  :snag_article_filter_and_site
@@ -31,9 +31,7 @@ class Comment < Content
   def clean_up_author_url
     if value = read_attribute(:author_url) then
       value.strip!
-      if not value.blank?
-        value = 'http://' + value unless (URI::parse(value).scheme or value[0..0] == '/')
-      end
+      value = 'http://' + value unless value.blank? || value[0..0] == '/' || URI::parse(value).scheme
       write_attribute :author_url, value
     end
   end
@@ -48,7 +46,7 @@ class Comment < Content
     end
 
     def update_counter_cache
-      Article.increment_counter 'comments_count', article_id if approved? && @old_approved == :false
+      Article.increment_counter 'comments_count', article_id if  approved? && @old_approved == :false
       Article.decrement_counter 'comments_count', article_id if !approved? && @old_approved == :true
     end
     

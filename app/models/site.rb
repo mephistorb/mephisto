@@ -74,7 +74,15 @@ class Site < ActiveRecord::Base
   def user_with_deleted(id)
     User.find_by_site_with_deleted self, id
   end
+
+  def user_by_token(token)
+    User.find_by_token(self, token)
+  end
   
+  def user_by_email(email)
+    User.find_by_email(self, email)
+  end
+
   def tags
     Tag.find(:all, :conditions => ['contents.type = ? AND contents.site_id = ?', 'Article', id], :order => 'tags.name',
       :joins => "INNER JOIN taggings ON taggings.tag_id = tags.id INNER JOIN contents ON (taggings.taggable_id = contents.id AND taggings.taggable_type = 'Content')")

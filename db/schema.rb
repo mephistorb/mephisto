@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 58) do
+ActiveRecord::Schema.define(:version => 59) do
 
   create_table "assets", :force => true do |t|
     t.column "content_type",     :string
@@ -156,19 +156,19 @@ ActiveRecord::Schema.define(:version => 58) do
   end
 
   create_table "users", :force => true do |t|
-    t.column "login",                     :string,   :limit => 40
-    t.column "email",                     :string,   :limit => 100
-    t.column "crypted_password",          :string,   :limit => 40
-    t.column "salt",                      :string,   :limit => 40
-    t.column "activation_code",           :string,   :limit => 40
-    t.column "activated_at",              :datetime
-    t.column "created_at",                :datetime
-    t.column "updated_at",                :datetime
-    t.column "deleted_at",                :datetime
-    t.column "remember_token",            :string
-    t.column "remember_token_expires_at", :datetime
-    t.column "filter",                    :string
-    t.column "admin",                     :boolean,                 :default => false
+    t.column "login",            :string,   :limit => 40
+    t.column "email",            :string,   :limit => 100
+    t.column "crypted_password", :string,   :limit => 40
+    t.column "salt",             :string,   :limit => 40
+    t.column "activation_code",  :string,   :limit => 40
+    t.column "activated_at",     :datetime
+    t.column "created_at",       :datetime
+    t.column "updated_at",       :datetime
+    t.column "deleted_at",       :datetime
+    t.column "token",            :string
+    t.column "token_expires_at", :datetime
+    t.column "filter",           :string
+    t.column "admin",            :boolean,                 :default => false
   end
 
 end

@@ -9,7 +9,7 @@ module Mephisto
         context.stack do
           if context['message'].blank? 
             errors = context['errors'].blank? ? '' : %Q{<ul id="comment-errors"><li>#{context['errors'].join('</li><li>')}</li></ul>}
-            
+
             submitted = context['submitted'] || {}
             submitted.each{ |k, v| submitted[k] = CGI::escapeHTML(v) }
             

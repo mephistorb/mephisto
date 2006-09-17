@@ -44,6 +44,32 @@ context "Site" do
   end
 end
 
+context "Site Membership" do
+  fixtures :sites, :users, :memberships
+  specify "should find member by token" do
+    assert_equal users(:quentin), sites(:first).user_by_token(users(:quentin).token)
+  end
+
+  specify "should not find member by expired token" do
+    assert_nil sites(:first).user_by_token(users(:arthur).token)
+  end
+
+  specify "should not find member by token in wrong site" do
+    memberships(:quentin_first).destroy
+    users(:quentin).update_attribute :admin, false
+    assert_nil sites(:first).user_by_token(users(:quentin).token)
+  end
+
+  specify "should find member by email" do
+    assert_equal users(:quentin), sites(:first).user_by_email(users(:quentin).email)
+  end
+
+  specify "should not find member by email in wrong site" do
+    memberships(:arthur_first).destroy
+    assert_nil sites(:first).user_by_email(users(:arthur).email)
+  end
+end
+
 context "Default Site Options" do
   def setup
     @site = Site.new :host => 'foo.com'

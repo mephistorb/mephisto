@@ -5,8 +5,7 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />   
     <title>Mephisto: <%= controller.controller_name %> Admin</title>
     <%= stylesheet_link_tag 'mephisto/fullscreen' %>
-    <%= javascript_include_tag 'mephisto/prototype', 'mephisto/effects' %>
-    <%= javascript_include_tag 'mephisto/logger', 'mephisto/mephisto' %>
+    <%= javascript_include_tag 'mephisto/prototype', 'mephisto/effects', 'mephisto/lowpro', 'mephisto/logger', 'mephisto/application' %>
   </head>
   <body id="body-<%= controller.controller_name %>">
   
@@ -20,19 +19,11 @@
       
       <!-- div.content -->
       <div id="fullscreen">
-        <% if flash[:error] %>
-        <div id="flash-errors"><%= flash[:error] %></div>
-        <% end %>
-        <% if flash[:notice] %>
-        <div id="flash-notice">
-          <%= flash[:notice] %>  
-        </div>
-        <% end %>
+        <div id="flash-errors" style="display: none;"><%= flash[:error] %></div>
+        <div id="flash-notice" style="display:none"><%= flash[:notice] %></div>
         
         <!-- div.left -->
         <div id="main">
-
-          
           <%= yield %>
         </div>
         <!-- /div.left -->

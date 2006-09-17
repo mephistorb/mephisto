@@ -117,3 +117,11 @@ Pathname.class_eval do
     end
   end
 end
+
+module Mephisto
+  class MissingTemplateError < StandardError
+    def initialize(template_name)
+      super "'#{template_name}' is missing."
+    end
+  end
+end

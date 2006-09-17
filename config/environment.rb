@@ -4,6 +4,10 @@
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
 
+#require 'rubygems'
+#require 'ruby-debug'
+#Debugger.start
+
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
@@ -44,3 +48,7 @@ require 'mephisto_init'
 
 # Enable if you want to host multiple sites on this app
 # Site.multi_sites_enabled = true
+
+# shouldn't need to set the host, it's set automatically
+UserMailer.default_url_options[:host] = 'localhost:3000'
+UserMailer.mail_from = 'webmaster@localhost'

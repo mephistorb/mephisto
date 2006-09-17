@@ -355,7 +355,7 @@ input.textfield, #comment_author,
 	width: 15em;
 	margin:5px 0;
 }
-textarea.commentbox{
+#comment-form textarea{
 	width:28em;
 	height:10em;
 	padding:0.25em;

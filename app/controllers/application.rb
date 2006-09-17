@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   helper_method  :site
   attr_reader    :site
 
+  def admin?
+    logged_in? && current_user.admin? || current_user.site_admin?
+  end
+  
   protected
     # so not the best place for this...
     def asset_image_args_for(asset, thumbnail = :tiny, options = {})
