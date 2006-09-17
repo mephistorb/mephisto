@@ -6,12 +6,14 @@ class ApplicationController < ActionController::Base
   before_filter  :set_cache_root
   helper_method  :site
   attr_reader    :site
-
-  def admin?
-    logged_in? && current_user.admin? || current_user.site_admin?
-  end
   
   protected
+    helper_method :admin?
+    
+    def admin?
+      logged_in? && current_user.admin? || current_user.site_admin?
+    end
+  
     # so not the best place for this...
     def asset_image_args_for(asset, thumbnail = :tiny, options = {})
       options = options.reverse_merge(:title => "#{asset.title} \n #{asset.tags.join(', ')}")

@@ -211,6 +211,37 @@ Asset = {
     form.action  = "/admin/articles/upload"
     if(article_id) form.action += "/" + article_id[1]
     form.submit();
+  },
+
+  addInput: function(formId, inputClass) {
+    this.hideTitle('asset_title');
+    var dl    = $(formId).down('dl');
+    var files = $$('#' + formId + ' .' + inputClass);
+    var input = "<input type=\"file\" name=\"" + inputClass + "[]\" id=\"" + inputClass + "_" + (files.length + 1) + "\" />";
+    var closeLink = "<a href=\"#\" onclick=\"return Asset.removeInput(this, '" + formId + "', '" + inputClass + "');\">x</a>"
+    new Insertion.Bottom(dl, "<dd class=\"" + inputClass + "\" style=\"display:none\">" + input + ' ' + closeLink + "</dd>");
+    new Effect.BlindDown($A(dl.getElementsByTagName('dd')).last());
+    return false;
+  },
+  
+  removeInput: function(input, formId, inputClass) {
+    var length = $$('#' + formId + ' .' + inputClass).findAll(function(e) { return e.visible(); }).length;
+    if(length == 2) this.showTitle('asset_title');
+    $(input).up('dd').visualEffect('drop_out');
+    
+    return false;
+  },
+  
+  hideTitle: function(titleId) {
+    var dd = $(titleId).up('dd');
+    var dt = dd.previous('dt');
+    [dd, dt].each(Element.hide);
+  },
+  
+  showTitle: function(titleId) {
+    var dd = $(titleId).up('dd');
+    var dt = dd.previous('dt');
+    [dd, dt].each(Element.show);
   }
 }
 
@@ -420,6 +451,7 @@ SmartSearch.prototype = {
     return false;
   }
 }
+
 Effect.DefaultOptions.duration = 0.25;
 Event.addBehavior({
   '#filesearch':     function() { window.spotlight = new Spotlight('filesearchform', 'filesearch'); },
@@ -428,6 +460,7 @@ Event.addBehavior({
   '#revisionnum':    function() { Event.observe(this, 'change', ArticleForm.getRevision.bind(this)); },
   '#reset_password': function() { this.hide(); },
   '#reset_password_link:click,#reset_password_cancel:click': function() { Effect.toggle('reset_password', 'blind'); },
+  '#asset_add_file:click': function() { return Asset.addInput('new_asset', 'asset_data'); },
   '#article-search': function() {
     new SmartSearch('article-search', [
       {keys: ['section'],               show: ['sectionlist'],  hide: ['manualsearch', 'searchsubmit']},

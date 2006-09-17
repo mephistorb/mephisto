@@ -1,11 +1,21 @@
 <%= render :partial => "action_nav" %>
-<% form_for :asset, :url => asset_url(@asset), :html => { :multipart => true, :method => :put } do |f| %>
-<div style="padding: 10px;text-align: center;">
-  <%= link_to asset_image_for(@asset, :thumb), @asset.public_filename %>
-</div>
-<%= render :partial => "form", :object => f %>
-<p class="btns">
-  <%= submit_tag 'Save Asset' %>
-  or <%= link_to 'cancel', assets_path %>
-</p>
+<% form_for @asset, :html => { :multipart => true } do |f| %>
+  <div style="padding: 10px;text-align: center;">
+    <%= link_to asset_image_for(@asset, :thumb), @asset.public_filename %>
+  </div>
+
+  <%= error_messages_for :asset %>
+  <dl class="group">
+    <dt><label for="asset_title">Title</label></dt>
+    <dd><%= f.text_field :title %></dd>
+    <dt><label for="asset_tag">Tags</label> <span class="hint">Enter one or more tags separated by a comma.</span></dt>
+    <dd><%= f.text_field :tag %></dd>
+    <dt><label for="asset_uploaded_data">Select a file</label></dt>
+    <dd><%= f.file_field :uploaded_data %></dd>
+  </dl>
+
+  <p class="btns">
+    <%= submit_tag 'Save Asset' %>
+    or <%= link_to 'cancel', assets_path %>
+  </p>
 <% end -%>

@@ -56,15 +56,15 @@ else
 end
 
   def test_should_edit_asset
-    process_upload
     login_as :quentin
+    process_upload ['logo.png']
     get :edit, :id => Asset.find(1).id
     assert_response :success
   end
   
   def test_should_update_asset
-    process_upload
     login_as :quentin
+    process_upload ['logo.png']
     post :update, :id => Asset.find(1).id, :asset => { :title => 'foo bar' }
     assert_redirected_to assets_path
     assert_valid assigns(:asset)
@@ -76,10 +76,13 @@ end
   end
   
   protected
-    def process_upload
-     FileUtils.mkdir_p ASSET_PATH
-     login_as(:quentin) do
-       post :create, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }
-     end
+    def process_upload(files, options = {})
+      FileUtils.mkdir_p ASSET_PATH
+      files.collect! do |f|
+        filename     = f.is_a?(Array) ? f.shift : f
+        content_type = (f.is_a?(Array) && f.shift) || 'image/png'
+        fixture_file_upload("assets/#{filename}", content_type)
+      end
+      post :create, :asset => options, :asset_data => files
     end
 end

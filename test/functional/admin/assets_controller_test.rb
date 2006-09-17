@@ -25,7 +25,34 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     
     assert_difference sites(:first).assets, :count do
       assert_difference Asset, :count, asset_count do
-        process_upload
+        process_upload ['logo.png']
+        assert_equal 'logo.png', assigns(:assets).first.title
+        assert_match /logo\.png/, flash[:notice]
+        assert_redirected_to asset_path
+      end
+    end
+  end
+
+  def test_should_upload_and_set_tags
+    assert_difference Tag, :count do
+      process_upload ['logo.png'], :tag => 'foo'
+      assert_equal 'foo', assigns(:assets).first.reload.tags.first.name
+    end
+  end
+  
+  def test_should_set_title
+    process_upload ['logo.png'], :title => 'Logo'
+    assert_equal 'logo.png', assigns(:assets).first.filename
+    assert_equal 'Logo', assigns(:assets).first.title
+    assert_match /Logo/, flash[:notice]
+  end
+
+  def test_should_upload_multiple_assets_and_ignore_titles
+    asset_count = Object.const_defined?(:Magick) ? 6 : 2 # asset + 2 thumbnails
+    assert_difference sites(:first).assets, :count, 2 do
+      assert_difference Asset, :count, asset_count do
+        process_upload %w(logo.png logo.png)
+        assert_match /2 assets/, flash[:notice]
         assert_redirected_to asset_path
       end
     end
@@ -138,8 +165,13 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
   end
   
   protected
-    def process_upload
-     FileUtils.mkdir_p ASSET_PATH
-     post :create, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }
+    def process_upload(files, options = {})
+      FileUtils.mkdir_p ASSET_PATH
+      files.collect! do |f|
+        filename     = f.is_a?(Array) ? f.shift : f
+        content_type = (f.is_a?(Array) && f.shift) || 'image/png'
+        fixture_file_upload("assets/#{filename}", content_type)
+      end
+      post :create, :asset => options, :asset_data => files
     end
 end

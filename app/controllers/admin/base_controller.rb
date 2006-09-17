@@ -4,8 +4,6 @@ class Admin::BaseController < ApplicationController
   before_filter :login_from_cookie
   before_filter :login_required, :except => :feed
 
-  helper_method :admin?
-
   protected
     alias authorized? admin?
 
