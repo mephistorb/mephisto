@@ -1,5 +1,9 @@
 * SVN *
 
+* add multi-asset uploading capabilities.
+
+* add password resetting ability [Geoff Davis, Rick Olson]
+
 * remove 'pages' and 'comments' variables in page/single template types.  Instead use 'section.pages' and 'article.comments', respectively.
 
 * Find child sections of a section
