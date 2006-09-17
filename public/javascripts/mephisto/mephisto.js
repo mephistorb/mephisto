@@ -420,12 +420,14 @@ SmartSearch.prototype = {
     return false;
   }
 }
-
+Effect.DefaultOptions.duration = 0.25;
 Event.addBehavior({
   '#filesearch':     function() { window.spotlight = new Spotlight('filesearchform', 'filesearch'); },
   '#comments-view':  function() { Event.observe(this, 'change', Comments.filter.bind(this)); },
   '#article-draft':  function() { Event.observe(this, 'change', ArticleForm.saveDraft.bind(this)); },
   '#revisionnum':    function() { Event.observe(this, 'change', ArticleForm.getRevision.bind(this)); },
+  '#reset_password': function() { this.hide(); },
+  '#reset_password_link:click,#reset_password_cancel:click': function() { Effect.toggle('reset_password', 'blind'); },
   '#article-search': function() {
     new SmartSearch('article-search', [
       {keys: ['section'],               show: ['sectionlist'],  hide: ['manualsearch', 'searchsubmit']},
