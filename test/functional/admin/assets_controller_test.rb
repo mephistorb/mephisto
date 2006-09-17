@@ -19,10 +19,12 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     assert_response :success
     assert_equal 7, assigns(:count_by_conditions)
   end
-
+  
   def test_should_upload_and_create_asset_records
+    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
+    
     assert_difference sites(:first).assets, :count do
-      assert_difference Asset, :count, 3 do # asset + 2 thumbnails
+      assert_difference Asset, :count, asset_count do
         process_upload
         assert_redirected_to asset_path
       end

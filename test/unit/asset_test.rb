@@ -2,32 +2,41 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class AssetTest < Test::Unit::TestCase
   fixtures :sites, :assets, :tags, :taggings
-
+  
   def test_should_upload_and_create_asset_records
+    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
+    
     assert_difference sites(:first).assets, :count do
-      assert_difference Asset, :count, 3 do # asset + 2 thumbnails
+      assert_difference Asset, :count, asset_count do 
         process_upload
-        asset = Asset.find(:first, :conditions => 'id > 7', :order => 'created_at')
-        assert_equal 2, asset.thumbnails_count
+        
+        if Object.const_defined?(:Magick)
+          asset = Asset.find(:first, :conditions => 'id > 7', :order => 'created_at')
+          assert_equal 2, asset.thumbnails_count
+        end
       end
     end
   end
-
+  
   def test_should_upload_file
     process_upload
     now = Time.now.utc
     assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png')
-    assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_thumb.png')
-    assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_tiny.png')
-  end
+    if Object.const_defined?(:Magick)
+      assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_thumb.png')
+      assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_tiny.png')
+    end
+  end  
 
   def test_should_upload_file_in_multi_sites_mode
     Site.multi_sites_enabled = true
     process_upload
     now = Time.now.utc
     assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png')
-    assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_thumb.png')
-    assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_tiny.png')
+    if Object.const_defined?(:Magick)
+      assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_thumb.png')
+      assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_tiny.png')
+    end
   ensure
     Site.multi_sites_enabled = false
   end

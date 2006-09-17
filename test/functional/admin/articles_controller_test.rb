@@ -291,9 +291,11 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       post :update, :id => contents(:welcome).id, :article => { :title => 'Foo' }, :commit => 'Save without Revision'
     end
   end
-
+  
   def test_should_upload_asset
-    assert_difference Asset, :count, 3 do
+    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
+    
+    assert_difference Asset, :count, asset_count do
       post :upload, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }
       assert_response :success
       assert_template 'new'
@@ -301,14 +303,17 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   end
 
   def test_should_upload_asset_and_redirect_to_article
-    assert_difference Asset, :count, 3 do
-      post :upload, :id => contents(:welcome).id, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }
+    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
+    
+    assert_difference Asset, :count, asset_count do
+      post :upload, :id => contents(:welcome).id, 
+                    :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }
       assert_response :success
       assert_template 'edit'
       assert_equal contents(:welcome), assigns(:article)
     end
   end
-
+  
   def test_should_not_error_on_new_article_asset_upload
     assert_no_difference Asset, :count do
       post :upload
