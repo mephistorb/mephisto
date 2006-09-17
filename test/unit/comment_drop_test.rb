@@ -4,7 +4,7 @@ class CommentDropTest < Test::Unit::TestCase
   fixtures :contents, :sites
   
   def setup
-    @comment = Mephisto::Liquid::CommentDrop.new(contents(:welcome_comment))
+    @comment = CommentDrop.new(contents(:welcome_comment))
   end
   
   def test_should_convert_comment_to_drop

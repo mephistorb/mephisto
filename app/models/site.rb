@@ -131,7 +131,7 @@ class Site < ActiveRecord::Base
   end
 
   def to_liquid(current_section = nil)
-    Mephisto::Liquid::SiteDrop.new self, current_section
+    SiteDrop.new self, current_section
   end
 
   composed_of :timezone, :class_name => 'TZInfo::Timezone', :mapping => %w(timezone name)

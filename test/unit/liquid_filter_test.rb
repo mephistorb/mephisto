@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 context "Basic Filters" do
-  include Mephisto::Liquid::Filters
+  include Filters
 
   def setup
     @context = {}
@@ -16,7 +16,7 @@ end
 
 context "Url Filters" do
   fixtures :sites, :sections, :contents
-  include Mephisto::Liquid::Filters
+  include Filters
 
   def setup
     @context = {'site' => sites(:first).to_liquid, 'section' => sections(:about).to_liquid}
@@ -62,7 +62,7 @@ end
 
 context "Drop Filters" do
   fixtures :sites, :sections, :contents, :assigned_sections
-  include Mephisto::Liquid::Filters
+  include Filters
 
   def setup
     @context = {'site' => sites(:first).to_liquid, 'section' => sections(:about).to_liquid}

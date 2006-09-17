@@ -19,7 +19,7 @@ Rails::Initializer.run do |config|
   # Skip frameworks you're not going to use
   # config.frameworks -= [ :action_web_service ]
 
-  config.autoload_paths += %W( #{RAILS_ROOT}/app/cachers )
+  config.autoload_paths += %W( #{RAILS_ROOT}/app/cachers #{RAILS_ROOT}/app/drops #{RAILS_ROOT}/app/filters )
 
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)

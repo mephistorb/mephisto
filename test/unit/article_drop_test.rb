@@ -22,7 +22,7 @@ class ArticleDropTest < Test::Unit::TestCase
   end
   
   def test_should_list_tags
-    assert_equal %w(rails), Mephisto::Liquid::ArticleDrop.new(contents(:another)).tags
+    assert_equal %w(rails), ArticleDrop.new(contents(:another)).tags
   end
   
   def test_should_list_only_blog_sections

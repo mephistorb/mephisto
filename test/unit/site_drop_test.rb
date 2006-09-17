@@ -26,7 +26,7 @@ class SiteDropTest < Test::Unit::TestCase
   end
   
   def test_should_show_current_section
-    @site = Mephisto::Liquid::SiteDrop.new(sites(:first), sections(:about))
+    @site = SiteDrop.new(sites(:first), sections(:about))
     assert_equal sections(:about), @site.current_section.source
     assert_equal [false, true], @site.sections.collect(&:current)
   end

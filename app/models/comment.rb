@@ -14,7 +14,7 @@ class Comment < Content
   attr_protected :approved
 
   def to_liquid
-    Mephisto::Liquid::CommentDrop.new self
+    CommentDrop.new self
   end
   
   def approved=(value)
