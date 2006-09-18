@@ -70,7 +70,13 @@ context "Site Permalink Generation" do
   specify "should generate correct permalink format" do
     assert_equal "/#{@article.year}/#{@article.month}/#{@article.day}/#{@article.permalink}", @site.permalink_for(@article)
   end
-  
+
+  specify "should generate correct permalink format for draft" do
+    @article.published_at = nil
+    now = Time.now.utc
+    assert_equal "/#{now.year}/#{now.month}/#{now.day}/#{@article.permalink}", @site.permalink_for(@article)
+  end
+
   specify "should generate custom id permalink" do
     @site.permalink_style = 'posts/:year/:id'
     assert_valid @site

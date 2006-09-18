@@ -41,6 +41,11 @@ class ArticleDropTest < Test::Unit::TestCase
     assert_equal '', a.send(:body_for_mode, :list)
   end
   
+  def test_should_use_nil_published_date_for_draft
+    contents(:welcome).published_at = nil
+    assert_nil contents(:welcome).to_liquid['published_at']
+  end
+  
   def test_body_with_excerpt
     assert contents(:welcome).update_attributes(:body => 'body', :excerpt => 'excerpt'), contents(:welcome).errors.full_messages.to_sentence
     a = contents(:welcome).to_liquid

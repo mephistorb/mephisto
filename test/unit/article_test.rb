@@ -92,6 +92,12 @@ class ArticleTest < Test::Unit::TestCase
     assert !contents(:welcome).save_version?
   end
 
+  def test_comment_expiration_date_on_draft
+    a = create_fake_article
+    a.published_at = nil
+    assert_equal 10.days.from_now.utc.to_i, a.comments_expired_at.to_i
+  end
+
   def test_comment_expiration_date
     a = create_fake_article
     assert_equal 5.days.from_now.utc.to_i, a.comments_expired_at.to_i

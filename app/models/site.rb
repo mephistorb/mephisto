@@ -108,9 +108,13 @@ class Site < ActiveRecord::Base
   end
 
   def permalink_for(article)
+    old_published = article.published_at
+    article.published_at ||= Time.now.utc
     permalink_style.split('/').inject [''] do |s, piece|
       s << (piece =~ PERMALINK_VAR && PERMALINK_OPTIONS.keys.include?($1) ? article.send($1).to_s : piece)
     end.join('/')
+  ensure
+    article.published_at = old_published
   end
 
   def search_url(query, page = nil)

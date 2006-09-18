@@ -31,6 +31,7 @@ module CoreFilters
   end
 
   def format_date(date, format, ordinalized = false)
+    return '' if date.nil?
     if ordinalized
       date ? date.to_time.to_ordinalized_s(format.to_sym) : nil
     else

@@ -106,7 +106,7 @@ class Article < Content
   end
 
   def comments_expired_at
-    published_at + comment_age.days
+    (published_at || Time.now.utc) + comment_age.days
   end
 
   def set_filter_from(filtered_object)

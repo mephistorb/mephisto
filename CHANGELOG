@@ -1,5 +1,7 @@
 * SVN *
 
+* Fixed issues previewing article drafts
+
 # Added new liquid vars {{ site.latest_articles }} and {{ site.latest_comments }}, 
   as well as filters like {{ site | latest_articles: 5 }} or {{ site | latest_comments: 5 }}
 
