@@ -31,7 +31,20 @@ context "Site" do
     sites(:first).update_attribute :filter, ''
     assert_equal '', sites(:first).reload.filter
   end
-  
+
+  specify "should create site with default home section" do
+    site = nil
+    assert_difference Site, :count do
+      assert_difference Section, :count do
+        site = Site.create! :host => 'foo.com'
+      end
+    end
+    assert_equal 'Home', site.sections.first.name
+    assert_equal '',     site.sections.first.path
+    assert_equal 1,      site.sections.size
+    assert site.sections.first.home?
+  end
+
   specify "should generate search url" do
     assert_equal '/search?q=abc',        sites(:first).search_url('abc')
     assert_equal '/search?q=abc&page=2', sites(:first).search_url('abc', 2)

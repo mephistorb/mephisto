@@ -1,0 +1,1 @@
+STATS_DIRECTORIES << %w(Liquid\ Drops app/drops) << %w(Liquid\ Filters app/filters) << %w(Observers/Sweeprs app/cachers)

@@ -53,6 +53,7 @@ class Site < ActiveRecord::Base
   validates_format_of     :host, :with => Format::DOMAIN
   validates_uniqueness_of :host
   validate :check_permalink_style
+  after_create { |s| s.sections.create(:name => 'Home', :path => '') }
   attr_reader :permalink_variables
 
   with_options :order => 'contents.created_at', :class_name => 'Comment' do |comment|
