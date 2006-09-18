@@ -286,8 +286,8 @@ var Flash = {
 var ArticleForm = {
   saveDraft: function() {
     var isDraft = $F(this);
-    if(isDraft) Element.hide('publish-date-lbl', 'publish-date');
-    else Element.show('publish-date-lbl', 'publish-date');
+    if(isDraft) ['publish-date-lbl', 'publish-date'].each(Element.hide);
+    else ['publish-date-lbl', 'publish-date'].each(Element.show);
   },
 
   getAvailableComments: function() {
