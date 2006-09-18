@@ -1,5 +1,5 @@
 require 'digest/md5'
-module Filters
+module UrlFilters
   include Mephisto::Liquid::UrlMethods
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::AssetTagHelper
@@ -20,49 +20,6 @@ module Filters
     content_tag :a, section['name'], :href => section['url'], :title => section['title']
   end
 
-  def page_title(page)
-    page['title']
-  end
-
-  def escape_html(html)
-    CGI::escapeHTML(html)
-  end
-  
-  alias h escape_html
-
-  def pluralize(count, singular, plural = nil)
-    "#{count} " + if count == 1
-      singular
-    elsif plural
-      plural
-    elsif Object.const_defined?(:Inflector)
-      Inflector.pluralize(singular)
-    else
-      singular + "s"
-    end
-  end
-  
-  # See: http://starbase.trincoll.edu/~crypto/resources/LetFreq.html
-  def word_count(text)
-    (text.split(/[^a-zA-Z]/).join(' ').size / 4.5).round
-  end
-
-  def textilize(text)
-    text.blank? ? '' : RedCloth.new(text).to_html
-  end
-
-  def format_date(date, format, ordinalized = false)
-    if ordinalized
-      date ? date.to_time.to_ordinalized_s(format.to_sym) : nil
-    else
-      date ? date.to_time.to_s(format.to_sym) : nil unless ordinalized
-    end
-  end
-  
-  def strftime(date, format)
-    date ? date.strftime(format) : nil
-  end
-  
   def img_tag(img, options = {})
     tag 'img', {:src => asset_url(img), :alt => img.split('.').first }.merge(options)
   end
@@ -119,35 +76,6 @@ module Filters
   def page_url(page, section = nil)
     section ||= current_page_section
     page[:is_page_home] ? section.url : [section.url, page[:permalink]].join('/')
-  end
-
-  def section(path)
-    @context['site'].find_section(path)
-  end
-  
-  def child_sections(path_or_section)
-    path = path_or_section.is_a?(SectionDrop) ? path_or_section['path'] : path_or_section
-    @context['site'].find_child_sections(path)
-  end
-
-  def latest_articles(site_or_section, limit = nil)
-    site_or_section.latest_articles(limit || site_or_section['articles_per_page'])
-  end
-
-  def latest_article(section)
-    latest_articles(section, 1).first
-  end
-  
-  def latest_comments(site, limit = nil)
-    site.latest_comments(limit || site['articles_per_page'])
-  end
-
-  def assign_to(value, name)
-    @context[name] = value ; nil
-  end
-
-  def assign_to_global(value, name)
-    @context.assigns.last[name] = value ; nil
   end
 
   private

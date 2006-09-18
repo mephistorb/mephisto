@@ -14,7 +14,7 @@ end
 
 class << Dispatcher
   def register_liquid_tags
-    Liquid::Template.register_filter(Filters)
+    [CoreFilters, DropFilters, UrlFilters].each { |f| Liquid::Template.register_filter f }
     Liquid::Template.register_tag(:textile,     Mephisto::Liquid::Textile)
     Liquid::Template.register_tag(:commentform, Mephisto::Liquid::CommentForm)
     Liquid::Template.register_tag(:head,        Mephisto::Liquid::Head)
