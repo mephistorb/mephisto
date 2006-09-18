@@ -1,20 +1,34 @@
 require File.dirname(__FILE__) + '/../test_helper'
 context "Url Filters" do
   fixtures :sites, :sections, :contents
-  include UrlFilters
+  include CoreFilters, UrlFilters
 
   def setup
     @context = {'site' => sites(:first).to_liquid, 'section' => sections(:about).to_liquid}
   end
-
-  specify "should generate tag url" do
-    assert_equal "/tags/foo",     tag_url('foo')
-    assert_equal "/tags/foo/bar", tag_url(%w(foo bar))
+  
+  specify "should generate archive url" do
+    assert_equal "/archives", archive_url(sections(:home).to_liquid)
+    assert_equal "/archives/foo/bar", archive_url(sections(:home).to_liquid, 'foo', 'bar')
   end
   
-  specify "should generate monthly url" do
+  specify "should generate monthly url from date" do
     assert_equal "/archives/2006/1",       monthly_url(sections(:home).to_liquid, Date.new(2006, 1))
     assert_equal "/about/archives/2006/1", monthly_url(sections(:about).to_liquid, Date.new(2006, 1))
+  end
+
+  specify "should generate monthly url from time" do
+    assert_equal "/archives/2006/1",       monthly_url(sections(:home).to_liquid, Time.utc(2006, 1))
+    assert_equal "/about/archives/2006/1", monthly_url(sections(:about).to_liquid, Time.utc(2006, 1))
+  end
+
+  specify "should generate monthly url from string" do
+    assert_equal "/archives/2006/1",       monthly_url(sections(:home).to_liquid, '2006-1')
+    assert_equal "/about/archives/2006/1", monthly_url(sections(:about).to_liquid, '2006-1-4')
+  end
+
+  specify "should generate monthly link" do
+    assert_equal "<a href=\"/archives/2006/1\">January 2006</a>", link_to_month(sections(:home).to_liquid, '2006-1')
   end
 
   specify "should generate paged url" do

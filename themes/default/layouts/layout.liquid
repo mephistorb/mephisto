@@ -16,7 +16,9 @@
 				</form>
 			</div>
 			<h2><a href="/">{{ site.title }}</a></h2>
-			<p class="description">{{ site.subtitle }}</p>
+			<p class="description">
+{% if section.path != '' %}{{ section.name }}{% else %}{{ site.subtitle }}{% endif %}
+                        </p>
 		</div>
 	</div>
 {{ content_for_layout }}
@@ -35,7 +37,7 @@
         <div class="block">
           <h2>Recently</h2>
           <ul class="dates">
-{% for article in articles %}
+{% for article in site.latest_articles %}
             <li><a href="{{ article.url }}"><span class="date">{{ article.published_at | strftime: '%m.%y' }}</span> {{ article.title }}</a></li>
 {% endfor %}
          </ul>

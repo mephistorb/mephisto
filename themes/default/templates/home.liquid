@@ -17,6 +17,10 @@
 {% endfor %}
 		
       <div class="clear"></div>
+
+{{ articles | first | assign_to: 'latest_article' }}
+<p>View archives for {{ section | link_to_month: latest_article.published_at }}.</p>
+
     </div>
   </div>
 

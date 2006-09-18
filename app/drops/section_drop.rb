@@ -40,7 +40,7 @@ class SectionDrop < BaseDrop
   end
   
   def earliest_month
-    @earliest_month ||= @source.articles.find(:first, :order => 'published_at').published_at.beginning_of_month.to_date rescue :false
+    @earliest_month ||= @source.articles.find_by_date(:limit => 1, :order => 'published_at').first.published_at.beginning_of_month.to_date rescue :false
   end
   
   def months

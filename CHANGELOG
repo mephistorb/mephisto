@@ -1,5 +1,9 @@
 * SVN *
 
+* Add {{ section | link_to_month: '2006-9' }} for linking to archive pages.
+
+* Add {{ '2006-1' | parse_date }} for general date parsing
+
 * Fixed issues previewing article drafts
 
 # Added new liquid vars {{ site.latest_articles }} and {{ site.latest_comments }}, 

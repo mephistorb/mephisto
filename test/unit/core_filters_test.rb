@@ -12,4 +12,16 @@ context "Core Filters" do
     assign_to 'blah', 'foo'
     assert_equal 'blah', @context['foo']
   end
+
+  specify "should parse date into time" do
+    assert_equal Time.local(2006, 1, 1), parse_date(Date.new(2006, 1))
+  end
+
+  specify "should parse time into time" do
+    assert_equal Time.utc(2006, 1, 1), parse_date(Time.utc(2006, 1))
+  end
+
+  specify "should parse string into time" do
+    assert_equal Time.utc(2006, 1, 1), parse_date('2006-1')
+  end
 end

@@ -79,7 +79,7 @@ class MephistoController < ApplicationController
         month = Time.now.utc.month
       end
       @articles = @section.articles.find_all_in_month(year, month, :include => :user)
-      render_liquid_template_for(:archive, 'articles' => @articles, 'archive_date' => Time.utc(year, month))
+      render_liquid_template_for(:archive, 'section' => @section, 'articles' => @articles, 'archive_date' => Time.utc(year, month))
     end
 
     def dispatch_search

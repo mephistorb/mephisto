@@ -58,12 +58,19 @@ module UrlFilters
     content_tag :a, tag, :href => tag_url(tag)
   end
 
-  def monthly_url(section, date = nil)
-    date ||= Time.now.utc.beginning_of_month
-    date   = Date.new(*date.split('-')) unless date.is_a?(Date)
-    File.join(section.url, section['archive_path'], date.year.to_s, date.month.to_s)
+  def link_to_month(section, date = nil, format = 'my')
+    content_tag :a, format_date(date, format), :href => monthly_url(section, date)
   end
-  
+
+  def monthly_url(section, date = nil)
+    date = parse_date(date)
+    archive_url(section, date.year.to_s, date.month.to_s)
+  end
+
+  def archive_url(section, *pieces)
+    File.join(section.url, section['archive_path'], *pieces)
+  end
+
   def tag_url(*tags)
     tags = [tags] ; tags.flatten!
     absolute_url @context['site'].source.tag_url(*tags)

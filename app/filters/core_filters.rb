@@ -30,12 +30,18 @@ module CoreFilters
     text.blank? ? '' : RedCloth.new(text).to_html
   end
 
+  def parse_date(date)
+    date ||= Time.now.utc
+    date = "#{date}-1" if date.to_s =~ /^\d{4}-\d{1,2}$/ unless [Time, Date].include?(date.class)
+    date = date.to_time
+  end
+
   def format_date(date, format, ordinalized = false)
     return '' if date.nil?
     if ordinalized
-      date ? date.to_time.to_ordinalized_s(format.to_sym) : nil
+      date ? parse_date(date).to_ordinalized_s(format.to_sym) : nil
     else
-      date ? date.to_time.to_s(format.to_sym) : nil unless ordinalized
+      date ? parse_date(date).to_s(format.to_sym) : nil unless ordinalized
     end
   end
   

@@ -1,30 +1,26 @@
-  <div id="primary" class="single-post">
+  <div id="primary" class="twocol-stories">
     <div class="inside">
-      <div class="primary">
-        <h1>Archives for {{section.name}}</h1>
-        <ul class="dates">
-          {% for article in articles %}
-            <li>
-              <span class="date">{{article.published_at | date: '%d.%m.%y' }}</span>  
-              {{ article | link_to_article }} posted in 
-              {% for section in article.sections %}
-                {{section | link_to_section }}
-              {% endfor %}
-            </li>
-          {% endfor %}
-        </ul>
+{% for article in articles %}
+  {% if forloop.index < 3 %}
+      <div class="story{% if forloop.first %} first{% endif %}">
+        <h3>{{ article | link_to_article }}</h3>
+        {{ article.excerpt }}
+        {{ article.body }}
+        <div class="details">
+          Posted on {{ article.published_at | format_date: 'stub', true }} | 
+          {{ article | link_to_comments }} |
+          Filed Under: {% for section in article.sections %}<a href="{{section.url}}" title="{{section.name}}">{{ section.name }}</a>{% endfor %} | 
+          <span class="read-on"><a href="{{article.url}}">read on</a></span>
+        </div>
       </div>
-  		
+  {% endif %}
+{% endfor %}
 		
-		  	<div class="secondary">
-      		<h2>About the archives</h2>
-      		<div class="featured">
-      			<p>Welcome to the archives here at {{site.title}}. Have a look around.</p>
-      	</div>
-      </div>
-      
       <div class="clear"></div>
+
+{{ articles | first | assign_to: 'latest_article' }}
+<p>View archives for {{ section | link_to_month: latest_article.published_at }}.</p>
+
+    </div>
   </div>
-</div>
-  
 
