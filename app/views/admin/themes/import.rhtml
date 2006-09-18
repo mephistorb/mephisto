@@ -1,0 +1,27 @@
+<% content_for :action_nav do %>
+  <div id="page-nav">
+    <ul id="act-nav" class="clear">
+      <li><%= link_to "View themes", :controller => 'themes' %></li>
+      <li><%= link_to "Edit templates", :controller => 'templates' %></li>
+    </ul>
+  </div>
+<% end %>
+
+<div class="group">
+  <dl>
+    <dt>
+      <label for="theme_name">Import a new theme</label>
+      <p class="hint">
+        Themes are packaged as zip files.  Please select a valid zip file from your hard drive to upload.
+        If you're interested in finding more themes, or have a new theme you'd like to release, please visit 
+        <a href="http://mephisto.stikipad.com/help/show/Custom+Templates">the theme page</a> on the Mephisto Wiki. 
+      </p>
+      <p class="hint">When you upload a theme, it will not be applied automatically.  You will need to do this through the <%= link_to 'themes interface', :controller => 'themes' %>.</p>
+    </dt>
+    <dd><input type="file" /></dd>
+  </dl>
+</div>
+<p class="btns">
+  <%= submit_tag 'Import theme' %> or 
+  <%= link_to 'cancel', :controller => 'themes' %>
+</p>
