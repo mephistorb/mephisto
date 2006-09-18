@@ -9,12 +9,6 @@ class Section < ActiveRecord::Base
   belongs_to :site
   has_many :assigned_sections, :dependent => :delete_all
   has_many :articles, :order => 'position', :through => :assigned_sections do
-    def find_by_date(options = {})
-      find(:all, { :order => 'contents.published_at desc', 
-                   :conditions => ['contents.published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } \
-        .merge(options))
-    end
-
     def find_by_position(options = {})
       find(:first, { :conditions => ['contents.published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } \
         .merge(options))

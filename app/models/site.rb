@@ -29,9 +29,11 @@ class Site < ActiveRecord::Base
           end
         end
       
-      find :first, :conditions => conditions
+      find :first, :conditions => conditions, :order => 'published_at desc'
     end
   end
+  
+  has_many  :comments, :order => 'comments.created_at desc'
   
   has_many  :events
   

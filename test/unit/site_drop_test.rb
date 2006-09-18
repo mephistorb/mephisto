@@ -51,6 +51,16 @@ class SiteDropTest < Test::Unit::TestCase
     assert_equal sections(:about), @site.find_section('about').source
   end
 
+  def test_should_find_latest_articles
+    assert_models_equal [contents(:welcome), contents(:about), contents(:site_map), contents(:another)], @site.latest_articles.collect(&:source)
+    assert_models_equal [contents(:welcome), contents(:about)], @site.latest_articles(2).collect(&:source)
+  end
+
+  def test_should_find_latest_comments
+    assert_models_equal [contents(:welcome_comment)], @site.latest_comments.collect(&:source)
+    assert_models_equal [contents(:welcome_comment)], @site.latest_comments(1).collect(&:source)
+  end
+
   def test_liquid_keys
     [:host, :subtitle, :title, :articles_per_page].each do |attr|
       assert_equal sites(:first).send(attr), @site.before_method(attr)

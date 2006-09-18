@@ -51,20 +51,12 @@ class Article < Content
   end
 
   class << self
-    def approve
-      comment = @article.unapproved_comments.find(params[:comment])
-      comment.approved = true
-      comment.save
+    def find_by_date(options = {})
+      find(:all, { :order => 'contents.published_at desc', 
+                   :conditions => ['contents.published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } \
+        .merge(options))
     end
     
-    def unapprove
-      comment = @article.comments.find(params[:comment])
-      comment.approved = false
-      comment.save
-    end
-  end
-
-  class << self
     def find_all_in_month(year, month, options = {})
       find(:all, options.merge(:order => 'contents.published_at DESC', :conditions => ["contents.published_at <= ? AND contents.published_at BETWEEN ? AND ?", 
         Time.now.utc, *Time.delta(year.to_i, month.to_i)]))

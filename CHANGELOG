@@ -1,5 +1,8 @@
 * SVN *
 
+# Added new liquid vars {{ site.latest_articles }} and {{ site.latest_comments }}, 
+  as well as filters like {{ site | latest_articles: 5 }} or {{ site | latest_comments: 5 }}
+
 * move liquid drops/filters to app/drops and app/filters
 
 * add multi-asset uploading capabilities.

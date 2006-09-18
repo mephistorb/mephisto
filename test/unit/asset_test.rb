@@ -20,13 +20,27 @@ class AssetTest < Test::Unit::TestCase
   
   def test_should_upload_file
     process_upload
-    now = Time.now.utc
-    assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png')
-    if Object.const_defined?(:Magick)
-      assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_thumb.png')
-      assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_tiny.png')
-    end
+    assert_assets_exist :logo
   end  
+
+  def test_should_rename_non_unique_filename
+    asset = process_upload
+    assert_equal 'logo.png', asset.filename
+    asset = process_upload
+    assert_equal 'logo_1.png', asset.filename
+    assert_assets_exist :logo_1
+  end
+
+  def test_should_rename_non_unique_filename_when_renaming
+    now   = Time.now.utc
+    asset = process_upload
+    assert_equal 'logo.png', asset.filename
+    asset = process_upload(:filename => 'logo_reloaded.png')
+    assert_assets_exist :logo_reloaded, now
+    
+    asset.update_attributes :filename => 'logo.png'
+    assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, "logo_1.png")
+  end
 
   def test_should_upload_file_in_multi_sites_mode
     Site.multi_sites_enabled = true
@@ -157,5 +171,13 @@ class AssetTest < Test::Unit::TestCase
         :attachment_data => IO.read(File.join(RAILS_ROOT, 'public/images/mephisto/logo.png'))))
       assert_valid a
       a
+    end
+    
+    def assert_assets_exist(filename, created_at = Time.now.utc)
+      assert_file_exists File.join(ASSET_PATH, created_at.year.to_s, created_at.month.to_s, created_at.day.to_s, "#{filename}.png")
+      if Object.const_defined?(:Magick)
+        assert_file_exists File.join(ASSET_PATH, created_at.year.to_s, created_at.month.to_s, created_at.day.to_s, "#{filename}_thumb.png")
+        assert_file_exists File.join(ASSET_PATH, created_at.year.to_s, created_at.month.to_s, created_at.day.to_s, "#{filename}_tiny.png")
+      end
     end
 end

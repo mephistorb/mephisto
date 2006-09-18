@@ -49,6 +49,7 @@ class Asset < ActiveRecord::Base
   before_validation_on_create :set_site_from_parent
   validates_presence_of :site_id
   validates_as_attachment
+  validate :rename_unique_filename
 
   def full_filename(thumbnail = nil)
     file_system_path = (thumbnail ? thumbnail_class : self).attachment_options[:file_system_path]
@@ -76,8 +77,22 @@ class Asset < ActiveRecord::Base
   end
 
   protected
+    def rename_unique_filename
+      if (@old_filename || new_record?) && errors.empty? && site_id && filename
+        i      = 1
+        pieces = filename.split('.')
+        ext    = pieces.size == 1 ? nil : pieces.pop
+        base   = pieces * '.'
+        while File.exists?(full_filename)
+          write_attribute :filename, base + "_#{i}#{".#{ext}" if ext}"
+          i += 1
+        end
+      end
+    end
+
     def permalink
-      pieces = [site.host, created_at.year, created_at.month, created_at.day]
+      date = created_at || Time.now.utc
+      pieces = [site.host, date.year, date.month, date.day]
       pieces.shift unless Site.multi_sites_enabled
       pieces * '/'
     end
