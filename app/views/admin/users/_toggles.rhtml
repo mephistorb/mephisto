@@ -1,0 +1,11 @@
+  <% unless user == current_user -%>
+    <p>
+      <%= check_box_tag user.dom_id(:user_toggle), user.id,  user.deleted_at.nil?, :onclick => "UserForm.toggle(this);" %>
+      <strong><label for="<%= user.dom_id(:user_toggle) %>"><%= user.deleted_at ? 'Login?' : 'Allow this user to login' %></label></strong>
+    <% if !user.admin? && admin? -%> |
+      <%= check_box_tag user.dom_id(:user_toggle_admin), user.id,  user.site_admin?, :onclick => "UserForm.toggleAdmin(this);" %>
+      <strong><label for="<%= user.dom_id(:user_toggle_admin) %>">Site admin?</label></strong>
+    <% end -%>
+      <%= image_tag 'mephisto/progress.gif', :size => '10x10', :style => 'display:none', :id => "#{user.dom_id}-progress" %>
+    </p>
+  <% end -%>

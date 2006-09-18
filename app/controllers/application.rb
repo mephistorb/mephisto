@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     helper_method :admin?
     
     def admin?
-      logged_in? && current_user.admin? || current_user.site_admin?
+      logged_in? && (current_user.admin? || current_user.site_admin?)
     end
   
     # so not the best place for this...

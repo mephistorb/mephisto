@@ -1,0 +1,2 @@
+page.call 'Flash.notice', @membership.admin? ? "#{@user.login} is now an admin." : "#{@user.login}'s admin rights were revoked."
+page["#{@user.dom_id}-progress"].hide

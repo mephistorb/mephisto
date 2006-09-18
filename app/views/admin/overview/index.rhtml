@@ -30,7 +30,6 @@
 </div>
 <!-- /end overview -->
 
-
 <% content_for :sidebar do %>
   <% if @articles.any? -%>
   <div class="sgroup">
@@ -46,9 +45,9 @@
   <div class="sgroup">
     <h3>Recent activity</h3>
     <ul class="slist" id="activity">
-      <% for user in @users %>
+      <% @users.each do |user| -%>
         <li style="clear:right;"><%= avatar_for user %><%= link_to who(user.login), :controller => 'users', :action => 'show', :id => user %><br /> showed up <%= distance_of_time_in_words_to_now(user.updated_at) %> ago</li>
-      <% end %>
+      <% end -%>
     </ul>
   </div>
 <% end %>

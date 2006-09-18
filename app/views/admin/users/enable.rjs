@@ -1,2 +1,7 @@
 page.call 'Flash.notice', "#{@user.login} was enabled."
 page["#{@user.dom_id}-progress"].hide
+page << 'function foo() {'
+page[@user.dom_id].remove
+page.insert_html :bottom, :users, :partial => 'user', :object => @user
+page << '}'
+page[@user.dom_id].visual_effect :drop_out, :afterFinish => ActiveSupport::JSON::Variable.new("foo")

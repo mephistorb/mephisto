@@ -1,0 +1,4 @@
+<li id="<%= user.dom_id %>" style="clear:right;" class="clear<%= %( deleted) unless user.deleted_at.nil? %><%= %( selected) if @user == user %>">
+  <%= avatar_for user %><%= link_to who(user.login), :controller => 'users', :action => 'show', :id => user %>
+<%= render :partial => "toggles", :locals => { :user => user } %>
+</li>

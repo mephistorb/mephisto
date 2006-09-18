@@ -2,11 +2,5 @@
     <%= avatar_for user %>
     <h3><%= link_to user.login, :action => 'show', :id => user %></h3>
     <%= user.email %>
-  <% unless user == current_user -%>
-    <p>
-      <%= check_box_tag user.dom_id(:user_toggle), user.id,  user.deleted_at.nil?, :onclick => "UserForm.toggle(this);" %>
-      <strong><label for="<%= user.dom_id(:user_toggle) %>">Allow this user to login</label></strong>
-      <%= image_tag 'mephisto/progress.gif', :size => '10x10', :style => 'display:none', :id => "#{user.dom_id}-progress" %>
-    </p>
-  <% end -%>
+<%= render :partial => "toggles", :locals => { :user => user } %>
 </li>

@@ -118,17 +118,15 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     login_as :quentin
     get :index
     assert_equal 4, assigns(:users).size
-    user_tag    = { :tag => 'li', :attributes => { :id => 'user-1', :class => 'clear' } }
-    normal_tag  = { :tag => 'li', :attributes => { :id => 'user-2', :class => 'clear' } }
-    deleted_tag = { :tag => 'li', :attributes => { :id => 'user-3', :class => 'clear deleted' } }
-    assert_tag user_tag
-    assert_tag normal_tag
-    assert_tag deleted_tag
-    assert_no_tag 'input', :attributes => { :type => 'checkbox', :id => 'user-toggle-1' }, :ancestor => user_tag
-    assert_tag    'input', :attributes => { :type => 'checkbox', :id => 'user-toggle-2' }, :ancestor => normal_tag
-    assert_tag    'input', :attributes => { :type => 'checkbox', :id => 'user-toggle-3' }, :ancestor => deleted_tag
-    assert_tag    'input', :attributes => { :type => 'checkbox', :id => 'user-toggle-2', :checked => 'checked' }, :ancestor => normal_tag
-    assert_no_tag 'input', :attributes => { :type => 'checkbox', :id => 'user-toggle-3', :checked => 'checked' }, :ancestor => deleted_tag
+    assert_select "#users li[id='user-1']" do
+      assert_select "[class='clear']"
+    end
+    assert_select "#users li[id='user-2']" do
+      assert_select "[class='clear']"
+    end
+    assert_select "#disabled_users li[id='user-3']" do
+      assert_select "[class='clear deleted']"
+    end
   end
 
   def test_should_not_disable_as_site_member
@@ -137,6 +135,21 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
       xhr :post, :destroy, :id => users(:arthur).id
       assert_redirected_to :controller => 'account', :action => 'login'
     end
+  end
+
+  def test_should_disable_site_admin
+    login_as :quentin
+    xhr :post, :admin, :id => users(:arthur).id
+    assert_response :success
+    assert !sites(:first).user(users(:arthur).id).site_admin?
+  end
+
+  def test_should_enable_site_admin
+    sites(:first).user_with_deleted(3).update_attribute :deleted_at, nil
+    login_as :quentin
+    xhr :post, :admin, :id => users(:aaron).id
+    assert_response :success
+    assert sites(:first).user(users(:aaron).id).site_admin?
   end
 
   def test_should_disable_user

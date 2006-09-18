@@ -1030,11 +1030,13 @@ img.avatar {
   font-weight: bold;
 }
 
+#disabled_users .avatar,
 #activity .avatar {
   max-width: 30px;
   max-height: 30px;
 }
 
+#disabled_users li,
 #activity li {
   min-height: 40px;
   line-height: 125%;
