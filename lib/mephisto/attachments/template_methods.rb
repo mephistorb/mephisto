@@ -18,7 +18,7 @@ module Mephisto
 
       def [](template_name)
         template_name = File.basename(template_name.to_s).sub /\.liquid$/, ''
-        site.attachment_path + "#{template_name =~ /layout$/ ? 'layouts' : 'templates'}/#{template_name}.liquid"
+        theme.path + "#{template_name =~ /layout$/ ? 'layouts' : 'templates'}/#{template_name}.liquid"
       end
 
       # adds the custom_template to the top of the hierarchy if given

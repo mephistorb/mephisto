@@ -24,7 +24,7 @@ module Mephisto
             else                'images'
           end
           
-        site.attachment_path + "#{path}/#{File.basename(filename.to_s)}"
+        theme.path + "#{path}/#{File.basename(filename.to_s)}"
       end
     end
   end

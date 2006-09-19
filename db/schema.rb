@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 59) do
+ActiveRecord::Schema.define(:version => 60) do
 
   create_table "assets", :force => true do |t|
     t.column "content_type",     :string
@@ -77,8 +77,8 @@ ActiveRecord::Schema.define(:version => 59) do
     t.column "author_email",   :string
     t.column "author_ip",      :string,   :limit => 100
     t.column "comments_count", :integer,                 :default => 0
-    t.column "version",        :integer
     t.column "updater_id",     :integer
+    t.column "version",        :integer
     t.column "site_id",        :integer
     t.column "approved",       :boolean,                 :default => false
     t.column "comment_age",    :integer,                 :default => 0
@@ -87,11 +87,11 @@ ActiveRecord::Schema.define(:version => 59) do
 
   create_table "events", :force => true do |t|
     t.column "mode",       :string
+    t.column "user_id",    :integer
     t.column "article_id", :integer
     t.column "title",      :text
     t.column "body",       :text
     t.column "created_at", :datetime
-    t.column "user_id",    :integer
     t.column "author",     :string,   :limit => 100
     t.column "comment_id", :integer
     t.column "site_id",    :integer

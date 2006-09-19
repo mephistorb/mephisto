@@ -12,8 +12,8 @@ class ResourceTest < Test::Unit::TestCase
     assert_equal 0, sites(:hostess).resources.size
   end
 
-  def test_should_carry_site_reference
-    assert_equal sites(:first), sites(:first).resources.site
+  def test_should_carry_theme_reference
+    assert_equal sites(:first).theme.path, sites(:first).resources.theme.path
   end
 
   def test_should_add_resource

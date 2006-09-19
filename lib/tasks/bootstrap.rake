@@ -37,7 +37,7 @@ namespace :db do
     
     desc "Copy default theme to site theme"
     task :copy_default_theme do
-      FileUtils.cp_r File.join(RAILS_ROOT, 'themes/default'), File.join(RAILS_ROOT, 'themes/site-' + (ENV['SITE_ID'] || '1'))
+      FileUtils.cp_r File.join(RAILS_ROOT, 'themes/default'), File.join(RAILS_ROOT, 'themes/site-' + (ENV['SITE_ID'] || '1'), 'current')
     end
   end
 end

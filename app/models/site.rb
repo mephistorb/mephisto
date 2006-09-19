@@ -91,6 +91,25 @@ class Site < ActiveRecord::Base
       :joins => "INNER JOIN taggings ON taggings.tag_id = tags.id INNER JOIN contents ON (taggings.taggable_id = contents.id AND taggings.taggable_type = 'Content')")
   end
 
+  def attachment_path
+    theme.path
+  end
+
+  def attachment_base_path
+    @attachment_base_path ||= File.join(RAILS_ROOT, 'themes', "site-#{id}", 'current')
+  end
+  
+  def site_themes_path
+    @site_themes_path ||= File.join(RAILS_ROOT, 'themes', "site-#{id}", 'other')
+  end
+  
+  def theme
+    return @theme unless @theme.nil?
+    @theme = Theme.new(attachment_base_path)
+  end
+  
+  [:attachments, :templates, :resources].each { |m| delegate m, :to => :theme }
+
   def permalink_regex(refresh = false)
     if refresh || @permalink_regex.nil?
       @permalink_variables = []

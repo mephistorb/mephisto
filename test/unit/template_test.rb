@@ -12,8 +12,8 @@ context "Template" do
     assert_equal 3,  sites(:hostess).templates.size
   end
 
-  def test_should_carry_site_reference
-    assert_equal sites(:first), sites(:first).templates.site
+  def test_should_carry_theme_reference
+    assert_equal sites(:first).theme.path, sites(:first).templates.theme.path
   end
 
   def test_should_find_templates

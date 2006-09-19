@@ -4,7 +4,11 @@ class Site
   attr_reader :recent_template_type, :recent_preferred_template, :recent_layout_template
 
   def attachment_base_path
-    @attachment_base_path ||= File.join(RAILS_ROOT, 'tmp/themes', "site-#{id}")
+    @attachment_base_path ||= File.join(RAILS_ROOT, 'tmp/themes', "site-#{id}", 'current')
+  end
+
+  def site_themes_path
+    @site_themes_path ||= File.join(RAILS_ROOT, 'tmp/themes', "site-#{id}", 'other')
   end
   
   def set_template_type_for_with_testing(section, template_type)

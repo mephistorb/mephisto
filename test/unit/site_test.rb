@@ -184,12 +184,12 @@ context "Site Template" do
   end
 
   specify "should find fallback for site with preferred template" do
-    FileUtils.rm File.join(THEME_ROOT, 'site-1', 'templates', 'home.liquid')
+    FileUtils.rm File.join(THEME_ROOT, 'site-1', 'current', 'templates', 'home.liquid')
     assert_site_template_name :section, :section
   end
 
   specify "should find preferred for site layout" do
-    FileUtils.cp File.join(THEME_ROOT, 'site-1', 'layouts', 'layout.liquid'), File.join(THEME_ROOT, 'site-1', 'layouts', 'custom_layout.liquid')
+    FileUtils.cp File.join(THEME_ROOT, 'site-1', 'current', 'layouts', 'layout.liquid'), File.join(THEME_ROOT, 'site-1', 'current', 'layouts', 'custom_layout.liquid')
     sites(:first).sections.home.update_attribute :layout, 'custom_layout'
     assert_site_layout_name :custom_layout, :layout
   end
