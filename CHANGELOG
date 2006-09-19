@@ -1,5 +1,11 @@
 * SVN *
 
+* Adding Theme admin.  Restructure theme paths to include site-specific private themes.
+  /themes/site-#{id}/current - holds current theme
+  /themes/site-#{id}/others/* - private themes
+  
+  The migration should copy your files over.  Rolling back to version 59 will move them back.
+
 * Add {{ section | link_to_month: '2006-9' }} for linking to archive pages.
 
 * Add {{ '2006-1' | parse_date }} for general date parsing
