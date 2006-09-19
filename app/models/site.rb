@@ -1,8 +1,6 @@
 class Site < ActiveRecord::Base
   @@theme_path = Pathname.new(RAILS_ROOT) + 'themes'
   cattr_reader :theme_path
-  PERMALINK_OPTIONS = { 'year' => '\d{4}', 'month' => '\d{1,2}', 'day' => '\d{1,2}', 'permalink' => '[\w\-]+', 'id' => '\d+' }
-  PERMALINK_VAR     = /^:([a-z]+)$/
 
   cattr_accessor :multi_sites_enabled
 
@@ -130,30 +128,12 @@ class Site < ActiveRecord::Base
   [:attachments, :templates, :resources].each { |m| delegate m, :to => :theme }
 
   def permalink_regex(refresh = false)
-    if refresh || @permalink_regex.nil?
-      @permalink_variables = []
-      r = permalink_style.split('/').inject [] do |s, piece|
-        if piece =~ PERMALINK_VAR
-          @permalink_variables << $1.to_sym
-          s << "(#{PERMALINK_OPTIONS[$1]})"
-        else
-          s << piece
-        end
-      end
-      @permalink_regex = Regexp.new("^#{r.join('\/')}(\/comments(\/(\\d+))?)?$")
-    end
-    
+    @permalink_regex, @permalink_variables = Mephisto::Dispatcher.build_permalink_regex_with(permalink_style) if refresh || @permalink_regex.nil?
     @permalink_regex
   end
 
   def permalink_for(article)
-    old_published = article.published_at
-    article.published_at ||= Time.now.utc
-    permalink_style.split('/').inject [''] do |s, piece|
-      s << (piece =~ PERMALINK_VAR && PERMALINK_OPTIONS.keys.include?($1) ? article.send($1).to_s : piece)
-    end.join('/')
-  ensure
-    article.published_at = old_published
+    Mephisto::Dispatcher.build_permalink_with(permalink_style, article)
   end
 
   def search_url(query, page = nil)
@@ -187,8 +167,12 @@ class Site < ActiveRecord::Base
   end
 
   protected
+    def permalink_variable_format?(var)
+      Mephisto::Dispatcher.variable_format?(var)
+    end
+
     def permalink_variable?(var)
-      var =~ PERMALINK_VAR && PERMALINK_OPTIONS.keys.include?(var)
+      Mephisto::Dispatcher.variable?(var)
     end
 
     def check_permalink_style
@@ -197,7 +181,7 @@ class Site < ActiveRecord::Base
       pieces = permalink_style.split('/')
       errors.add :permalink_style, 'cannot have blank paths' if pieces.any?(&:blank?)
       pieces.each do |p|
-        errors.add :permalink_style, "cannot contain '#{$1}' variable" if p =~ PERMALINK_VAR && !PERMALINK_OPTIONS.keys.include?($1)
+        errors.add :permalink_style, "cannot contain '#{p}' variable" unless p.blank? || permalink_variable_format?(p).nil? || permalink_variable?(p)
       end
       unless pieces.include?(':id') || pieces.include?(':permalink')
         errors.add :permalink_style, "must contain either :permalink or :id"

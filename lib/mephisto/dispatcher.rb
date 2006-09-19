@@ -1,7 +1,7 @@
 module Mephisto
   class Dispatcher
-    @@year_regex     = /^\d{4}$/
-    @@month_regex    = /^\d{1,2}$/
+    PERMALINK_OPTIONS = { :year => '\d{4}', :month => '\d{1,2}', :day => '\d{1,2}', :permalink => '[\w\-]+', :id => '\d+' }
+    PERMALINK_VAR     = /^:([a-z]+)$/
 
     def self.run(site, path)
       if options = recognize_permalink(site, path)
@@ -70,8 +70,42 @@ module Mephisto
         end
       end
     end
-    
+
+    def self.build_permalink_regex_with(permalink_style)
+      variables = []
+      regex = permalink_style.split('/').inject [] do |s, piece|
+        if name = variable_format?(piece)
+          variables << name.to_sym
+          s << "(#{PERMALINK_OPTIONS[variables.last]})"
+        else
+          s << piece
+        end
+      end
+
+      [Regexp.new("^#{regex.join('\/')}(\/comments(\/(\\d+))?)?$"), variables]
+    end
+
+    def self.variable_format?(var)
+      var =~ PERMALINK_VAR ? $1 : nil
+    end
+
+    def self.variable?(var)
+      (name = variable_format?(var)) && PERMALINK_OPTIONS.keys.include?(name.to_sym) rescue nil
+    end
+
+    def self.build_permalink_with(permalink_style, article)
+      old_published          = article.published_at
+      article.published_at ||= Time.now.utc
+      permalink_style.split('/').inject [''] do |s, piece|
+        s << ((name = variable_format?(piece)) && PERMALINK_OPTIONS.keys.include?(name.to_sym) ? article.send(name).to_s : piece)
+      end.join('/')
+    ensure
+      article.published_at = old_published
+    end
+
     private
+      @@year_regex  = %r{^#{PERMALINK_OPTIONS[:year]}$}
+      @@month_regex = %r{^#{PERMALINK_OPTIONS[:month]}$}
       def self.year?(n)
         n.nil? || n =~ @@year_regex
       end

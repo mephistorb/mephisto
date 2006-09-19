@@ -40,7 +40,7 @@ context "Site Permalink Validations" do
 
     @site.permalink_style = ':year/:foo/:month/:day/:permalink'
     assert !@site.valid?
-    assert_equal "cannot contain 'foo' variable", @site.errors.on(:permalink_style)
+    assert_equal "cannot contain ':foo' variable", @site.errors.on(:permalink_style)
   end
 end
 
