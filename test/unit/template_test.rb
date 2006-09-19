@@ -58,13 +58,18 @@ class TemplateTest < Test::Unit::TestCase
     assert_template_name :index, :tag
   end
 
+  def test_should_find_preferred_with_custom_template
+    assert_template_name :home, :section, :custom => 'home.liquid'
+  end
+
   def test_should_find_custom
     assert_equal ['alt_layout.liquid', 'author.liquid', 'home.liquid'], sites(:first).templates.custom.sort
   end
 
   protected
-    def assert_template_name(expected_template_name, template_type = nil, site = sites(:first))
+    def assert_template_name(expected_template_name, template_type = nil, options = {})
       template_type ||= expected_template_name
-      assert_equal(expected_template_name.nil? ? nil : site.templates[expected_template_name], site.templates.find_preferred(template_type))
+      site = options[:site] || sites(:first)
+      assert_equal(expected_template_name.nil? ? nil : site.templates[expected_template_name], site.templates.find_preferred(template_type, options[:custom]))
     end
 end

@@ -19,9 +19,13 @@ module Mephisto
         template_name = File.basename(template_name.to_s).sub /\.liquid$/, ''
         site.attachment_path + "#{template_name =~ /layout$/ ? 'layouts' : 'templates'}/#{template_name}.liquid"
       end
-    
-      def find_preferred(template_type)
-        hierarchy[template_type].collect { |t| self[t] }.detect(&:file?)
+
+      # adds the custom_template to the top of the hierarchy if given
+      def find_preferred(template_type, custom_template = nil)
+        templates = hierarchy[template_type].dup
+        templates.unshift(custom_template) if custom_template
+        templates.collect! { |t| self[t] }
+        templates.detect(&:file?)
       end
       
       def custom
