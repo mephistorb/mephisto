@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TemplateTest < Test::Unit::TestCase
+context "Template" do
   fixtures :sites
 
   def setup
@@ -71,5 +71,47 @@ class TemplateTest < Test::Unit::TestCase
       template_type ||= expected_template_name
       site = options[:site] || sites(:first)
       assert_equal(expected_template_name.nil? ? nil : site.templates[expected_template_name], site.templates.find_preferred(template_type, options[:custom]))
+    end
+end
+
+context "Site Template" do
+  fixtures :sites, :sections
+
+  def setup
+    prepare_theme_fixtures
+  end
+
+  specify "should find preferred for site" do
+    assert_site_template_name :home, :section
+  end
+
+  specify "should find fallback for site with preferred template" do
+    FileUtils.rm File.join(THEME_ROOT, 'site-1', 'templates', 'home.liquid')
+    assert_site_template_name :section, :section
+  end
+
+  specify "should find preferred for site layout" do
+    FileUtils.cp File.join(THEME_ROOT, 'site-1', 'layouts', 'layout.liquid'), File.join(THEME_ROOT, 'site-1', 'layouts', 'custom_layout.liquid')
+    sites(:first).sections.home.update_attribute :layout, 'custom_layout'
+    assert_site_layout_name :custom_layout, :layout
+  end
+
+  specify "should find fallback for site with preferred layout" do
+    sites(:first).sections.home.update_attribute :layout, 'custom_layout'
+    assert_site_layout_name :layout
+  end
+
+  protected
+    def assert_site_template_name(expected_template_name, template_type = nil, options = {})
+      template_type ||= expected_template_name
+      site            = options[:site] || sites(:first)
+      section         = options[:section] || site.sections.home
+      assert_equal(expected_template_name.nil? ? nil : site.templates[expected_template_name], site.send(:set_preferred_template, section, template_type))
+    end
+    def assert_site_layout_name(expected_template_name, template_type = nil, options = {})
+      template_type ||= expected_template_name
+      site            = options[:site] || sites(:first)
+      section         = options[:section] || site.sections.home
+      assert_equal(expected_template_name.nil? ? nil : site.templates[expected_template_name], site.send(:set_layout_template, section, template_type))
     end
 end

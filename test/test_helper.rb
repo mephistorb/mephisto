@@ -54,6 +54,8 @@ Fixtures.class_eval do
   end
 end
 
+THEME_ROOT = File.join(RAILS_ROOT, 'tmp/themes')
+
 class Test::Unit::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
@@ -200,7 +202,6 @@ class Test::Unit::TestCase
     end
   end
 
-  THEME_ROOT = File.join(RAILS_ROOT, 'tmp/themes')
   def prepare_theme_fixtures
     FileUtils.rm_rf THEME_ROOT
     FileUtils.mkdir_p THEME_ROOT

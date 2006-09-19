@@ -192,7 +192,7 @@ class Site < ActiveRecord::Base
     
     def set_preferred_template(section, template_type)
       preferred_template = section.template if [:page, :section].include?(template_type)
-      preferred_template.blank? ? templates.find_preferred(template_type) : templates[preferred_template]
+      templates.find_preferred(template_type, preferred_template)
     end
     
     def set_layout_template(section, template_type)
@@ -205,8 +205,7 @@ class Site < ActiveRecord::Base
             when :search then search_layout
           end
         end
-
-      templates[layout_template.blank? ? 'layout' : layout_template]
+      templates.find_preferred(:layout, layout_template)
     end
     
     def parse_template(template, assigns, controller)
