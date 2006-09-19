@@ -1,8 +1,9 @@
 class Site < ActiveRecord::Base
+  @@theme_path = Pathname.new(RAILS_ROOT) + 'themes'
+  cattr_reader :theme_path
   PERMALINK_OPTIONS = { 'year' => '\d{4}', 'month' => '\d{1,2}', 'day' => '\d{1,2}', 'permalink' => '[a-z0-9-]+', 'id' => '\d+' }
   PERMALINK_VAR     = /^:([a-z]+)$/
 
-  include Mephisto::Attachments::AttachmentMethods
   cattr_accessor :multi_sites_enabled
 
   has_many  :sections do
@@ -95,14 +96,31 @@ class Site < ActiveRecord::Base
     theme.path
   end
 
+  def theme_path
+    @theme_path ||= self.class.theme_path + "site-#{id}"
+  end
+
   def attachment_base_path
-    @attachment_base_path ||= File.join(RAILS_ROOT, 'themes', "site-#{id}", 'current')
+    @attachment_base_path ||= theme_path + 'current'
   end
   
-  def site_themes_path
-    @site_themes_path ||= File.join(RAILS_ROOT, 'themes', "site-#{id}", 'other')
+  def other_themes_path
+    @other_themes_path ||= theme_path + 'other'
   end
-  
+
+  def themes
+    return @themes unless @themes.nil?
+    @themes = []
+    FileUtils.mkdir_p other_themes_path
+    Dir.foreach other_themes_path do |e|
+      next if e.first == '.'
+      entry = other_themes_path + e
+      next unless entry.directory?
+      @themes << Theme.new(entry)
+    end
+    @themes
+  end
+
   def theme
     return @theme unless @theme.nil?
     @theme = Theme.new(attachment_base_path)

@@ -1,9 +1,10 @@
+SITE_DIR = File.join(RAILS_ROOT, 'themes/site-' + (ENV['SITE_ID'] || '1'))
 namespace :db do
   desc "Loads a schema.rb file into the database and then loads the initial database fixtures."
   task :bootstrap do
     mkdir_p File.join(RAILS_ROOT, 'log')
     %w(environment db:schema:load db:bootstrap:load tmp:create).each { |t| Rake::Task[t].execute }
-    site_dir = File.join(RAILS_ROOT, 'themes/site-1')
+    site_dir = SITE_DIR
     if File.exists?(site_dir)
       puts "skipping default theme creation..."
     else
@@ -37,7 +38,7 @@ namespace :db do
     
     desc "Copy default theme to site theme"
     task :copy_default_theme do
-      FileUtils.cp_r File.join(RAILS_ROOT, 'themes/default'), File.join(RAILS_ROOT, 'themes/site-' + (ENV['SITE_ID'] || '1'), 'current')
+      FileUtils.cp_r File.join(RAILS_ROOT, 'themes/default'), File.join(SITE_DIR, 'current')
     end
   end
 end

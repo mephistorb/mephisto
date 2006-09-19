@@ -24,7 +24,7 @@ class ThemeTest < Test::Unit::TestCase
   ]
 
   def test_should_export_files
-    sites(:first).attachments.export 'foo', :to => THEME_ROOT
+    sites(:first).theme.export 'foo', :to => THEME_ROOT
     
     THEME_FILES.each do |path|
       assert File.exists?(File.join(THEME_ROOT, 'foo', path)), "#{path} does not exist"
@@ -32,7 +32,7 @@ class ThemeTest < Test::Unit::TestCase
   end
 
   def test_should_export_files_as_zip
-    sites(:first).attachments.export_as_zip 'foo', :to => THEME_ROOT
+    sites(:first).theme.export_as_zip 'foo', :to => THEME_ROOT
     
     assert File.exists?(File.join(THEME_ROOT, 'foo.zip'))
     
