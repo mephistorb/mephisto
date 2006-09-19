@@ -76,6 +76,36 @@ context "Dispatcher" do
     end
 end
 
+context "Dispatcher Permalink Regular Expression" do 
+  fixtures :sites
+  
+  def setup
+    @site = sites(:first)
+  end
+
+  specify "should create permalink regex with default permalink style" do
+    assert_equal Regexp.new(%(^(\\d{4})\\/(\\d{1,2})\\/(\\d{1,2})\\/([\\w\\-]+)(\/comments(\/(\\d+))?)?$)), 
+      Mephisto::Dispatcher.build_permalink_regex_with(@site.permalink_style).first
+  end
+
+  specify "should create permalink regex with custom style" do
+    @site.permalink_style = "articles/:id/:permalink"
+    assert_equal Regexp.new(%(^articles\\/(\\d+)\\/([\\w\\-]+)(\/comments(\/(\\d+))?)?$)), 
+      Mephisto::Dispatcher.build_permalink_regex_with(@site.permalink_style).first
+  end
+
+  specify "should pull out permalink variables from default permalink style" do
+    assert_equal [:year, :month, :day, :permalink],
+      Mephisto::Dispatcher.build_permalink_regex_with(@site.permalink_style).last
+  end
+
+  specify "should pull out permalink variables from custom style" do
+    @site.permalink_style = "articles/:id/:permalink"
+    assert_equal [:id, :permalink], 
+      Mephisto::Dispatcher.build_permalink_regex_with(@site.permalink_style).last
+  end
+end
+
 context "Dispatcher Permalink Recognition" do
   fixtures :sites
 
@@ -90,7 +120,6 @@ context "Dispatcher Permalink Recognition" do
   
   specify "should recognize permalinks with custom style" do
     @site.permalink_style = 'entries/:id/:permalink'
-    @site.permalink_regex(true)
     options = {:id => '5', :permalink => 'foo-bar_baz'}
     assert_equal [options, false, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar_baz))
   end
@@ -103,7 +132,6 @@ context "Dispatcher Permalink Recognition" do
   
   specify "should recognize permalinks with comment and custom style" do
     @site.permalink_style = 'entries/:id/:permalink'
-    @site.permalink_regex(true)
     options = {:id => '5', :permalink => 'foo-bar-baz'}
     assert_equal [options, true, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz comments))
     assert_equal [options, true, '5'], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz comments 5))

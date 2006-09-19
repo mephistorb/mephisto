@@ -53,7 +53,6 @@ class Site < ActiveRecord::Base
   validates_uniqueness_of :host
   validate :check_permalink_style
   after_create { |s| s.sections.create(:name => 'Home', :path => '') }
-  attr_reader :permalink_variables
 
   with_options :order => 'contents.created_at', :class_name => 'Comment' do |comment|
     comment.has_many :comments,            :conditions => ['contents.approved = ?', true]
@@ -126,11 +125,6 @@ class Site < ActiveRecord::Base
   end
   
   [:attachments, :templates, :resources].each { |m| delegate m, :to => :theme }
-
-  def permalink_regex(refresh = false)
-    @permalink_regex, @permalink_variables = Mephisto::Dispatcher.build_permalink_regex_with(permalink_style) if refresh || @permalink_regex.nil?
-    @permalink_regex
-  end
 
   def permalink_for(article)
     Mephisto::Dispatcher.build_permalink_with(permalink_style, article)

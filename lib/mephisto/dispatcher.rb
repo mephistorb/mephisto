@@ -60,13 +60,14 @@ module Mephisto
     
     def self.recognize_permalink(site, path)
       full_path = path.join('/')
-      if match = site.permalink_regex.match(full_path)
+      regex, variables = build_permalink_regex_with(site.permalink_style)
+      if match = regex.match(full_path)
         returning([{}]) do |result|
-          site.permalink_variables.each_with_index do |var, i|
+          variables.each_with_index do |var, i|
             result.first[var] = match[i+1]
           end
-          result << !match[site.permalink_variables.size + 1].nil?
-          result <<  match[site.permalink_variables.size + 3]
+          result << !match[variables.size + 1].nil?
+          result <<  match[variables.size + 3]
         end
       end
     end

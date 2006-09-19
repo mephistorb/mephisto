@@ -44,21 +44,6 @@ context "Site Permalink Validations" do
   end
 end
 
-context "Site Permalink Regular Expression" do 
-  fixtures :sites
-  
-  def setup
-    @site = sites(:first)
-  end
-
-  specify "should create permalink regex" do
-    assert_equal Regexp.new(%(^(\\d{4})\\/(\\d{1,2})\\/(\\d{1,2})\\/([\\w\\-]+)(\/comments(\/(\\d+))?)?$)), @site.permalink_regex
-    
-    @site.permalink_style = "articles/:id/:permalink"
-    assert_equal Regexp.new(%(^articles\\/(\\d+)\\/([\\w\\-]+)(\/comments(\/(\\d+))?)?$)), @site.permalink_regex(true)
-  end
-end
-
 context "Site Permalink Generation" do
   fixtures :sites, :contents
   
