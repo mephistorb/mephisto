@@ -11,22 +11,27 @@ class Theme
   end
 
   def name
-    @name ||= @path.basename.to_s
+    class << self ; attr_reader :name ; end
+    @name = @path.basename.to_s
   end
 
   def properties
+    class << self ; attr_reader :properties ; end
     about = path + 'about.yml'
-    @properties ||= about.exist? ? YAML.load_file(about) : {}
+    @properties = about.exist? ? YAML.load_file(about) : {}
   end
 
   [:title, :author, :version, :homepage].each do |attr_name|
-    define_method attr_name do
-      properties[attr_name.to_s]
-    end
+    eval <<-END
+      def #{attr_name}
+        class << self ; attr_reader :#{attr_name} ; end
+        properties['#{attr_name}']
+      end
+    END
   end
 
   def attachments
-    return @attachments unless @attachments.nil?
+    class << self ; attr_reader :attachments ; end
     @attachments, @templates, @resources = Attachments.new, Templates.new, Resources.new
     [@attachments, @templates, @resources].each { |a| a.theme = self }
     Pathname.glob(File.join(base_path, '**/*')).each do |path|
@@ -37,10 +42,14 @@ class Theme
     @attachments
   end
 
-  [:resources, :templates].each do |attr|
-    define_method attr do
-      attachments && instance_variable_get("@#{attr}")
-    end
+  def resources
+    class << self ; attr_reader :resources ; end
+    attachments && instance_variable_get(:@resources)
+  end
+
+  def templates
+    class << self ; attr_reader :templates ; end
+    attachments && instance_variable_get(:@templates)
   end
 
   def export_as_zip(name, options = {})
