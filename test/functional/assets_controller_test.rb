@@ -21,13 +21,13 @@ class AssetsControllerTest < Test::Unit::TestCase
 
   def test_should_find_css_by_full_path
     get :show, :path => 'style', :ext => 'css', :dir => 'stylesheets'
-    assert_equal 'text/css', @response.headers['Content-Type']
+    assert_equal 'text/css', @response.content_type
     assert_equal sites(:first).resources['style.css'].read, @response.body
   end
 
   def test_should_find_js_by_full_path
     get :show, :path => 'behavior', :ext => 'js', :dir => 'javascripts'
-    assert_equal 'text/javascript', @response.headers['Content-Type']
+    assert_equal Mime::JS, @response.content_type
     assert_equal sites(:first).resources['behavior.js'].read, @response.body
   end
 end

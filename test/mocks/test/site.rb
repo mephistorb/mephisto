@@ -1,4 +1,5 @@
 require File.join(RAILS_ROOT, 'app/models/site')
+
 class Site
   attr_reader :recent_template_type, :recent_preferred_template, :recent_layout_template
 
@@ -21,4 +22,4 @@ class Site
   [:set_template_type_for, :set_preferred_template, :set_layout_template].each do |m|
     alias_method_chain m, :testing
   end
-end
+end unless Site.instance_methods.include?('set_template_type_for_with_testing')
