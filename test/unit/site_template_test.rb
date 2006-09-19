@@ -28,7 +28,11 @@ context "Site Template" do
   end
 
   specify "should not barf on nil attributes for theme" do
-    [:title, :author, :version, :homepage].each { |attr_name| assert_nil sites(:first).themes.first.send(attr_name) }
+    [:summary, :author, :version, :homepage].each { |attr_name| assert_nil sites(:first).themes[:empty].send(attr_name) }
+  end
+
+  specify "should default to name on empty title" do 
+    assert_equal 'empty', sites(:first).themes[:empty].title
   end
 
   specify "should read yml attributes for theme" do
@@ -37,6 +41,7 @@ context "Site Template" do
     assert_equal 'Justin Palmer',                theme.author
     assert_equal 0.5,                            theme.version
     assert_equal 'http://encytemedia.com/blog/', theme.homepage
+    assert_equal 'cool stuff',                   theme.summary
   end
 
   specify "should raise error on missing template" do

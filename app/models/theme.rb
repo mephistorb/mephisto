@@ -21,13 +21,23 @@ class Theme
     @properties = about.exist? ? YAML.load_file(about) : {}
   end
 
-  [:title, :author, :version, :homepage].each do |attr_name|
+  [:summary, :author, :version, :homepage].each do |attr_name|
     eval <<-END
       def #{attr_name}
         class << self ; attr_reader :#{attr_name} ; end
-        properties['#{attr_name}']
+        @#{attr_name} = properties['#{attr_name}']
       end
     END
+  end
+
+  def title
+    class << self ; attr_reader :title ; end
+    @title = properties['title'] || name
+  end
+
+  def linked_author
+    class << self ; attr_reader :linked_author ; end
+    @linked_author = homepage.blank? ? author : %(<a href="#{CGI.escapeHTML homepage}">#{author}</a>)
   end
 
   def attachments

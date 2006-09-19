@@ -1,11 +1,12 @@
     <li class="theme">
       <h3>
-        <%= theme.name %>
+        <%=h theme.title %>
         <span class="thememeta">
-          v0.5 | by Dude Yo
+          <% unless theme.version.blank? -%>v<%=h theme.version %> |<% end -%>
+          by <%= theme.linked_author.blank? ? 'unknown' : theme.linked_author %>
         </span>
       </h3>
-      <img src="/images/mephisto/preview.png" alt="Theme preview" title="A nice theme (v0.5)" />
+      <img src="/images/mephisto/preview.png" alt="Theme preview" title="<%=h theme.title %> (v<%=h theme.version %>)" />
       <div class="tools" style="display:none">
         <ul>
           <li><a href="#" title="title">Use this theme</a></li>
