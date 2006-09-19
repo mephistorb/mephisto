@@ -1,7 +1,7 @@
 class Site < ActiveRecord::Base
   @@theme_path = Pathname.new(RAILS_ROOT) + 'themes'
   cattr_reader :theme_path
-  PERMALINK_OPTIONS = { 'year' => '\d{4}', 'month' => '\d{1,2}', 'day' => '\d{1,2}', 'permalink' => '[a-z0-9-]+', 'id' => '\d+' }
+  PERMALINK_OPTIONS = { 'year' => '\d{4}', 'month' => '\d{1,2}', 'day' => '\d{1,2}', 'permalink' => '[\w\-]+', 'id' => '\d+' }
   PERMALINK_VAR     = /^:([a-z]+)$/
 
   cattr_accessor :multi_sites_enabled

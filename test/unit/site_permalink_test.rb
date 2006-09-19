@@ -52,10 +52,10 @@ context "Site Permalink Regular Expression" do
   end
 
   specify "should create permalink regex" do
-    assert_equal Regexp.new(%(^(\\d{4})\\/(\\d{1,2})\\/(\\d{1,2})\\/([a-z0-9-]+)(\/comments(\/(\\d+))?)?$)), @site.permalink_regex
+    assert_equal Regexp.new(%(^(\\d{4})\\/(\\d{1,2})\\/(\\d{1,2})\\/([\\w\\-]+)(\/comments(\/(\\d+))?)?$)), @site.permalink_regex
     
     @site.permalink_style = "articles/:id/:permalink"
-    assert_equal Regexp.new(%(^articles\\/(\\d+)\\/([a-z0-9-]+)(\/comments(\/(\\d+))?)?$)), @site.permalink_regex(true)
+    assert_equal Regexp.new(%(^articles\\/(\\d+)\\/([\\w\\-]+)(\/comments(\/(\\d+))?)?$)), @site.permalink_regex(true)
   end
 end
 
