@@ -24,7 +24,19 @@ context "Site Template" do
   end
 
   specify "should find other themes" do
-    assert_equal %w(empty encytemedia), sites(:first).themes.collect { |t| t.path.basename.to_s }
+    assert_equal %w(empty encytemedia), sites(:first).themes.collect(&:name)
+  end
+
+  specify "should not barf on nil attributes for theme" do
+    [:title, :author, :version, :homepage].each { |attr_name| assert_nil sites(:first).themes.first.send(attr_name) }
+  end
+
+  specify "should read yml attributes for theme" do
+    theme = sites(:first).themes[:encytemedia]
+    assert_equal 'Encytemedia',                  theme.title
+    assert_equal 'Justin Palmer',                theme.author
+    assert_equal 0.5,                            theme.version
+    assert_equal 'http://encytemedia.com/blog/', theme.homepage
   end
 
   specify "should raise error on missing template" do

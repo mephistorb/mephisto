@@ -14,6 +14,17 @@ class Theme
     @name ||= @path.basename.to_s
   end
 
+  def properties
+    about = path + 'about.yml'
+    @properties ||= about.exist? ? YAML.load_file(about) : {}
+  end
+
+  [:title, :author, :version, :homepage].each do |attr_name|
+    define_method attr_name do
+      properties[attr_name.to_s]
+    end
+  end
+
   def attachments
     return @attachments unless @attachments.nil?
     @attachments, @templates, @resources = Attachments.new, Templates.new, Resources.new

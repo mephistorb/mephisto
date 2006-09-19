@@ -118,6 +118,7 @@ class Site < ActiveRecord::Base
       next unless entry.directory?
       @themes << Theme.new(entry)
     end
+    def @themes.[](key) key = key.to_s ; detect { |t| t.name == key } ; end
     @themes
   end
 
