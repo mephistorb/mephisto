@@ -66,6 +66,10 @@ class Article < Content
       find(:all, :order => 'contents.published_at DESC', :include => [:tags, :user], :limit => limit,
         :conditions => ['(contents.published_at <= ? AND contents.published_at IS NOT NULL) AND tags.name IN (?)', Time.now.utc, tag_names])
     end
+    
+    def permalink_for(str)
+      str.gsub(/\W+/, ' ').strip.downcase.gsub(/\ +/, '-')
+    end
   end
 
   [:year, :month, :day].each { |m| delegate m, :to => :published_at }
@@ -123,7 +127,7 @@ class Article < Content
 
   protected
     def create_permalink
-      self.permalink = title.to_s.gsub(/\W+/, ' ').strip.downcase.gsub(/\ +/, '-') if permalink.blank?
+      self.permalink = self.class.permalink_for(title.to_s) if permalink.blank?
     end
 
     def convert_to_utc

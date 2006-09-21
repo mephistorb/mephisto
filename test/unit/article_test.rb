@@ -12,6 +12,11 @@ class ArticleTest < Test::Unit::TestCase
     a = create_article :title => 'This IS a Tripped out title!!.!1  (well/ not really)', :body => 'foo', :permalink => 'trippy'
     assert_equal 'trippy', a.permalink
   end
+  
+  def test_permalink_for_strange_article_title
+    title = '////// meph1sto r0x ! \\\\\\'
+    assert_equal 'meph1sto-r0x', Article.permalink_for(title)
+  end
 
   def test_full_permalink
     date = 3.days.ago
