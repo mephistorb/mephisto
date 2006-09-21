@@ -48,7 +48,7 @@ module ApplicationHelper
   else
     def gravatar_url_for(user, size = 80)
       return 'mephisto/avatar.gif' unless user && user.email
-      "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(user.email)}&default=http://#{request.host_with_port}/images/mephisto/avatar.gif"
+      "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(user.email)}&default=http://#{request.host_with_port}#{ActionController::AbstractRequest.relative_url_root}/images/mephisto/avatar.gif"
     end
   end
 
