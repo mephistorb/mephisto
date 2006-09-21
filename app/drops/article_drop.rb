@@ -12,7 +12,7 @@ class ArticleDrop < BaseDrop
       'title'            => @source.title,
       'permalink'        => @source.permalink,
       'body'             => @source.body_html,
-      'excerpt'          => @source.excerpt_html,
+      'excerpt'          => (@source.excerpt_html.nil? || @source.excerpt_html.empty? ? false : @source.excerpt_html),
       'published_at'     => (@source.published_at ? @site.timezone.utc_to_local(@source.published_at) : nil),
       'updated_at'       => (@source.updated_at   ? @site.timezone.utc_to_local(@source.updated_at)   : nil),
       'comments_count'   => @source.comments_count,
