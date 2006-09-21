@@ -120,8 +120,11 @@ end
 
 module Mephisto
   class MissingTemplateError < StandardError
-    def initialize(template_name)
-      super "'#{template_name}' is missing."
+    attr_reader :template_type, :templates
+    def initialize(template_type, templates)
+      @template_type = template_type
+      @templates     = templates
+      super "No template found for #{template_type}, checked #{templates.to_sentence}."
     end
   end
 end

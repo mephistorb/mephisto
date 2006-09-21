@@ -46,8 +46,9 @@ context "Site Template" do
 
   specify "should raise error on missing template" do
     sites(:first).templates[:archive].unlink
+    sites(:first).templates[:index].unlink
     assert_raise Mephisto::MissingTemplateError do
-      sites(:first).send(:parse_template, sites(:first).templates[:archive], {}, {})
+      sites(:first).send(:set_content_template, sites(:first).sections.home, :archive)
     end
   end
 
@@ -76,7 +77,7 @@ context "Site Template" do
       template_type ||= expected_template_name
       site            = options[:site] || sites(:first)
       section         = options[:section] || site.sections.home
-      assert_equal(expected_template_name.nil? ? nil : site.templates[expected_template_name], site.send(:set_preferred_template, section, template_type))
+      assert_equal(expected_template_name.nil? ? nil : site.templates[expected_template_name], site.send(:set_content_template, section, template_type))
     end
     def assert_site_layout_name(expected_template_name, template_type = nil, options = {})
       template_type ||= expected_template_name

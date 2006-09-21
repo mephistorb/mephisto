@@ -28,10 +28,6 @@ class MephistoController < ApplicationController
       render_liquid_template_for(:page, 'section' => @section.to_liquid(true),
                                         'article' => @article.to_liquid(:mode => :single, :site => site))
     end
-
-    def dispatch_single
-      show_article
-    end
     
     def dispatch_comments
       show_404 and return unless find_article
@@ -123,6 +119,5 @@ class MephistoController < ApplicationController
       @article  = @article.to_liquid(:mode => :single, :site => site)
       render_liquid_template_for(:single, assigns.merge('articles' => [@article], 'article' => @article))
     end
-
-    alias show_article show_article_with
+    alias dispatch_single show_article_with
 end

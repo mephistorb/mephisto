@@ -8,15 +8,15 @@ class Site
     @recent_template_type = set_template_type_for_without_testing(section, template_type)
   end
   
-  def set_preferred_template_with_testing(section, template_type)
-    @recent_preferred_template = set_preferred_template_without_testing(section, template_type)
+  def set_content_template_with_testing(section, template_type)
+    @recent_preferred_template = set_content_template_without_testing(section, template_type)
   end
   
   def set_layout_template_with_testing(section, template_type)
     @recent_layout_template = set_layout_template_without_testing(section, template_type)
   end
   
-  [:set_template_type_for, :set_preferred_template, :set_layout_template].each do |m|
+  [:set_template_type_for, :set_content_template, :set_layout_template].each do |m|
     alias_method_chain m, :testing
   end
 end unless Site.instance_methods.include?('set_template_type_for_with_testing')

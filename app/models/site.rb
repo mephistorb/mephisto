@@ -145,7 +145,7 @@ class Site < ActiveRecord::Base
   def render_liquid_for(section, template_type, assigns = {}, controller = nil)
     template_type       = set_template_type_for  section, template_type
     assigns['site']     = to_liquid(section)
-    assigns['content_for_layout'] = parse_template(set_preferred_template(section, template_type), assigns, controller)
+    assigns['content_for_layout'] = parse_template(set_content_template(section, template_type), assigns, controller)
     parse_template(set_layout_template(section, template_type), assigns, controller)
   end
 
@@ -206,9 +206,9 @@ class Site < ActiveRecord::Base
       template_type == :section && section.show_paged_articles? ? :page : template_type
     end
     
-    def set_preferred_template(section, template_type)
+    def set_content_template(section, template_type)
       preferred_template = section.template if [:page, :section].include?(template_type)
-      templates.find_preferred(template_type, preferred_template)
+      find_preferred_template(template_type, preferred_template)
     end
     
     def set_layout_template(section, template_type)
@@ -221,11 +221,16 @@ class Site < ActiveRecord::Base
             when :search then search_layout
           end
         end
-      templates.find_preferred(:layout, layout_template)
+      find_preferred_template(:layout, layout_template)
+    end
+
+    def find_preferred_template(template_type, custom_template)
+      preferred = templates.find_preferred(template_type, custom_template)
+      return preferred if preferred && preferred.file?
+      raise Mephisto::MissingTemplateError.new(template_type, templates.collect_templates(template_type, custom_template))
     end
     
     def parse_template(template, assigns, controller)
-      raise Mephisto::MissingTemplateError, template unless template && template.file?
       # give the include tag access to files in the site's fragments directory
       Liquid::Template.file_system = Liquid::LocalFileSystem.new(File.join(attachment_base_path, 'templates'))
       Liquid::Template.parse(template.read.to_s).render(assigns, :registers => {:controller => controller})
