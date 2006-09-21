@@ -1,21 +1,35 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'application_helper'
+require 'digest/md5'
 
 ApplicationHelperTestController = Class.new ApplicationController do
   # look at how i mock the action view request
-  def request() self end
+  def request() self end 
   def env
     @env ||= {}
+  end
+  def host_with_port
+    'localhost:3000'
   end
 end
 
 class ApplicationHelperTest < Test::Unit::TestCase
-  fixtures :assets
+  fixtures :assets, :users
   include ActionView::Helpers::TagHelper
   include ApplicationHelper
   
+  def request
+    @request ||= ApplicationHelperTestController.new
+    @request
+  end
+  
   def test_should_return_default_avatar_for_nil_users
-    assert_equal 'avatar.gif', gravatar_url_for(nil)
+    assert_equal 'mephisto/avatar.gif', gravatar_url_for(nil)
+  end
+  
+  def test_should_return_gravatar_link_for_user
+    expected = "http://www.gravatar.com/avatar.php?size=80&gravatar_id=#{Digest::MD5.hexdigest(users(:quentin).email)}&default=http://#{request.host_with_port}/images/mephisto/avatar.gif"
+    assert_equal expected, gravatar_url_for(users(:quentin))
   end
 
   def test_should_return_movie_icon_for_movie
