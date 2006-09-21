@@ -36,6 +36,7 @@ class MephistoController < ApplicationController
     def dispatch_comments
       show_404 and return unless find_article
       if request.get? || params[:comment].blank?
+        @skip_caching = true
         redirect_to site.permalink_for(@article) and return
       end
     
@@ -97,6 +98,7 @@ class MephistoController < ApplicationController
                                           'next_page'     => paged_search_url_for(@article_pages.current.next),
                                           'search_string' => params[:q],
                                           'search_count'  => search_count)
+      @skip_caching = true
     end
     
     def dispatch_tags

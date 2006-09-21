@@ -80,6 +80,37 @@ class CachingTest < ActionController::IntegrationTest
     assert_cached contents(:welcome).full_permalink
   end
 
+  def test_should_not_cache_comment_post
+    visitor = visit
+    assert_expires_pages "#{contents(:welcome).full_permalink}/comments" do
+      visitor.comment_on contents(:welcome), :author => 'bob', :body => 'what a wonderful post.'
+    end
+  end
+
+  def test_should_not_cache_comment_post_on_article_with_closed_comments
+    visitor = visit
+    contents(:welcome).update_attribute :comment_age, -1
+    assert_expires_pages "#{contents(:welcome).full_permalink}/comments" do
+      visitor.comment_on contents(:welcome), :author => 'bob', :body => 'what a wonderful post.'
+    end
+  end
+
+  def test_should_not_cache_comment_post_on_article_with_invalid_comment
+    visitor = visit
+    assert_expires_pages "#{contents(:welcome).full_permalink}/comments" do
+      assert_no_difference Comment, :count do
+        visitor.comment_on contents(:welcome), {}
+      end
+    end
+  end
+
+  def test_should_not_cache_comments_page_on_get
+    visitor = visit
+    assert_expires_pages "#{contents(:welcome).full_permalink}/comments" do
+      visitor.get "#{contents(:welcome).full_permalink}/comments"
+    end
+  end
+
   def test_should_expire_cache_on_new_comment_if_approved
     visitor = visit
     assert_caches_page contents(:welcome).full_permalink do
@@ -247,6 +278,15 @@ class CachingTest < ActionController::IntegrationTest
       login_as :quentin do |writer|
         writer.update_resource sites(:first).resources['rails-logo.png'], 'foo'
       end
+    end
+  end
+
+  def test_should_not_cache_searches
+    visitor = visit
+    assert_expires_page "/search" do
+      visitor.get  '/search'
+      visitor.get  '/search', :q => 'foo'
+      visitor.post '/search', :q => 'foo'
     end
   end
 

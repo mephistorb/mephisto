@@ -3,6 +3,7 @@ module Mephisto # :nodoc:
     def self.included(base)
       base.helper_method :cached_references
       base.extend ClassMethods
+      base.alias_method_chain :caching_allowed, :skipping
       base.send :attr_writer, :cached_references
     end
 
@@ -24,7 +25,11 @@ module Mephisto # :nodoc:
       def cached_references
         @cached_references ||= []
       end
-      
+
+      def caching_allowed_with_skipping
+        caching_allowed_without_skipping && !@skip_caching
+      end
+
       # Saves a CachedPage for the current request with the current references.  This is called in an after filter if #caches_page_with_references
       # is used.
       def cache_page_with_references
