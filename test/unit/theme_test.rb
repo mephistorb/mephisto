@@ -8,6 +8,8 @@ class ThemeTest < Test::Unit::TestCase
   end
 
   THEME_FILES = [
+    'about.yml',
+    'preview.png',
     'images',
     'javascripts/behavior.js',
     'layouts/layout.liquid',

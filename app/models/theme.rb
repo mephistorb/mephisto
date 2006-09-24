@@ -87,10 +87,16 @@ class Theme
   end
 
   protected
-    def write_theme_files_with(file_class, path = '')
+    def write_theme_files_with(file_class, relative_path = '')
+      # ZipFileSystem doesn't support wb
       write_mode = file_class.is_a?(Zip::ZipFileSystem::ZipFsFile) ? 'w' : 'wb'
-      attachments.each do |full_path| 
-        file_class.open((Pathname.new(path) + full_path.relative_path_from(self.path)).to_s, write_mode) { |f| f.write full_path.read }
+      relative_path = Pathname.new(relative_path) unless relative_path.is_a?(Pathname)
+      %w(about.yml preview.png).each do |file|
+        real_file = path + file
+        file_class.open((relative_path + file).to_s, write_mode) { |f| f << real_file.read } if real_file.exist?
+      end
+      attachments.each do |full_path|
+        file_class.open((relative_path + full_path.relative_path_from(path)).to_s, write_mode) { |f| f << full_path.read }
       end
     end
 end
