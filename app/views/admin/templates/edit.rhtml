@@ -1,8 +1,12 @@
 <% content_for :action_nav do %>
   <div id="page-nav">
     <ul id="act-nav" class="clear">
-      <li><%= link_to "New template", :controller => 'design' %></li>
+      <li><%= link_to "New template", url_for_theme(:controller => 'design') %></li>
       <li><%= link_to "Manage themes", :controller => 'themes' %></li>
+    <% if @theme.templates.custom.include?(@tmpl.basename.to_s) -%>
+      <li><%= link_to 'Delete this file', url_for_theme(:action => 'remove', :filename => @tmpl.basename), 
+                :confirm => "Are you sure you want to delete #{@tmpl.basename}?\nThis action can't be undone!" %></li>
+    <% end -%>
     </ul>
   </div>
 <% end %>
