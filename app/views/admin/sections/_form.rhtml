@@ -2,7 +2,7 @@
      :url => { :action => (@section.new_record? ? 'create' : 'update'), :id => @section }, :html => { :id => 'section-form' } do |f| %>
 <div class="group">
   <dl>
-    <dt><label for="section_name">Section name <span class="hint">(<%= link_to_function 'Customize path', %(['sec-lbl', 'sec-input'].each(Element.toggle)) %>)</span></label></dt>
+    <dt><label for="section_name">Section name</label></dt>
     <dd><%= f.text_field :name, :class => 'big' %></dd>
     <dt><label for="section_show_paged_articles">Type of section</label></dt>
     <dd>
