@@ -4,14 +4,6 @@
   <dl>
     <dt><label for="section_name">Section name <span class="hint">(<%= link_to_function 'Customize path', %(['sec-lbl', 'sec-input'].each(Element.toggle)) %>)</span></label></dt>
     <dd><%= f.text_field :name, :class => 'big' %></dd>
-    <dt id="sec-lbl" style="display:none">
-      <label for="section_path">Section path</label> 
-      <p class="hint">
-        Example: If you have a section called Tips & Tricks and you'd like the URL for this section to be <em>domain.com/tips</em>, 
-        you can add 'tips' in this field.
-      </p>
-    </dt>
-    <dd id="sec-input" style="display:none"><%= f.text_field :path, :class => 'big' %></dd>
     <dt><label for="section_show_paged_articles">Type of section</label></dt>
     <dd>
       <select id="section_show_paged_articles" name="section[show_paged_articles]" onchange="SectionForm.toggleSettings();">
@@ -21,6 +13,16 @@
               (@section.show_paged_articles? ? '1' : '0') %>
       </select>
     </dd>
+    </dl>
+    <dl id="sec-options" style="display:none">
+    <dt>
+      <label for="section_path">Section path</label> 
+      <p class="hint">
+        Example: If you have a section called Tips & Tricks and you'd like the URL for this section to be <em>domain.com/tips</em>, 
+        you can add 'tips' in this field.
+      </p>
+    </dt>
+    <dd><%= f.text_field :path, :class => 'big' %></dd>
     <dt>
       <label for="section_archive_path">Url that the archive area is available at.</label>
     </dt>
@@ -65,5 +67,6 @@
     
   </dl>
 </div>
+<a class="bottom-tab" href="#" style="width:200px;" id="sec-options-trigger">Advanced options</a>
 <p class="btns"><%= submit_tag 'Save Section' %></p>
 <% end -%>

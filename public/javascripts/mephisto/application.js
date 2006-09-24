@@ -526,6 +526,7 @@ Event.addBehavior({
   '#reset_password': function() { this.hide(); },
   '#reset_password_link:click,#reset_password_cancel:click': function() { Effect.toggle('reset_password', 'blind'); },
   '#asset-add-file:click': function() { return Asset.addInput(); },
+  '#sec-options-trigger:click': function() { $('sec-options').toggle(); },
   '#tagsall:click': function() { 
     var inputs = $('new_asset').getInputs('text');
     var tags = $F(inputs.first()).split(',');
