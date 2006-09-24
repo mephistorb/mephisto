@@ -18,6 +18,10 @@ context "Site Template" do
     assert_equal Site.theme_path + 'site-1' + 'other', sites(:first).other_themes_path
   end
 
+  specify "should set rollback themes path" do
+    assert_equal Site.theme_path + 'site-1' + 'rollback', sites(:first).rollback_path
+  end
+
   specify "should set current theme" do
     assert_kind_of Theme, sites(:first).theme
     assert_equal Site.theme_path + 'site-1' + 'current', sites(:first).theme.path
@@ -30,6 +34,8 @@ context "Site Template" do
   specify "should find current theme" do
     theme = sites(:first).themes[:current]
     assert theme.current?
+    assert sites(:first).theme.current?
+    assert_equal theme, sites(:first).theme
   end
 
   specify "should not barf on nil attributes for theme" do
@@ -38,6 +44,19 @@ context "Site Template" do
 
   specify "should default to name on empty title" do 
     assert_equal 'empty', sites(:first).themes[:empty].title
+  end
+
+  specify "should change theme" do
+    theme = sites(:first).change_theme_to :encytemedia
+    assert theme.current?
+    assert_equal 'current',     theme.name
+    assert_equal 'Encytemedia', theme.title
+  end
+
+  specify "should change theme and create rollback" do
+    theme = sites(:first).change_theme_to :encytemedia
+    assert_equal 'rollback',  sites(:first).rollback_theme.name
+    assert_equal 'Hemingway', sites(:first).rollback_theme.title
   end
 
   specify "should read yml attributes for theme" do

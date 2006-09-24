@@ -89,25 +89,25 @@ class Site < ActiveRecord::Base
       :joins => "INNER JOIN taggings ON taggings.tag_id = tags.id INNER JOIN contents ON (taggings.taggable_id = contents.id AND taggings.taggable_type = 'Content')")
   end
 
-  def attachment_path
-    theme.path
-  end
-
   def theme_path
     @theme_path ||= self.class.theme_path + "site-#{id}"
   end
 
-  def attachment_base_path
-    @attachment_base_path ||= theme_path + 'current'
+  {:attachment_base => :current, :rollback => :rollback, :other_themes => :other}.each do |key, value|
+    define_method "#{key}_path" do
+      inst_var = :"@#{key}_path"
+      instance_variable_set(inst_var, theme_path + value.to_s) if instance_variable_get(inst_var).nil?
+      instance_variable_get(inst_var)
+    end
   end
-  
-  def other_themes_path
-    @other_themes_path ||= theme_path + 'other'
+
+  def attachment_path
+    theme.path
   end
 
   def themes
     return @themes unless @themes.nil?
-    @themes = [Theme.current(attachment_base_path)]
+    @themes = [theme]
     FileUtils.mkdir_p other_themes_path
     Dir.foreach other_themes_path do |e|
       next if e.first == '.'
@@ -121,9 +121,24 @@ class Site < ActiveRecord::Base
 
   def theme
     return @theme unless @theme.nil?
-    @theme = Theme.new(attachment_base_path)
+    @theme = Theme.current(attachment_base_path)
   end
-  
+
+  def rollback_theme
+    return @rollback_theme unless @rollback_theme.nil?
+    @rollback_theme = Theme.new(rollback_path)
+  end
+
+  def change_theme_to(new_theme)
+    new_theme = themes[new_theme]
+    rollback_path.rmtree if rollback_path.exist?
+    FileUtils.cp_r attachment_path, rollback_path
+    attachment_path.rmtree
+    FileUtils.cp_r new_theme.path, attachment_base_path
+    @theme = @themes = @rollback_theme = nil
+    theme
+  end
+
   [:attachments, :templates, :resources].each { |m| delegate m, :to => :theme }
 
   def permalink_for(article)
