@@ -107,7 +107,7 @@ class Site < ActiveRecord::Base
 
   def themes
     return @themes unless @themes.nil?
-    @themes = []
+    @themes = [Theme.current(attachment_base_path)]
     FileUtils.mkdir_p other_themes_path
     Dir.foreach other_themes_path do |e|
       next if e.first == '.'

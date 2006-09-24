@@ -23,8 +23,13 @@ context "Site Template" do
     assert_equal Site.theme_path + 'site-1' + 'current', sites(:first).theme.path
   end
 
-  specify "should find other themes" do
-    assert_equal %w(empty encytemedia), sites(:first).themes.collect(&:name)
+  specify "should find themes" do
+    assert_equal %w(current empty encytemedia), sites(:first).themes.collect(&:name)
+  end
+  
+  specify "should find current theme" do
+    theme = sites(:first).themes[:current]
+    assert theme.current?
   end
 
   specify "should not barf on nil attributes for theme" do

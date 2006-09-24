@@ -1,5 +1,11 @@
 class Theme
   attr_reader :path, :base_path
+  attr_writer :current
+  
+  def self.current(base)
+    returning(new(base)) { |theme| theme.current = true }
+  end
+  
   def initialize(base)
     if base.is_a?(Pathname)
       @base_path = base.to_s
@@ -8,6 +14,10 @@ class Theme
       @base_path = base
       @path      = Pathname.new(@base_path)
     end
+  end
+
+  def current?
+    @current == true
   end
 
   def name
