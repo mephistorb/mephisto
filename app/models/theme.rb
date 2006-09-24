@@ -11,7 +11,18 @@ class Theme
   end
 
   def self.import(zip_file, options = {})
-    dest = options[:to].is_a?(Pathname) ? options[:to] : Pathname.new(options[:to] || '.')
+    dest        = options[:to].is_a?(Pathname) ? options[:to] : Pathname.new(options[:to] || '.')
+    basename    = dest.basename.to_s
+    if dest.exist? || basename == 'current'
+      basename  = basename =~ /(.*)_(\d+)$/ ? $1 : basename
+      number    = $2 ? $2.to_i + 1 : 2
+      dirname   = dest.dirname
+      dest      = dirname + "#{basename}_#{number}"
+      while dest.exist?
+        number += 1
+        dest    = dirname + "#{basename}_#{number}"
+      end
+    end
     FileUtils.mkdir_p dest.to_s unless dest.exist?
     Zip::ZipFile.open(zip_file) do |z|
       root_theme_files.each do |file|
@@ -26,6 +37,7 @@ class Theme
         end
       end
     end
+    dest.basename.to_s
   end
 
   def initialize(base)

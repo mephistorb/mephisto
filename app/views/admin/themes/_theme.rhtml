@@ -1,6 +1,7 @@
     <li class="theme">
       <h3>
-        <%= "<strong>*</strong> " if theme.current? %><%=h theme.title %>
+        <%= "<strong>*</strong> " if theme.current? %>
+        <span title="stored in /<%= theme.current? ? 'current' : "other/#{theme.name}" %>"><%=h theme.title %></span>
         <span class="thememeta">
           <% unless theme.version.blank? -%>v<%=h theme.version %> |<% end -%>
           by <%= theme.linked_author.blank? ? 'unknown' : theme.linked_author %>

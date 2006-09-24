@@ -69,6 +69,17 @@ context "Site Template" do
     end
   end
 
+  specify "should import theme named current" do
+    sites(:first).import_theme sites(:first).theme_path + 'hemingway.zip', 'current'
+    assert_equal %w(current current_2 empty encytemedia), sites(:first).themes.collect(&:name)
+    THEME_FILES.each do |path|
+      assert File.exists?(File.join(THEME_ROOT, 'site-1/other/current_2', path)), "'site-1/other/current_2/#{path}' does not exist"
+    end
+
+    sites(:first).import_theme sites(:first).theme_path + 'hemingway.zip', 'current'
+    assert_equal %w(current current_2 current_3 empty encytemedia), sites(:first).themes.collect(&:name)
+  end
+
   specify "should find themes and ignore duplicates" do
     sites(:first).change_theme_to :encytemedia
     assert_equal %w(current empty), sites(:first).themes.collect(&:name)

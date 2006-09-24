@@ -137,13 +137,19 @@ class Site < ActiveRecord::Base
       FileUtils.cp_r attachment_path, rollback_path
       attachment_path.rmtree
     end
-    FileUtils.cp_r new_theme.path, attachment_base_path
+    FileUtils.cp_r new_theme.base_path, attachment_base_path
     @theme = @themes = @rollback_theme = nil
     theme
   end
 
   def import_theme(zip_file, name)
-    Theme.import zip_file, :to => other_themes_path + name
+    imported_name = Theme.import zip_file, :to => other_themes_path + name
+    @theme = @themes = @rollback_theme = nil
+    themes[imported_name]
+  end
+
+  def move_theme(theme, new_name)
+    FileUtils.move theme.base_path, other_themes_path + new_name
   end
 
   [:attachments, :templates, :resources].each { |m| delegate m, :to => :theme }
