@@ -61,6 +61,11 @@ context "Site Template" do
     assert_equal 'Hemingway', sites(:first).rollback_theme.title
   end
 
+  specify "should find themes and ignore duplicates" do
+    sites(:first).change_theme_to :encytemedia
+    assert_equal %w(current empty), sites(:first).themes.collect(&:name)
+  end
+
   specify "should read yml attributes for theme" do
     theme = sites(:first).themes[:encytemedia]
     assert_equal 'Encytemedia',                  theme.title

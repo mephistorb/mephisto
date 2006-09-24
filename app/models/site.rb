@@ -114,6 +114,7 @@ class Site < ActiveRecord::Base
       entry = other_themes_path + e
       next unless entry.directory?
       @themes << Theme.new(entry)
+      @themes.pop if @themes.last == theme
     end
     def @themes.[](key) key = key.to_s ; detect { |t| t.name == key } ; end
     @themes

@@ -93,6 +93,19 @@ class Theme
     write_theme_files_with File, path
   end
 
+  def eql?(comparison_object)
+    self == (comparison_object)
+  end
+  
+  def ==(comparison_object)
+    case comparison_object
+      when Theme
+        title == comparison_object.title && version == comparison_object.version
+      else
+        base_path == comparison_object.to_s
+    end
+  end
+
   protected
     def write_theme_files_with(file_class, relative_path = '')
       # ZipFileSystem doesn't support wb

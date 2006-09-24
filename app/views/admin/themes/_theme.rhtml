@@ -1,6 +1,6 @@
     <li class="theme">
       <h3>
-        <%=h theme.title %>
+        <%= "<strong>*</strong> " if theme.current? %><%=h theme.title %>
         <span class="thememeta">
           <% unless theme.version.blank? -%>v<%=h theme.version %> |<% end -%>
           by <%= theme.linked_author.blank? ? 'unknown' : theme.linked_author %>
