@@ -4,6 +4,8 @@ require 'converters/typo/article'
 require 'converters/typo/comment'
 require 'converters/typo/category'
 require 'converters/typo/user'
+require 'converters/typo/tag'
+
 module Typo
   @@new_user_password = 'mephistomigrator'
   mattr_accessor :new_user_password
@@ -54,6 +56,9 @@ module Typo
 
       section_ids = find_or_create_sections(typo_article)
       
+      tags = typo_article.tags.map { |tag| tag.name }
+      tags = tags.join(',')
+      
       excerpt, body = !typo_article.extended.blank? ?
         [typo_article.body, typo_article.extended] :
         [nil, typo_article.body]
@@ -69,6 +74,7 @@ module Typo
         :user         => user,
         :updater      => user,
         :section_ids  => section_ids,
+        :tag          => tags,
         :filter       => 'textile_filter'
     rescue
       msg = "Errored while converting Typo Article ##{typo_article.id}: '#{typo_article.title}'"

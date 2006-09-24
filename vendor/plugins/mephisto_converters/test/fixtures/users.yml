@@ -8,5 +8,5 @@ quentin:
   created_at: <%= 5.days.ago.to_s :db %>
   updated_at: <%= 5.days.ago.to_s :db %>
   filter: textile_filter
-  remember_token: quentintoken
-  remember_token_expires_at: <%= 5.days.from_now.to_s :db %>
+  token: quentintoken
+  token_expires_at: <%= 5.days.from_now.to_s :db %>
