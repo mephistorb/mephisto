@@ -24,6 +24,13 @@ class Theme
     class << self ; attr_reader :name ; end
     @name = @path.basename.to_s
   end
+  
+  alias to_param name
+
+  def preview
+    class << self; attr_reader :preview ; end
+    @preview = @path + 'preview.png'
+  end
 
   def properties
     class << self ; attr_reader :properties ; end

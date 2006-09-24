@@ -6,13 +6,15 @@
           by <%= theme.linked_author.blank? ? 'unknown' : theme.linked_author %>
         </span>
       </h3>
-      <img src="/images/mephisto/preview.png" alt="Theme preview" title="<%=h theme.title %> (v<%=h theme.version %>)" />
+      <img src="<%= url_for(:controller => '/admin/themes', :action => 'preview_for', :id => theme) %>" alt="Theme preview" title="<%=h theme.title %> (v<%=h theme.version %>)" />
       <div class="tools" style="display:none">
         <ul>
-          <li><a href="#" title="title">Use this theme</a></li>
-          <li><a href="#" title="title">Edit source code</a></li>
-          <li><a href="#" title="title">Change info</a></li>
-          <li><%= link_to 'Export', :action => 'export', :id => theme.name %></li>
+        <% unless theme.current? -%>
+          <li><%= link_to 'Use this theme', :action => 'change_to', :id => theme %></li>
+        <% end -%>
+          <!--li><a href="#" title="title">Edit source code</a></li-->
+          <!--li><a href="#" title="title">Change info</a></li-->
+          <li><%= link_to 'Export', :action => 'export', :id => theme %></li>
         </ul>
       </div>
     </li>

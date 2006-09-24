@@ -49,12 +49,14 @@ context "Site Template" do
   specify "should change theme" do
     theme = sites(:first).change_theme_to :encytemedia
     assert theme.current?
+    assert theme.path.exist?, "#{theme.path.to_s} does not exist"
     assert_equal 'current',     theme.name
     assert_equal 'Encytemedia', theme.title
   end
 
   specify "should change theme and create rollback" do
     theme = sites(:first).change_theme_to :encytemedia
+    assert sites(:first).rollback_theme.path.exist?, "#{sites(:first).rollback_theme.path.to_s} does not exist"
     assert_equal 'rollback',  sites(:first).rollback_theme.name
     assert_equal 'Hemingway', sites(:first).rollback_theme.title
   end

@@ -5,6 +5,7 @@ class ThemeTest < Test::Unit::TestCase
 
   def setup
     prepare_theme_fixtures
+    @theme = sites(:first).theme
   end
 
   THEME_FILES = [
@@ -25,8 +26,16 @@ class ThemeTest < Test::Unit::TestCase
     'templates/single.liquid'
   ]
 
+  def test_should_find_preview
+    assert @theme.preview.exist?
+  end
+
+  def test_should_respond_to_to_param_for_routes
+    assert_equal 'current', @theme.to_param
+  end
+
   def test_should_export_files
-    sites(:first).theme.export 'foo', :to => THEME_ROOT
+    @theme.export 'foo', :to => THEME_ROOT
     
     THEME_FILES.each do |path|
       assert File.exists?(File.join(THEME_ROOT, 'foo', path)), "#{path} does not exist"
@@ -34,7 +43,7 @@ class ThemeTest < Test::Unit::TestCase
   end
 
   def test_should_export_files_as_zip
-    sites(:first).theme.export_as_zip 'foo', :to => THEME_ROOT
+    @theme.export_as_zip 'foo', :to => THEME_ROOT
     
     assert File.exists?(File.join(THEME_ROOT, 'foo.zip'))
     
