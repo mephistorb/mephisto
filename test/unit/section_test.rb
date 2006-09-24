@@ -9,8 +9,9 @@ class SectionTest < Test::Unit::TestCase
     end
     
     assert_difference Section, :count do 
-      section = sites(:first).sections.create(:name => 'Foo')
+      section = sites(:first).sections.create(:name => 'Foo', :path => '')
       assert_equal sites(:first), section.site
+      assert_equal 'foo', section.path
     end
   end
 
@@ -22,7 +23,8 @@ class SectionTest < Test::Unit::TestCase
   end
 
   def test_should_create_path
-    s = sites(:first).sections.find_or_create_by_name('This IS a Tripped out title!!!1  (well/ not. really)')
+    s = Section.new :site => sites(:first), :name => 'This IS a Tripped out title!!!1  (well/ not. really)', :path => ''
+    assert_valid s
     assert_equal 'this-is-a-tripped-out-title-1-well/-not-really', s.path
   end
 

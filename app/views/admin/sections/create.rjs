@@ -4,4 +4,5 @@ unless @section.new_record?
   page.call 'Flash.notice', "Section '#{h @section.name}' created."
 else
   page.visual_effect :shake, 'section_name'
+  page.flash.errors error_messages_for(:section) if @section.errors.any?
 end

@@ -85,7 +85,11 @@ class Section < ActiveRecord::Base
     end
 
     def create_path
-      # nasty regex because i want to keep alpha numerics AND /'s
-      self.path = self.class.permalink_for(name.to_s) if path.nil?
+      self.path = 
+        case path
+          when nil then ''
+          when ''  then self.class.permalink_for(name.to_s)
+          else          path
+        end
     end
 end

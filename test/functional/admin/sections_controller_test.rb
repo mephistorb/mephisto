@@ -36,7 +36,7 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
 
   def test_should_create_paged_section
     assert_difference Section, :count do
-      xhr :post, :create, :section => { :name => 'foo', :show_paged_articles => '1', :template => 'foo', :layout => 'bar' }
+      xhr :post, :create, :section => { :name => 'foo', :path => '', :show_paged_articles => '1', :template => 'foo', :layout => 'bar' }
       assert_response :success
       assert assigns(:section).show_paged_articles?
       assert_equal 'foo', assigns(:section).template
@@ -46,7 +46,7 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
 
   def test_should_create_section_with_empty_templates
     assert_difference Section, :count do
-      xhr :post, :create, :section => { :name => 'foo', :show_paged_articles => '0', :template => '-', :layout => '-', :archive_template => '-' }
+      xhr :post, :create, :section => { :name => 'foo', :path => '', :show_paged_articles => '0', :template => '-', :layout => '-', :archive_template => '-' }
       assert_response :success
       assert             !assigns(:section).show_paged_articles?
       assert_equal 'foo', assigns(:section).name
