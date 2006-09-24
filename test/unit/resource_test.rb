@@ -8,7 +8,7 @@ class ResourceTest < Test::Unit::TestCase
   end
 
   def test_should_count_correct_assets
-    assert_equal 5, sites(:first).resources.size
+    assert_equal 3, sites(:first).resources.size
     assert_equal 0, sites(:hostess).resources.size
   end
 

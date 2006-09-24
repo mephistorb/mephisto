@@ -95,7 +95,7 @@ class Theme
     class << self ; attr_reader :attachments ; end
     @attachments, @templates, @resources = Attachments.new, Templates.new, Resources.new
     [@attachments, @templates, @resources].each { |a| a.theme = self }
-    Pathname.glob(File.join(base_path, '**/*')).each do |path|
+    Pathname.glob(File.join(base_path, '*/*')).each do |path|
       next unless path.file?
       @attachments << path
       (path.extname == '.liquid' ? @templates : @resources) << path

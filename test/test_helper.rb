@@ -4,7 +4,7 @@ ENV['TZ'] = 'US/Central'
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 require File.expand_path(File.dirname(__FILE__) + "/actor")
-ASSET_PATH = File.join(RAILS_ROOT, 'test/fixtures/tmp/assets')
+ASSET_PATH = File.join(RAILS_ROOT, 'test/fixtures/tmp/assets') unless Object.const_defined?(:ASSET_PATH)
 require File.join(File.dirname(__FILE__), 'referenced_caching_test_helper')
 
 Time.class_eval do
@@ -54,7 +54,7 @@ Fixtures.class_eval do
   end
 end
 
-THEME_ROOT = File.join(RAILS_ROOT, 'tmp/themes')
+THEME_ROOT = File.join(RAILS_ROOT, 'tmp/themes') unless Object.const_defined?(:THEME_ROOT)
 THEME_FILES = [
   'about.yml',
   'preview.png',
@@ -71,7 +71,7 @@ THEME_FILES = [
   'templates/search.liquid',
   'templates/section.liquid',
   'templates/single.liquid'
-]
+] unless Object.const_defined?(:THEME_FILES)
 
 class Test::Unit::TestCase
   self.use_transactional_fixtures = true
