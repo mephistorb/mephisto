@@ -1,7 +1,10 @@
 <div class="article">
   <h3>{{ article.published_at | format_date: 'standard' }}</h3>
   <h2>{{ article.title }}</h2>
-  {{ article.body }}
+  {% if article.excerpt %}<div id="has_excerpt_{{ article.id }}"></div>{% else %}<div id="no_excerpt_{{ article.id }}"></div>{% endif %}
+  <div id="article_excerpt_{{ article.id }}">{{ article.excerpt }}</div>
+  <div id="article_body_{{ article.id }}">{{ article.body }}</div>
+  <div id="article_content_{{ article.id }}">{{ article.content }}</div>
 </div>
 
 <h3>Comments</h3>

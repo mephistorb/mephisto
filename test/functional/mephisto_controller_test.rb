@@ -114,8 +114,63 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_tag 'p',  :content => 'home'
     assert_tag 'h2', :content => contents(:welcome).title
     assert_tag 'h2', :content => contents(:another).title
-    assert_tag 'p',  :content => contents(:welcome).excerpt
-    assert_tag 'p',  :content => contents(:another).body
+  end
+
+  def test_article_body_with_excerpt_on_list
+    assert contents(:welcome).update_attributes(:body => 'body', :excerpt => 'excerpt'), contents(:welcome).errors.full_messages.to_sentence
+    dispatch
+    assert_select "div#has_excerpt_1"
+    assert_select "div#article_excerpt_1 p", 'excerpt'
+    assert_select "div#article_body_1 p",    'body'
+    assert_select "div#article_content_1 p", 'excerpt'
+  end
+  
+  def test_article_only_body_on_list
+    assert contents(:welcome).update_attributes(:body => 'body', :excerpt => nil), contents(:welcome).errors.full_messages.to_sentence
+    dispatch
+    assert_select "div#no_excerpt_1"
+    assert_select "div#article_excerpt_1",   ''
+    assert_select "div#article_body_1 p",    'body'
+    assert_select "div#article_content_1 p", 'body'
+  end
+  
+  def test_article_only_body_with_empty_excerpt_on_list
+    assert contents(:welcome).update_attributes(:body => 'body', :excerpt => ''), contents(:welcome).errors.full_messages.to_sentence
+    dispatch
+    assert_select "div#no_excerpt_1"
+    assert_select "div#article_excerpt_1",   ''
+    assert_select "div#article_body_1 p",    'body'
+    assert_select "div#article_content_1 p", 'body'
+  end
+
+  def test_article_body_with_excerpt_on_single
+    a = contents(:welcome)
+    assert contents(:welcome).update_attributes(:body => 'body', :excerpt => 'excerpt'), contents(:welcome).errors.full_messages.to_sentence
+    dispatch a.site.permalink_for(a)
+    assert_select "div#has_excerpt_1"
+    assert_select "div#article_excerpt_1 p", 'excerpt'
+    assert_select "div#article_body_1 p",    'body'
+    assert_select "div#article_content_1 p", 'body'
+  end
+  
+  def test_article_only_body_on_single
+    a = contents(:welcome)
+    assert contents(:welcome).update_attributes(:body => 'body', :excerpt => nil), contents(:welcome).errors.full_messages.to_sentence
+    dispatch a.site.permalink_for(a)
+    assert_select "div#no_excerpt_1"
+    assert_select "div#article_excerpt_1",   ''
+    assert_select "div#article_body_1 p",    'body'
+    assert_select "div#article_content_1 p", 'body'
+  end
+  
+  def test_article_only_body_with_empty_excerpt_on_single
+    a = contents(:welcome)
+    assert contents(:welcome).update_attributes(:body => 'body', :excerpt => ''), contents(:welcome).errors.full_messages.to_sentence
+    dispatch a.site.permalink_for(a)
+    assert_select "div#no_excerpt_1"
+    assert_select "div#article_excerpt_1",   ''
+    assert_select "div#article_body_1 p",    'body'
+    assert_select "div#article_content_1 p", 'body'
   end
 
   def test_should_show_time_in_correct_timezone
@@ -289,6 +344,7 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   protected
     def dispatch(path = '', options = {})
+      path = path[1..-1] if path.starts_with('/')
       get :dispatch, options.merge(:path => path.split('/'))
     end
 

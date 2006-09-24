@@ -23,9 +23,9 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
     assert_equal 3, assigns(:article_count)['2']
   end
 
-  def test_should_create_paged_section
+  def test_should_create_blog_section
     assert_difference Section, :count do
-      xhr :post, :create, :section => { :name => 'foo', :show_paged_articles => '0', :template => 'foo', :layout => 'bar' }
+      xhr :post, :create, :section => { :name => 'foo', :path => '', :show_paged_articles => '0', :template => 'foo', :layout => 'bar' }
       assert_response :success
       assert             !assigns(:section).show_paged_articles?
       assert_equal 'foo', assigns(:section).name

@@ -4,5 +4,8 @@
   <h2>{{ article.title }}</h2>
   <p><span>{{ article.published_at | format_date: 'standard' }}</span></p>
   <p>{{ article | link_to_article }}</p>
-  <p>{{ article.content }}</p>
+  {% if article.excerpt %}<div id="has_excerpt_{{ article.id }}"></div>{% else %}<div id="no_excerpt_{{ article.id }}"></div>{% endif %}
+  <div id="article_excerpt_{{ article.id }}">{{ article.excerpt }}</div>
+  <div id="article_body_{{ article.id }}">{{ article.body }}</div>
+  <div id="article_content_{{ article.id }}">{{ article.content }}</div>
 {% endfor %}
