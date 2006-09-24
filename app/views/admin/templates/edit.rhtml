@@ -2,12 +2,13 @@
   <div id="page-nav">
     <ul id="act-nav" class="clear">
       <li><%= link_to "New template", :controller => 'design' %></li>
+      <li><%= link_to "Manage themes", :controller => 'themes' %></li>
     </ul>
   </div>
 <% end %>
 
 <div id="template-container">
-<%= form_remote_tag :url => { :action => 'update', :filename => params[:filename] }, :html => { :id => 'template-form' } %>
+<%= form_remote_tag :url => url_for_theme(:action => 'update', :filename => params[:filename]), :html => { :id => 'template-form' } %>
 <%= render :partial => 'admin/design/form', :locals => { 
   :attachment => @tmpl,
   :title      => @tmpl.basename.to_s,

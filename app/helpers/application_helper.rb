@@ -37,7 +37,7 @@ module ApplicationHelper
 
   def delete_link(file_type, resource, context)
     link_to_remote image_tag('/images/mephisto/icons/trash.gif', :class => 'iconb red'), 
-      {:url => {:controller => file_type.to_s, :action => 'remove', :filename => resource, :context => context}, :confirm => 'Are you sure?  This deletion will be permanent.'}, 
+      {:url => url_for_theme(:controller => file_type.to_s, :action => 'remove', :filename => resource, :context => context), :confirm => 'Are you sure?  This deletion will be permanent.'}, 
        :class => 'aicon', :title => 'Delete resource'
   end
 

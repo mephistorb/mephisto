@@ -21,6 +21,7 @@ class Admin::ThemesController < Admin::BaseController
   def change_to
     site.change_theme_to @theme
     flash[:notice] = "Your theme has now been changed to '#{params[:id]}'"
+    Mephisto::SweeperMethods.expire_cached_pages "Expired all referenced pages", self, *CachedPage.find(:all)
     redirect_to :controller => 'design', :action => 'index'
   end
 

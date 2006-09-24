@@ -3,19 +3,19 @@
 <p>Modify a template by selecting it from the list below.  Add a new layout by creating a Liquid template with an 
   *_layout suffix (e.g custom_layout).</p>
 <ul id="attachments">
-  <% site.templates.template_types.each do |template| -%>
-    <li><%= link_to template, :controller => 'templates', :action => 'edit', :filename => template %></li>
+  <% @theme.templates.template_types.each do |template| -%>
+    <li><%= link_to template, url_for_theme(:controller => 'templates', :action => 'edit', :filename => template) %></li>
   <% end -%>
-  <% site.templates.custom.each_with_index do |template, i| -%>
+  <% @theme.templates.custom.each_with_index do |template, i| -%>
     <li id="templates-<%= i %>">
       <%= delete_link :templates, template, "templates-#{i}" %>
-      <%= link_to template, :controller => 'templates', :action => 'edit', :filename => template %>
+      <%= link_to template, url_for_theme(:controller => 'templates', :action => 'edit', :filename => template) %>
     </li>
   <% end -%>
-  <% site.resources.reject { |r| site.resources.image?(r) }.each_with_index do |resource, i| -%>
+  <% @theme.resources.reject { |r| @theme.resources.image?(r) }.each_with_index do |resource, i| -%>
     <li id="resources-<%= i %>">
       <%= delete_link :resources, resource.basename.to_s, "resources-#{i}" %>
-      <%= link_to resource.basename, :controller => 'resources', :action => 'edit', :filename => resource.basename %>
+      <%= link_to resource.basename, url_for_theme(:controller => 'resources', :action => 'edit', :filename => resource.basename) %>
     </li>
   <% end -%>
 </ul>
@@ -24,14 +24,14 @@
 
 <p>Select an image to use in your template.</p>
 <ul id="attachments">
-  <% site.resources.select { |r| site.resources.image?(r) }.each_with_index do |image, i| -%>
+  <% @theme.resources.select { |r| @theme.resources.image?(r) }.each_with_index do |image, i| -%>
     <li id="images-<%= i %>"><%= delete_link :resources, image.basename.to_s, "images-#{i}" %> <%=  image.basename %> </li>
   <% end -%>
 </ul>
 
 
 <div class="sbar-group box">
-  <%= start_form_tag({:controller => 'resources', :action => 'upload', :filename => nil }, { :multipart => true }) %>
+  <%= start_form_tag(url_for_theme(:controller => 'resources', :action => 'upload', :filename => nil), { :multipart => true }) %>
   <dl class="sbar-form">
     <dt>
       <label for="resource">Upload new image</label>

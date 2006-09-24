@@ -7,7 +7,7 @@
   </div>
 <% end %>
 
-<%= start_form_tag :action => 'create' %>
+<%= start_form_tag url_for_theme(:action => 'create') %>
 <%= render :partial => 'form', :locals => { 
   :attachment => nil, 
   :title      => 'Create a new template',
