@@ -212,16 +212,19 @@ Asset = {
     if(article_id) form.action += "/" + article_id[1]
     form.submit();
   },
-
-  addInput: function(formId, inputClass) {
-    this.hideTitle('asset_title');
-    var dl    = $(formId).down('dl');
-    var files = $$('#' + formId + ' .' + inputClass);
-    var input = "<input type=\"file\" name=\"" + inputClass + "[]\" id=\"" + inputClass + "_" + (files.length + 1) + "\" />";
-    var closeLink = "<a href=\"#\" onclick=\"return Asset.removeInput(this, '" + formId + "', '" + inputClass + "');\">x</a>"
-    new Insertion.Bottom(dl, "<dd class=\"" + inputClass + "\" style=\"display:none\">" + input + ' ' + closeLink + "</dd>");
-    new Effect.BlindDown($A(dl.getElementsByTagName('dd')).last());
-    return false;
+  
+  addInput: function() {
+    var list = $('filefields'), copyFrom = list.down(), tagsall = $('tagsall');
+    var newNode = copyFrom.cloneNode(true), files = list.getElementsByTagName('li');
+    var close = document.getElementsByClassName('remove-file', newNode)[0]; 
+    Element.remove(document.getElementsByClassName('tagsall', newNode)[0]);
+    Event.observe(close, 'click', function(e) { 
+      Event.findElement(e, 'li').remove(); 
+      if(tagsall.visible() && files.length == 1) tagsall.hide();
+    });
+    close.show();
+    if(!tagsall.visible() && files.length > 0) tagsall.show();
+    list.appendChild(newNode);
   },
   
   removeInput: function(input, formId, inputClass) {
@@ -522,7 +525,20 @@ Event.addBehavior({
   '#revisionnum':    function() { Event.observe(this, 'change', ArticleForm.getRevision.bind(this)); },
   '#reset_password': function() { this.hide(); },
   '#reset_password_link:click,#reset_password_cancel:click': function() { Effect.toggle('reset_password', 'blind'); },
-  '#asset_add_file:click': function() { return Asset.addInput('new_asset', 'asset_data'); },
+  '#asset-add-file:click': function() { return Asset.addInput(); },
+  '#tagsall:click': function() { 
+    var inputs = $('new_asset').getInputs('text');
+    var tags = $F(inputs.first()).split(',');
+    tags = tags.collect(function(t) { return t.strip(); });
+    inputs.each(function(e, index) {
+      if(index > 0) {
+        var localtags = $F(e).split(',').findAll(function(t) { return t.length > 0 });
+        localtags = localtags.collect(function(t) { return t.strip(); });
+        localtags.push(tags);
+        e.value = localtags.flatten().uniq().join(', ');
+      }
+    }
+  )},
   '#article-search': function() {
     new SmartSearch('article-search', [
       {keys: ['section'],               show: ['sectionlist'],  hide: ['manualsearch', 'searchsubmit']},
@@ -536,7 +552,6 @@ Event.addBehavior({
   },
   
   '.theme': function() {
-    console.log(this);
     new ToolBox(this);
   }
 });

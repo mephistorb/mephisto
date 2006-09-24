@@ -1,5 +1,11 @@
 * SVN *
 
+* Remove title from file upload form.  You must use the asset interface if you want to change a files title.
+
+* Allow ability to apply a tag group to all files in file upload form.
+
+* Improve multi-file upload interface.
+
 * Adding Theme admin.  Restructure theme paths to include site-specific private themes.
   /themes/site-#{id}/current - holds current theme
   /themes/site-#{id}/others/* - private themes

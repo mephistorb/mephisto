@@ -1329,6 +1329,45 @@ li.event-article  { background-image: url(/images/mephisto/icons/articleb.gif); 
   width:  20px; display:  block !important;
 }
 
+#filelbls {
+  position: relative;
+}
+
+#taglbl {
+  position: absolute;
+  left: 275px;
+  top: 2px;
+}
+
+ul#filefields li {
+  border-top: 1px dotted #ccc;
+  padding: 5px;
+  list-style: none;
+}
+
+ul#filefields .remove-file {
+  border: none !important;
+}
+
+ul#filefields img {
+  margin-top: -4px;
+}
+
+#filefields input[type=file] {
+  width: 250px;
+}
+
+#filefields input[type=text] {
+  font-style: italic;
+  color: #777;
+  margin-left: 20px;
+  width: 200px;
+}
+
+.tagsall {
+  margin-left: 10px;
+}
+
 /*
  *=FIES
  */
@@ -1573,8 +1612,21 @@ ul.nobull li label {
   text-indent: -99999px;
 }
 
+.bottom-tab {
+  display: block;
+  border: none !important;
+  border-top: 1px solid #ccc !important;
+  background: #ddd;
+  padding: 5px;
+  text-decoration: none;
+  margin-top: -21px;
+  font-weight: bold;
+  text-align: center;
+}
 
-
+.bottom-tab:hover {
+  background-color: #eee;
+}
 
 /*
  *=ERRORS AND NOTICES
@@ -1628,4 +1680,5 @@ ul.nobull li label {
 .black { background-color: #000;} 
 .orange { background-color: #f63;}
 .red { background-color: #f33;}
+
 
