@@ -55,6 +55,23 @@ Fixtures.class_eval do
 end
 
 THEME_ROOT = File.join(RAILS_ROOT, 'tmp/themes')
+THEME_FILES = [
+  'about.yml',
+  'preview.png',
+  'images',
+  'javascripts/behavior.js',
+  'layouts/layout.liquid',
+  'stylesheets/style.css',
+  'templates/archive.liquid',
+  'templates/author.liquid',
+  'templates/error.liquid',
+  'templates/home.liquid',
+  'templates/index.liquid',
+  'templates/page.liquid',
+  'templates/search.liquid',
+  'templates/section.liquid',
+  'templates/single.liquid'
+]
 
 class Test::Unit::TestCase
   self.use_transactional_fixtures = true

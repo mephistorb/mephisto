@@ -7,6 +7,7 @@
   </div>
 <% end %>
 
+<%= form_tag({:action => 'import'}, {:multipart => true}) %>
 <div class="group">
   <dl>
     <dt>
@@ -18,10 +19,11 @@
       </p>
       <p class="hint">When you upload a theme, it will not be applied automatically.  You will need to do this through the <%= link_to 'themes interface', :controller => 'themes' %>.</p>
     </dt>
-    <dd><input type="file" /></dd>
+    <dd><%= file_field_tag :theme %></dd>
   </dl>
 </div>
 <p class="btns">
   <%= submit_tag 'Import theme' %> or 
   <%= link_to 'cancel', :controller => 'themes' %>
 </p>
+</form>

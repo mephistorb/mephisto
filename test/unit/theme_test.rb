@@ -8,24 +8,6 @@ class ThemeTest < Test::Unit::TestCase
     @theme = sites(:first).theme
   end
 
-  THEME_FILES = [
-    'about.yml',
-    'preview.png',
-    'images',
-    'javascripts/behavior.js',
-    'layouts/layout.liquid',
-    'stylesheets/style.css',
-    'templates/archive.liquid',
-    'templates/author.liquid',
-    'templates/error.liquid',
-    'templates/home.liquid',
-    'templates/index.liquid',
-    'templates/page.liquid',
-    'templates/search.liquid',
-    'templates/section.liquid',
-    'templates/single.liquid'
-  ]
-
   def test_should_find_preview
     assert @theme.preview.exist?
   end

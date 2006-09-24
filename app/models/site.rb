@@ -142,6 +142,10 @@ class Site < ActiveRecord::Base
     theme
   end
 
+  def import_theme(zip_file, name)
+    Theme.import zip_file, :to => other_themes_path + name
+  end
+
   [:attachments, :templates, :resources].each { |m| delegate m, :to => :theme }
 
   def permalink_for(article)

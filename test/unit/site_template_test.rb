@@ -60,6 +60,14 @@ context "Site Template" do
     assert_equal 'rollback',  sites(:first).rollback_theme.name
     assert_equal 'Hemingway', sites(:first).rollback_theme.title
   end
+  
+  specify "should import theme" do
+    sites(:first).import_theme sites(:first).theme_path + 'hemingway.zip', 'hemingway'
+    assert_equal %w(current empty encytemedia hemingway), sites(:first).themes.collect(&:name)
+    THEME_FILES.each do |path|
+      assert File.exists?(File.join(THEME_ROOT, 'site-1/other/hemingway', path)), "'site-1/other/hemingway/#{path}' does not exist"
+    end
+  end
 
   specify "should find themes and ignore duplicates" do
     sites(:first).change_theme_to :encytemedia

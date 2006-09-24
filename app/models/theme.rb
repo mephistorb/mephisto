@@ -1,11 +1,33 @@
 class Theme
+  @@root_theme_files   = %w(about.yml preview.png)
+  @@theme_directories  = %w(templates layouts javascripts stylesheets images)
+  @@allowed_extensions = %w(.js .css .liquid .png .gif .jpg)
+  cattr_reader :root_theme_files, :theme_directories, :allowed_extensions
   attr_reader :path, :base_path
   attr_writer :current
   
   def self.current(base)
     returning(new(base)) { |theme| theme.current = true }
   end
-  
+
+  def self.import(zip_file, options = {})
+    dest = options[:to].is_a?(Pathname) ? options[:to] : Pathname.new(options[:to] || '.')
+    FileUtils.mkdir_p dest.to_s unless dest.exist?
+    Zip::ZipFile.open(zip_file) do |z|
+      root_theme_files.each do |file|
+        z.file.open(file) { |zf| File.open(dest + file, 'wb') { |f| f << zf.read } } if z.file.exist?(file)
+      end
+      theme_directories.each do |dir|
+        dir_path = Pathname.new(dest + dir)
+        FileUtils.mkdir_p dir_path unless dir_path.exist?
+        z.dir.entries(dir).each do |entry|
+          next unless entry =~ /(\.\w+)$/ && allowed_extensions.include?($1)
+          z.file.open(File.join(dir, entry)) { |zf| File.open(dir_path + entry, 'wb') { |f| f << zf.read } }
+        end
+      end
+    end
+  end
+
   def initialize(base)
     if base.is_a?(Pathname)
       @base_path = base.to_s
@@ -82,14 +104,14 @@ class Theme
   def export_as_zip(name, options = {})
     path = options[:to] || '.'
     Zip::ZipFile.open(File.join(path, "#{name}.zip"), Zip::ZipFile::CREATE) do |zip|
-      %w(templates layouts javascripts stylesheets images).each { |d| zip.dir.mkdir(d) }
+      theme_directories.each { |d| zip.dir.mkdir(d) }
       write_theme_files_with zip.file
     end
   end
 
   def export(name, options = {})
     path = File.join(options[:to] || '.', name)
-    %w(templates layouts javascripts stylesheets images).each { |d| FileUtils.mkdir_p File.join(path, d) }
+    theme_directories.each { |d| FileUtils.mkdir_p File.join(path, d) }
     write_theme_files_with File, path
   end
 
@@ -111,7 +133,7 @@ class Theme
       # ZipFileSystem doesn't support wb
       write_mode = file_class.is_a?(Zip::ZipFileSystem::ZipFsFile) ? 'w' : 'wb'
       relative_path = Pathname.new(relative_path) unless relative_path.is_a?(Pathname)
-      %w(about.yml preview.png).each do |file|
+      root_theme_files.each do |file|
         real_file = path + file
         file_class.open((relative_path + file).to_s, write_mode) { |f| f << real_file.read } if real_file.exist?
       end
