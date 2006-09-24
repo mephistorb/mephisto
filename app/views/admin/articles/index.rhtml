@@ -63,7 +63,13 @@ Pages: <strong><%= pagination_links @article_pages, :params => { :action => :ind
 <!-- /end pagination -->
 
 <% else %>
-  <div class="empty">You have no articles.  <%= link_to "Create one now &raquo;", :action => "new" %></div>
+  <div class="empty" style="margin-bottom:20px">
+    <% unless params[:filter] %>
+      You have no articles.  <%= link_to "Create one now &raquo;", :action => "new" %>
+    <% else %>
+      You don't seem to have any articles matching that criteria.
+    <% end %>
+  </div>
 <% end %>
 
 <% content_for :sidebar do %>

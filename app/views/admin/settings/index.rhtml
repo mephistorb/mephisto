@@ -53,16 +53,16 @@
   <dl class="setform">
     <dt>
       <label for="site_articles_per_page">Articles per page</label>
-      <span class="hint">Default article limit for search/tag pages.</span>
+      <p class="hint">Default article limit for search/tag pages.</p>
     </dt>
     <dd><%= f.text_field :articles_per_page, :class => 'tiny' %></dd>
     <dt>
-      <label for="site_search_path">Url that the search area is available at.</label>
+      <label for="site_search_path">Search area url</label>
     </dt>
     <dd><%= f.text_field :search_path %></dd>
     <% if @layouts.any? -%>
     <dt>
-      <label for="site_search_layout">Layout template used by the search area</label>
+      <label for="site_search_layout">Search area layout</label>
     </dt>
     <dd>
       <select name="site[search_layout]">
@@ -71,12 +71,12 @@
     </dd>
     <% end -%>
     <dt>
-      <label for="site_tag_path">Url that the tag area is available at.</label>
+      <label for="site_tag_path">Tag area url</label>
     </dt>
     <dd><%= f.text_field :tag_path %></dd>
     <% if @layouts.any? -%>
     <dt>
-      <label for="site_tag_layout">Layout template used by the tag area</label>
+      <label for="site_tag_layout">Tag area layout</label>
     </dt>
     <dd>
       <select name="site[tag_layout]">
@@ -85,8 +85,8 @@
     </dd>
     <% end -%>
     <dt>
-      <label for="permalink_style">Url style that the articles use.</label>
-      <span class="hint">Use the <code>:year</code>, <code>:month</code>, <code>:day</code>, <code>:permalink</code>, and <code>:id</code> in place of actual article values.</span>
+      <label for="permalink_style">Article url style</label>
+      <p class="hint">Use the <code>:year</code>, <code>:month</code>, <code>:day</code>, <code>:permalink</code>, and <code>:id</code> in place of actual article values.</p>
     </dt>
     <dd><%= f.text_field :permalink_style %></dd>
   </dl>

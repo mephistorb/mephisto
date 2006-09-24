@@ -517,6 +517,7 @@ ToolBox.prototype = {
   }
 }
 
+
 Effect.DefaultOptions.duration = 0.25;
 Event.addBehavior({
   '#filesearch':     function() { window.spotlight = new Spotlight('filesearchform', 'filesearch'); },
