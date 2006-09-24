@@ -12,7 +12,7 @@
           <li><a href="#" title="title">Use this theme</a></li>
           <li><a href="#" title="title">Edit source code</a></li>
           <li><a href="#" title="title">Change info</a></li>
-          <li><a href="#" title="title">Export</a></li>
+          <li><%= link_to 'Export', :action => 'export', :id => theme.name %></li>
         </ul>
       </div>
     </li>

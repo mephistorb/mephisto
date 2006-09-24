@@ -8,7 +8,7 @@ class AttachmentTest < Test::Unit::TestCase
   end
 
   def test_should_count_correct_assets
-    assert_equal 15, sites(:first).attachments.size
+    assert_equal 17, sites(:first).attachments.size
     assert_equal 3, sites(:hostess).attachments.size
   end
 end
