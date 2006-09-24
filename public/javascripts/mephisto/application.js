@@ -548,14 +548,19 @@ Event.addBehavior({
       {keys: ['draft'],                 show: ['searchsubmit'], hide: ['manualsearch', 'sectionlist']}
     ], 'sectionlist')
   },
+
   '#searchsubmit:click': function() { 
     $('published').value = '0';
     $('article-search').submit();
   },
   
-  '.theme': function() {
-    new ToolBox(this);
+  'a.theme_dialog:click': function() {
+    new Dialog.Rjs();
   }
+  
+  //'.theme': function() {
+  //  new ToolBox(this);
+  //}
 });
 
 Event.onReady(function() {

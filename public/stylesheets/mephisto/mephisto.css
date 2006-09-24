@@ -1667,6 +1667,21 @@ ul.nobull li label {
   padding: 0;
 }
 
+#dialog {
+  background-color: #000;
+  opacity: 0.15;
+  filter:alpha(opacity=15);
+}
+
+#dialog-box {
+  width:500px;
+  padding:30px;
+  background-color:#fff;
+  border-style:solid;
+  border-color:#000;
+  border-width:5px;
+}
+
 /*
  *=ICONS
  */

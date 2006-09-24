@@ -6,6 +6,7 @@
     <title><%= site.title %>: Admin <%= controller.controller_name %></title>
     <%= stylesheet_link_tag 'mephisto/mephisto' %>
     <%= javascript_include_tag 'mephisto/prototype', 'mephisto/effects', 'mephisto/dragdrop', 'mephisto/lowpro', 'mephisto/application' %>
+    <%= yield :head %>
   </head>
   <body>
   
