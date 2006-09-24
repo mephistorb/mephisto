@@ -10,7 +10,8 @@ class Templates < Attachments
     :layout  => [:layout]
   }
 
-  @@template_types = (@@hierarchy.values.flatten.uniq << :layout).collect! { |f| "#{f}.liquid" }
+  @@template_types = @@hierarchy.values ; @@template_types.flatten! ; @@template_types.uniq!
+  @@template_types.collect! { |f| "#{f}.liquid" }
   @@template_types.sort!
   cattr_reader :hierarchy, :template_types
 

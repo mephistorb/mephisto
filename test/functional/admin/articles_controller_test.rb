@@ -129,7 +129,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_tag    'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
     assert_no_tag 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
   end
-  
+
   def test_should_show_title
     get :edit, :id => contents(:welcome).id
     assert_response :success
@@ -151,16 +151,31 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_response :success
     assert_tag  'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}", :checked => 'checked' }
   end
-  
+
+  def test_should_show_available_years
+    get :new
+    [Time.now.utc.year, Time.now.utc.year-1].each do |year|
+      assert_select "select[name='article[published_at(1i)]'] option[value='#{year}']"
+    end
+  end
+
+  def test_should_show_available_years_for_old_article
+    contents(:welcome).update_attribute(:published_at, Time.utc(2003,1,1))
+    get :edit, :id => contents(:welcome).id
+    (2003..Time.now.utc.year).to_a.each do |year|
+      assert_select "select[name='article[published_at(1i)]'] option[value='#{year}']"
+    end
+  end
+
   def test_should_show_published_date_selector
     get :edit, :id => contents(:welcome).id
     local_time = assigns(:article).published_at
     assert_tag 'select', :attributes => { :name => "article[#{:published_at}(1i)]" }
     [ :year, :month, :day, :hour, :min ].each_with_index do |attr, i|
       value = local_time.send(attr)
-      assert_tag 'option', :attributes => { :selected => 'selected', :value => 
-        (i > 2 ? local_time.send(attr).to_s.rjust(2, '0') : value.to_s) }, 
-        :ancestor => { :tag => 'select', :attributes => { :name => "article[#{:published_at}(#{i+1}i)]" } }
+      assert_select "select[name='article[published_at(#{i+1}i)]'] option[selected='selected']" do
+        assert_select "[value='#{(i > 2 ? local_time.send(attr).to_s.rjust(2, '0') : value.to_s)}']"
+      end
     end
   end
   
