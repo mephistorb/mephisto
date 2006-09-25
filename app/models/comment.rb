@@ -14,7 +14,7 @@ class Comment < Content
   attr_protected :approved
 
   def self.find_all_by_section(section, options = {})
-    find :all, options.update(:conditions => ['approved = ? and assigned_sections.section_id = ?', true, section.id], 
+    find :all, options.update(:conditions => ['contents.approved = ? and assigned_sections.section_id = ?', true, section.id], 
       :select => 'contents.*', :joins => 'INNER JOIN assigned_sections ON assigned_sections.article_id = contents.article_id', 
       :order  => 'contents.created_at DESC')
   end
@@ -40,10 +40,6 @@ class Comment < Content
       value = 'http://' + value unless value.blank? || value[0..0] == '/' || URI::parse(value).scheme
       write_attribute :author_url, value
     end
-  end
-  
-  def article_referenced_cache_key
-    "[#{article_id}:Article]"
   end
 
   protected

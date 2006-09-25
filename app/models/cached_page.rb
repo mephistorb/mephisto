@@ -53,7 +53,7 @@ class CachedPage < ActiveRecord::Base
     def create_by_url(site, url, references)
       returning find_or_initialize_by_site_id_and_url(site.id, url) do |page|
         [:compact!, :flatten!, :uniq!].each { |m| references.send m }
-        references.collect! { |r| r.referenced_cache_key }
+        references.collect! { |r| r.respond_to?(:referenced_cache_key) ? r.referenced_cache_key : r }
         page.references = references.join
         page.cleared_at = nil
         page.save

@@ -27,10 +27,15 @@ class FeedController < ApplicationController
     end
     
     def comment_feed_for_section
-      
+      @section  = site.sections.find_by_path(@section_path) || raise(ActiveRecord::RecordNotFound)
+      @comments = @section.find_comments(:limit => 15, :include => :article)
+      cached_references      << @section
+      self.cached_references += @comments
     end
     
     def comment_feed_for_site
-      
+      @comments = site.comments.find(:all, :limit => 15, :include => :article)
+      cached_references      << @section
+      self.cached_references += @comments
     end
 end

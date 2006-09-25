@@ -17,6 +17,7 @@ class FeedControllerTest < Test::Unit::TestCase
     get :feed, :sections => ['about']
     assert_equal sections(:about), assigns(:section)
     assert_equal [contents(:welcome), contents(:about), contents(:site_map)], assigns(:articles)
+    assert_select 'feed>title', 'Mephisto - About'
     assert_atom_entries_size 3
   end
   
@@ -41,6 +42,22 @@ class FeedControllerTest < Test::Unit::TestCase
     assert_raise ActiveRecord::RecordNotFound do
       get :feed, :sections => %w(beastie boys)
     end
+  end
+  
+  def test_should_find_comments_by_site
+    get :feed, :sections => %w(all_comments.xml)
+    assert_select 'feed>title', 'Mephisto - All Comments'
+    assert_nil assigns(:section)
+    assert_models_equal [contents(:welcome_comment)], assigns(:comments)
+    assert_atom_entries_size 1
+  end
+  
+  def test_should_find_comments_by_section
+    get :feed, :sections => %w(comments.xml)
+    assert_select 'feed>title', 'Mephisto - Home Comments'
+    assert_models_equal [sections(:home)], [assigns(:section)]
+    assert_models_equal [contents(:welcome_comment)], assigns(:comments)
+    assert_atom_entries_size 1
   end
 end
 

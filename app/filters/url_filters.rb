@@ -85,6 +85,12 @@ module UrlFilters
     page[:is_page_home] ? section.url : [section.url, page[:permalink]].join('/')
   end
 
+  def atom_feed(url, title = nil)
+    options = {:rel => 'alternate', :type => 'application/atom+xml', :href => absolute_url(url)}
+    options[:title] = title unless title.blank?
+    tag(:link, options)
+  end
+
   private
     # marks a page as class=selected
     def page_anchor_options(page, section = nil)
