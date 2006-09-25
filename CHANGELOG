@@ -1,5 +1,10 @@
 * SVN *
 
+* Add Liquid Filter helpers for showing comment/article feeds for a section
+
+  {{ section | comments_feed }}
+  {{ section | articles_feed: "Latest Articles for this section" }}
+
 * Add site-specific comment atom feeds and global site comment feeds
 
   {{ '' | all_comments_feed }}

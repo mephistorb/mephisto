@@ -82,4 +82,28 @@ context "Url Filters" do
     content = all_comments_feed "All Lame Comments"
     assert_match /title="All Lame Comments"/, content
   end
+  
+  specify "should show section comments feed" do
+    content = comments_feed(sections(:home).to_liquid)
+    assert_match /href="\/feed\/comments.xml"/, content
+    assert_match /title="Comments for Home"/, content
+  end
+  
+  specify "should show section comments feed with custom title" do
+    content = comments_feed(sections(:about).to_liquid, "About Comments")
+    assert_match /href="\/feed\/about\/comments.xml"/, content
+    assert_match /title="About Comments"/, content
+  end
+  
+  specify "should show section articles feed" do
+    content = articles_feed(sections(:home).to_liquid)
+    assert_match /href="\/feed\/atom.xml"/, content
+    assert_match /title="Articles for Home"/, content
+  end
+  
+  specify "should show section articles feed with custom title" do
+    content = articles_feed(sections(:about).to_liquid, "About Articles")
+    assert_match /href="\/feed\/about\/atom.xml"/, content
+    assert_match /title="About Articles"/, content
+  end
 end

@@ -95,6 +95,14 @@ module UrlFilters
     atom_feed 'all_comments.xml', title.blank? ? 'All Comments' : title
   end
 
+  def comments_feed(section, title = nil)
+    atom_feed section.source.to_comments_url.join('/'), (title.blank? ? "Comments for #{section['name']}" : title)
+  end
+
+  def articles_feed(section, title = nil)
+    atom_feed section.source.to_feed_url.join('/'), (title.blank? ? "Articles for #{section['name']}" : title)
+  end
+
   private
     # marks a page as class=selected
     def page_anchor_options(page, section = nil)
