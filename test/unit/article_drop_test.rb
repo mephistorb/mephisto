@@ -68,4 +68,9 @@ class ArticleDropTest < Test::Unit::TestCase
     assert_equal "<p>body</p>", a.send(:body_for_mode, :single)
     assert_equal '<p>body</p>', a.send(:body_for_mode, :list)
   end
+  
+  def test_article_url
+    t = Time.now.utc - 3.days
+    assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto", @article.url
+  end
 end

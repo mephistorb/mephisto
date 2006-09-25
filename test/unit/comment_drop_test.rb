@@ -4,7 +4,7 @@ class CommentDropTest < Test::Unit::TestCase
   fixtures :contents, :sites
   
   def setup
-    @comment = CommentDrop.new(contents(:welcome_comment))
+    @comment = contents(:welcome_comment).to_liquid
   end
   
   def test_should_convert_comment_to_drop
@@ -44,5 +44,10 @@ class CommentDropTest < Test::Unit::TestCase
     assert_equal 'textile_filter', comment.filter
     liquid   = comment.to_liquid
     assert_equal '<p><strong>test</strong> comment</p>', liquid.before_method(:body)
+  end
+  
+  def test_comment_url
+    t = Time.now.utc - 3.days
+    assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto", @comment.url
   end
 end

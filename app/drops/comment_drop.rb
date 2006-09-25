@@ -1,11 +1,12 @@
 class CommentDrop < BaseDrop
+  include Mephisto::Liquid::UrlMethods
   include WhiteListHelper
   
   def comment() @source end
 
   def initialize(source)
     @source         = source
-    @comment_liquid = %w(id author author_email author_ip created_at).inject({}) { |l, a| l.update(a => comment.send(a)) }
+    @comment_liquid = %w(id author author_email author_ip created_at title published_at).inject({}) { |l, a| l.update(a => comment.send(a)) }
     @comment_liquid.update 'is_approved' => comment.approved?, 'body' => white_list(comment.body_html)
   end
 
@@ -16,6 +17,10 @@ class CommentDrop < BaseDrop
   def author_url
     return nil if comment.author_url.blank?
     comment.author_url =~ /^https?:\/\// ? comment.author_url : "http://" + comment.author_url
+  end
+
+  def url
+    @url ||= absolute_url(@source.site.permalink_for(@source))
   end
 
   def author_link

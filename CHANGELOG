@@ -1,5 +1,10 @@
 * SVN *
 
+* Cache article-specific fields in comments table, allow simple linking to article:
+
+  {{ comment | link_to_article }}
+  {{ comment.url }}
+
 * Add Liquid Filter helpers for showing comment/article feeds for a section
 
   {{ section | comments_feed }}
