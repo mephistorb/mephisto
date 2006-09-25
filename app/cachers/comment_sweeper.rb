@@ -22,7 +22,7 @@ class CommentSweeper < ActionController::Caching::Sweeper
   
   protected
     def expire_cache_for(comment)
-      pages = CachedPage.find_by_reference(comment.article)
+      pages = CachedPage.find_by_references(comment, comment.article)
       expire_cached_pages "Expired pages referenced by #{comment.class} ##{comment.id}", *pages
     end
 end

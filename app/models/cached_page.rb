@@ -33,7 +33,7 @@ class CachedPage < ActiveRecord::Base
     #
     def find_by_reference_keys(*array_of_keys)
       with_current_scope do
-        find :all, :conditions => [array_of_keys.collect { |r| "#{connection.quote_column_name('references')} LIKE ?" } * ' OR ', array_of_keys.collect { |r| "%[#{[r.last, r.first] * ':'}]%" }]
+        find :all, :conditions => ["(#{array_of_keys.collect { |r| "#{connection.quote_column_name('references')} LIKE ?" } * ' OR '})", *array_of_keys.collect { |r| "%[#{[r.last, r.first] * ':'}]%" }]
       end
     end
 

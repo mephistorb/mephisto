@@ -31,11 +31,13 @@ class FeedController < ApplicationController
       @comments = @section.find_comments(:limit => 15, :include => :article)
       cached_references      << @section
       self.cached_references += @comments
+      self.cached_references += @comments.collect(&:article_referenced_cache_key)
     end
     
     def comment_feed_for_site
       @comments = site.comments.find(:all, :limit => 15, :include => :article)
       cached_references      << @section
       self.cached_references += @comments
+      self.cached_references += @comments.collect(&:article_referenced_cache_key)
     end
 end

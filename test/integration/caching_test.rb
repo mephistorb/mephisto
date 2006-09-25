@@ -116,9 +116,14 @@ class CachingTest < ActionController::IntegrationTest
     assert_caches_page contents(:welcome).full_permalink do
       visitor.read contents(:welcome)
     end
-    visitor.comment_on contents(:welcome), :author => 'approved bob', :body => 'what a wonderful post.'
     
-    assert_not_cached contents(:welcome).full_permalink
+    assert_caches_page "/feed/comments.xml", "/feed/all_comments.xml" do |urls|
+      urls.each { |u| visitor.get u }
+    end
+    
+    assert_expires_pages contents(:welcome).full_permalink, "/feed/comments.xml", "/feed/all_comments.xml" do
+      visitor.comment_on contents(:welcome), :author => 'approved bob', :body => 'what a wonderful post.'
+    end
   end
 
   def test_should_expire_cache_when_comment_is_approved

@@ -42,6 +42,10 @@ class Comment < Content
     end
   end
 
+  def article_referenced_cache_key
+    "[#{article_id}:Article]"
+  end
+
   protected
     def snag_article_attributes
       self.attributes = { :site => article.site, :filter => article.site.filter, :title => article.title, :published_at => article.published_at, :permalink => article.permalink }

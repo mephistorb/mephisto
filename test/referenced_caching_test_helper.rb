@@ -10,12 +10,12 @@ module Mephisto # :nodoc:
       end
 
       def assert_caches_pages(*urls)
-        yield if block_given?
+        yield(urls) if block_given?
         urls.map { |url| assert_cached url }
       end
 
       def assert_expires_pages(*urls)
-        yield if block_given?
+        yield(urls) if block_given?
         urls.map { |url| assert_not_cached url }
       end
 
