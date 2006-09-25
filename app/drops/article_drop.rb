@@ -54,6 +54,14 @@ class ArticleDrop < BaseDrop
     @url ||= absolute_url(@site.permalink_for(@source))
   end
 
+  def comments_feed_url
+    @comments_feed_url ||= url + '/comments.xml'
+  end
+
+  def changes_feed_url
+    @changes_feed_url ||= url + '/changes.xml'
+  end
+
   protected
     def body_for_mode(mode)
       contents = [before_method(:excerpt), before_method(:body)]

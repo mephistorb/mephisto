@@ -1,5 +1,10 @@
 * SVN *
 
+* Add comments and changes feeds for articles.
+
+  {{ article | comments_feed }}
+  {{ article | changes_feed: "Latest Changes for this Article" }}
+
 * Cache article-specific fields in comments table, allow simple linking to article:
 
   {{ comment | link_to_article }}

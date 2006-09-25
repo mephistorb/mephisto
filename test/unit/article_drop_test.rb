@@ -73,4 +73,14 @@ class ArticleDropTest < Test::Unit::TestCase
     t = Time.now.utc - 3.days
     assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto", @article.url
   end
+  
+  def test_comments_feed_url
+    t = Time.now.utc - 3.days
+    assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto/comments.xml", @article.comments_feed_url
+  end
+  
+  def test_changes_feed_url
+    t = Time.now.utc - 3.days
+    assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto/changes.xml", @article.changes_feed_url
+  end
 end

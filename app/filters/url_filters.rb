@@ -86,21 +86,27 @@ module UrlFilters
   end
 
   def atom_feed(url, title = nil)
-    options = {:rel => 'alternate', :type => 'application/atom+xml', :href => absolute_url("/feed/#{url}")}
+    options = {:rel => 'alternate', :type => 'application/atom+xml', :href => absolute_url(url)}
     options[:title] = title unless title.blank?
     tag(:link, options)
   end
 
   def all_comments_feed(title = nil)
-    atom_feed 'all_comments.xml', title.blank? ? 'All Comments' : title
+    atom_feed '/feed/all_comments.xml', title.blank? ? 'All Comments' : title
   end
 
-  def comments_feed(section, title = nil)
-    atom_feed section.source.to_comments_url.join('/'), (title.blank? ? "Comments for #{section['name']}" : title)
+  def comments_feed(section_or_article, title = nil)
+    section_or_article.is_a?(SectionDrop) ?
+      atom_feed('/feed/' + section_or_article.source.to_comments_url.join('/'), (title.blank? ? "Comments for #{section_or_article['name']}" : title)) :
+      atom_feed(section_or_article.url + '/comments.xml', (title.blank? ? "Comments for #{section_or_article['title']}" : title))
+  end
+
+  def changes_feed(article, title = nil)
+    atom_feed article.url + '/changes.xml', (title.blank? ? "Changes for #{article['title']}" : title)
   end
 
   def articles_feed(section, title = nil)
-    atom_feed section.source.to_feed_url.join('/'), (title.blank? ? "Articles for #{section['name']}" : title)
+    atom_feed '/feed/' + section.source.to_feed_url.join('/'), (title.blank? ? "Articles for #{section['name']}" : title)
   end
 
   private

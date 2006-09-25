@@ -59,7 +59,7 @@ context "Url Filters" do
   end
   
   specify "should generate atom auto discovery tag" do
-    content = atom_feed('foo')
+    content = atom_feed('/feed/foo')
     assert_match /^<link /, content
     assert_match /rel="alternate"/, content
     assert_match /type="application\/atom\+xml"/, content
@@ -105,5 +105,37 @@ context "Url Filters" do
     content = articles_feed(sections(:about).to_liquid, "About Articles")
     assert_match /href="\/feed\/about\/atom.xml"/, content
     assert_match /title="About Articles"/, content
+  end
+end
+
+context "Article Url Filters" do
+  fixtures :sites, :sections, :contents
+  include CoreFilters, UrlFilters
+
+  def setup
+    @article   = contents(:welcome).to_liquid(:site => sites(:first))
+    @permalink = @article.url
+  end
+
+  specify "should show article comments feed" do
+    content = comments_feed(@article)
+    assert_match /href="#{@permalink}\/comments\.xml"/, content
+    assert_match /title="Comments for Welcome to Mephisto"/, content
+  end
+  
+  specify "should show article comments feed with custom title" do
+    content = comments_feed(@article, "Welcome Comments")
+    assert_match /title="Welcome Comments"/, content
+  end
+  
+  specify "should show article changes feed" do
+    content = changes_feed(@article)
+    assert_match /href="#{@permalink}\/changes\.xml"/, content
+    assert_match /title="Changes for Welcome to Mephisto"/, content
+  end
+  
+  specify "should show article changes feed with custom title" do
+    content = changes_feed(@article, "Welcome Changes")
+    assert_match /title="Welcome Changes"/, content
   end
 end
