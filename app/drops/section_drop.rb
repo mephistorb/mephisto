@@ -19,10 +19,20 @@ class SectionDrop < BaseDrop
   def articles
     @articles ||= latest_articles
   end
+  
+  def comments
+    @comments ||= latest_comments
+  end
 
   def latest_articles(limit = nil)
     returning @source.articles.find_by_date(:limit => (limit || @source.articles_per_page)) do |articles|
       articles.collect! &:to_liquid
+    end
+  end
+
+  def latest_comments(limit = nil)
+    returning @source.find_comments(:limit => (limit || @source.articles_per_page)) do |comments|
+      comments.collect! &:to_liquid
     end
   end
 

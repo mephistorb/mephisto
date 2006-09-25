@@ -7,10 +7,30 @@ class FeedController < ApplicationController
     sections = params[:sections].clone
     last = sections.last
     sections.delete(last) if last =~ /\.xml$/
-    
-    @section  = site.sections.find_by_path(sections.blank? ? '' : sections.join('/')) || raise(ActiveRecord::RecordNotFound)
-    @articles = @section.articles.find_by_date(:limit => 15, :include => :user)
-    cached_references      << @section
-    self.cached_references += @articles
+    @section_path = sections.blank? ? '' : sections.join('/')
+    case last
+      when 'all_comments.xml'
+        comment_feed_for_site
+      when 'comments.xml'
+        comment_feed_for_section
+      else
+        article_feed_for_section
+    end
   end
+
+  protected
+    def article_feed_for_section
+      @section  = site.sections.find_by_path(@section_path) || raise(ActiveRecord::RecordNotFound)
+      @articles = @section.articles.find_by_date(:limit => 15, :include => :user)
+      cached_references      << @section
+      self.cached_references += @articles
+    end
+    
+    def comment_feed_for_section
+      
+    end
+    
+    def comment_feed_for_site
+      
+    end
 end

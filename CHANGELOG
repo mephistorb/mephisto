@@ -1,5 +1,12 @@
 * SVN *
 
+* Add liquid drop/filters for getting the latest comments for a section.
+
+  {{ section | latest_comments: 2 }}
+  {% for comment in section.comments %}
+
+* Implement theme admin functionality, such as import/export/change/remove
+
 * Remove title from file upload form.  You must use the asset interface if you want to change a files title.
 
 * Allow ability to apply a tag group to all files in file upload form.

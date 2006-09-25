@@ -37,6 +37,10 @@ class Section < ActiveRecord::Base
     end
   end
 
+  def find_comments(options = {})
+    Comment.find_all_by_section(self, options)
+  end
+
   def to_liquid(current = false)
     SectionDrop.new self, current
   end
