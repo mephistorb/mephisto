@@ -130,6 +130,13 @@ class Site < ActiveRecord::Base
     @rollback_theme = Theme.new(rollback_path)
   end
 
+  def rollback
+    tmp = other_themes_path + '_tmp'
+    FileUtils.cp_r rollback_path, tmp
+    change_theme_to themes['_tmp']
+    tmp.rmtree
+  end
+
   def change_theme_to(new_theme_path)
     new_theme = (new_theme_path.is_a?(Theme) ? new_theme_path : themes[new_theme_path]) || raise("No theme '#{new_theme_path}' found")
     rollback_path.rmtree if rollback_path.exist?

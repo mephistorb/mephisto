@@ -21,7 +21,14 @@ class Admin::ThemesController < Admin::BaseController
   def change_to
     site.change_theme_to @theme
     flash[:notice] = "Your theme has now been changed to '#{params[:id]}'"
-    Mephisto::SweeperMethods.expire_cached_pages "Expired all referenced pages", self, *CachedPage.find(:all)
+    sweep_cache
+    redirect_to :controller => 'design', :action => 'index'
+  end
+
+  def rollback
+    site.rollback
+    flash[:notice] = "Your theme has been rolled back"
+    sweep_cache
     redirect_to :controller => 'design', :action => 'index'
   end
 
@@ -69,6 +76,10 @@ class Admin::ThemesController < Admin::BaseController
       returning theme_export_path + "site-#{site.id}/#{prefix}#{Time.now.utc.to_i.to_s.split('').sort_by { rand }}" do |path|
         FileUtils.mkdir_p path unless path.exist?
       end
+    end
+
+    def sweep_cache
+      Mephisto::SweeperMethods.expire_cached_pages "Expired all referenced pages", self, *CachedPage.find(:all)
     end
 
     alias authorized? admin?

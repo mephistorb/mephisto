@@ -14,46 +14,46 @@ class Admin::ThemesControllerTest < Test::Unit::TestCase
     prepare_theme_fixtures
   end
 
-  def test_should_allow_site_admin
+  specify "should allow site admin" do
     login_as :arthur
     get :index
     assert_response :success
   end
 
-  def test_should_not_allow_site_member
+  specify "should not allow site member" do
     login_as :arthur, :hostess
     get :index
     assert_redirected_to :controller => 'account', :action => 'login'
   end
   
-  def test_should_show_import_form
+  specify "should show import form" do
     get :import
     assert_response :success
     assert_template 'import'
   end
   
-  def test_should_show_import_form_on_bad_post
+  specify "should show import form on bad post" do
     post :import
     assert_response :success
     assert_template 'import'
     assert_select "div#flash-errors", /\w+/
   end
 
-  def test_should_show_import_form_on_bad_upload_content_type
+  specify "should show import form on bad upload content type" do
     post :import, :theme => fixture_file_upload('themes/site-1/hemingway.zip', 'foo/bar')
     assert_response :success
     assert_template 'import'
     assert_select "div#flash-errors", /\w+/
   end
 
-  def test_should_import_theme
+  specify "should import theme" do
     post :import, :theme => fixture_file_upload('themes/site-1/hemingway.zip', 'application/zip')
     assert_redirected_to :action => 'index'
     assert_equal %w(current empty encytemedia hemingway), sites(:first).themes.collect(&:name)
     assert_equal 'Hemingway', sites(:first).themes[:hemingway].title
   end
   
-  def test_should_delete_theme
+  specify "should delete theme" do
     delete :destroy, :id => 'encytemedia'
     assert_equal 2, assigns(:index)
     assert_redirected_to :action => 'index'
@@ -61,14 +61,14 @@ class Admin::ThemesControllerTest < Test::Unit::TestCase
     assert_equal %w(current empty), sites(:first).themes.collect(&:name)
   end
   
-  def test_should_not_delete_current_theme
+  specify "should not delete current theme" do
     delete :destroy, :id => 'current'
     assert_redirected_to :action => 'index'
     assert_match /current/, flash[:error]
     assert_equal %w(current empty encytemedia), sites(:first).themes.collect(&:name)
   end
   
-  def test_should_delete_theme_with_ajax
+  specify "should delete theme with ajax" do
     xhr :delete, :destroy, :id => 'empty'
     assert_equal 1, assigns(:index)
     assert_response :success
@@ -76,10 +76,33 @@ class Admin::ThemesControllerTest < Test::Unit::TestCase
     assert_equal %w(current encytemedia), sites(:first).themes.collect(&:name)
   end
   
-  def test_should_not_delete_current_theme_with_ajax
+  specify "should not delete current theme with ajax" do
     xhr :delete, :destroy, :id => 'current'
     assert_response :success
     assert_match /current/, flash[:error]
     assert_equal %w(current empty encytemedia), sites(:first).themes.collect(&:name)
+  end
+
+  specify "should change theme" do
+    post :change_to, :id => 'encytemedia'
+    assert sites(:first).theme.current?
+    assert sites(:first).theme.path.exist?, "#{sites(:first).theme.path.to_s} does not exist"
+    assert_equal 'current',     sites(:first).theme.name
+    assert_equal 'Encytemedia', sites(:first).theme.title
+  end
+
+  specify "should change theme and create rollback" do
+    post :change_to, :id => 'encytemedia'
+    assert sites(:first).rollback_theme.path.exist?, "#{sites(:first).rollback_theme.path.to_s} does not exist"
+    assert_equal 'rollback',  sites(:first).rollback_theme.name
+    assert_equal 'Hemingway', sites(:first).rollback_theme.title
+  end
+
+  specify "should rollback theme" do
+    post :rollback
+    assert_equal 'Rollback', sites(:first).theme.title
+    assert_equal 'Hemingway', sites(:first).rollback_theme.title
+    assert_match /rolled back/, flash[:notice]
+    assert_redirected_to :controller => 'design', :action => 'index'
   end
 end

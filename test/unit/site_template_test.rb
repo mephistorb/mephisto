@@ -61,6 +61,12 @@ context "Site Template" do
     assert_equal 'Hemingway', sites(:first).rollback_theme.title
   end
   
+  specify "should rollback theme" do
+    sites(:first).rollback
+    assert_equal 'Rollback', sites(:first).theme.title
+    assert_equal 'Hemingway', sites(:first).rollback_theme.title
+  end
+  
   specify "should import theme" do
     sites(:first).import_theme sites(:first).theme_path + 'hemingway.zip', 'hemingway'
     assert_equal %w(current empty encytemedia hemingway), sites(:first).themes.collect(&:name)
