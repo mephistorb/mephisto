@@ -97,7 +97,7 @@ context "Site Template" do
   specify "should raise error on missing template" do
     sites(:first).templates[:archive].unlink
     sites(:first).templates[:index].unlink
-    assert_raise Mephisto::MissingTemplateError do
+    assert_raise MissingTemplateError do
       sites(:first).send(:set_content_template, sites(:first).sections.home, :archive)
     end
   end

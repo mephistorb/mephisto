@@ -2,7 +2,7 @@ class Admin::ThemesController < Admin::BaseController
   @@theme_export_path = RAILS_PATH + 'tmp/export'
   cattr_accessor :theme_export_path
   
-  before_filter :find_theme, :only => [:preview_for, :export, :change_to]
+  before_filter :find_theme, :only => [:preview_for, :export, :change_to, :show, :destroy]
 
   def preview_for
     send_file((@theme.preview.exist? ? @theme.preview : RAILS_PATH + 'public/images/mephisto/preview.png').to_s, :type => 'image/png', :disposition => 'inline')
@@ -46,9 +46,23 @@ class Admin::ThemesController < Admin::BaseController
     end
   end
 
+  def destroy
+    if @theme.current?
+      flash[:error] = "Cannot delete the current theme"
+    else
+      @index = site.themes.index(@theme)
+      @theme.path.rmtree
+      flash[:notice] = "The '#{params[:id]}' theme was deleted."
+    end
+    respond_to do |format|
+      format.html { redirect_to :action => 'index' }
+      format.js
+    end
+  end
+
   protected
     def find_theme
-      show_404 unless @theme = site.themes[params[:id]]
+      show_404 unless @theme = params[:id] == 'current' ? site.theme : site.themes[params[:id]]
     end
 
     def temp_theme_path_for(prefix)

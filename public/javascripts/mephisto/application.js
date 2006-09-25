@@ -555,7 +555,10 @@ Event.addBehavior({
   },
   
   'a.theme_dialog:click': function() {
+    var img = this.down('img');
+    var pieces = img.src.split('/');
     new Dialog.Rjs();
+    new Ajax.Request('/admin/themes/show/' + pieces[pieces.length-1]);
   }
   
   //'.theme': function() {

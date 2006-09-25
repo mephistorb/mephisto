@@ -120,13 +120,11 @@ Pathname.class_eval do
   end
 end
 
-module Mephisto
-  class MissingTemplateError < StandardError
-    attr_reader :template_type, :templates
-    def initialize(template_type, templates)
-      @template_type = template_type
-      @templates     = templates
-      super "No template found for #{template_type}, checked #{templates.to_sentence}."
-    end
+class MissingTemplateError < StandardError
+  attr_reader :template_type, :templates
+  def initialize(template_type, templates)
+    @template_type = template_type
+    @templates     = templates
+    super "No template found for #{template_type}, checked #{templates.to_sentence}."
   end
 end

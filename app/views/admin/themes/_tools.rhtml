@@ -1,0 +1,11 @@
+<ul>
+<% unless @theme.current? -%>
+  <li><%= link_to 'Use this theme', :action => 'change_to', :id => @theme %></li>
+  <li><%= link_to 'Edit', :controller => 'design', :action => 'index', :theme => @theme %></li>
+<% end -%>
+  <!--li><a href="#" title="title">Change info</a></li-->
+  <li><%= link_to 'Export', :action => 'export', :id => @theme %></li>
+  <li><%= link_to_remote 'Remove', :url => {:action => 'destroy', :id => @theme}, :method => :delete,
+            :confirm => "Are you sure you wish to remove this theme stored at 'others/#{@theme.path.relative_path_from(site.other_themes_path).to_s}'?" %></li>
+  <li><%= link_to_function 'close', 'Dialog.close()' %></li>
+</ul>

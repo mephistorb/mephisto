@@ -11,6 +11,7 @@ class Admin::ThemesControllerTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     login_as :quentin
+    prepare_theme_fixtures
   end
 
   def test_should_allow_site_admin
@@ -50,5 +51,35 @@ class Admin::ThemesControllerTest < Test::Unit::TestCase
     assert_redirected_to :action => 'index'
     assert_equal %w(current empty encytemedia hemingway), sites(:first).themes.collect(&:name)
     assert_equal 'Hemingway', sites(:first).themes[:hemingway].title
+  end
+  
+  def test_should_delete_theme
+    delete :destroy, :id => 'encytemedia'
+    assert_equal 2, assigns(:index)
+    assert_redirected_to :action => 'index'
+    assert_match /deleted/, flash[:notice]
+    assert_equal %w(current empty), sites(:first).themes.collect(&:name)
+  end
+  
+  def test_should_not_delete_current_theme
+    delete :destroy, :id => 'current'
+    assert_redirected_to :action => 'index'
+    assert_match /current/, flash[:error]
+    assert_equal %w(current empty encytemedia), sites(:first).themes.collect(&:name)
+  end
+  
+  def test_should_delete_theme_with_ajax
+    xhr :delete, :destroy, :id => 'empty'
+    assert_equal 1, assigns(:index)
+    assert_response :success
+    assert_match /deleted/, flash[:notice]
+    assert_equal %w(current encytemedia), sites(:first).themes.collect(&:name)
+  end
+  
+  def test_should_not_delete_current_theme_with_ajax
+    xhr :delete, :destroy, :id => 'current'
+    assert_response :success
+    assert_match /current/, flash[:error]
+    assert_equal %w(current empty encytemedia), sites(:first).themes.collect(&:name)
   end
 end

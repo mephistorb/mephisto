@@ -114,7 +114,7 @@ class Site < ActiveRecord::Base
       entry = other_themes_path + e
       next unless entry.directory?
       @themes << Theme.new(entry)
-      @themes.pop if @themes.last == theme
+      @themes.pop if @themes.last.similar_to?(theme)
     end
     def @themes.[](key) key = key.to_s ; detect { |t| t.name == key } ; end
     @themes
@@ -255,7 +255,7 @@ class Site < ActiveRecord::Base
     def find_preferred_template(template_type, custom_template)
       preferred = templates.find_preferred(template_type, custom_template)
       return preferred if preferred && preferred.file?
-      raise Mephisto::MissingTemplateError.new(template_type, templates.collect_templates(template_type, custom_template))
+      raise MissingTemplateError.new(template_type, templates.collect_templates(template_type, custom_template).collect(&:basename))
     end
     
     def parse_template(template, assigns, controller)

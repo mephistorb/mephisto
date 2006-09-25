@@ -1,0 +1,1 @@
+page['dialog-box'].replace_html :partial => 'tools'

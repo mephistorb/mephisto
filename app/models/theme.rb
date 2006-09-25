@@ -132,12 +132,11 @@ class Theme
   end
   
   def ==(comparison_object)
-    case comparison_object
-      when Theme
-        title == comparison_object.title && version == comparison_object.version
-      else
-        base_path == comparison_object.to_s
-    end
+    base_path == (comparison_object.is_a?(Theme) ? comparison_object.base_path : comparison_object.to_s)
+  end
+
+  def similar_to?(theme)
+    title == theme.title && version == theme.version
   end
 
   protected

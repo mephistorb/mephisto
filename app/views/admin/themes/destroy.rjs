@@ -1,0 +1,2 @@
+page.dialog.close
+page["theme_#{@index}"].visual_effect :drop_out
