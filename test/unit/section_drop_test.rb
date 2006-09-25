@@ -40,7 +40,7 @@ class SectionDropTest < Test::Unit::TestCase
   end
 end
 
-context "Section Contnets" do
+context "Section Contets" do
   fixtures :sites, :sections, :contents, :assigned_sections
 
   def setup

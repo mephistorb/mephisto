@@ -86,9 +86,13 @@ module UrlFilters
   end
 
   def atom_feed(url, title = nil)
-    options = {:rel => 'alternate', :type => 'application/atom+xml', :href => absolute_url(url)}
+    options = {:rel => 'alternate', :type => 'application/atom+xml', :href => absolute_url("/feed/#{url}")}
     options[:title] = title unless title.blank?
     tag(:link, options)
+  end
+
+  def all_comments_feed(title = nil)
+    atom_feed 'all_comments.xml', title.blank? ? 'All Comments' : title
   end
 
   private

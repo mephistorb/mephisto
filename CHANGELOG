@@ -1,5 +1,12 @@
 * SVN *
 
+* Add site-specific comment atom feeds and global site comment feeds
+
+  {{ '' | all_comments_feed }}
+  {{ 'comments.xml' | atom_feed }} # comments for home section
+  {{ 'atom.xml' | atom_feed }}     # articles for home section
+  {{ 'projects/foo/comments.xml' | atom_feed: "Project Foo Comments" }} # comments for projects/foo section with optional title
+
 * Add liquid drop/filters for getting the latest comments for a section.
 
   {{ section | latest_comments: 2 }}

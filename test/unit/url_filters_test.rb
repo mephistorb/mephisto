@@ -57,4 +57,29 @@ context "Url Filters" do
     assert_equal '/search?q=abc',        search_url('abc')
     assert_equal '/search?q=abc&page=2', search_url('abc', 2)
   end
+  
+  specify "should generate atom auto discovery tag" do
+    content = atom_feed('foo')
+    assert_match /^<link /, content
+    assert_match /rel="alternate"/, content
+    assert_match /type="application\/atom\+xml"/, content
+    assert_match /href="\/feed\/foo"/, content
+    assert_no_match /title/, content
+  end
+  
+  specify "should generate atom auto discovery tag with title" do
+    content = atom_feed('foo', 'bar')
+    assert_match /title="bar"/, content
+  end
+  
+  specify "should show all comments feed" do
+    content = all_comments_feed
+    assert_match /href="\/feed\/all_comments.xml"/, content
+    assert_match /title="All Comments"/, content
+  end
+  
+  specify "should show all comments feed with custom title" do
+    content = all_comments_feed "All Lame Comments"
+    assert_match /title="All Lame Comments"/, content
+  end
 end

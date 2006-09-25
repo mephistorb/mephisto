@@ -82,6 +82,10 @@ class Section < ActiveRecord::Base
     to_page_url 'atom.xml'
   end
   
+  def to_comments_url
+    to_page_url 'comments.xml'
+  end
+  
   protected
     def set_archive_path
       self.archive_path = 'archives' if archive_path.blank?
