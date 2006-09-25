@@ -5,7 +5,7 @@ require_dependency 'mephisto_controller'
 class MephistoController; def rescue_action(e) raise e end; end
 
 class MephistoControllerTest < Test::Unit::TestCase
-  fixtures :contents, :sections, :assigned_sections, :sites, :users
+  fixtures :contents, :content_versions, :sections, :assigned_sections, :sites, :users
 
   def setup
     prepare_theme_fixtures
@@ -232,7 +232,21 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_template_type      :single
     assert_dispatch_action    :single
   end
-  
+
+  def test_should_show_comment_feed
+    date = 3.days.ago
+    dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto/comments.xml"
+    assert_response :success
+    assert_atom_entries_size 1
+  end
+
+  def test_should_show_changes_feed
+    date = 3.days.ago
+    dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto/changes.xml"
+    assert_response :success
+    assert_atom_entries_size 2
+  end
+
   def test_should_show_site_entry
     host! 'cupcake.com'
     date = 3.days.ago

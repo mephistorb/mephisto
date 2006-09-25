@@ -102,23 +102,24 @@ class SectionTest < Test::Unit::TestCase
     assert_equal({ :path => %w(about) }, sections(:about).hash_for_url)
   end
 
-  def test_should_return_correct_sections
+  specify "should return correct sections" do
     assert_equal [sections(:about), sections(:home)], sites(:first).sections.find(:all, :order => 'name')
     assert_equal [sections(:about)], sites(:first).sections.find_paged
   end
 
-  def test_should_order_sections
+  specify "should order sections" do
     assert_reorder_articles sections(:about),
       [contents(:welcome), contents(:about), contents(:site_map)],
       [contents(:about), contents(:site_map), contents(:welcome)]
   end
 
-  def assert_reorder_articles(section, old_order, expected)
-    assert_equal old_order, section.articles
-    section.order! expected.collect(&:id)
-    assert_equal expected, section.articles(true)
-  end
-  
+  protected
+    def assert_reorder_articles(section, old_order, expected)
+      assert_equal old_order, section.articles
+      section.order! expected.collect(&:id)
+      assert_equal expected, section.articles(true)
+    end
+
   def test_should_report_section_types
     assert sections(:home).blog?
     [:about, :cupcake_home, :cupcake_about].each { |s| assert sections(s).paged? }

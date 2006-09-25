@@ -23,6 +23,7 @@ welcome:
   type: Article
   filter: textile_filter
   version: 2
+  updater_id: 1
 another:
   id: 2
   site_id: 1

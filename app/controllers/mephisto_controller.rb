@@ -1,4 +1,5 @@
 class MephistoController < ApplicationController
+  layout nil
   session :off
   caches_page_with_references :dispatch
   cache_sweeper :comment_sweeper
@@ -103,20 +104,36 @@ class MephistoController < ApplicationController
       render_liquid_template_for(:tag, 'articles' => @articles, 'tags' => @dispatch_path)
     end
 
+    def dispatch_comments_feed
+      show_404 and return unless find_article
+      @feed_title = "Comments"
+      @comments = @article.comments
+      @comments.reverse!
+      self.cached_references << @comments
+      render :action => 'feed', :content_type => 'application/xml'
+    end
+
+    def dispatch_changes_feed
+      show_404 and return unless find_article
+      @feed_title = "Changes"
+      @articles = @article.versions.find(:all, :include => :updater)
+      render :action => 'feed', :content_type => 'application/xml'
+    end
+
     def paged_search_url_for(page)
       page ? site.search_url(params[:q], page) : ''
     end
 
     def find_article
       @article = site.articles.find_by_permalink(@dispatch_path.first)
+      self.cached_references << @article if @article
     end
 
     def show_article_with(assigns = {})
       find_article if @article.nil?
-      show_404 and return unless @article
-      self.cached_references << @article
+      show_404 and return unless @article || find_article
       Mephisto::Liquid::CommentForm.article = @article
-      @article  = @article.to_liquid(:mode => :single, :site => site)
+      @article = @article.to_liquid(:mode => :single, :site => site)
       render_liquid_template_for(:single, assigns.merge('articles' => [@article], 'article' => @article))
     end
     alias dispatch_single show_article_with

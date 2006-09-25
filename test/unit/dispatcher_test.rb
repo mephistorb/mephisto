@@ -53,7 +53,17 @@ context "Dispatcher" do
     options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo'}
     assert_dispatch :comments, nil, options, %w(2006 9 1 foo comments)
   end
-  
+
+  specify "should dispatch to comments feed" do
+    options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo'}
+    assert_dispatch :comments_feed, nil, options, %w(2006 9 1 foo comments.xml)
+  end
+
+  specify "should dispatch to changes feed" do
+    options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo'}
+    assert_dispatch :changes_feed, nil, options, %w(2006 9 1 foo changes.xml)
+  end
+
   specify "should dispatch to single comment" do
     options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo'}
     assert_dispatch :comment, nil, options, '5', %w(2006 9 1 foo comments 5)
@@ -84,13 +94,13 @@ context "Dispatcher Permalink Regular Expression" do
   end
 
   specify "should create permalink regex with default permalink style" do
-    assert_equal Regexp.new(%(^(\\d{4})\\/(\\d{1,2})\\/(\\d{1,2})\\/([\\w\\-]+)(\/comments(\/(\\d+))?)?$)), 
+    assert_equal Regexp.new(%(^(\\d{4})\\/(\\d{1,2})\\/(\\d{1,2})\\/([\\w\\-]+)(\/(comments(\/(\\d+))?|comments\.xml|changes\.xml))?$)), 
       Mephisto::Dispatcher.build_permalink_regex_with(@site.permalink_style).first
   end
 
   specify "should create permalink regex with custom style" do
     @site.permalink_style = "articles/:id/:permalink"
-    assert_equal Regexp.new(%(^articles\\/(\\d+)\\/([\\w\\-]+)(\/comments(\/(\\d+))?)?$)), 
+    assert_equal Regexp.new(%(^articles\\/(\\d+)\\/([\\w\\-]+)(\/(comments(\/(\\d+))?|comments\.xml|changes\.xml))?$)), 
       Mephisto::Dispatcher.build_permalink_regex_with(@site.permalink_style).first
   end
 
@@ -115,26 +125,30 @@ context "Dispatcher Permalink Recognition" do
 
   specify "should recognize permalinks with default permalink style" do
     options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo-bar_baz'}
-    assert_equal [options, false, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo-bar_baz))
+    assert_equal [options, nil, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo-bar_baz))
   end
   
   specify "should recognize permalinks with custom style" do
     @site.permalink_style = 'entries/:id/:permalink'
     options = {:id => '5', :permalink => 'foo-bar_baz'}
-    assert_equal [options, false, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar_baz))
+    assert_equal [options, nil, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar_baz))
   end
 
   specify "should recognize permalinks with comment and default permalink style" do
     options = {:year => '2006', :month => '9', :day => '1', :permalink => 'foo'}
-    assert_equal [options, true, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo comments))
-    assert_equal [options, true, '5'], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo comments 5))
+    assert_equal [options, 'comments',     nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo comments))
+    assert_equal [options, 'comments',     '5'], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo comments 5))
+    assert_equal [options, 'comments.xml', nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo comments.xml))
+    assert_equal [options, 'changes.xml',  nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(2006 9 1 foo changes.xml))
   end
   
   specify "should recognize permalinks with comment and custom style" do
     @site.permalink_style = 'entries/:id/:permalink'
     options = {:id => '5', :permalink => 'foo-bar-baz'}
-    assert_equal [options, true, nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz comments))
-    assert_equal [options, true, '5'], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz comments 5))
+    assert_equal [options, 'comments',     nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz comments))
+    assert_equal [options, 'comments',     '5'], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz comments 5))
+    assert_equal [options, 'comments.xml', nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz comments.xml))
+    assert_equal [options, 'changes.xml',  nil], Mephisto::Dispatcher.recognize_permalink(@site, %w(entries 5 foo-bar-baz changes.xml))
   end
 
   specify "should ignore unrecognized permalinks" do
@@ -144,5 +158,7 @@ context "Dispatcher Permalink Recognition" do
     assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 123 foo))
     assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 1 foo boo))
     assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 1 foo comment))
+    assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 1 foo comments.xml 5))
+    assert_nil Mephisto::Dispatcher.recognize_permalink(sites(:first), %w(2006 9 1 foo changes.xml 5))
   end
 end

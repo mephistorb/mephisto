@@ -11,7 +11,8 @@ class Article < Content
   acts_as_versioned :if_changed => [:title, :body, :excerpt], :limit => 5 do
     def self.included(base)
       base.send :include, Mephisto::TaggableMethods
-      base.belongs_to :updater, :class_name => '::User', :foreign_key => 'updater_id'
+      base.belongs_to :updater, :class_name => '::User', :foreign_key => 'updater_id', :with_deleted => true
+      [:year, :month, :day].each { |m| base.delegate m, :to => :published_at }
     end
 
     def published?
@@ -29,6 +30,7 @@ class Article < Content
 
   has_many :assigned_sections, :dependent => :destroy
   has_many :sections, :through => :assigned_sections, :order => 'sections.name'
+
   has_many :events,   :order => 'created_at desc', :dependent => :delete_all
   with_options :order => 'created_at', :class_name => 'Comment' do |comment|
     comment.has_many :comments,            :conditions => ['contents.approved = ?', true], :dependent => :delete_all  do

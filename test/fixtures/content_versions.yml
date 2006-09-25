@@ -17,6 +17,7 @@ welcome_1:
   versioned_type: Article
   filter: textile_filter
   version: 1
+  updater_id: 3
 welcome_2:
   id: 2
   article_id: 1
@@ -36,3 +37,4 @@ welcome_2:
   versioned_type: Article
   filter: textile_filter
   version: 2
+  updater_id: 1

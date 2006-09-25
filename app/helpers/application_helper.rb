@@ -70,4 +70,12 @@ module ApplicationHelper
      ['Expire 1 month after publishing',      30],
      ['Expire 3 months after publishing',     90]]
   end
+
+  def sanitize_feed_content(html)
+    returning h(white_list(html)) do |html|
+      html.gsub! /&amp;(#\d+);/ do |s|
+        "&#{$1};"
+      end
+    end
+  end
 end

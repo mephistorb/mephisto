@@ -5,10 +5,14 @@ module Mephisto
 
     def self.run(site, path)
       if options = recognize_permalink(site, path)
-        if options[1] && options[2]
+        if options[1] == 'comments' && options[2]
           return [:comment, nil, options.first, options.last]
-        elsif options[1]
+        elsif options[1] == 'comments'
           return [:comments, nil, options.first]
+        elsif options[1] == 'comments.xml'
+          return [:comments_feed, nil, options.first]
+        elsif options[1] == 'changes.xml'
+          return [:changes_feed, nil, options.first]
         else
           return [:single, nil, options.first]
         end
@@ -58,6 +62,7 @@ module Mephisto
       end
     end
     
+    # returns an array with 3 values: [article_params, suffix, comment_id]
     def self.recognize_permalink(site, path)
       full_path = path.join('/')
       regex, variables = build_permalink_regex_with(site.permalink_style)
@@ -66,8 +71,9 @@ module Mephisto
           variables.each_with_index do |var, i|
             result.first[var] = match[i+1]
           end
-          result << !match[variables.size + 1].nil?
-          result <<  match[variables.size + 3]
+          result << match[variables.size + 2] # comments | comments.xml | changes.xml
+          result.last.gsub!(/\/(.*)$/, '') if result.last
+          result << match[variables.size + 4] # comment id
         end
       end
     end
@@ -83,7 +89,7 @@ module Mephisto
         end
       end
 
-      [Regexp.new("^#{regex.join('\/')}(\/comments(\/(\\d+))?)?$"), variables]
+      [Regexp.new("^#{regex.join('\/')}(\/(comments(\/(\\d+))?|comments\.xml|changes\.xml))?$"), variables]
     end
 
     def self.variable_format?(var)
