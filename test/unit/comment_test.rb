@@ -8,13 +8,16 @@ class CommentTest < Test::Unit::TestCase
     assert_equal [contents(:welcome_comment)], contents(:welcome).comments
   end
 
-  def test_should_add_comment_and_retrieve_site_id_from_article
+  def test_should_add_comment_and_retrieve_attributes_from_article
     assert_difference Comment, :count do
       comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'
-      assert_equal contents(:welcome).site_id, comment.site_id
+      assert_equal contents(:welcome).site_id,      comment.site_id
+      assert_equal contents(:welcome).title,        comment.title
+      assert_equal contents(:welcome).published_at, comment.published_at
+      assert_equal contents(:welcome).permalink,    comment.permalink
     end
   end
-  
+
   def test_should_pass_filter_down_from_article
     old_times = contents(:welcome).comments.collect &:updated_at
     comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'

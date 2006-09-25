@@ -5,7 +5,7 @@ class Comment < Content
   validates_format_of :author_email, :with => Format::EMAIL
   before_validation :clean_up_author_email
   before_validation :clean_up_author_url
-  after_validation_on_create  :snag_article_filter_and_site
+  after_validation_on_create  :snag_article_attributes
   before_create  :check_comment_expiration
   before_save    :update_counter_cache
   before_destroy :decrement_counter_cache
@@ -43,8 +43,8 @@ class Comment < Content
   end
 
   protected
-    def snag_article_filter_and_site
-      self.attributes = { :site => article.site, :filter => article.site.filter }
+    def snag_article_attributes
+      self.attributes = { :site => article.site, :filter => article.site.filter, :title => article.title, :published_at => article.published_at, :permalink => article.permalink }
     end
 
     def check_comment_expiration

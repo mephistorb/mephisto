@@ -97,8 +97,9 @@ module Mephisto
     def self.build_permalink_with(permalink_style, article)
       old_published          = article.published_at
       article.published_at ||= Time.now.utc
+      article.article_id   ||= article.id
       permalink_style.split('/').inject [''] do |s, piece|
-        s << ((name = variable_format?(piece)) && PERMALINK_OPTIONS.keys.include?(name.to_sym) ? article.send(name).to_s : piece)
+        s << ((name = variable_format?(piece)) && PERMALINK_OPTIONS.keys.include?(name.to_sym) ? variable_value_for(article, name) : piece)
       end.join('/')
     ensure
       article.published_at = old_published
@@ -107,12 +108,17 @@ module Mephisto
     private
       @@year_regex  = %r{^#{PERMALINK_OPTIONS[:year]}$}
       @@month_regex = %r{^#{PERMALINK_OPTIONS[:month]}$}
+
       def self.year?(n)
         n.nil? || n =~ @@year_regex
       end
       
       def self.month?(n)
         n.nil? || n =~ @@month_regex
+      end
+      
+      def self.variable_value_for(article, variable)
+        variable == 'id' ? article.article_id.to_s : article.send(variable).to_s
       end
   end
 end

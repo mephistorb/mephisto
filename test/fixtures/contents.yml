@@ -40,11 +40,13 @@ welcome_comment:
   id: 3
   site_id: 1
   article_id: 1
+  title: Welcome to Mephisto
+  permalink: welcome-to-mephisto
   body: "rico's evil <script>hi</script> and <a onclick=\"foo\" href=\"#\">linkage</a>"
   body_html: "<p>rico&#8217;s evil <script>hi</script> and <a onclick=\"foo\" href=\"#\">linkage</a></p>"
-  created_at: <%= 3.days.ago.to_s(:db) %>
-  updated_at: <%= 3.days.ago.to_s(:db) %>
-  published_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
+  created_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
+  updated_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
+  published_at: <%= 3.days.ago.to_s(:db) %>
   type: Comment
   author: rico
   author_ip: 1dfasd
@@ -114,11 +116,13 @@ cupcake_welcome_comment:
   id: 9
   site_id: 2
   article_id: 8
+  title: Welcome to Cupcake
+  permalink: welcome-to-cupcake
   body: This blogging tool tastes like fudge.
   body_html: This blogging tool tastes like fudge.
-  created_at: <%= 3.days.ago.to_s(:db) %>
-  updated_at: <%= 3.days.ago.to_s(:db) %>
-  published_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
+  created_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
+  updated_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
+  published_at: <%= 3.days.ago.to_s(:db) %>
   type: Comment
   author: rico
   approved: true
@@ -126,11 +130,13 @@ unwelcome_comment:
   id: 10
   site_id: 1
   article_id: 1
+  title: Welcome to Mephisto
+  permalink: welcome-to-mephisto
   body: This blogging tool sucks.
   body_html: This blogging tool sucks.
-  created_at: <%= 2.days.ago.to_s(:db) %>
-  updated_at: <%= 2.days.ago.to_s(:db) %>
-  published_at: <%= (2.days + 55.minutes).ago.to_s(:db) %>
+  created_at: <%= (2.days + 55.minutes).ago.to_s(:db) %>
+  updated_at: <%= (2.days + 55.minutes).ago.to_s(:db) %>
+  published_at: <%= 3.days.ago.to_s(:db) %>
   type: Comment
   author: rico
   author_ip: '127.0.0.1'

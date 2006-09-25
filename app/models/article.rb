@@ -72,8 +72,6 @@ class Article < Content
     end
   end
 
-  [:year, :month, :day].each { |m| delegate m, :to => :published_at }
-
   # AX
   def full_permalink
     published? && ['', published_at.year, published_at.month, published_at.day, permalink] * '/'
