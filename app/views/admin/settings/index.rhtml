@@ -52,6 +52,15 @@
   <h3>Publishing and Reading</h3>
   <dl class="setform">
     <dt>
+      <label for="comments_filter">Comments filter</label>
+      <p class="hint">When comments are posted, they use this markup</p>
+    </dt>
+    <dd>
+      <select name="site[filter]">
+        <%= options_for_select(filter_options, site.filter) %>
+      </select>
+    </dd>
+    <dt>
       <label for="site_articles_per_page">Articles per page</label>
       <p class="hint">Default article limit for search/tag pages.</p>
     </dt>
