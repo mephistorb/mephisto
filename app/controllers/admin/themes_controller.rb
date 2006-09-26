@@ -1,6 +1,7 @@
 class Admin::ThemesController < Admin::BaseController
-  @@theme_export_path = RAILS_PATH + 'tmp/export'
-  cattr_accessor :theme_export_path
+  @@theme_export_path   = RAILS_PATH + 'tmp/export'
+  @@theme_content_types = %w(application/zip multipart/x-zip application/x-zip-compressed)
+  cattr_accessor :theme_export_path, :theme_content_types
   
   before_filter :find_theme, :only => [:preview_for, :export, :change_to, :show, :destroy]
 
@@ -34,7 +35,7 @@ class Admin::ThemesController < Admin::BaseController
 
   def import
     return unless request.post?
-    unless params[:theme] && params[:theme].size > 0 && params[:theme].content_type.strip == 'application/zip'
+    unless params[:theme] && params[:theme].size > 0 && theme_content_types.include?(params[:theme].content_type.strip)
       flash.now[:error] = "Invalid theme upload."
       return
     end
