@@ -9,7 +9,6 @@ module WordPress
 
   class << self
     def import_users
-      newpass = 'mephistomigrator'
       users = 0
       WordPress::User.find(:all).each do |wp_user|
         users += 1 if import_user(wp_user)
@@ -24,8 +23,8 @@ module WordPress
         new_user = ::User.create(
           :email => wp_user.user_email || "#{wp_user.user_login}@notfound.com",
           :login                    => wp_user.user_login,
-          :password                 => newpass,
-          :password_confirmation    => newpass,
+          :password                 => new_user_password,
+          :password_confirmation    => new_user_password,
           :filter                   => 'textile_filter'
         )
         unless new_user.valid?
