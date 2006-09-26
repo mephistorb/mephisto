@@ -46,11 +46,21 @@ class CachingTest < ActionController::IntegrationTest
       visitor.read contents(:welcome)
     end
 
+    assert_caches_page "#{contents(:welcome).full_permalink}/changes.xml" do |urls|
+      visitor.get urls.first
+    end
+
+    assert_caches_page "#{contents(:welcome).full_permalink}/comments.xml" do |urls|
+      visitor.get urls.first
+    end
+
     assert_caches_page feed_url_for(:home) do
       visitor.syndicate sections(:home)
     end
 
     assert_expires_pages contents(:welcome).full_permalink, 
+                         "#{contents(:welcome).full_permalink}/changes.xml",
+                         "#{contents(:welcome).full_permalink}/comments.xml",
                          feed_url_for(:home) do
       writer.revise contents(:welcome), 'new welcome description'
     end
