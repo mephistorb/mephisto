@@ -20,6 +20,7 @@ module Mephisto
       map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/
       
       map.dispatch '*path', :controller => 'mephisto', :action => 'dispatch'
+      map.home '', :controller => 'mephisto', :action => 'dispatch'
     end
   end
 end
