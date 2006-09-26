@@ -106,6 +106,17 @@ context "Url Filters" do
     assert_match /href="\/feed\/about\/atom.xml"/, content
     assert_match /title="About Articles"/, content
   end
+  
+  specify "should html encoding of anchor text" do
+    unencoded = 'Tom & Jerry'
+    contents(:welcome).title = unencoded
+    @article = contents(:welcome).to_liquid
+    @context['section'].instance_variable_get(:@section_liquid)['name'] = unencoded
+    assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_article(@article)
+    assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_page(@article)
+    assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_section(@context['section'])
+    assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_tag(unencoded)
+  end
 end
 
 context "Article Url Filters" do

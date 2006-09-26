@@ -5,11 +5,11 @@ module UrlFilters
   include ActionView::Helpers::AssetTagHelper
 
   def link_to_article(article)
-    content_tag :a, article['title'], :href => article['url']
+    content_tag :a, h(article['title']), :href => article['url']
   end
   
   def link_to_page(page, section = nil)
-    content_tag :a, page_title(page), page_anchor_options(page, section)
+    content_tag :a, h(page['title']), page_anchor_options(page, section)
   end
 
   def link_to_comments(article)
@@ -17,7 +17,7 @@ module UrlFilters
   end
   
   def link_to_section(section)
-    content_tag :a, section['name'], :href => section['url'], :title => section['title']
+    content_tag :a, h(section['name']), :href => section['url'], :title => section['title']
   end
 
   def img_tag(img, options = {})
@@ -55,7 +55,7 @@ module UrlFilters
   end
 
   def link_to_tag(tag)
-    content_tag :a, tag, :href => tag_url(tag)
+    content_tag :a, h(tag), :href => tag_url(tag)
   end
 
   def link_to_month(section, date = nil, format = 'my')

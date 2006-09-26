@@ -1,8 +1,4 @@
 module CoreFilters
-  def page_title(page)
-    page['title']
-  end
-
   def escape_html(html)
     CGI::escapeHTML(html)
   end
