@@ -2,8 +2,8 @@ xm.entry do
   xm.author do
     xm.name article.updater.login
   end
-  xm.id        "tag:#{request.host_with_port},#{article.published_at.to_date.to_s :db}:#{article.id}:#{article.version}"
-  xm.published article.published_at.xmlschema
+  xm.id        "tag:#{request.host_with_port},#{article.updated_at.to_date.to_s :db}:#{article.id}:#{article.version}"
+  xm.published article.published_at.xmlschema if article.published_at
   xm.updated   article.updated_at.xmlschema
   xm.link "rel" => "alternate", "type" => "text/html", "href" => "http://#{request.host_with_port}#{site.permalink_for(article)}"
   xm.title     strip_tags(article.title)
