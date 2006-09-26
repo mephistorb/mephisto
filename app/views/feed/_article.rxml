@@ -1,4 +1,4 @@
-xm.entry do
+xm.entry 'xml:base' => "http://#{request.host_with_port}/" do
   xm.author do
     xm.name article.user.login
   end
