@@ -3,8 +3,7 @@ class AssetSweeper < ActionController::Caching::Sweeper
   #observe Resource
   def after_save(record)
     return if controller.nil?
-    pages = CachedPage.find_by_reference(record)
-    expire_cached_pages "Expired pages referenced by #{record.class} ##{record.id}", *pages
+    site.expire_cached_pages controller, "Expired pages referenced by #{record.class} ##{record.id}", site.cached_pages.find_by_reference(record)
   end
   alias after_destroy after_save
 end

@@ -9,8 +9,7 @@ class ArticleSweeper < ActionController::Caching::Sweeper
   def after_save(record)
     return if controller.nil?
     expire_overview_feed! if record.is_a?(Article)
-    pages = CachedPage.find_by_reference(record)
-    expire_cached_pages "Expired pages referenced by #{record.class} ##{record.id}", *pages
+    site.expire_cached_pages controller, "Expired pages referenced by #{record.class} ##{record.id}", site.cached_pages.find_by_reference(record)
   end
 
   alias after_destroy after_save

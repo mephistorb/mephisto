@@ -2,7 +2,7 @@ class Site < ActiveRecord::Base
   @@theme_path = Pathname.new(RAILS_ROOT) + 'themes'
   cattr_reader :theme_path
 
-  cattr_accessor :multi_sites_enabled
+  cattr_accessor :multi_sites_enabled, :cache_sweeper_tracing
 
   has_many  :sections do
     def home
@@ -195,7 +195,26 @@ class Site < ActiveRecord::Base
     original_timezone_writer(name)
   end
 
+  def page_cache_directory
+    multi_sites_enabled ? 
+      (RAILS_PATH + (RAILS_ENV == 'test' ? 'tmp' : 'public') + 'cache' + host) :
+      (RAILS_PATH + (RAILS_ENV == 'test' ? 'tmp/cache' : 'public'))
+  end
+
+  def expire_cached_pages(controller, log_message, pages = nil)
+    pages ||= cached_pages.find_current(:all)
+    returning cached_log_message_for(log_message, pages) do |msg|
+      controller.logger.warn msg if cache_sweeper_tracing
+      pages.each { |p| controller.class.expire_page(p.url) }
+      CachedPage.expire_pages(self, pages)
+    end
+  end
+
   protected
+    def cached_log_message_for(log_message, pages)
+      pages.inject([log_message, "Expiring #{pages.size} page(s)"]) { |msg, p| msg << " - #{p.url}" }.join("\n")
+    end
+  
     def permalink_variable_format?(var)
       Mephisto::Dispatcher.variable_format?(var)
     end

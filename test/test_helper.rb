@@ -7,6 +7,8 @@ require File.expand_path(File.dirname(__FILE__) + "/actor")
 ASSET_PATH = File.join(RAILS_ROOT, 'test/fixtures/tmp/assets') unless Object.const_defined?(:ASSET_PATH)
 require File.join(File.dirname(__FILE__), 'referenced_caching_test_helper')
 
+Site.cache_sweeper_tracing = true
+
 Time.class_eval do
   class << self
     alias_method :real_now, :now

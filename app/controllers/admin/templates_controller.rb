@@ -16,7 +16,7 @@ class Admin::TemplatesController < Admin::DesignController
 
   def update
     @theme.templates.write(params[:filename], params[:data])
-    Mephisto::SweeperMethods.expire_cached_pages "Expired all referenced pages", self, *CachedPage.find(:all) if current_theme?
+    site.expire_cached_pages self, "Expired all referenced pages" if current_theme?
     render :update do |page|
       page.call 'Flash.notice', 'Template updated successfully'
     end

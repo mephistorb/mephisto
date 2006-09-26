@@ -44,7 +44,7 @@ require 'mephisto_init'
 # ActionController::AbstractRequest.relative_url_root = '/blog'
 
 # turn this on to get detailed cache sweeper logging in production mode
-# Mephisto::SweeperMethods.cache_sweeper_tracing = true
+# Site.cache_sweeper_tracing = true
 
 # Enable if you want to host multiple sites on this app
 # Site.multi_sites_enabled = true

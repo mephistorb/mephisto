@@ -79,7 +79,7 @@ class Admin::ThemesController < Admin::BaseController
     end
 
     def sweep_cache
-      Mephisto::SweeperMethods.expire_cached_pages "Expired all referenced pages", self, *CachedPage.find(:all)
+      site.expire_cached_pages self, "Expired all referenced pages"
     end
 
     alias authorized? admin?

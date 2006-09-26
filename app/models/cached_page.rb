@@ -18,6 +18,10 @@ class CachedPage < ActiveRecord::Base
       with_scope current_scope_conditions, &block
     end
 
+    def find_current(*args)
+      with_current_scope { find(*args) }
+    end
+
     # Finds all pages that this record refers to
     #
     #   CachedPage.find_by_reference  Foo.find(15)
@@ -32,9 +36,7 @@ class CachedPage < ActiveRecord::Base
     #   CachedPage.find_by_reference_keys ['Foo', 15], ['Bar', 17]
     #
     def find_by_reference_keys(*array_of_keys)
-      with_current_scope do
-        find :all, :conditions => ["(#{array_of_keys.collect { |r| "#{connection.quote_column_name('references')} LIKE ?" } * ' OR '})", *array_of_keys.collect { |r| "%[#{[r.last, r.first] * ':'}]%" }]
-      end
+      find_current :all, :conditions => ["(#{array_of_keys.collect { |r| "#{connection.quote_column_name('references')} LIKE ?" } * ' OR '})", *array_of_keys.collect { |r| "%[#{[r.last, r.first] * ':'}]%" }]
     end
 
     # Finds all pages that this record refers to

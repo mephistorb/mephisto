@@ -9,6 +9,6 @@ class TemplateSweeper < ActionController::Caching::Sweeper
   end
 
   def after_save(record)
-    expire_cached_pages "Expired all referenced pages", *CachedPage.find(:all) if @new.nil? && controller
+    site.expire_cached_pages controller, "Expired all referenced pages" if @new.nil? && controller
   end
 end

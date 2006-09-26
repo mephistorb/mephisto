@@ -64,9 +64,7 @@ class ApplicationController < ActionController::Base
     def set_cache_root
       host = request.domain(request.subdomains.size + (request.subdomains.first == 'www' ? 0 : 1))
       @site ||= Site.find_by_host(host) || Site.find(:first, :order => 'id')
-      if @site.multi_sites_enabled
-        self.class.page_cache_directory = File.join([RAILS_ROOT, (RAILS_ENV == 'test' ? 'tmp' : 'public'), 'cache', site.host])
-      end
+      self.class.page_cache_directory = site.page_cache_directory.to_s
     end
 
     def with_site_timezone
