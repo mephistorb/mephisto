@@ -202,10 +202,11 @@ class Site < ActiveRecord::Base
   end
 
   def expire_cached_pages(controller, log_message, pages = nil)
+    controller = controller.class unless controller.is_a?(Class)
     pages ||= cached_pages.find_current(:all)
     returning cached_log_message_for(log_message, pages) do |msg|
       controller.logger.warn msg if cache_sweeper_tracing
-      pages.each { |p| controller.class.expire_page(p.url) }
+      pages.each { |p| controller.expire_page(p.url) }
       CachedPage.expire_pages(self, pages)
     end
   end
