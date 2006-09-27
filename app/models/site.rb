@@ -8,6 +8,15 @@ class Site < ActiveRecord::Base
     def home
       find_by_path ''
     end
+
+    # orders sections in a site
+    def order!(*sorted_ids)
+      transaction do
+        sorted_ids.flatten.each_with_index do |section_id, pos|
+          Section.update_all ['position = ?', pos], ['id = ? and site_id = ?', section_id, proxy_owner.id]
+        end
+      end
+    end
   end
 
   has_many  :articles do

@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 context "Site" do
-  fixtures :sites, :contents
+  fixtures :sites, :contents, :sections
 
   specify "should create site without accepting comments" do
     site = Site.new :host => 'foo.com', :comment_age => -1
@@ -54,6 +54,18 @@ context "Site" do
     assert_equal '/tags/foo',     sites(:first).tag_url('foo')
     assert_equal '/tags/foo/bar', sites(:first).tag_url('foo', 'bar')
   end
+
+  specify "should order sections in site" do
+    assert_reorder_sections [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links)],
+                            [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:about)]
+  end
+
+  protected
+    def assert_reorder_sections(old_order, expected)
+      assert_models_equal old_order, sites(:first).sections
+      sites(:first).sections.order! expected.collect(&:id)
+      assert_models_equal expected, sites(:first).sections(true)
+    end
 end
 
 context "Site Membership" do

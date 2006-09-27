@@ -26,7 +26,7 @@ class Admin::SectionsController < Admin::BaseController
 
   def order
     if params[:id].to_i == 0
-      Section.order! params[:sorted_ids]
+      site.sections.order! params[:sorted_ids]
     else
       find_section
       @section.order! params[:sorted_ids]

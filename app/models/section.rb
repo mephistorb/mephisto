@@ -35,15 +35,6 @@ class Section < ActiveRecord::Base
     def permalink_for(str)
       str.gsub(/[^\w\/]|[!\(\)\.]+/, ' ').strip.downcase.gsub(/\ +/, '-')
     end
-    
-    # orders sections in a site
-    def order!(*sorted_ids)
-      sorted_ids.flatten.each_with_index do |section_id, pos|
-        section = find(section_id)
-        section.position = pos
-        section.save
-      end
-    end
   end
 
   def find_comments(options = {})

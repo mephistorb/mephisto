@@ -113,22 +113,11 @@ class SectionTest < Test::Unit::TestCase
       [contents(:about), contents(:site_map), contents(:welcome)]
   end
 
-  specify "should order sections in site" do
-    assert_reorder_sections [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links)],
-                            [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:about)]
-  end
-
   protected
     def assert_reorder_articles(section, old_order, expected)
       assert_models_equal old_order, section.articles
       section.order! expected.collect(&:id)
       assert_models_equal expected, section.articles(true)
-    end
-    
-    def assert_reorder_sections(old_order, expected)
-      assert_models_equal old_order, sites(:first).sections
-      Section.order! expected.collect(&:id)
-      assert_models_equal expected, sites(:first).sections(true)
     end
     
     def test_should_report_section_types
