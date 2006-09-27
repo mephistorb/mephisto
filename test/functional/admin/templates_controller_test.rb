@@ -33,23 +33,29 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
     assert_tag :tag => 'textarea', :attributes => { :id => 'data' }
   end
 
-  def test_should_require_template_filename
+  def test_should_require_template_filename_on_edit
     login_as :quentin
     get :edit
     assert_redirected_to :action => 'index'
     assert flash[:error]
-    
+  end
+  
+  def test_should_require_template_filename_on_update
+    login_as :quentin
     get :update
     assert_redirected_to :action => 'index'
     assert flash[:error]
   end
 
-  def test_should_require_posted_template
+  def test_should_require_post_on_update
     login_as :quentin
     get :update, :filename => 'layout.liquid'
     assert_redirected_to :action => 'edit'
     assert flash[:error]
-    
+  end
+  
+  def test_should_require_posted_template
+    login_as :quentin
     post :update, :filename => 'layout.liquid'
     assert_redirected_to :action => 'edit'
     assert flash[:error]

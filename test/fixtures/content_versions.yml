@@ -8,9 +8,9 @@ welcome_1:
   excerpt_html: welcome summary
   body: welcome description
   body_html: welcome description
-  created_at: <%= 5.days.ago.to_s(:db) %>
-  updated_at: <%= 5.days.ago.to_s(:db) %>
-  published_at: <%= 3.days.ago.to_s(:db) %>
+  created_at: <%= 5.days.ago.utc.to_s(:db) %>
+  updated_at: <%= 5.days.ago.utc.to_s(:db) %>
+  published_at: <%= 3.days.ago.utc.to_s(:db) %>
   comment_age: 30
   user_id: 1
   comments_count: 1
@@ -28,9 +28,9 @@ welcome_2:
   excerpt_html: welcome summary
   body: welcome description
   body_html: welcome description
-  created_at: <%= 5.days.ago.to_s(:db) %>
-  updated_at: <%= 5.days.ago.to_s(:db) %>
-  published_at: <%= 3.days.ago.to_s(:db) %>
+  created_at: <%= 5.days.ago.utc.to_s(:db) %>
+  updated_at: <%= 5.days.ago.utc.to_s(:db) %>
+  published_at: <%= 3.days.ago.utc.to_s(:db) %>
   comment_age: 30
   user_id: 1
   comments_count: 1

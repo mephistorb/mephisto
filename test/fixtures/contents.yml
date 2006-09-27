@@ -14,9 +14,9 @@ welcome:
   excerpt_html: welcome summary
   body: "quentin's \"welcome\" *description* <script>hi</script><a onclick=\"foo\" href=\"#\">linkage</a>"
   body_html: "<p>quentin&#8217;s &#8220;welcome&#8221; <strong>description</strong> <script>hi</script><a onclick=\"foo\" href=\"#\">linkage</a></p>"
-  created_at: <%= 5.days.ago.to_s(:db) %>
-  updated_at: <%= 5.days.ago.to_s(:db) %>
-  published_at: <%= 3.days.ago.to_s(:db) %>
+  created_at: <%= 5.days.ago.utc.to_s(:db) %>
+  updated_at: <%= 5.days.ago.utc.to_s(:db) %>
+  published_at: <%= 3.days.ago.utc.to_s(:db) %>
   comment_age: 30
   user_id: 1
   comments_count: 1
@@ -31,9 +31,9 @@ another:
   permalink: another-welcome-to-mephisto
   body: another welcome description
   body_html: another welcome description
-  created_at: <%= 4.days.ago.to_s(:db) %>
-  updated_at: <%= 4.days.ago.to_s(:db) %>
-  published_at: <%= 4.days.ago.to_s(:db) %>
+  created_at: <%= 4.days.ago.utc.to_s(:db) %>
+  updated_at: <%= 4.days.ago.utc.to_s(:db) %>
+  published_at: <%= 4.days.ago.utc.to_s(:db) %>
   comment_age: 1
   user_id: 3
   type: Article
@@ -45,9 +45,9 @@ welcome_comment:
   permalink: welcome-to-mephisto
   body: "rico's evil <script>hi</script> and <a onclick=\"foo\" href=\"#\">linkage</a>"
   body_html: "<p>rico&#8217;s evil <script>hi</script> and <a onclick=\"foo\" href=\"#\">linkage</a></p>"
-  created_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
-  updated_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
-  published_at: <%= 3.days.ago.to_s(:db) %>
+  created_at: <%= (3.days + 55.minutes).ago.utc.to_s(:db) %>
+  updated_at: <%= (3.days + 55.minutes).ago.utc.to_s(:db) %>
+  published_at: <%= 3.days.ago.utc.to_s(:db) %>
   type: Comment
   author: rico
   author_ip: 1dfasd
@@ -61,8 +61,8 @@ future:
   permalink: article-in-the-future
   excerpt: This is my own little blogging tool
   excerpt_html: This is my own little blogging tool
-  created_at: <%= (4.days - 15.minutes).ago.to_s(:db) %>
-  updated_at: <%= (4.days - 15.minutes).ago.to_s(:db) %>
+  created_at: <%= (4.days - 15.minutes).ago.utc.to_s(:db) %>
+  updated_at: <%= (4.days - 15.minutes).ago.utc.to_s(:db) %>
   published_at: <%= (4.days - 15.minutes).from_now.to_s(:db) %>
   comment_age: 30
   user_id: 1
@@ -76,9 +76,9 @@ about:
   excerpt_html: This is my own about page
   body: This is my own about page
   body_html: This is my own about page
-  created_at: <%= (4.days - 13.minutes).ago.to_s(:db) %>
-  updated_at: <%= (4.days - 13.minutes).ago.to_s(:db) %>
-  published_at: <%= (4.days - 13.minutes).ago.to_s(:db) %>
+  created_at: <%= (4.days - 13.minutes).ago.utc.to_s(:db) %>
+  updated_at: <%= (4.days - 13.minutes).ago.utc.to_s(:db) %>
+  published_at: <%= (4.days - 13.minutes).ago.utc.to_s(:db) %>
   comment_age: 2
   user_id: 1
   type: Article
@@ -91,9 +91,9 @@ site_map:
   excerpt_html: This is my own site map
   body: This is my own site map
   body_html: This is my own site map
-  created_at: <%= (4.days - 5.minutes).ago.to_s(:db) %>
-  updated_at: <%= (4.days - 5.minutes).ago.to_s(:db) %>
-  published_at: <%= (4.days - 5.minutes).ago.to_s(:db) %>
+  created_at: <%= (4.days - 5.minutes).ago.utc.to_s(:db) %>
+  updated_at: <%= (4.days - 5.minutes).ago.utc.to_s(:db) %>
+  published_at: <%= (4.days - 5.minutes).ago.utc.to_s(:db) %>
   comment_age: -1
   user_id: 1
   type: Article
@@ -106,9 +106,9 @@ cupcake_welcome:
   excerpt_html: welcome summary
   body: welcome description
   body_html: welcome description
-  created_at: <%= 5.days.ago.to_s(:db) %>
-  updated_at: <%= 5.days.ago.to_s(:db) %>
-  published_at: <%= 3.days.ago.to_s(:db) %>
+  created_at: <%= 5.days.ago.utc.to_s(:db) %>
+  updated_at: <%= 5.days.ago.utc.to_s(:db) %>
+  published_at: <%= 3.days.ago.utc.to_s(:db) %>
   comment_age: 30
   user_id: 1
   comments_count: 1
@@ -121,9 +121,9 @@ cupcake_welcome_comment:
   permalink: welcome-to-cupcake
   body: This blogging tool tastes like fudge.
   body_html: This blogging tool tastes like fudge.
-  created_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
-  updated_at: <%= (3.days + 55.minutes).ago.to_s(:db) %>
-  published_at: <%= 3.days.ago.to_s(:db) %>
+  created_at: <%= (3.days + 55.minutes).ago.utc.to_s(:db) %>
+  updated_at: <%= (3.days + 55.minutes).ago.utc.to_s(:db) %>
+  published_at: <%= 3.days.ago.utc.to_s(:db) %>
   type: Comment
   author: rico
   approved: true
@@ -135,9 +135,9 @@ unwelcome_comment:
   permalink: welcome-to-mephisto
   body: This blogging tool sucks.
   body_html: This blogging tool sucks.
-  created_at: <%= (2.days + 55.minutes).ago.to_s(:db) %>
-  updated_at: <%= (2.days + 55.minutes).ago.to_s(:db) %>
-  published_at: <%= 3.days.ago.to_s(:db) %>
+  created_at: <%= (2.days + 55.minutes).ago.utc.to_s(:db) %>
+  updated_at: <%= (2.days + 55.minutes).ago.utc.to_s(:db) %>
+  published_at: <%= 3.days.ago.utc.to_s(:db) %>
   type: Comment
   author: rico
   author_ip: '127.0.0.1'
@@ -148,8 +148,8 @@ draft:
   permalink: test-draft
   body: This is a test draft
   body_html: This is a test draft
-  created_at: <%= 1.day.ago.to_s(:db) %>
-  updated_at: <%= 1.day.ago.to_s(:db) %>
+  created_at: <%= 1.day.ago.utc.to_s(:db) %>
+  updated_at: <%= 1.day.ago.utc.to_s(:db) %>
   comment_age: 30
   user_id: 1
   type: Article

@@ -83,7 +83,7 @@ class MephistoController < ApplicationController
     def dispatch_search
       conditions     = ['(published_at IS NOT NULL AND published_at <= :now) AND (title LIKE :q OR excerpt LIKE :q OR body LIKE :q)', 
                        { :now => Time.now.utc, :q => "%#{params[:q]}%" }]
-      search_count   = site.articles.count(conditions)
+      search_count   = site.articles.count(:all, :conditions => conditions)
       @article_pages = Paginator.new self, search_count, site.articles_per_page, params[:page]
       @articles      = site.articles.find(:all, :conditions => conditions, :order => 'published_at DESC',
                          :include => [:user, :sections],

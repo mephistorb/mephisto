@@ -19,7 +19,7 @@ class ArticleTest < Test::Unit::TestCase
   end
 
   def test_full_permalink
-    date = 3.days.ago
+    date = 3.days.ago.utc
     assert_equal ['', date.year, date.month, date.day, 'welcome-to-mephisto'].join('/'), contents(:welcome).full_permalink
   end
 
