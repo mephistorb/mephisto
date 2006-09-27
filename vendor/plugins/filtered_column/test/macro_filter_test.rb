@@ -20,4 +20,9 @@ class MacroFilterTest < Test::Unit::TestCase
   def test_should_escape_macros_with_textile
     assert_equal %(foo:  - flip:  - text: <tt>test</tt>), process_filter(:textile_filter, "<macro:sample><tt>test</tt></macro:sample>")
   end
+
+  def test_sample_macros_with_newlines
+    assert_equal %(foo: foo - flip: bar - text:   test  ), process_macros(%(<macro:sample foo_bar="foo" flip="bar">\r\n\r\r\r\n\n\n  test  \r\n</macro:sample>))
+    assert_equal %(foo:  - flip:  - text:   <tt>test</tt>), process_filter(:textile_filter, "<macro:sample>\r\n  <tt>test</tt>\r\n</macro:sample>")
+  end
 end
