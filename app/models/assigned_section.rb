@@ -7,7 +7,7 @@ class AssignedSection < ActiveRecord::Base
 
   protected
     def check_for_dupe_article_and_section
-      unless self.class.count(['article_id = ? and section_id = ?', article_id, section_id]).zero?
+      unless self.class.count(:all, :conditions => ['article_id = ? and section_id = ?', article_id, section_id]).zero?
         errors.add_to_base("Cannot have a duplicate categorization for this article and section")
       end
     end
