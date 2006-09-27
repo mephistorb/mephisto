@@ -11,7 +11,7 @@
 <%= render :partial => 'form' %>
 
 <% content_for :sidebar do %>
-<h3>Sections</h3>
+<h3>Sections (<span class="hint"><%= link_to_function 'Reorder sections', "SectionForm.toggleSortable(this, 0, 'sections')" %></span>)</h3>
 <ul id="sections">
   <%= render :partial => 'section', :collection => @sections %>
 </ul>

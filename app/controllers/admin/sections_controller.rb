@@ -2,11 +2,11 @@ class Admin::SectionsController < Admin::BaseController
   cache_sweeper :section_sweeper, :except => :index
   before_filter :find_and_sort_templates,   :only => [:index, :edit]
   before_filter :find_and_reorder_sections, :only => [:index, :edit]
-  before_filter :find_section,              :only => [:destroy, :update, :order]
+  before_filter :find_section,              :only => [:destroy, :update]
   clear_empty_templates_for :section, :template, :layout, :archive_template, :only => [:create, :update]
 
   def index
-    @section = site.sections.build
+    @section = Section.new
   end
 
   def create
@@ -25,20 +25,23 @@ class Admin::SectionsController < Admin::BaseController
   end
 
   def order
-    @section.order! params[:article_ids]
+    if params[:id].to_i == 0
+      Section.order! params[:sorted_ids]
+    else
+      find_section
+      @section.order! params[:sorted_ids]
+    end
     render :nothing => true
   end
 
   protected
     def find_and_reorder_sections
       @article_count = site.sections.articles_count
-      @sections      = site.sections.find :all
+      @sections      = site.sections
       @sections.each do |s|
         @home    = s if s.home?
         @section = s if params[:id].to_s == s.id.to_s
       end
-      @sections.delete  @home
-      @sections.unshift @home
     end
     
     def find_section

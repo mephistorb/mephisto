@@ -64,4 +64,11 @@ bucharest:
   show_paged_articles: false
   articles_count: 0
   archive_path: archives
-
+links:
+  id: 9
+  site_id: 1
+  name: Links
+  path: links
+  show_paged_articles: true
+  articles_count: 0
+  archive_path: archives

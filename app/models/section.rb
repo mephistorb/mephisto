@@ -35,6 +35,15 @@ class Section < ActiveRecord::Base
     def permalink_for(str)
       str.gsub(/[^\w\/]|[!\(\)\.]+/, ' ').strip.downcase.gsub(/\ +/, '-')
     end
+    
+    # orders sections in a site
+    def order!(*sorted_ids)
+      sorted_ids.flatten.each_with_index do |section_id, pos|
+        section = find(section_id)
+        section.position = pos
+        section.save
+      end
+    end
   end
 
   def find_comments(options = {})
@@ -45,9 +54,10 @@ class Section < ActiveRecord::Base
     SectionDrop.new self, current
   end
 
-  def order!(*article_ids)
+  # orders articles assigned to this section
+  def order!(*sorted_ids)
     transaction do
-      article_ids.flatten.each_with_index do |article, pos|
+      sorted_ids.flatten.each_with_index do |article, pos|
         assigned_sections.detect { |s| s.article_id.to_s == article.to_s }.update_attributes(:position => pos)
       end
       save

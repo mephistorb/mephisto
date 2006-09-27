@@ -1,5 +1,7 @@
 * SVN *
 
+* Allow drag/drop reordering of sections in a site [Bill Katz]
+
 * Refine child_sections liquid filter, add descendant_sections filter [Cristi Balan]
 
   {{ 'projects' | child_sections }} # => any sections with a path matching projects/foo, but not projects/foo/bar

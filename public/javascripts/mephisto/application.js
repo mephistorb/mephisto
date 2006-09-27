@@ -328,20 +328,20 @@ var SectionForm = {
   },
 
   sortable: null,
-  toggleSortable: function(link, section_id) {
-    if($('pages').className == 'sortable') {
-      Sortable.destroy('pages');
-      $('pages').className = '';
-      link.innerHTML = 'Reorder pages'
+  toggleSortable: function(link, section_id, container_id) {
+    if($(container_id).className == 'sortable') {
+      Sortable.destroy(container_id);
+      $(container_id).className = '';
+      link.innerHTML = 'Reorder ' + container_id;
       link.className = 'reorder';
-      document.getElementsByClassName('handle', 'pages').each(function(img) {
+      document.getElementsByClassName('handle', container_id).each(function(img) {
         img.src = "/images/mephisto/icons/arrow3_e.gif";
       });
-      this.saveSortable(section_id);
+      this.saveSortable(section_id, container_id);
     } else {
-      this.sortable = Sortable.create('pages', {handle:'handle'});
-      $('pages').className = 'sortable';
-      document.getElementsByClassName('handle', 'pages').each(function(img) {
+      this.sortable = Sortable.create(container_id, {handle:'handle'});
+      $(container_id).className = 'sortable';
+      document.getElementsByClassName('handle', container_id).each(function(img) {
         img.src = "/images/mephisto/icons/reorder.gif";
       });
       link.className = 'reordering';
@@ -349,9 +349,9 @@ var SectionForm = {
     }
   },
 
-  saveSortable: function(section_id) {
-    var query = $$('#pages li').inject([], function(qu, li) {
-      qu.push('article_ids[]=' + li.getAttribute('id').substr(5));
+  saveSortable: function(section_id, container_id) {
+    var query = $$('#'+container_id+' li').inject([], function(qu, li) {
+      qu.push('sorted_ids[]=' + li.getAttribute('id').substr(container_id.length));
       return qu;
     }).join('&')
     new Ajax.Request('/admin/sections/order/' + section_id, {asynchronous:true, evalScripts:true, parameters:query});

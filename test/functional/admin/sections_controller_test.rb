@@ -18,7 +18,7 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
     get :index
     assert_equal sites(:first), assigns(:site)
     assert_equal sections(:home), assigns(:home)
-    assert_equal 6, assigns(:sections).length, "Sections: #{assigns(:sections).inspect}"
+    assert_equal 7, assigns(:sections).length, "Sections: #{assigns(:sections).collect(&:id).to_sentence}"
     assert_equal 3, assigns(:article_count)['1']
     assert_equal 3, assigns(:article_count)['2']
   end
@@ -76,9 +76,21 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
     assert_nil Section.find_by_id(sections(:home).id)
   end
 
-  def assert_reorder_articles(section, old_order, expected)
-    assert_equal old_order, section.articles
-    xhr :post, :order, :id => section.id, :article_ids => expected.collect(&:id)
-    assert_equal expected, section.articles(true)
+  def test_should_reorder_sections
+    assert_reorder_sections [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links)],
+                            [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:about)]
   end
+
+  protected
+    def assert_reorder_articles(section, old_order, expected)
+      assert_models_equal old_order, section.articles
+      xhr :post, :order, :id => section.id, :sorted_ids => expected.collect(&:id)
+      assert_models_equal expected, section.articles(true)
+    end
+    
+    def assert_reorder_sections(old_order, expected)
+      assert_models_equal old_order, sites(:first).sections
+      xhr :post, :order, :id => 0, :sorted_ids => expected.collect(&:id)
+      assert_models_equal expected, sites(:first).sections(true)
+    end
 end

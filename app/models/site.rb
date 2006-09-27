@@ -4,7 +4,7 @@ class Site < ActiveRecord::Base
 
   cattr_accessor :multi_sites_enabled, :cache_sweeper_tracing
 
-  has_many  :sections do
+  has_many  :sections, :order => "position" do
     def home
       find_by_path ''
     end

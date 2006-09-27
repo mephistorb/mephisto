@@ -42,7 +42,7 @@ context "Drop Filters" do
   end
 
   specify "should find child sections" do
-    assert_models_equal [sections(:about), sections(:earth)], child_sections('').collect(&:source)
+    assert_models_equal [sections(:about), sections(:earth), sections(:links)], child_sections('').collect(&:source)
     assert_models_equal [sections(:europe), sections(:africa)], child_sections('earth').collect(&:source)
   end
 

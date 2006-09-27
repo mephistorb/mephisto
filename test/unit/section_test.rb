@@ -103,37 +103,48 @@ class SectionTest < Test::Unit::TestCase
   end
 
   specify "should return correct sections" do
-    assert_models_equal [sections(:about), sections(:africa), sections(:bucharest), sections(:earth), sections(:europe), sections(:home)], sites(:first).sections.find(:all, :order => 'name')
-    assert_models_equal [sections(:about)], sites(:first).sections.find_paged
+    assert_models_equal [sections(:about), sections(:africa), sections(:bucharest), sections(:earth), sections(:europe), sections(:home), sections(:links)], sites(:first).sections.find(:all, :order => 'name')
+    assert_models_equal [sections(:about), sections(:links)], sites(:first).sections.find_paged
   end
 
-  specify "should order sections" do
+  specify "should order articles in sections" do
     assert_reorder_articles sections(:about),
       [contents(:welcome), contents(:about), contents(:site_map)],
       [contents(:about), contents(:site_map), contents(:welcome)]
   end
 
+  specify "should order sections in site" do
+    assert_reorder_sections [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links)],
+                            [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:about)]
+  end
+
   protected
     def assert_reorder_articles(section, old_order, expected)
-      assert_equal old_order, section.articles
+      assert_models_equal old_order, section.articles
       section.order! expected.collect(&:id)
-      assert_equal expected, section.articles(true)
+      assert_models_equal expected, section.articles(true)
     end
-
-  def test_should_report_section_types
-    assert sections(:home).blog?
-    [:about, :cupcake_home, :cupcake_about].each { |s| assert sections(s).paged? }
-  end
-  
-  def test_should_set_default_archive_path
-    s = Section.new
-    s.valid?
-    assert_equal 'archives', s.archive_path
-  end
-  
-  def test_should_downcase_archive_path
-    s = Section.new :archive_path => "OLD"
-    s.valid?
-    assert_equal 'old', s.archive_path
-  end
+    
+    def assert_reorder_sections(old_order, expected)
+      assert_models_equal old_order, sites(:first).sections
+      Section.order! expected.collect(&:id)
+      assert_models_equal expected, sites(:first).sections(true)
+    end
+    
+    def test_should_report_section_types
+      assert sections(:home).blog?
+      [:about, :cupcake_home, :cupcake_about].each { |s| assert sections(s).paged? }
+    end
+    
+    def test_should_set_default_archive_path
+      s = Section.new
+      s.valid?
+      assert_equal 'archives', s.archive_path
+    end
+    
+    def test_should_downcase_archive_path
+      s = Section.new :archive_path => "OLD"
+      s.valid?
+      assert_equal 'old', s.archive_path
+    end
 end
