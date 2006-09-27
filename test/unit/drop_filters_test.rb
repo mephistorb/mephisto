@@ -11,6 +11,11 @@ context "Drop Filters" do
   specify "should find section by path" do
     assert_equal sections(:home),  section('').source
     assert_equal sections(:about), section('about').source
+    assert_equal sections(:bucharest), section('earth/europe/romania/bucharest').source
+  end
+
+  specify "should not find inexistent section by path even if children exist" do
+    assert_nil section('earth/europe/romania')
   end
 
   specify "should find latest articles by section" do
@@ -35,4 +40,15 @@ context "Drop Filters" do
     assert_models_equal [contents(:welcome_comment)], latest_comments(@site).collect(&:source)
     assert_models_equal [contents(:welcome_comment)], latest_comments(@site, 1).collect(&:source)
   end
+
+  specify "should find child sections" do
+    assert_models_equal [sections(:about), sections(:earth)], child_sections('').collect(&:source)
+    assert_models_equal [sections(:europe), sections(:africa)], child_sections('earth').collect(&:source)
+  end
+
+  specify "should find descendant sections" do
+    assert_models_equal sites(:first).sections.reject(&:home?), descendant_sections('').collect(&:source)
+    assert_models_equal [sections(:europe), sections(:africa), sections(:bucharest)], descendant_sections('earth').collect(&:source)
+  end
+
 end

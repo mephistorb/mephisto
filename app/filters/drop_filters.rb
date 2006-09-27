@@ -8,6 +8,11 @@ module DropFilters
     @context['site'].find_child_sections(path)
   end
 
+  def descendant_sections(path_or_section)
+    path = path_or_section.is_a?(SectionDrop) ? path_or_section['path'] : path_or_section
+    @context['site'].find_descendant_sections(path)
+  end
+
   def latest_articles(site_or_section, limit = nil)
     site_or_section.latest_articles(limit || site_or_section['articles_per_page'])
   end

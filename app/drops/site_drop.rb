@@ -47,7 +47,15 @@ class SiteDrop < BaseDrop
   end
   
   def find_child_sections(path)
-    returning @source.sections.find(:all, :conditions => ['path LIKE ?', "#{path}/%"]) do |sections|
+    path_search = path + (path == '' ? '%' : '/%')
+    returning @source.sections.find(:all, :conditions => ['path != ? AND path LIKE ? AND path NOT LIKE ?', path, path_search, "#{path_search}/%"]) do |sections|
+      sections.collect! &:to_liquid
+    end
+  end
+  
+  def find_descendant_sections(path)
+    path_search = path + (path == '' ? '%' : '/%')
+    returning @source.sections.find(:all, :conditions => ['path != ? AND path LIKE ?', path, path_search]) do |sections|
       sections.collect! &:to_liquid
     end
   end

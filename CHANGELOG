@@ -1,5 +1,14 @@
 * SVN *
 
+* Refine child_sections liquid filter, add descendant_sections filter [Cristi Balan]
+
+  {{ 'projects' | child_sections }} # => any sections with a path matching projects/foo, but not projects/foo/bar
+  {{ 'projects' | descendant_sections }} # => any sections starting with /projects/*
+
+* allow macros to ignore extra line breaks after a start tag and before an end tag [Ben Bleything]
+
+* Add XML:Base to atom feeds (thanks Sam Ruby)
+
 * Add comments and changes feeds for articles.
 
   {{ article | comments_feed }}

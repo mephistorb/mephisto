@@ -32,3 +32,36 @@ cupcake_about:
   show_paged_articles: true
   articles_count: 1
   archive_path: archives
+earth:
+  id: 5
+  site_id: 1
+  name: Earth
+  path: earth
+  show_paged_articles: false
+  articles_count: 0
+  archive_path: archives
+europe:
+  id: 6
+  site_id: 1
+  name: Europe
+  path: earth/europe
+  show_paged_articles: false
+  articles_count: 0
+  archive_path: archives
+africa:
+  id: 7
+  site_id: 1
+  name: Africa
+  path: earth/africa
+  show_paged_articles: false
+  articles_count: 0
+  archive_path: archives
+bucharest:
+  id: 8
+  site_id: 1
+  name: Bucharest
+  path: earth/europe/romania/bucharest
+  show_paged_articles: false
+  articles_count: 0
+  archive_path: archives
+
