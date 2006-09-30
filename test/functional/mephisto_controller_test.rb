@@ -224,7 +224,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_entry
-    date = 3.days.ago
+    date = contents(:welcome).published_at
     dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
     assert_equal contents(:welcome).to_liquid['id'], assigns(:article)['id']
     assert_preferred_template :single
@@ -234,14 +234,14 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_comment_feed
-    date = 3.days.ago
+    date = contents(:welcome).published_at
     dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto/comments.xml"
     assert_response :success
     assert_atom_entries_size 1
   end
 
   def test_should_show_changes_feed
-    date = 3.days.ago
+    date = contents(:welcome).published_at
     dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto/changes.xml"
     assert_response :success
     assert_atom_entries_size 2
@@ -249,7 +249,7 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_show_site_entry
     host! 'cupcake.com'
-    date = 3.days.ago
+    date = contents(:cupcake_welcome).published_at
     dispatch "#{contents(:cupcake_welcome).year}/#{contents(:cupcake_welcome).month}/#{contents(:cupcake_welcome).day}/#{contents(:cupcake_welcome).permalink}"
     assert_dispatch_action :single
     assert_template_type   :single
@@ -302,7 +302,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_sanitize_comment
-    date = 3.days.ago
+    date = contents(:welcome).published_at
     dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
     evil = %(<p>rico&#8217;s evil <script>hi</script> and <a onclick="foo" href="#">linkage</a></p>)
     good = %(<p>rico&#8217;s evil &lt;script>hi&lt;/script> and <a href='#'>linkage</a></p>)
@@ -311,7 +311,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_comments_form
-    date = 3.days.ago
+    date = contents(:welcome).published_at
     dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
     assert_dispatch_action :single
     assert_select 'form#comment-form' do
