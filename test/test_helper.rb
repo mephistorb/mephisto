@@ -76,6 +76,17 @@ THEME_FILES = [
   'templates/single.liquid'
 ] unless Object.const_defined?(:THEME_FILES)
 
+Mephisto::Routing.redirections.clear
+Mephisto::Routing.deny 'limited_deny'
+Mephisto::Routing.deny 'deny/foo/*'
+Mephisto::Routing.deny 'deny/bar/?/?'
+Mephisto::Routing.redirect \
+  'redirect/from/*'           => 'to/here',
+  'redirect/match/wildcard/*' => 'this/$1',
+  'redirect/match/vars/?/?'   => 'this/$2/$1',
+  '/sanitize/path'            => 'foo://bar',
+  'redirect/external'         => 'http://external/$1/$2'
+
 class Test::Unit::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false

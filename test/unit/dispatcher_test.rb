@@ -79,11 +79,47 @@ context "Dispatcher" do
     assert_dispatch :error, nil, '', 'foo', ['', 'foo']
   end
 
+  specify "should handle denied requests" do
+    %w(deny/foo/bar deny/foo/bar/baz limited_deny deny/bar/baz/blah).each { |path| assert_denied path }
+  end
+
+  specify "should redirect without variable matches" do
+    assert_redirected_to '/to/here', 'redirect/from/here'
+    assert_redirected_to '/bar',     'sanitize/path'
+  end
+  
+  specify "should redirect with unused variable matches" do
+    assert_redirected_to 'http://external', 'redirect/external'
+  end
+  
+  specify "should redirect with wildcard match" do
+    assert_redirected_to '/this/foo',     'redirect/match/wildcard/foo'
+    assert_redirected_to '/this/foo/bar', 'redirect/match/wildcard/foo/bar'
+  end
+
+  specify "should redirect and match multiple vars" do
+    assert_redirected_to '/this/bar/foo',     'redirect/match/vars/foo/bar'
+    assert_redirected_to '/this/bar/baz/foo', 'redirect/match/vars/foo/bar/baz'
+  end
+
   protected
     def assert_dispatch(dispatch_type, section, *args)
       path   = args.pop
       result = Mephisto::Dispatcher.run sites(:first), path
       assert_equal [dispatch_type, section, *args], result
+    end
+
+    def assert_denied(path)
+      result = Mephisto::Dispatcher.run sites(:first), path.split('/')
+      assert_equal :redirect,  result.first
+      assert_equal :not_found, result.last
+    end
+
+    def assert_redirected_to(expected, path)
+      result = Mephisto::Dispatcher.run sites(:first), path.split('/')
+      assert_equal :redirect, result.shift
+      assert_equal :moved_permanently, result.first
+      assert_equal expected, result.last[:location]
     end
 end
 

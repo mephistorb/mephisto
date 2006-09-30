@@ -12,6 +12,17 @@ class MephistoController < ApplicationController
   end
 
   protected
+    def dispatch_redirect
+      # @section is the http status
+      # @dispatch_path.first has the headers
+      if @dispatch_path.first.is_a?(Hash)
+        response.headers['Status'] = interpret_status @section
+        redirect_to @dispatch_path.first[:location]
+      else
+        head @section
+      end
+    end
+
     def dispatch_list
       @articles = @section.articles.find_by_date(:include => :user, :limit => @section.articles_per_page)
       self.cached_references << @section

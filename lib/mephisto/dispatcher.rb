@@ -6,6 +6,10 @@ module Mephisto
     def self.run(site, path)
       # check for any bad urls like /foo//bar
       return [:error, nil, *path] if path.any? &:blank?
+      
+      if args = Mephisto::Routing.handle_redirection(path * "/")
+        return [:redirect, *args]
+      end
 
       # check for permalink
       if options = recognize_permalink(site, path)

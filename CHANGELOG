@@ -1,5 +1,7 @@
 * SVN *
 
+* NEW FEATURE: Redirections (see environment.rb)
+
 * Allow drag/drop reordering of sections in a site [Bill Katz]
 
 * Refine child_sections liquid filter, add descendant_sections filter [Cristi Balan]

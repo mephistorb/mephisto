@@ -22,5 +22,57 @@ module Mephisto
       map.dispatch '*path', :controller => 'mephisto', :action => 'dispatch'
       map.home '', :controller => 'mephisto', :action => 'dispatch'
     end
+    
+    def self.redirections
+      @redirections ||= {}
+    end
+    
+    def self.deny(*paths)
+      paths.each do |path|
+        redirections[convert_redirection_to_regex(path)] = :deny
+      end
+    end
+    
+    def self.redirect(options)
+      options.each do |key, value|
+        redirections[convert_redirection_to_regex(key)] = sanitize_path(value)
+      end
+    end
+
+    def self.handle_redirection(path)
+      redirections.each do |pattern, action|
+        if match = pattern.match(path)
+          if action == :deny
+            return [:not_found]
+          else
+            return [:moved_permanently, {:location => build_destination(action.dup, match)}]
+          end
+        end
+      end
+      nil
+    end
+    
+    protected
+      def self.sanitize_path(path)
+        path =~ /^(\/)|(https?:\/\/)/ ? path : "/#{path.split("://").last}"
+      end
+      
+      def self.convert_redirection_to_regex(path)
+        path = path.split("://").last
+        path = path[1..-1] if path.starts_with('/')
+        path = Regexp.escape(path)
+        path.gsub! /\//, "\\/"
+        path.gsub! /(\\\*)|(\\\?$)/, "(.*)"
+        path.gsub! /\\\?/, "([^\\/]+)"
+        Regexp.new("^#{path}$")
+      end
+      
+      def self.build_destination(path, matches)
+        i = -1
+        path.gsub!(/\$\d+/) { |s| matches[s[1..-1].to_i] }
+        path.gsub!(/[^:]\/\//, &:first)
+        path.chomp!('/')
+        path
+      end
   end
 end
