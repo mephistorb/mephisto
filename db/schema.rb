@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 62) do
+ActiveRecord::Schema.define(:version => 63) do
 
   create_table "assets", :force => true do |t|
     t.column "content_type",     :string
@@ -145,6 +145,8 @@ ActiveRecord::Schema.define(:version => 62) do
     t.column "search_layout",     :string
     t.column "tag_layout",        :string
   end
+
+  add_index "sites", ["host"], :name => "index_sites_on_host"
 
   create_table "taggings", :force => true do |t|
     t.column "tag_id",        :integer
