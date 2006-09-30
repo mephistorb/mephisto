@@ -42,7 +42,7 @@
     	      
             <p><strong>Note:</strong> We are targetting Rails v1.2 for the Mephisto 1.0 release.  So you will have to freeze to edge rails to get Mephisto working properly.</p>
             
-            <pre><code>rake rails:freeze:edge REVISION=4846</code></pre>
+            <pre><code>rake rails:freeze:edge REVISION=5212</code></pre>
             
             <p>As of this writing, Mephisto is fine on the absolute latest edge rails.</p>
     	      
@@ -50,8 +50,8 @@
     	      
     	      <ol style="padding-left: 20px">
     	        <li>Create a database named <strong>mephisto</strong> (or one of your choosing).</li>
-    	        <li>Open <strong>config/database.example.yml</strong> and set your database credentials.</li>
-    	        <li>Rename <strong>database.example.yml</strong> to <strong>database.yml</strong></li>
+    	        <li>Copy <strong>config/database.example.yml</strong> to <strong>config/database.yml</strong></li>
+    	        <li>Open <strong>config/database.yml</strong> and set your database credentials.</li>
     	        <li>Upload the entire mephisto directory to your webserver.</li>
     	        <li>Run <strong>rake db:bootstrap</strong> from a terminal of some sorts</li>
     	        <li>Login to your administration at <strong>http://domain.com/admin</strong> with the username: <strong>admin</strong> and password: <strong>test</strong></li>
