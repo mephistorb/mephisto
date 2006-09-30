@@ -3,7 +3,6 @@ class MephistoController < ApplicationController
   session :off
   caches_page_with_references :dispatch
   cache_sweeper :comment_sweeper
-  observer      :comment_observer
 
   def dispatch
     @dispatch_path    = Mephisto::Dispatcher.run(site, params[:path].dup)

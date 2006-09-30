@@ -4,6 +4,10 @@ module Mephisto
     PERMALINK_VAR     = /^:([a-z]+)$/
 
     def self.run(site, path)
+      # check for any bad urls like /foo//bar
+      return [:error, nil, *path] if path.any? &:blank?
+
+      # check for permalink
       if options = recognize_permalink(site, path)
         if options[1] == 'comments' && options[2]
           return [:comment, nil, options.first, options.last]

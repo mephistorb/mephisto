@@ -76,6 +76,7 @@ context "Dispatcher" do
     assert_dispatch :error, sections(:home), '2006', '9', '123', 'foo', %w(2006 9 123 foo)
     assert_dispatch :error, sections(:home), '2006', '9', '1', 'foo', 'boo', %w(2006 9 1 foo boo)
     assert_dispatch :error, sections(:home), '2006', '9', '1', 'foo', 'comment', %w(2006 9 1 foo comment)
+    assert_dispatch :error, nil, '', 'foo', ['', 'foo']
   end
 
   protected

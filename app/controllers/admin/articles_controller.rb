@@ -5,7 +5,6 @@ class Admin::ArticlesController < Admin::BaseController
     cache_sweeper   :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
   end
 
-  observer      :article_observer, :comment_observer
   before_filter :convert_times_to_utc, :only => [:create, :update, :upload]
   before_filter :check_for_new_draft,  :only => [:create, :update, :upload]
   
