@@ -36,7 +36,8 @@ class SectionDropTest < Test::Unit::TestCase
   end
   
   def test_should_get_month_array
-    assert_equal [contents(:welcome).published_at.beginning_of_month.to_date], sections(:home).to_liquid['months']
+    months = sections(:home).articles.collect { |a| a.published_at.beginning_of_month.to_date.to_s(:db) }.uniq.sort.reverse
+    assert_equal months, sections(:home).to_liquid['months'].collect { |d| d.to_s(:db) }
   end
 end
 

@@ -1,5 +1,7 @@
 * SVN *
 
+* Removed archive.liquid and index.liquid fallbacks
+
 * NEW FEATURE: Redirections (see environment.rb)
 
 * Allow drag/drop reordering of sections in a site [Bill Katz]

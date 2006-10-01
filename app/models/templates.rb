@@ -1,12 +1,12 @@
 class Templates < Attachments
   @@hierarchy = {
-    :section => [:section,  :archive, :index],
-    :page    => [:page,     :single,  :index],
-    :single  => [:single,   :index],
-    :archive => [:archive,  :index],
-    :search  => [:search,   :archive, :index],
-    :error   => [:error,    :index],
-    :tag     => [:tag,      :archive, :index],
+    :section => [:section],
+    :page    => [:page, :single],
+    :single  => [:single],
+    :archive => [:archive],
+    :search  => [:search],
+    :error   => [:error],
+    :tag     => [:tag],
     :layout  => [:layout]
   }
 

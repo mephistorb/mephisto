@@ -9,7 +9,7 @@ context "Template" do
 
   def test_should_count_correct_assets
     assert_equal 12, sites(:first).templates.size
-    assert_equal 3,  sites(:hostess).templates.size
+    assert_equal 5,  sites(:hostess).templates.size
   end
 
   def test_should_carry_theme_reference
@@ -39,23 +39,8 @@ context "Template" do
   end
 
   def test_should_find_fallback_templates
-    [:tag, :error, :search, :section].each { |t| sites(:first).templates[t].unlink }
-    assert_template_name :archive, :section
-    assert_template_name :archive, :search
-    assert_template_name :archive, :tag
-    
     sites(:first).templates[:page].unlink
     assert_template_name :single, :page
-
-    sites(:first).templates[:archive].unlink
-    sites(:first).templates[:single].unlink
-    assert_template_name :index, :single
-    assert_template_name :index, :section
-    assert_template_name :index, :archive
-    assert_template_name :index, :page
-    assert_template_name :index, :search
-    assert_template_name :index, :error
-    assert_template_name :index, :tag
   end
 
   def test_should_find_preferred_with_custom_template
@@ -63,7 +48,7 @@ context "Template" do
   end
 
   def test_should_find_custom
-    assert_equal ['alt_layout.liquid', 'author.liquid', 'home.liquid'], sites(:first).templates.custom.sort
+    assert_equal ['alt_layout.liquid', 'author.liquid', 'home.liquid', 'index.liquid'], sites(:first).templates.custom.sort
   end
 
   protected
