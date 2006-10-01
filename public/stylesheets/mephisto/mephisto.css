@@ -546,6 +546,23 @@ input[type='text']:focus, textarea:focus {
   margin-right: 10px;
 }
 
+ul .handle {
+  width:16px;
+  line-height:16px;
+  margin:2px 14px 2px 0;
+  display:block;
+  float:left;
+  background-image: url(/images/mephisto/icons/arrow3_e.gif);
+}
+
+.sortable .handle {
+  background-image: url(/images/mephisto/icons/reorder.gif);
+}
+
+#sections .handle { display:none; }
+#sections.sortable .handle { display:block; }
+#sections.sortable .trash  { display:none; }
+
 a#section-home {
   margin-left: 29px;
 }

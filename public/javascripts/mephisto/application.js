@@ -334,16 +334,10 @@ var SectionForm = {
       $(container_id).className = '';
       link.innerHTML = 'Reorder ' + container_id;
       link.className = 'reorder';
-      document.getElementsByClassName('handle', container_id).each(function(img) {
-        img.src = "/images/mephisto/icons/arrow3_e.gif";
-      });
       this.saveSortable(section_id, container_id);
     } else {
       this.sortable = Sortable.create(container_id, {handle:'handle'});
       $(container_id).className = 'sortable';
-      document.getElementsByClassName('handle', container_id).each(function(img) {
-        img.src = "/images/mephisto/icons/reorder.gif";
-      });
       link.className = 'reordering';
       link.innerHTML = 'Done Reordering'
     }
