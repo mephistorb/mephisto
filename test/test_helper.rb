@@ -57,7 +57,7 @@ Fixtures.class_eval do
   end
 end
 
-THEME_ROOT = File.join(RAILS_ROOT, 'tmp/themes') unless Object.const_defined?(:THEME_ROOT)
+THEME_ROOT = RAILS_PATH + 'tmp/themes' unless Object.const_defined?(:THEME_ROOT)
 THEME_FILES = [
   'about.yml',
   'preview.png',

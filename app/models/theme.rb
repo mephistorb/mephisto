@@ -38,6 +38,9 @@ class Theme
       end
     end
     dest.basename.to_s
+  rescue
+    dest.rmtree if dest.exist?
+    raise ThemeError.new(dest, $!.message)
   end
 
   def initialize(base)

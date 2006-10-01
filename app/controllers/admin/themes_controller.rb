@@ -36,7 +36,7 @@ class Admin::ThemesController < Admin::BaseController
   def import
     return unless request.post?
     unless params[:theme] && params[:theme].size > 0 && theme_content_types.include?(params[:theme].content_type.strip)
-      flash.now[:error] = "Invalid theme upload."
+      flash.now[:error] = "Invalid theme uploaded."
       return
     end
     filename = params[:theme].original_filename
@@ -49,6 +49,8 @@ class Admin::ThemesController < Admin::BaseController
       site.import_theme zip_file, filename
       flash[:notice] = "The '#{filename}' theme has been imported."
       redirect_to :action => 'index'
+    rescue
+      flash.now[:error] = "Invalid theme uploaded: [#{$!.class.name}] #{$!}"
     ensure
       theme_site_path.rmtree
     end

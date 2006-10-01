@@ -130,3 +130,11 @@ class MissingTemplateError < StandardError
     super "No template found for #{template_type}, checked #{templates.to_sentence}."
   end
 end
+
+class ThemeError < StandardError
+  attr_reader :theme
+  def initialize(theme, message)
+    @theme = theme
+    super message
+  end
+end

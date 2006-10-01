@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ThemeTest < Test::Unit::TestCase
+context "Theme" do
   fixtures :sites
 
   def setup
@@ -8,15 +8,15 @@ class ThemeTest < Test::Unit::TestCase
     @theme = sites(:first).theme
   end
 
-  def test_should_find_preview
+  specify "should find preview" do
     assert @theme.preview.exist?
   end
 
-  def test_should_respond_to_to_param_for_routes
+  specify "should respond to to_param for routes" do
     assert_equal 'current', @theme.to_param
   end
 
-  def test_should_export_files
+  specify "should export files" do
     @theme.export 'foo', :to => THEME_ROOT
     
     THEME_FILES.each do |path|
@@ -24,7 +24,7 @@ class ThemeTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_export_files_as_zip
+  specify "should export files as zip" do 
     @theme.export_as_zip 'foo', :to => THEME_ROOT
     
     assert File.exists?(File.join(THEME_ROOT, 'foo.zip'))
@@ -34,5 +34,22 @@ class ThemeTest < Test::Unit::TestCase
         assert zip.file.exists?(path), "#{path} does not exist"
       end
     end
+  end
+
+  specify "should import files" do
+    dest = THEME_ROOT + 'site-1/other/hemingway'
+    Theme.import THEME_ROOT + 'site-1/hemingway.zip', :to => dest
+    assert dest.exist?
+    THEME_FILES.each do |file|
+      assert((dest + file).exist?, "#{file} does not exist")
+    end
+  end
+  
+  specify "should not import bad theme" do
+    dest = THEME_ROOT + 'site-1/other/hemingway'
+    assert_raise ThemeError do
+      Theme.import THEME_ROOT + 'site-1/bad-hemingway.zip', :to => dest
+    end
+    assert !dest.exist?
   end
 end
