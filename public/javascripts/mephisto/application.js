@@ -522,6 +522,7 @@ Event.addBehavior({
   '#reset_password_link:click,#reset_password_cancel:click': function() { Effect.toggle('reset_password', 'blind'); },
   '#asset-add-file:click': function() { return Asset.addInput(); },
   '#sec-options-trigger:click': function() { $('sec-options').toggle(); },
+  '#disabled_users_trigger:click': function() { $('disabled_users').toggle(); },
   '#tagsall:click': function() { 
     var inputs = $('new_asset').getInputs('text');
     var tags = $F(inputs.first()).split(',');

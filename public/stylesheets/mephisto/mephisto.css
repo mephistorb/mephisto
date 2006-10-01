@@ -988,19 +988,20 @@ dl.sform {
  *=USERS
  */
 
-#users {
+#users, #disabled_users {
   list-style: none;
   margin-top: 20px;
   text-shadow: 2px 2px #fff;
 }
 
-#users li {
+#users li, #disabled_users li {
   background: #eee;
   margin: 0 0 10px 0;
   padding: 5px;
 }
 
-#users li .avatar {
+#users li .avatar,
+#disabled_users li .avatar {
   float: left;
   margin-right: 10px;
   max-height: 50px;

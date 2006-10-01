@@ -12,13 +12,7 @@
 <%= render :partial => "user", :collection => @enabled %>
 </ul>
 
-<% content_for :sidebar do -%>
-  <div class="sgroup">
-    <h3>Disabled Users</h3>
-    <ul class="slist" id="disabled_users">
-      <% @disabled.each do |user| -%>
-<%= render :partial => "disabled", :locals => { :user => user } %>
-      <% end -%>
-    </ul>
-  </div>
-<% end -%>
+<h3><a href="#" id="disabled_users_trigger">Disabled Users</a></h3>
+<ul id="disabled_users" style="display:none">
+<%= render :partial => "user", :collection => @disabled %>
+</ul>
