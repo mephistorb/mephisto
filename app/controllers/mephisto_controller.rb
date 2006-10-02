@@ -47,24 +47,8 @@ class MephistoController < ApplicationController
         redirect_to site.permalink_for(@article) and return
       end
     
-      @comment = @article.comments.build(params[:comment].merge(:author_ip => request.remote_ip))
-    
-      if @comment.valid?
-        @comment.approved = site.approve_comments?
-        if [:akismet_key, :akismet_url].all? { |attr| !site.send(attr).blank? }
-          @comment.approved = Akismet.new(site.akismet_key, site.akismet_url).comment_check \
-            :user_ip              => @comment.author_ip, 
-            :user_agent           => request.user_agent, 
-            :referrer             => request.referer,
-            :permalink            => "http://#{request.host_with_port}#{site.permalink_for(@article)}", 
-            :comment_author       => @comment.author, 
-            :comment_author_email => @comment.author_email, 
-            :comment_author_url   => @comment.author_url, 
-            :comment_content      => @comment.body
-          logger.info "Checking Akismet (#{site.akismet_key}) for new comment on Article #{@article.id}.  #{@comment.approved ? 'Approved' : 'Blocked'}"
-        end
-      end
-    
+      @comment = @article.comments.build(params[:comment].merge(:author_ip => request.remote_ip, :user_agent => request.user_agent, :referrer => request.referer))
+      @comment.check_approval site, request if @comment.valid?
       @comment.save!
       redirect_to dispatch_path(:path => (site.permalink_for(@article)[1..-1].split('/') << 'comments' << @comment.id.to_s), :anchor => @comment.dom_id)
     rescue ActiveRecord::RecordInvalid

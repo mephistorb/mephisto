@@ -80,10 +80,12 @@ class Admin::ArticlesController < Admin::BaseController
   # needs some restful lovin'
   def approve
     @comment = @article.unapproved_comments.approve(params[:comment])
+    @comment.mark_as_ham(site, request)
   end
 
   def unapprove
     @comment = @article.comments.unapprove(params[:comment])
+    @comment.mark_as_spam(site, request)
     render :action => 'approve'
   end
   

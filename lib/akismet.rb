@@ -10,8 +10,8 @@ require 'uri'
 # rewritten to be more rails-like
 class Akismet
   
-  attr_accessor :proxy_port
-  attr_accessor :proxy_host
+  attr_accessor :proxy_port, :proxy_host
+  attr_reader :last_response
 
   STANDARD_HEADERS = {
     'User-Agent'   => 'Mephisto/' << Mephisto::Version::STRING,
@@ -31,12 +31,12 @@ class Akismet
     @proxy_port   = nil
     @proxy_host   = nil
   end
- 
+
   # Returns <tt>true</tt> if the API key has been verified, <tt>false</tt> otherwise
   def verified?
     (@verified_key ||= verify_api_key) != :false
   end
-  
+
   # This is basically the core of everything. This call takes a number of arguments and characteristics about the submitted content and then returns a thumbs up or thumbs down. Almost everything is optional, but performance can drop dramatically if you exclude certain elements.
   #
   # user_ip (required)
@@ -60,7 +60,7 @@ class Akismet
   # Other server enviroment variables
   #    In PHP there is an array of enviroment variables called $_SERVER which contains information about the web server itself as well as a key/value for every HTTP header sent with the request. This data is highly useful to Akismet as how the submited content interacts with the server can be very telling, so please include as much information as possible.
   def comment_check(options = {})
-    return call_akismet('comment-check', options)
+    call_akismet('comment-check', options) == "true"
   end
   
   # This call is for submitting comments that weren't marked as spam but should have been. It takes identical arguments as comment check.
@@ -103,8 +103,8 @@ class Akismet
     def call_akismet(akismet_function, options = {})
       http = Net::HTTP.new("#{@api_key}.rest.akismet.com", 80, @proxy_host, @proxy_port)
       data = URI.escape(options.update(:blog => @blog).inject([]) { |data, opt| data << '%s=%s' % opt } * '&')              
-      resp, data = http.post("/1.1/#{akismet_function}", data, STANDARD_HEADERS)
-      data == "true"
+      resp, @last_response = http.post("/1.1/#{akismet_function}", data, STANDARD_HEADERS)
+      @last_response
     end
 
     # Call to check and verify your API key. You may then call the #hasVerifiedKey method to see if your key has been validated.
