@@ -102,23 +102,15 @@ class Akismet
     #    In PHP there is an array of enviroment variables called $_SERVER which contains information about the web server itself as well as a key/value for every HTTP header sent with the request. This data is highly useful to Akismet as how the submited content interacts with the server can be very telling, so please include as much information as possible.  
     def call_akismet(akismet_function, options = {})
       http = Net::HTTP.new("#{@api_key}.rest.akismet.com", 80, @proxy_host, @proxy_port)
-      path = "/1.1/#{akismet_function}"        
-      
-      data = URI.escape(options.inject([]) { |data, opt| data << '%s=%s' % opt } * '&')
-              
-      resp, data = http.post(path, data, STANDARD_HEADERS)
-          
-      data != "false"
+      data = URI.escape(options.update(:blog => @blog).inject([]) { |data, opt| data << '%s=%s' % opt } * '&')              
+      resp, data = http.post("/1.1/#{akismet_function}", data, STANDARD_HEADERS)
+      data == "true"
     end
 
     # Call to check and verify your API key. You may then call the #hasVerifiedKey method to see if your key has been validated.
     def verify_api_key
       http = Net::HTTP.new('rest.akismet.com', 80, @proxy_host, @proxy_port)
-      path = '/1.1/verify-key'
-    
-      data="key=#{@api_key}&blog=#{@blog}"
-    
-      resp, data = http.post(path, data, STANDARD_HEADERS)
+      resp, data = http.post('/1.1/verify-key', "key=#{@api_key}&blog=#{@blog}", STANDARD_HEADERS)
       @verified_key = (data == "valid") ? true : :false
     end
 end
