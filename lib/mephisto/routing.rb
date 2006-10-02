@@ -59,7 +59,7 @@ module Mephisto
       
       def self.convert_redirection_to_regex(path)
         path = path.split("://").last
-        path = path[1..-1] if path.starts_with('/')
+        path = path[1..-1] if path[0..0] == '/'
         path = Regexp.escape(path)
         path.gsub! /\//, "\\/"
         path.gsub! /(\\\*)|(\\\?$)/, "(.*)"
