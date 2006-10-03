@@ -1487,7 +1487,7 @@ ul#filefields img {
   height: 125px;
   background: #fff;
   padding: 3px;
-  border: 2px solid #aaa;
+  border: 4px solid #aaa;
 }
 
 .thememeta {
@@ -1527,9 +1527,70 @@ ul#filefields img {
 
 #inuse img {
   background: #eff;
-  border: 2px solid #7bb;
+  border: 4px solid #7bb;
 }
 
+li.current img {
+  border: 4px solid #6FB4B6 !important;
+}
+
+#theme-info {
+  text-align: left;
+}
+
+#theme-info h3 {
+  background: url(/images/mephisto/actnav-bg.gif) repeat-x;
+  margin: 0 0 20px 0;
+  color: #005d60;
+  border-bottom: 1px solid #6fb4b6;
+  padding: 10px 5px;
+  font-size: 100%;
+  position: relative;
+}
+
+#theme-info h3 a {
+  color: #000;
+  border: none;
+}
+
+#dialog {
+  background-color: #000;
+  opacity: 0.15;
+  filter:alpha(opacity=15);
+}
+
+#dialog-box {
+  width: 400px;
+  background: #eee;
+  border: 5px solid #fff;
+}
+
+#dialog-box ul {
+  float: right;
+  list-style: none;
+  width: 150px;
+  text-align: left;
+}
+
+#dialog-box ul li a {
+  display: block;
+  border-bottom: 1px dotted #ccc;
+  padding: 5px;
+}
+
+#close-dialog {
+ position: absolute;
+ right: 0;
+ top: 0;
+ padding: 10px 5px;
+ border-left: 1px solid #6fb4b6 !important;
+ font-weight: normal;
+ color: #005d60;
+}
+
+#close-dialog:hover {
+  background: transparent;
+}
 
 /*------------------------------------------------------------------------
  *=MISC
@@ -1685,20 +1746,7 @@ ul.nobull li label {
   padding: 0;
 }
 
-#dialog {
-  background-color: #000;
-  opacity: 0.15;
-  filter:alpha(opacity=15);
-}
 
-#dialog-box {
-  width:500px;
-  padding:30px;
-  background-color:#fff;
-  border-style:solid;
-  border-color:#000;
-  border-width:5px;
-}
 
 /*
  *=ICONS
