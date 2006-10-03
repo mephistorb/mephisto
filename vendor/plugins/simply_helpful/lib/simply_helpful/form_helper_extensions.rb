@@ -21,13 +21,13 @@ module ActionView
               url         = SimplyHelpful::RecordIdentifier.named_route(object, self)
           
               html_options = if object.new_record?
-                { :class  => "new_#{object_name}",  :id => "new_#{object_name}", :method => :post }
+                { :class  => dom_class(object, :new),  :id => dom_id(object), :method => :post }
               else
-                { :class  => "edit_#{object_name}", :id => dom_id(object, :edit), :method => :put }
+                { :class  => dom_class(object, :edit), :id => dom_id(object, :edit), :method => :put }
               end
           
               send(old_method_name, 
-                object_name, object, { :url => url, :html => html_options.update(options[:html] || {}) }, &proc
+                object_name, object, options.merge({ :url => url, :html => html_options.update(options[:html] || {}) }), &proc
               )
           end
         end

@@ -4,7 +4,8 @@ class RecordIdentifierTest < Test::Unit::TestCase
   include SimplyHelpful
 
   def setup
-    @record = Post.new
+    @klass  = Post
+    @record = @klass.new
     @singular = 'post'
     @plural = 'posts'
   end
@@ -36,13 +37,25 @@ class RecordIdentifierTest < Test::Unit::TestCase
   def test_dom_class
     assert_equal @singular, dom_class(@record)
   end
+  
+  def test_dom_class_with_prefix
+    assert_equal "custom_prefix_#{@singular}", dom_class(@record, :custom_prefix)
+  end
 
   def test_singular_class_name
     assert_equal @singular, singular_class_name(@record)
   end
 
+  def test_singular_class_name_for_class
+    assert_equal @singular, singular_class_name(@klass)
+  end
+
   def test_plural_class_name
     assert_equal @plural, plural_class_name(@record)
+  end
+
+  def test_plural_class_name_for_class
+    assert_equal @plural, plural_class_name(@klass)
   end
 
   private
@@ -53,7 +66,8 @@ end
 
 class NestedRecordIdentifierTest < RecordIdentifierTest
   def setup
-    @record = Post::Nested.new
+    @klass  = Post::Nested
+    @record = @klass.new
     @singular = 'post_nested'
     @plural = 'post_nesteds'
   end
