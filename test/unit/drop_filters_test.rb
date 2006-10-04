@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 context "Drop Filters" do
   fixtures :sites, :sections, :contents, :assigned_sections
-  include DropFilters
+  include DropFilters, CoreFilters
 
   def setup
     @site    = sites(:first).to_liquid
@@ -49,6 +49,10 @@ context "Drop Filters" do
   specify "should find descendant sections" do
     assert_models_equal sites(:first).sections.reject(&:home?), descendant_sections('').collect(&:source)
     assert_models_equal [sections(:europe), sections(:africa), sections(:bucharest)], descendant_sections('earth').collect(&:source)
+  end
+
+  specify "should find articles by month" do
+    assert_models_equal sections(:home).articles.find_all_in_month(Time.now.year, Time.now.month), monthly_articles(sections(:home).to_liquid).collect(&:source)
   end
 
 end
