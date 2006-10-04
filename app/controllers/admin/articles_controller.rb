@@ -44,7 +44,8 @@ class Admin::ArticlesController < Admin::BaseController
     @article = current_user.articles.create params[:article].merge(:updater => current_user, :site => site)
     
     @article.save!
-    redirect_to :action => 'index'
+    flash[:notice] = "Your article was saved"
+    redirect_to :action => 'edit', :id => @article.id
   rescue ActiveRecord::RecordInvalid
     load_sections
     render :action => 'new'
@@ -53,7 +54,8 @@ class Admin::ArticlesController < Admin::BaseController
   def update
     @article.attributes = params[:article].merge(:updater => current_user)
     save_with_revision? ? @article.save! : @article.save_without_revision!
-    redirect_to :action => 'index'
+    flash[:notice] = "Your article was updated"
+    redirect_to :action => 'edit', :id => params[:id]
   rescue ActiveRecord::RecordInvalid
     load_sections
     render :action => 'edit'
