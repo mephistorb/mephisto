@@ -44,8 +44,7 @@ class ApplicationController < ActionController::Base
       headers["Content-Type"] ||= 'text/html; charset=utf-8'
     
       if assigns['articles'] && assigns['article'].nil?
-        self.cached_references += assigns['articles']
-        assigns['articles']     = assigns['articles'].collect { |a| a.to_liquid :site => site }
+        assigns['articles'] = assigns['articles'].collect { |a| a.to_liquid :site => site }
       end
 
       status          = (assigns.delete(:status) || '200 OK')

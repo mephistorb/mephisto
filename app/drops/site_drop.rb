@@ -3,7 +3,7 @@ class SiteDrop < BaseDrop
   def current_section() @current_section_liquid end
 
   def initialize(source, section = nil)
-    @source                 = source
+    super source
     @current_section        = section
     @current_section_liquid = section ? section.to_liquid : nil
     @site_liquid = [:id, :host, :subtitle, :title, :articles_per_page, :tag_path, :search_path].inject({}) { |h, k| h.merge k.to_s => @source.send(k) }

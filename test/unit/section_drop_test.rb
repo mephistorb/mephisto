@@ -32,11 +32,11 @@ class SectionDropTest < Test::Unit::TestCase
   end
   
   def test_should_get_earliest_article_published_date
-    assert_equal contents(:welcome).published_at.beginning_of_month.to_date, sections(:home).to_liquid['earliest_month']
+    assert_equal contents(:another).published_at.beginning_of_month.to_date, sections(:home).to_liquid['earliest_month']
   end
   
   def test_should_get_month_array
-    months = sections(:home).articles.collect { |a| a.published_at.beginning_of_month.to_date.to_s(:db) }.uniq.sort.reverse
+    months = sections(:home).articles.collect { |a| a.published? ? a.published_at.beginning_of_month.to_date.to_s(:db) : nil }.compact.uniq.sort.reverse
     assert_equal months, sections(:home).to_liquid['months'].collect { |d| d.to_s(:db) }
   end
 end

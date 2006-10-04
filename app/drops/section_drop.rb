@@ -5,7 +5,7 @@ class SectionDrop < BaseDrop
   def current() @current == true end
 
   def initialize(source, current = false)
-    @source         = source
+    super source
     @current        = current
     @section_liquid = [:id, :name, :path, :archive_path].inject({}) { |h, k| h.update k.to_s => @source.send(k) }
     @section_liquid['articles_count'] = @source.send(:read_attribute, :articles_count)

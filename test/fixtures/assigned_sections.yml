@@ -41,3 +41,8 @@ cupcake_welcome_about:
   article_id: 8
   section_id: 4
   position: 1
+draft_home:
+  id: 9
+  article_id: 11
+  section_id: 1
+  position: 5

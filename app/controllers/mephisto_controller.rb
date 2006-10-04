@@ -25,7 +25,6 @@ class MephistoController < ApplicationController
 
     def dispatch_list
       @articles = @section.articles.find_by_date(:include => :user, :limit => @section.articles_per_page)
-      self.cached_references << @section
       render_liquid_template_for(:section, 'section'  => @section.to_liquid(true),
                                            'articles' => @articles)
     end
@@ -33,8 +32,6 @@ class MephistoController < ApplicationController
     def dispatch_page
       @article = @dispatch_path.empty? ? @section.articles.find_by_position : @section.articles.find_by_permalink(@dispatch_path.first)
       show_404 and return unless @article
-    
-      self.cached_references << @section << @article
       Mephisto::Liquid::CommentForm.article = @article
       render_liquid_template_for(:page, 'section' => @section.to_liquid(true),
                                         'article' => @article.to_liquid(:mode => :single, :site => site))
@@ -94,7 +91,6 @@ class MephistoController < ApplicationController
     
     def dispatch_tags
       @articles = site.articles.find_all_by_tags(@dispatch_path, site.articles_per_page)
-      self.cached_references << @section
       render_liquid_template_for(:tag, 'articles' => @articles, 'tags' => @dispatch_path)
     end
 
@@ -103,7 +99,6 @@ class MephistoController < ApplicationController
       @feed_title = "Comments"
       @comments = @article.comments
       @comments.reverse!
-      self.cached_references << @comments
       render :action => 'feed', :content_type => 'application/xml'
     end
 
@@ -119,8 +114,8 @@ class MephistoController < ApplicationController
     end
 
     def find_article
-      @article = site.articles.find_by_permalink(@dispatch_path.first)
-      self.cached_references << @article if @article
+      cached_references << (@article = site.articles.find_by_permalink(@dispatch_path.first))
+      @article
     end
 
     def show_article_with(assigns = {})

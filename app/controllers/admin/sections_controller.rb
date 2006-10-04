@@ -1,5 +1,5 @@
 class Admin::SectionsController < Admin::BaseController
-  cache_sweeper :section_sweeper, :except => :index
+  cache_sweeper :article_sweeper, :except => :index
   before_filter :find_and_sort_templates,   :only => [:index, :edit]
   before_filter :find_and_reorder_sections, :only => [:index, :edit]
   before_filter :find_section,              :only => [:destroy, :update]

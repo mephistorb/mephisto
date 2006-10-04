@@ -181,7 +181,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_render_liquid_templates_by_sections
     dispatch 'about'
     assert_dispatch_action :page
-    assert_tag :tag => 'h1', :content => contents(:welcome).title
+    assert_tag :tag => 'h1', :content => "#{contents(:welcome).title} in #{sections(:about).name}"
   end
 
   def test_should_render_with_alternate_search_layout

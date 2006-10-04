@@ -20,7 +20,7 @@ class Article < Content
     end
 
     def pending?
-      published? && Time.now.utc < published_at
+      !published? || Time.now.utc < published_at
     end
     
     def status
@@ -86,6 +86,15 @@ class Article < Content
 
   def section_ids=(new_sections)
     @new_sections = new_sections
+  end
+
+  def published_at=(value)
+    @recently_published = published_at.nil? && value
+    write_attribute :published_at, value
+  end
+  
+  def recently_published?
+    @recently_published
   end
 
   # :mode - single / list.  Specifies whether the body is only the excerpt or not

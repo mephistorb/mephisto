@@ -272,6 +272,7 @@ class Site < ActiveRecord::Base
     
     def set_content_template(section, template_type)
       preferred_template = section.template if [:page, :section].include?(template_type)
+      preferred_template = section.archive_template if template_type == :archive
       find_preferred_template(template_type, preferred_template)
     end
     

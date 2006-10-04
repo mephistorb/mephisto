@@ -4,8 +4,8 @@ class ArticleDrop < BaseDrop
   def article() @source end
 
   def initialize(source, options = {})
+    super source
     @options        = options
-    @source         = source
     @site           = options.delete(:site) || @source.site
     @article_liquid = { 
       'id'               => @source.id,

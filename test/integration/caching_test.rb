@@ -38,6 +38,66 @@ class CachingTest < ActionController::IntegrationTest
     end
   end
 
+  def test_should_only_expire_overview_when_creating_draft
+    visitor = visit
+    writer  = login_as :quentin
+    
+    visit_sections_and_feeds_with visitor
+
+    assert_caches_page overview_path do
+      visitor.get_with_basic 'admin/overview.xml', :login => :quentin
+    end
+
+    assert_difference Article, :count do
+      assert_expires_page overview_path do
+        writer.create :title => 'This is a new article & title', :body => 'this is a new article body', :draft => 0
+      end
+    end
+    
+    assert_cached section_url_for(:home)
+    assert_cached feed_url_for(:home)
+    assert_cached section_url_for(:about)
+    assert_cached feed_url_for(:about)
+  end
+
+  def test_should_only_expire_overview_when_revising_draft
+    visitor = visit
+    writer  = login_as :quentin
+    
+    visit_sections_and_feeds_with visitor
+
+    assert_caches_page overview_path do
+      visitor.get_with_basic 'admin/overview.xml', :login => :quentin
+    end
+
+    assert_expires_page overview_path do
+      writer.revise contents(:draft), :title => 'This is a new article & title', :draft => 0
+    end
+    
+    assert_cached section_url_for(:home)
+    assert_cached feed_url_for(:home)
+    assert_cached section_url_for(:about)
+    assert_cached feed_url_for(:about)
+  end
+
+  def test_should_expire_sections_when_publishing_draft
+    visitor = visit
+    writer  = login_as :quentin
+    
+    visit_sections_and_feeds_with visitor
+
+    assert_caches_page overview_path do
+      visitor.get_with_basic 'admin/overview.xml', :login => :quentin
+    end
+
+    assert_expires_page overview_path, section_url_for(:home), feed_url_for(:home) do
+      writer.revise contents(:draft), :title => 'This is a new article & title', :draft => 1, :published_at => 5.minutes.ago
+    end
+    
+    assert_cached section_url_for(:about)
+    assert_cached feed_url_for(:about)
+  end
+
   def test_should_expire_articles_after_editing
     visitor = visit
     writer  = login_as :quentin
@@ -245,11 +305,10 @@ class CachingTest < ActionController::IntegrationTest
     visitor = visit
     writer  = login_as :quentin
     visit_sections_and_feeds_with visitor
-    assert_expires_pages feed_url_for(:about) do
+    assert_expires_pages feed_url_for(:about), section_url_for(:about) do
       writer.revise contents(:site_map), 'sitemap whoo'
     end
-    
-    assert_cached section_url_for(:about) # paged section only shows the homepage
+
     assert_cached section_url_for(:home)
     assert_cached feed_url_for(:home)
 

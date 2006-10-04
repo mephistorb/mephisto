@@ -9,5 +9,5 @@ class BackendController < ApplicationController
 
   alias xmlrpc api
   
-  cache_sweeper :article_sweeper, :section_sweeper, :assigned_section_sweeper, :comment_sweeper
+  cache_sweeper :article_sweeper, :assigned_section_sweeper, :comment_sweeper
 end
