@@ -52,7 +52,7 @@ module Mephisto
 
       def revise(article, contents)
         post "/admin/articles/update/#{article.id}", to_article_params(article, contents.is_a?(Hash) ? contents : {:body => contents})
-        assert_redirected_to "/admin/articles"
+        assert_redirected_to "/admin/articles/edit/#{assigns(:article).id}"
       end
 
       def remove_article(article)
@@ -62,7 +62,7 @@ module Mephisto
 
       def create(params)
         post '/admin/articles/create', to_article_params(params)
-        assert_redirected_to "/admin/articles"
+        assert_redirected_to "/admin/articles/edit/#{assigns(:article).id}"
       end
 
       private

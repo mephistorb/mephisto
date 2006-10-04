@@ -87,7 +87,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
       assert_difference Article, :count do
         post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah",
           'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10' }, :submit => :save
-        assert_redirected_to :action => 'index'
+        assert_redirected_to :action => 'edit', :id => assigns(:article)
         assert  assigns(:article).published?
         assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
         assert !assigns(:article).new_record?
@@ -188,7 +188,6 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_update_article_with_correct_time
     Time.mock! Time.local(2005, 1, 1, 12, 0, 0) do
       post :update, :id => contents(:welcome).id, :article => { 'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10' }
-      assert_redirected_to :action => 'index'
       assert  assigns(:article).published?
       assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
     end
@@ -196,27 +195,26 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
 
   def test_should_create_article_with_given_sections
     post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id.to_s] }, :submit => :save
-    assert_redirected_to :action => 'index'
+    assert_redirected_to :action => 'edit', :id => assigns(:article).id
     assert_equal [sections(:home)], assigns(:article).sections
   end
   
   def test_should_update_article_with_no_sections
     post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [] }, :submit => :save
-    assert_redirected_to :action => 'index'
+    assert_redirected_to :action => 'edit', :id => assigns(:article).id
     assert_equal [], assigns(:article).sections
   end
 
   def test_should_update_article_with_the_same_sections
     post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah",
       :section_ids => [sections(:home), sections(:about)].map { |s| s.id.to_s } }, :submit => :save
-    assert_redirected_to :action => 'index'
+    assert_redirected_to :action => 'edit', :id => assigns(:article).id
     assert_equal [sections(:about), sections(:home)], assigns(:article).sections
   end
 
   def test_should_create_edit_event
     assert_event_created_for :welcome, 'edit' do |article|
       post :update, :id => article.id, :article_published => true, :article => { :title => "My Red Hot Car", :published_at => 5.days.ago }, :submit => :save
-      assert_redirected_to :action => 'index'
       assert !assigns(:article).new_record?
       assert  assigns(:article).published?
     end
@@ -226,7 +224,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     login_as :arthur
     assert_difference AssignedSection, :count, -1 do
       post :update, :id => contents(:welcome).id, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :section_ids => [sections(:home).id] }, :submit => :save
-      assert_redirected_to :action => 'index'
+      assert_redirected_to :action => 'edit', :id => assigns(:article).id
       assert_equal [sections(:home)], assigns(:article).sections
       assert_equal users(:arthur),    assigns(:article).updater
     end
@@ -282,7 +280,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
     assert_difference Article, :count do
       post :create, :article => { :title => "My Red Hot Car", :excerpt => "Blah Blah", :body => "Blah Blah", :published_at => 5.days.ago }, :draft => '1'
       assert_nil @controller.params['published_at']
-      assert_redirected_to :action => 'index'
+      assert_redirected_to :action => 'edit', :id => assigns(:article).id
       assert !assigns(:article).new_record?
       assert !assigns(:article).published?
       assert_nil assigns(:article).published_at

@@ -31,14 +31,14 @@ module DropFilters
   end
   
   def tagged_articles(tags)
-    @context['site'].source.articles.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'contents.created_at desc').collect(&:to_liquid)
+    @context['site'].source.articles.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'contents.created_at desc').collect!(&:to_liquid)
   end
   
   def assets_by_type(type)
-    @context['site'].source.assets.find_all_by_content_types([type.to_sym], :all, :order => 'created_at desc').collect(&:to_liquid)
+    @context['site'].source.assets.find_all_by_content_types([type.to_sym], :all, :order => 'created_at desc').collect!(&:to_liquid)
   end
   
   def tagged_assets(tags)
-    @context['site'].source.assets.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'assets.created_at desc').collect(&:to_liquid)
+    @context['site'].source.assets.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'assets.created_at desc').collect!(&:to_liquid)
   end
 end

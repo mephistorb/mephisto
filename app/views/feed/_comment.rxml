@@ -11,5 +11,5 @@ xm.entry 'xml:base' => home_url do
   xm.link "rel" => "alternate", "type" => "text/html",
     "href" => "http://#{request.host_with_port}#{request.relative_url_root}#{site.permalink_for(article)}"
   xm.title "Comment on '#{strip_tags(article.title)}' by #{comment.author}"
-  xm << %{<content type="html">#{sanitize_feed_content comment.body_html}</content>}
+  xm << %{<content type="html">#{sanitize_feed_content comment.body_html, true}</content>}
 end
