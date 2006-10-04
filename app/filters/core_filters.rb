@@ -50,6 +50,6 @@ module CoreFilters
   end
 
   def assign_to_global(value, name)
-    @context.assigns.last[name] = value ; nil
+    @context.scopes.last[name] = value ; nil
   end
 end
