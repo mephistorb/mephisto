@@ -76,6 +76,25 @@ context "Home Section Feed" do
     assert_xpath '/feed/entry[title="Another Welcome to Mephisto"]'
   end
   
+  specify "show absolute urls" do
+    assert_select 'feed entry link' do
+      assert_select '[href=?]', /^http\:\/\/test\.host\/\d{4}\/.*$/
+    end
+  end
+
+  specify "show absolute urls with custom relative url root" do
+    begin
+      old_root = ActionController::AbstractRequest.relative_url_root
+      ActionController::AbstractRequest.relative_url_root = '/weblog'
+      get :feed, :sections => []
+      assert_select 'feed entry link' do
+        assert_select '[href=?]', /^http\:\/\/test\.host\/weblog\/\d{4}\/.*$/
+      end
+    ensure
+      ActionController::AbstractRequest.relative_url_root = old_root
+    end
+  end
+
   specify "should not double escape html" do
     text = @contents.first.get_text.to_s
     assert text.starts_with("&lt;p&gt;quentin&#8217;s &#8220;welcome&#8221;"), "'#{text.inspect}' was double escaped"
