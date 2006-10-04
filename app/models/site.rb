@@ -47,7 +47,6 @@ class Site < ActiveRecord::Base
   
   has_many  :cached_pages
   
-  has_many  :assets, :as => :attachable, :order => 'created_at desc'
   has_many  :assets, :order => 'created_at desc', :conditions => 'parent_id is null'
 
   has_many :memberships, :dependent => :destroy

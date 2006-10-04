@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 context "Drop Filters" do
-  fixtures :sites, :sections, :contents, :assigned_sections
+  fixtures :sites, :sections, :contents, :assigned_sections, :assets
   include DropFilters, CoreFilters
 
   def setup
@@ -55,4 +55,27 @@ context "Drop Filters" do
     assert_models_equal sections(:home).articles.find_all_in_month(Time.now.year, Time.now.month), monthly_articles(sections(:home).to_liquid).collect(&:source)
   end
 
+  specify "should find movies" do
+    assert_models_equal [assets(:swf), assets(:mov)], assets_by_type('movie').collect(&:source)
+  end
+
+  specify "should find audio" do
+    assert_models_equal [assets(:mp3)], assets_by_type('audio').collect(&:source)
+  end
+
+  specify "should find images" do
+    assert_models_equal [assets(:png), assets(:gif)], assets_by_type('image').collect(&:source)
+  end
+
+  specify "should find others" do
+    assert_models_equal [assets(:word), assets(:pdf)], assets_by_type('other').collect(&:source)
+  end
+
+  specify "should find assets by tag" do
+    assert_models_equal [contents(:welcome)], tagged_articles("rails").collect(&:source)
+  end
+
+  specify "should find assets by tag" do
+    assert_models_equal [assets(:gif)], tagged_assets("ruby").collect(&:source)
+  end
 end

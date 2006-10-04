@@ -76,6 +76,10 @@ class Asset < ActiveRecord::Base
     define_method("#{content}?") { self.class.send("#{content}?", content_type) }
   end
 
+  def to_liquid
+    AssetDrop.new self
+  end
+
   protected
     def rename_unique_filename
       if (@old_filename || new_record?) && errors.empty? && site_id && filename

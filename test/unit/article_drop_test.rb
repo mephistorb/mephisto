@@ -83,4 +83,8 @@ class ArticleDropTest < Test::Unit::TestCase
     t = Time.now.utc - 3.days
     assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto/changes.xml", @article.changes_feed_url
   end
+
+  specify "should show taggable tags" do
+    assert_equal %w(rails), contents(:another).to_liquid.tags
+  end
 end
