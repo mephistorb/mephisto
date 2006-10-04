@@ -60,7 +60,7 @@ class Akismet
   # Other server enviroment variables
   #    In PHP there is an array of enviroment variables called $_SERVER which contains information about the web server itself as well as a key/value for every HTTP header sent with the request. This data is highly useful to Akismet as how the submited content interacts with the server can be very telling, so please include as much information as possible.
   def comment_check(options = {})
-    call_akismet('comment-check', options) == "true"
+    call_akismet('comment-check', options) != "false"
   end
   
   # This call is for submitting comments that weren't marked as spam but should have been. It takes identical arguments as comment check.
