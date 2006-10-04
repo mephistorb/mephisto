@@ -18,4 +18,8 @@ class AssetDrop < BaseDrop
   def tags
     @tags ||= @source.tags.collect &:name
   end
+
+  def path
+    @path = @source.public_filename
+  end
 end
