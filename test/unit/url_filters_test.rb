@@ -43,6 +43,25 @@ context "Url Filters" do
     assert_equal "/images/foo.gif",      asset_url('foo.gif')
   end
   
+  specify "should include javascript tag" do
+    script = javascript('foo')
+    assert_match /^<script/, script
+    assert_match %r(src="/javascripts/foo.js"), script
+  end
+
+  specify "should link stylesheet tag" do
+    css = stylesheet('foo')
+    assert_match /^<link/, css
+    assert_match %r(href="/stylesheets/foo.css"), css
+  end
+
+  specify "should create image tag" do
+    img = img_tag('foo.gif')
+    assert_match /^<img/, img
+    assert_match %r(src="/images/foo.gif"), img
+    assert_match %r(alt="foo"), img
+  end
+
   specify "should generate tag urls" do
     assert_equal "/tags",         tag_url
     assert_equal "/tags/foo",     tag_url('foo')
