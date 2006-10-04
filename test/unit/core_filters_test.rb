@@ -24,4 +24,12 @@ context "Core Filters" do
   specify "should parse string into time" do
     assert_equal Time.utc(2006, 1, 1), parse_date('2006-1')
   end
+
+  specify "should parse nil into time" do
+    assert_equal Time.now.utc.midnight, parse_date(nil).midnight
+  end
+
+  specify "should parse empty string into time" do
+    assert_equal Time.now.utc.midnight, parse_date('').midnight
+  end
 end
