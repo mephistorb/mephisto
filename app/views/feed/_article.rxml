@@ -16,7 +16,7 @@ xm.entry 'xml:base' => home_url do
   end
   unless article.body_html.blank?
     xm << %{<content type="html">
-            #{sanitize_feed_content article.excerpt_html + article.body_html}
+            #{sanitize_feed_content [article.excerpt_html, article.body_html].compact * "\n"}
           </content>}
   end
 end

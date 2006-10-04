@@ -96,12 +96,12 @@ context "Home Section Feed" do
   end
 
   specify "should not double escape html" do
-    text = @contents.first.get_text.to_s
-    assert text.starts_with("&lt;p&gt;quentin&#8217;s &#8220;welcome&#8221;"), "'#{text.inspect}' was double escaped"
+    text = @contents.first.get_text.to_s.strip
+    assert text.starts_with("welcome summary\n&lt;p&gt;quentin&#8217;s &#8220;welcome&#8221;"), "'#{text.inspect}' was double escaped"
   end
   
   specify "should sanitize content" do
-    text = @contents.first.get_text.to_s
+    text = @contents.first.get_text.to_s.strip
     evil = "<script>hi</script><a onclick=\"foo\" href=\"#\">linkage</a></p>"
     good = "&lt;script>hi&lt;/script><a href='#'>linkage</a></p>"
     assert !text.ends_with(CGI::escapeHTML(evil)), "'#{text.inspect}' was not sanitized"
