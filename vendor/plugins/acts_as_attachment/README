@@ -1,0 +1,12 @@
+Acts as Attachment
+=====================
+
+Acts as Attachment allows you to specify that a model accepts file uploads and stores the necessary meta info (filename, size, etc).
+
+See http://technoweenie.stikipad.com/plugins/show/Acts+as+Attachment for some documentation.
+
+Now, with simple generator!
+
+  script/generate attachment_model photo
+
+This is still under heavy development, so look at test/fixtures/attachment.rb for example usage
