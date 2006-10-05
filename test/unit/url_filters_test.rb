@@ -36,7 +36,13 @@ context "Url Filters" do
     assert_equal "/about/welcome-to-mephisto", page_url(contents(:welcome).to_liquid)
     assert_equal "/about/about-this-page",     page_url(contents(:about).to_liquid)
   end
-  
+
+  specify "should generate paged url when site has paged home section" do
+    @context = {'site' => sites(:hostess).to_liquid, 'section' => sections(:cupcake_home).to_liquid}
+    assert_equal "/", page_url(contents(:cupcake_welcome).to_liquid(:page => true))
+    assert_equal "/welcome-to-cupcake", page_url(contents(:cupcake_welcome).to_liquid)
+  end
+
   specify "should generate asset urls" do
     assert_equal "/javascripts/foo.js",  javascript_url('foo.js')
     assert_equal "/stylesheets/foo.css", stylesheet_url('foo.css')

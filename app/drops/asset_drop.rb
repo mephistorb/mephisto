@@ -4,11 +4,11 @@ class AssetDrop < BaseDrop
   def initialize(source)
     @source = source
     super source
-    @site_liquid = [:id, :content_type, :size, :filename, :width, :height].inject({}) { |h, k| h.merge k.to_s => @source.send(k) }
+    @asset_liquid = [:id, :content_type, :size, :filename, :width, :height].inject({}) { |h, k| h.merge k.to_s => @source.send(k) }
   end
 
   def before_method(method)
-    @site_liquid[method.to_s]
+    @asset_liquid[method.to_s]
   end
 
   [:image, :movie, :audio, :other, :pdf].each do |content|

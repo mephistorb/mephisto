@@ -82,7 +82,7 @@ module UrlFilters
 
   def page_url(page, section = nil)
     section ||= current_page_section
-    page[:is_page_home] ? section.url : [section.url, page[:permalink]].join('/')
+    page[:is_page_home] ? section.url : section.url + (section.url == '/' ? '' : '/') + page[:permalink]
   end
 
   def atom_feed(url, title = nil)
