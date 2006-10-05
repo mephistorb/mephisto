@@ -4,20 +4,20 @@ module UrlFilters
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::AssetTagHelper
 
-  def link_to_article(article)
-    content_tag :a, h(article['title']), :href => article['url']
+  def link_to_article(article, text = nil)
+    content_tag :a, h(text || article['title']), :href => article['url']
   end
   
-  def link_to_page(page, section = nil)
-    content_tag :a, h(page['title']), page_anchor_options(page, section)
+  def link_to_page(page, section = nil, text = nil)
+    content_tag :a, h(text || page['title']), page_anchor_options(page, section)
   end
 
   def link_to_comments(article)
     content_tag :a, pluralize(article['comments_count'], 'comment'), :href => article['url']
   end
   
-  def link_to_section(section)
-    content_tag :a, h(section['name']), :href => section['url'], :title => section['title']
+  def link_to_section(section, text = nil)
+    content_tag :a, h(text || section['name']), :href => section['url'], :title => section['title']
   end
 
   def img_tag(img, options = {})
