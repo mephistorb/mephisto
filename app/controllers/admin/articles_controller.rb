@@ -115,7 +115,7 @@ class Admin::ArticlesController < Admin::BaseController
   protected
     def load_sections
       @assets = site.assets.find(:all, :order => 'created_at desc', :limit => 6)
-      @sections = site.sections.find :all, :order => 'name'
+      @sections = site.sections.find(:all)
       home = @sections.find &:home?
       @sections.delete  home
       @sections.unshift home if home
