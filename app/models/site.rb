@@ -307,7 +307,7 @@ class Site < ActiveRecord::Base
       parse_template(template, assigns, controller) do |tmpl, result|
         # Liquid::Template takes a copy of the assigns.  
         # merge any new values in to the assigns and pass them to the layout
-        tmpl.assigns.each { |k, v| assigns[k] = v }
+        tmpl.assigns.each { |k, v| assigns[k] = v } if tmpl.respond_to?(:assigns)
         assigns['content_for_layout'] = result
       end
     end
