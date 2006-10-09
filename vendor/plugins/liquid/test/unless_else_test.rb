@@ -16,4 +16,12 @@ class UnlessElseTest < Test::Unit::TestCase
     assert_template_result(' YES ','{% unless "foo" %} NO {% else %} YES {% endunless %}')
   end
 
+  def test_unless_in_loop
+    assert_template_result '23', '{% for i in choices %}{% unless i %}{{ forloop.index }}{% endunless %}{% endfor %}', 'choices' => [1, nil, false]
+  end
+
+  def test_unless_else_in_loop
+    assert_template_result ' TRUE  2  3 ', '{% for i in choices %}{% unless i %} {{ forloop.index }} {% else %} TRUE {% endunless %}{% endfor %}', 'choices' => [1, nil, false]
+  end
+
 end
