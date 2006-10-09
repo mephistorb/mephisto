@@ -5,6 +5,7 @@ class ArticleDropTest < Test::Unit::TestCase
   
   def setup
     @article = contents(:welcome).to_liquid :mode => :single
+    @article.context = mock_context('site' => sites(:first).to_liquid)
   end
 
   def test_equality

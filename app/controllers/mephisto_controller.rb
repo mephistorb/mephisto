@@ -34,7 +34,7 @@ class MephistoController < ApplicationController
       show_404 and return unless @article
       Mephisto::Liquid::CommentForm.article = @article
       render_liquid_template_for(:page, 'section' => @section.to_liquid(true),
-                                        'article' => @article.to_liquid(:mode => :single, :site => site))
+                                        'article' => @article.to_liquid(:mode => :single))
     end
     
     def dispatch_comments
@@ -122,7 +122,7 @@ class MephistoController < ApplicationController
       find_article if @article.nil?
       show_404 and return unless @article || find_article
       Mephisto::Liquid::CommentForm.article = @article
-      @article = @article.to_liquid(:mode => :single, :site => site)
+      @article = @article.to_liquid(:mode => :single)
       render_liquid_template_for(:single, assigns.merge('articles' => [@article], 'article' => @article))
     end
     alias dispatch_single show_article_with

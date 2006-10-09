@@ -40,7 +40,7 @@ class SectionDrop < BaseDrop
     return @pages if @pages
     @pages = returning [] do |pages|
       @source.articles.each_with_index do |article, i|
-        pages << article.to_liquid(:page => i.zero?, :site => @context['site'].source)
+        pages << article.to_liquid(:page => i.zero?)
       end
     end
   end

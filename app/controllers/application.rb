@@ -42,11 +42,10 @@ class ApplicationController < ActionController::Base
 
     def render_liquid_template_for(template_type, assigns = {})
       headers["Content-Type"] ||= 'text/html; charset=utf-8'
-    
       if assigns['articles'] && assigns['article'].nil?
-        assigns['articles'] = assigns['articles'].collect { |a| a.to_liquid :site => site }
+        # use collect so it doesn't modify @articles
+        assigns['articles'] = assigns['articles'].collect &:to_liquid 
       end
-
       status          = (assigns.delete(:status) || '200 OK')
       @liquid_assigns = assigns
       render :text => site.render_liquid_for(@section, template_type, assigns, self), :status => status

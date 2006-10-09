@@ -2,11 +2,13 @@ class CommentDrop < BaseDrop
   include Mephisto::Liquid::UrlMethods
   include WhiteListHelper
   
+  timezone_dates :published_at, :updated_at
+  
   def comment() @source end
 
   def initialize(source)
     super
-    @comment_liquid = %w(id author author_email author_ip created_at title published_at).inject({}) { |l, a| l.update(a => comment.send(a)) }
+    @comment_liquid = %w(id author author_email author_ip title).inject({}) { |l, a| l.update(a => comment.send(a)) }
     @comment_liquid.update 'is_approved' => comment.approved?, 'body' => white_list(comment.body_html)
   end
 

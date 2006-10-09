@@ -212,6 +212,14 @@ class Test::Unit::TestCase
       'domain'  => 'example.com'
     ) : nil
   end
+  
+  # mocks a Liquid::Context
+  def mock_context(assigns = {}, registers = {})
+    t = Liquid::Template.new
+    t.assigns.update assigns
+    t.registers.update registers
+    Liquid::Context.new t
+  end
 
   # Assert the block redirects to the login
   # 

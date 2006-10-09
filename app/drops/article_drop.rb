@@ -1,20 +1,19 @@
 class ArticleDrop < BaseDrop
   include Mephisto::Liquid::UrlMethods
   
+  timezone_dates :published_at, :updated_at
+  
   def article() @source end
 
   def initialize(source, options = {})
     super source
     @options        = options
-    @site           = options.delete(:site) || @source.site
     @article_liquid = { 
       'id'               => @source.id,
       'title'            => @source.title,
       'permalink'        => @source.permalink,
       'body'             => @source.body_html,
       'excerpt'          => (@source.excerpt_html.nil? || @source.excerpt_html.empty? ? nil : @source.excerpt_html),
-      'published_at'     => (@source.published_at ? @site.timezone.utc_to_local(@source.published_at) : nil),
-      'updated_at'       => (@source.updated_at   ? @site.timezone.utc_to_local(@source.updated_at)   : nil),
       'comments_count'   => @source.comments_count,
       'author'           => @source.user.to_liquid,
       'accept_comments'  => @source.accept_comments?,

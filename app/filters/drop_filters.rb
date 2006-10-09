@@ -27,7 +27,7 @@ module DropFilters
 
   def monthly_articles(section, date = nil)
     date = parse_date(date)
-    section.source.articles.find_all_in_month(date.year, date.month).collect! { |a| a.to_liquid :site => @context['site'].source, :mode => :single }
+    section.source.articles.find_all_in_month(date.year, date.month).collect! { |a| a.to_liquid :mode => :single }
   end
   
   def tagged_articles(tags)

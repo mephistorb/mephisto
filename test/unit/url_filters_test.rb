@@ -4,7 +4,7 @@ context "Url Filters" do
   include CoreFilters, UrlFilters
 
   def setup
-    @context = {'site' => sites(:first).to_liquid, 'section' => sections(:about).to_liquid}
+    @context = mock_context 'site' => sites(:first).to_liquid, 'section' => sections(:about).to_liquid
   end
   
   specify "should generate archive url" do
@@ -38,7 +38,7 @@ context "Url Filters" do
   end
 
   specify "should generate paged url when site has paged home section" do
-    @context = {'site' => sites(:hostess).to_liquid, 'section' => sections(:cupcake_home).to_liquid}
+    @context = mock_context 'site' => sites(:hostess).to_liquid, 'section' => sections(:cupcake_home).to_liquid
     assert_equal "/", page_url(contents(:cupcake_welcome).to_liquid(:page => true))
     assert_equal "/welcome-to-cupcake", page_url(contents(:cupcake_welcome).to_liquid)
   end
@@ -136,6 +136,7 @@ context "Url Filters" do
     unencoded = 'Tom & Jerry'
     contents(:welcome).title = unencoded
     @article = contents(:welcome).to_liquid
+    @article.context = @context
     @context['section'].instance_variable_get(:@section_liquid)['name'] = unencoded
     assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_article(@article)
     assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_page(@article)
@@ -149,7 +150,9 @@ context "Article Url Filters" do
   include CoreFilters, UrlFilters
 
   def setup
-    @article   = contents(:welcome).to_liquid(:site => sites(:first))
+    @context   = mock_context 'site' => sites(:first).to_liquid
+    @article   = contents(:welcome).to_liquid
+    @article.context = @context
     @permalink = @article.url
   end
 
