@@ -15,8 +15,7 @@ end
 
 class ApplicationHelperTest < Test::Unit::TestCase
   fixtures :assets, :users
-  include ActionView::Helpers::TagHelper
-  include ApplicationHelper
+  include ActionView::Helpers::TagHelper, ApplicationHelper, WhiteListHelper
   
   def request
     @request ||= ApplicationHelperTestController.new
@@ -54,6 +53,14 @@ class ApplicationHelperTest < Test::Unit::TestCase
 
   def test_should_return_actual_image
     assert_match assets(:png).public_filename, asset_image_for(assets(:png))
+  end
+
+  def test_should_not_sanitize_tables
+    assert_equal "&lt;table&gt;", sanitize_feed_content('<table>')
+  end
+
+  def test_should_sanitize_tables
+    assert_equal "&amp;lt;table&gt;", sanitize_feed_content('<table>', true)
   end
 
   protected
