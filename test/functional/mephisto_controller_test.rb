@@ -314,19 +314,23 @@ class MephistoControllerTest < Test::Unit::TestCase
     date = contents(:welcome).published_at
     dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
     assert_dispatch_action :single
-    assert_select 'form#comment-form' do
-      assert_select "[action='#{contents(:welcome).full_permalink}/comments#comment-form}']", {}
-      assert_select "input[type='text']" do
-        assert_select "[id='comment_author']"
-        assert_select "[name='comment[author]']"
+    assert_select "form#comment-form", :count => 1 do |e|
+      assert_equal "#{contents(:welcome).full_permalink}/comments#comment-form", e.first.attributes['action']
+      assert_select "input[type='text']", :count => 3
+      assert_select "input#comment_author" do |e|
+        assert_equal 'text', e.first.attributes['type']
+        assert_equal 'comment[author]', e.first.attributes['name']
       end
-      assert_select "input[type='text']:nth-of-type(1)" do
-        assert_select "[id='comment_author_email']"
-        assert_select "[name='comment[author_email]']"
+      assert_select "input#comment_author_email" do |e|
+        assert_equal 'text', e.first.attributes['type']
+        assert_equal 'comment[author_email]', e.first.attributes['name']
       end
-      assert_select "input[type='text']:nth-of-type(2)", {} do
-        assert_select "[id='comment_body']"
-        assert_select "[name='comment[body]']"
+      assert_select "input#comment_author_url" do |e|
+        assert_equal 'text', e.first.attributes['type']
+        assert_equal 'comment[author_url]', e.first.attributes['name']
+      end
+      assert_select "textarea#comment_body" do |e|
+        assert_equal 'comment[body]', e.first.attributes['name']
       end
     end
   end
