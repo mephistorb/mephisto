@@ -2,14 +2,14 @@ module WhiteListHelper
   PROTOCOL_ATTRIBUTES = %w(src href)
   PROTOCOL_SEPARATOR  = /:|(&#0*58)|(&#x70)|(%|&#37;)3A/
   mattr_reader :tags, :attributes, :protocols
-  @@tags         = %w(strong em b i p code pre tt output samp kbd var sub sup dfn cite big small address hr br div span h1 h2 h3 h4 h5 h6 ul ol li dt dd)
+  @@tags         = %w(strong em b i p code pre tt output samp kbd var sub sup dfn cite big small address hr br div span h1 h2 h3 h4 h5 h6 ul ol li dt dd abbr acronym)
   @@attributes   = { 
     'a'          => %w(href),
     'img'        => %w(src width height alt), 
     'blockquote' => %w(cite),
     'del'        => %w(cite datetime),
     'ins'        => %w(cite datetime),
-    nil          => %w(id class) }
+    nil          => %w(title class) }
   @@protocols    = %w(ed2k ftp http https irc mailto news gopher nntp telnet webcal xmpp callto feed)
   tags.push(*attributes.keys).uniq!
 

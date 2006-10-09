@@ -7,7 +7,7 @@ class WhiteListTest < Test::Unit::TestCase
 
   (WhiteListHelper.tags + WhiteListHelper.attributes.keys).compact.each do |tag_name|
     define_method "test_should_allow_#{tag_name}_tag" do
-      assert_white_listed "start <#{tag_name} id=\"1\" name=\"foo\">foo <bad>bar</bad> baz</#{tag_name}> end", "start <#{tag_name} id='1'>foo &lt;bad>bar&lt;/bad> baz</#{tag_name}> end"
+      assert_white_listed "start <#{tag_name} title=\"1\" name=\"foo\">foo <bad>bar</bad> baz</#{tag_name}> end", "start <#{tag_name} title='1'>foo &lt;bad>bar&lt;/bad> baz</#{tag_name}> end"
     end
   end
 
@@ -42,7 +42,7 @@ class WhiteListTest < Test::Unit::TestCase
 
   [%w(img src), %w(a href)].each do |(tag, attr)|
     define_method "test_should_strip_#{attr}_attribute_in_#{tag}_with_bad_protocols" do
-      assert_white_listed %(<#{tag} #{attr}="javascript:bang" id="1">boo</#{tag}>), %(<#{tag} id='1'>boo</#{tag}>)
+      assert_white_listed %(<#{tag} #{attr}="javascript:bang" title="1">boo</#{tag}>), %(<#{tag} title='1'>boo</#{tag}>)
     end
   end
 
