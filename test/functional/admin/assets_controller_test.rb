@@ -33,6 +33,11 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_upload_and_set_user
+    process_upload ['logo.png']
+    assert_equal users(:quentin).id, assigns(:assets).first.user_id
+  end
+
   def test_should_upload_and_set_tags
     assert_difference Tag, :count do
       process_upload ['logo.png'], :tag => 'foo'

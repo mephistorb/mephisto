@@ -23,7 +23,7 @@ class Admin::AssetsController < Admin::BaseController
     params[:asset] ||= {} ; params[:asset_data] ||= []
     params[:asset].delete(:title) if params[:asset_data].size > 1
     params[:asset_data].each do |file|
-      @assets << site.assets.build(params[:asset].merge(:uploaded_data => file))
+      @assets << site.assets.build(params[:asset].merge(:uploaded_data => file, :user_id => current_user.id))
     end
     Asset.transaction { @assets.each &:save! }
     flash[:notice] = @assets.size == 1 ? "'#{CGI.escapeHTML @assets.first.title}' was uploaded." : "#{@assets.size} assets were uploaded."
