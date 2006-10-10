@@ -31,7 +31,6 @@ class Admin::AssetsController < Admin::BaseController
     flash[:notice] = @assets.size == 1 ? "'#{CGI.escapeHTML @assets.first.title}' was uploaded." : "#{@assets.size} assets were uploaded."
     @assets.size.zero? ?  render(:action => 'new') : redirect_to(assets_path)
   rescue ActiveRecord::RecordInvalid
-    breakpoint
     render :action => 'new'
   end
 
