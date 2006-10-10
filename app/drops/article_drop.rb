@@ -60,10 +60,6 @@ class ArticleDrop < BaseDrop
   def changes_feed_url
     @changes_feed_url ||= url + '/changes.xml'
   end
-  
-  def tags
-    @tags ||= @source.tags.collect &:to_liquid
-  end
 
   protected
     def body_for_mode(mode)

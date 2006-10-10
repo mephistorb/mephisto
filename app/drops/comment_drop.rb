@@ -2,7 +2,7 @@ class CommentDrop < BaseDrop
   include Mephisto::Liquid::UrlMethods
   include WhiteListHelper
   
-  timezone_dates :published_at, :updated_at
+  timezone_dates :published_at, :created_at
   
   def comment() @source end
 
