@@ -7,8 +7,14 @@ class Admin::BaseController < ApplicationController
   before_filter :login_required, :except => :feed
 
   protected
+    # standard authorization method.  allow logged in users that are admins, or members in certain actions
     def authorized?
-      logged_in? && (admin? || member_actions.include?(action_name))
+      logged_in? && (admin? || member_actions.include?(action_name) || allow_member?)
+    end
+
+    # further customize the authorization process, for those special methods that require extra validation
+    def allow_member?
+      true
     end
 
     def find_and_sort_templates

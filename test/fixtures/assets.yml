@@ -17,6 +17,7 @@ gif:
   created_at: <%= 11.minutes.ago.to_s :db %>
   title: gif
   thumbnails_count: 1
+  user_id: 4
 png:
   id: 2
   content_type: image/png

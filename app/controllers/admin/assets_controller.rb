@@ -1,6 +1,8 @@
 class Admin::AssetsController < Admin::BaseController
   member_actions.push(*%w(index new create latest search add_bucket clear_bucket))
+  skip_before_filter :login_required
   before_filter :find_asset, :except => [:index, :new, :create, :latest, :search, :upload, :clear_bucket]
+  before_filter :login_required
 
   def index
     search_assets 24
@@ -133,5 +135,9 @@ class Admin::AssetsController < Admin::BaseController
         :joins =>  search_conditions[:joins], 
         :conditions => "site_id = #{site.id} #{type_conditions && "and #{type_conditions}"} AND #{search_conditions[:conditions]}", 
         :include => search_conditions[:include])
+    end
+    
+    def allow_member?
+      @asset && @asset.user_id.to_s == current_user.id.to_s
     end
 end
