@@ -2,39 +2,35 @@ class ArticleDrop < BaseDrop
   include Mephisto::Liquid::UrlMethods
   
   timezone_dates :published_at, :updated_at
+  liquid_attributes << :title << :permalink << :comments_count
   
   def article() @source end
 
   def initialize(source, options = {})
     super source
     @options        = options
-    @article_liquid = { 
-      'id'               => @source.id,
-      'title'            => @source.title,
-      'permalink'        => @source.permalink,
+    @liquid.update \
       'body'             => @source.body_html,
       'excerpt'          => (@source.excerpt_html.nil? || @source.excerpt_html.empty? ? nil : @source.excerpt_html),
-      'comments_count'   => @source.comments_count,
-      'author'           => @source.user.to_liquid,
       'accept_comments'  => @source.accept_comments?,
       'is_page_home'     => (options[:page] == true)
-    }
-  end
-
-  def before_method(method)
-    @article_liquid[method.to_s]
   end
   
+  def author
+    @author ||= liquidize(@source.user).first
+  end
+
   def comments
-    @comments ||= @source.comments.reject(&:new_record?).collect(&:to_liquid)
+    @comments ||= liquidize(*@source.comments.reject(&:new_record?))
   end
   
   def sections
     @sections ||= @source.sections.inject([]) { |all, s| s.home? ? all : all << s.to_liquid } # your days are numbered, home section!
+    @sections ||= liquidize(*@source.sections) { |s| s.home? ? nil : s.to_liquid }
   end
 
   def tags
-    @tags ||= @source.tags.collect(&:to_liquid)
+    @tags ||= liquidize(*@source.tags)
   end
 
   def blog_sections

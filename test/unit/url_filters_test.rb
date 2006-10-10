@@ -137,7 +137,7 @@ context "Url Filters" do
     contents(:welcome).title = unencoded
     @article = contents(:welcome).to_liquid
     @article.context = @context
-    @context['section'].instance_variable_get(:@section_liquid)['name'] = unencoded
+    @context['section'].instance_variable_get(:@liquid)['name'] = unencoded
     assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_article(@article)
     assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_page(@article)
     assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_section(@context['section'])

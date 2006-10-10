@@ -3,17 +3,13 @@ class CommentDrop < BaseDrop
   include WhiteListHelper
   
   timezone_dates :published_at, :created_at
+  liquid_attributes.push(*[:author, :author_email, :author_ip, :title])
   
   def comment() @source end
 
   def initialize(source)
     super
-    @comment_liquid = %w(id author author_email author_ip title).inject({}) { |l, a| l.update(a => comment.send(a)) }
-    @comment_liquid.update 'is_approved' => comment.approved?, 'body' => white_list(comment.body_html)
-  end
-
-  def before_method(method)
-    @comment_liquid[method.to_s]
+    @liquid.update 'is_approved' => comment.approved?, 'body' => white_list(comment.body_html)
   end
   
   def author_url

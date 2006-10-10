@@ -1,4 +1,5 @@
 class SiteDrop < BaseDrop
+  liquid_attributes.push(*[:host, :subtitle, :title, :articles_per_page, :tag_path, :search_path])
   def site() @source end
   def current_section() @current_section_liquid end
 
@@ -6,16 +7,14 @@ class SiteDrop < BaseDrop
     super source
     @current_section        = section
     @current_section_liquid = section ? section.to_liquid : nil
-    @site_liquid = [:id, :host, :subtitle, :title, :articles_per_page, :tag_path, :search_path].inject({}) { |h, k| h.merge k.to_s => @source.send(k) }
-    @site_liquid['accept_comments'] = @source.accept_comments?
-  end
-
-  def before_method(method)
-    @site_liquid[method.to_s]
+    @liquid['accept_comments'] = @source.accept_comments?
   end
 
   def sections
-    @sections ||= @source.sections.inject([]) { |all, s| all.send(s.home? ? :unshift : :<<, s.to_liquid(s == @current_section)) }
+    return @sections if @sections
+    @sections = @source.sections.inject([]) { |all, s| all.send(s.home? ? :unshift : :<<, s.to_liquid(s == @current_section)) }
+    @sections.each { |s| s.context = @context }
+    @sections
   end
   
   def home_section
@@ -24,17 +23,13 @@ class SiteDrop < BaseDrop
 
   def latest_articles(limit = nil)
     return @articles if @articles && limit == @source.articles_per_page
-    articles = returning @source.articles.find_by_date(:limit => (limit || @source.articles_per_page)) do |articles|
-      articles.collect! &:to_liquid
-    end
+    articles = liquidize(*@source.articles.find_by_date(:limit => (limit || @source.articles_per_page)))
     limit == @source.articles_per_page ? (@articles = articles) : articles
   end
 
   def latest_comments(limit = nil)
     return @comments if @comments && limit == @source.articles_per_page
-    comments = returning @source.comments.find(:all, :limit => (limit || @source.articles_per_page)) do |comments|
-      comments.collect! &:to_liquid
-    end
+    comments = liquidize(*@source.comments.find(:all, :limit => (limit || @source.articles_per_page)))
     limit == @source.articles_per_page ? (@comments = comments) : comments
   end
 
@@ -43,21 +38,17 @@ class SiteDrop < BaseDrop
     return @section_index[path] if @section_index[path]
     @section_index[path] ||= @current_section_liquid if @current_section && @current_section.path == path
     @section_index[path] ||= @sections.detect { |s| s['path'] == path } if @sections
-    @section_index[path] ||= @source.sections.find_by_path(path).to_liquid
+    @section_index[path] ||= liquidize(@source.sections.find_by_path(path)).first
   end
   
   def find_child_sections(path)
     path_search = path + (path == '' ? '%' : '/%')
-    returning @source.sections.find(:all, :conditions => ['path != ? AND path LIKE ? AND path NOT LIKE ?', path, path_search, "#{path_search}/%"]) do |sections|
-      sections.collect! &:to_liquid
-    end
+    liquidize(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ? AND path NOT LIKE ?', path, path_search, "#{path_search}/%"]))
   end
   
   def find_descendant_sections(path)
     path_search = path + (path == '' ? '%' : '/%')
-    returning @source.sections.find(:all, :conditions => ['path != ? AND path LIKE ?', path, path_search]) do |sections|
-      sections.collect! &:to_liquid
-    end
+    liquidize(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ?', path, path_search]))
   end
   
   def blog_sections

@@ -41,11 +41,12 @@ class SectionDropTest < Test::Unit::TestCase
   end
 end
 
-context "Section Contets" do
+context "Section Contents" do
   fixtures :sites, :sections, :contents, :assigned_sections
 
   def setup
     @section = sections(:home).to_liquid
+    @section.context = mock_context
   end
 
   specify "should list articles" do

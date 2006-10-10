@@ -1,19 +1,16 @@
 class SectionDrop < BaseDrop
   include Mephisto::Liquid::UrlMethods
   
+  liquid_attributes.push(*[:name, :path, :archive_path])
+  
   def section() @source end
   def current() @current == true end
 
   def initialize(source, current = false)
     super source
     @current        = current
-    @section_liquid = [:id, :name, :path, :archive_path].inject({}) { |h, k| h.update k.to_s => @source.send(k) }
-    @section_liquid['articles_count'] = @source.send(:read_attribute, :articles_count)
-    {:is_blog => :blog?, :is_paged => :paged?, :is_home => :home?}.each { |k, v| @section_liquid[k.to_s] = @source.send(v) }
-  end
-
-  def before_method(method)
-    @section_liquid[method.to_s]
+    @liquid['articles_count'] = @source.send(:read_attribute, :articles_count)
+    {:is_blog => :blog?, :is_paged => :paged?, :is_home => :home?}.each { |k, v| @liquid[k.to_s] = @source.send(v) }
   end
   
   def articles
@@ -25,23 +22,16 @@ class SectionDrop < BaseDrop
   end
 
   def latest_articles(limit = nil)
-    returning @source.articles.find_by_date(:limit => (limit || @source.articles_per_page)) do |articles|
-      articles.collect! &:to_liquid
-    end
+    liquidize(*@source.articles.find_by_date(:limit => (limit || @source.articles_per_page)))
   end
 
   def latest_comments(limit = nil)
-    returning @source.find_comments(:limit => (limit || @source.articles_per_page)) do |comments|
-      comments.collect! &:to_liquid
-    end
+    liquidize(*@source.find_comments(:limit => (limit || @source.articles_per_page)))
   end
 
   def pages
-    return @pages if @pages
-    @pages = returning [] do |pages|
-      @source.articles.each_with_index do |article, i|
-        pages << article.to_liquid(:page => i.zero?)
-      end
+    @pages ||= liquidize(*@source.articles) do |article, i|
+      article.to_liquid(:page => i.zero?)
     end
   end
 

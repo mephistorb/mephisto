@@ -1,22 +1,13 @@
 class AssetDrop < BaseDrop
+  liquid_attributes.push(*[:content_type, :size, :filename, :width, :height])
   def asset() @source end
-
-  def initialize(source)
-    @source = source
-    super source
-    @asset_liquid = [:id, :content_type, :size, :filename, :width, :height].inject({}) { |h, k| h.merge k.to_s => @source.send(k) }
-  end
-
-  def before_method(method)
-    @asset_liquid[method.to_s]
-  end
 
   [:image, :movie, :audio, :other, :pdf].each do |content|
     define_method("is_#{content}") { @source.send("#{content}?") }
   end
   
   def tags
-    @tags ||= @source.tags.collect &:name
+    @tags ||= liquidize *@source.tags
   end
 
   def path

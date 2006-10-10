@@ -52,4 +52,9 @@ module CoreFilters
   def assign_to_global(value, name)
     @context.scopes.last[name] = value ; nil
   end
+
+  protected
+    def liquidize(*records, &block)
+      BaseDrop.liquidize(@context, *records, &block)
+    end
 end

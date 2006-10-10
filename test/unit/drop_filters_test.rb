@@ -5,7 +5,7 @@ context "Drop Filters" do
 
   def setup
     @site    = sites(:first).to_liquid
-    @context = {'site' => @site, 'section' => sections(:about).to_liquid}
+    @context = mock_context 'site' => @site, 'section' => sections(:about).to_liquid
   end
 
   specify "should find section by path" do
@@ -19,14 +19,14 @@ context "Drop Filters" do
   end
 
   specify "should find latest articles by section" do
-    section = sections(:home).to_liquid
+    section = liquidize(sections(:home)).first
     assert_models_equal [contents(:welcome), contents(:another)], latest_articles(section).collect(&:source)
     assert_models_equal [contents(:welcome), contents(:another)], latest_articles(section, 2).collect(&:source)
     assert_equal contents(:welcome), latest_article(section).source
   end
 
   specify "should find latest comments by section" do
-    section = sections(:home).to_liquid
+    section = liquidize(sections(:home)).first
     assert_models_equal [contents(:welcome_comment)], latest_comments(section).collect(&:source)
     assert_models_equal [contents(:welcome_comment)], latest_comments(section, 1).collect(&:source)
   end
@@ -52,7 +52,7 @@ context "Drop Filters" do
   end
 
   specify "should find articles by month" do
-    assert_models_equal sections(:home).articles.find_all_in_month(Time.now.year, Time.now.month), monthly_articles(sections(:home).to_liquid).collect(&:source)
+    assert_models_equal sections(:home).articles.find_all_in_month(Time.now.year, Time.now.month), monthly_articles(liquidize(sections(:home)).first).collect(&:source)
   end
 
   specify "should find movies" do

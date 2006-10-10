@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   end
 
   def to_liquid
-    [:login, :email].inject({}) { |hsh, attr_name| hsh.update attr_name.to_s => send(attr_name) }
+    UserDrop.new self
   end
 
   protected

@@ -5,6 +5,7 @@ class SiteDropTest < Test::Unit::TestCase
   
   def setup
     @site = sites(:first).to_liquid
+    @site.context = mock_context
   end
 
   def test_equality
@@ -27,6 +28,7 @@ class SiteDropTest < Test::Unit::TestCase
   
   def test_should_show_current_section
     @site = SiteDrop.new(sites(:first), sections(:about))
+    @site.context = mock_context
     assert_equal sections(:about), @site.current_section.source
     assert_equal [false, true, false, false, false, false, false], @site.sections.collect(&:current)
   end

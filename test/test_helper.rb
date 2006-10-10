@@ -218,7 +218,13 @@ class Test::Unit::TestCase
     t = Liquid::Template.new
     t.assigns.update assigns
     t.registers.update registers
-    Liquid::Context.new t
+    returning Liquid::Context.new(t) do |context|
+      assigns.keys.each { |k| context[k].context = context }
+    end
+  end
+
+  def liquidize(*records, &block)
+    BaseDrop.liquidize(@context, *records, &block)
   end
 
   # Assert the block redirects to the login
