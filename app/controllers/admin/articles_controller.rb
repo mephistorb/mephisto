@@ -1,4 +1,6 @@
 class Admin::ArticlesController < Admin::BaseController
+  member_actions.push(*%w(index show new create comments approve unapprove destroy_comment))
+  skip_before_filter :login_required
   with_options :only => [:create, :update, :destroy, :upload] do |c|
     c.before_filter :set_default_section_ids
     c.cache_sweeper :article_sweeper, :assigned_section_sweeper
@@ -9,6 +11,7 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :check_for_new_draft,  :only => [:create, :update, :upload]
   
   before_filter :find_site_article, :only => [:edit, :update, :comments, :approve, :unapprove, :destroy]
+  before_filter :login_required, :except => :upload
   before_filter :load_sections, :only => [:new, :edit]
 
   def index
@@ -104,9 +107,11 @@ class Admin::ArticlesController < Admin::BaseController
     load_sections # do this after the asset has been created
     if params[:id]
       @article = site.articles.find(params[:id])
+      return unless login_required
       @article.attributes = params[:article].merge(:updater => current_user)
       render :action => 'edit'
     else
+      return unless login_required
       @article = current_user.articles.build params[:article].merge(:updater => current_user, :site => site)
       render :action => 'new'
     end
@@ -171,5 +176,9 @@ class Admin::ArticlesController < Admin::BaseController
         end
       end
       @article_options.merge options
+    end
+    
+    def allow_member?
+      @article ? (@article.user_id == current_user.id) : (action_name == 'upload')
     end
 end

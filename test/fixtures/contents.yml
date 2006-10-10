@@ -95,7 +95,7 @@ site_map:
   updated_at: <%= (4.days - 5.minutes).ago.utc.to_s(:db) %>
   published_at: <%= (4.days - 5.minutes).ago.utc.to_s(:db) %>
   comment_age: -1
-  user_id: 1
+  user_id: 4
   type: Article
 cupcake_welcome:
   id: 8
