@@ -1,6 +1,5 @@
 class SiteDrop < BaseDrop
   liquid_attributes.push(*[:host, :subtitle, :title, :articles_per_page, :tag_path, :search_path])
-  def site() @source end
   def current_section() @current_section_liquid end
 
   def initialize(source, section = nil)
@@ -52,11 +51,11 @@ class SiteDrop < BaseDrop
   end
   
   def blog_sections
-    sections.select { |s| s.section.blog? }
+    sections.select { |s| s.source.blog? }
   end
   
   def page_sections
-    sections.select { |s| s.section.paged? }
+    sections.select { |s| s.source.paged? }
   end
   
   def tags

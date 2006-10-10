@@ -4,8 +4,6 @@ class ArticleDrop < BaseDrop
   timezone_dates :published_at, :updated_at
   liquid_attributes << :title << :permalink << :comments_count
   
-  def article() @source end
-
   def initialize(source, options = {})
     super source
     @options        = options
@@ -34,11 +32,11 @@ class ArticleDrop < BaseDrop
   end
 
   def blog_sections
-    sections.select { |s| s.section.blog? }
+    sections.select { |s| s.source.blog? }
   end
   
   def page_sections
-    sections.select { |s| s.section.paged? }
+    sections.select { |s| s.source.paged? }
   end
   
   def content

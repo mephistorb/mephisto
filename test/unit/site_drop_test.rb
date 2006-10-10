@@ -18,7 +18,7 @@ class SiteDropTest < Test::Unit::TestCase
   end
 
   def test_should_list_all_sections
-    assert_models_equal [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links)], @site.sections.collect(&:section)
+    assert_models_equal [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links)], @site.sections.collect(&:source)
     assert_equal [false, false, false, false, false, false, false], @site.sections.collect(&:current)
   end
   
@@ -34,11 +34,11 @@ class SiteDropTest < Test::Unit::TestCase
   end
   
   def test_should_list_only_blog_sections
-    assert_models_equal [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest)], @site.blog_sections.collect(&:section)
+    assert_models_equal [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest)], @site.blog_sections.collect(&:source)
   end
   
   def test_should_list_only_paged_sections
-    assert_models_equal [sections(:about), sections(:links)], @site.page_sections.collect(&:section)
+    assert_models_equal [sections(:about), sections(:links)], @site.page_sections.collect(&:source)
   end
 
   def test_should_list_tags

@@ -3,7 +3,6 @@ class SectionDrop < BaseDrop
   
   liquid_attributes.push(*[:name, :path, :archive_path])
   
-  def section() @source end
   def current() @current == true end
 
   def initialize(source, current = false)
@@ -30,9 +29,7 @@ class SectionDrop < BaseDrop
   end
 
   def pages
-    @pages ||= liquidize(*@source.articles) do |article, i|
-      article.to_liquid(:page => i.zero?)
-    end
+    @pages ||= liquidize(*@source.articles) { |article, i| article.to_liquid(:page => i.zero?) }
   end
 
   def url

@@ -19,7 +19,7 @@ class ArticleDropTest < Test::Unit::TestCase
   end
   
   def test_should_list_all_but_home_sections
-    assert_equal [sections(:about)], @article.sections.collect(&:section)
+    assert_equal [sections(:about)], @article.sections.collect(&:source)
   end
   
   def test_should_list_tags
@@ -28,11 +28,11 @@ class ArticleDropTest < Test::Unit::TestCase
   
   def test_should_list_only_blog_sections
     sections(:home).update_attribute :path, 'foo'
-    assert_equal [sections(:home)], @article.blog_sections.collect(&:section)
+    assert_equal [sections(:home)], @article.blog_sections.collect(&:source)
   end
   
   def test_should_list_only_paged_sections
-    assert_equal [sections(:about)], @article.page_sections.collect(&:section)
+    assert_equal [sections(:about)], @article.page_sections.collect(&:source)
   end
 
   def test_empty_body

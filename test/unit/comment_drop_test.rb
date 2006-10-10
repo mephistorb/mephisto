@@ -16,25 +16,25 @@ class CommentDropTest < Test::Unit::TestCase
   end
   
   def test_should_output_author_link_if_url_given
-    @comment.comment.author_url = 'http://test'
+    @comment.source.author_url = 'http://test'
     assert_equal '<a href="http://test">rico</a>', @comment.author_link
   end
 
   def test_should_check_for_existance_of_author_url
-    @comment.comment.author_url = nil
+    @comment.source.author_url = nil
     assert_nil @comment.author_url
-    @comment.comment.author_url = ''
+    @comment.source.author_url = ''
     assert_nil @comment.author_url
   end
 
   def test_should_return_correct_author_link
     assert_equal '<span>rico</span>',                @comment.author_link
-    @comment.comment.author_url = 'abc'
+    @comment.source.author_url = 'abc'
     assert_equal %Q{<a href="http://abc">rico</a>},  @comment.author_link
-    @comment.comment.author_url = 'https://abc'
+    @comment.source.author_url = 'https://abc'
     assert_equal %Q{<a href="https://abc">rico</a>}, @comment.author_link
-    @comment.comment.author     = '<strong>rico</strong>'
-    @comment.comment.author_url = '<strong>https://abc</strong>'
+    @comment.source.author     = '<strong>rico</strong>'
+    @comment.source.author_url = '<strong>https://abc</strong>'
     assert_equal %Q{<a href="http://&lt;strong&gt;https://abc&lt;/strong&gt;">&lt;strong&gt;rico&lt;/strong&gt;</a>}, @comment.author_link
   end
   
