@@ -34,12 +34,12 @@ class UserTest < Test::Unit::TestCase
 
   def test_should_not_rehash_password
     users(:quentin).update_attribute(:login, 'quentin2')
-    assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin2', 'quentin')
+    assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin2', 'test')
   end
 
   def test_should_authenticate_user_admin
     [:first, :hostess, :garden].each do |s|
-      assert_equal users(:quentin), User.authenticate_for(sites(s), 'quentin', 'quentin'), "Unable to login to site: #{s}"
+      assert_equal users(:quentin), User.authenticate_for(sites(s), 'quentin', 'test'), "Unable to login to site: #{s}"
     end
   end
 
@@ -51,8 +51,8 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_should_authenticate_member
-    first_member   = User.authenticate_for(sites(:first), 'arthur', 'arthur')
-    hostess_member = User.authenticate_for(sites(:hostess), 'arthur', 'arthur')
+    first_member   = User.authenticate_for(sites(:first), 'arthur', 'test')
+    hostess_member = User.authenticate_for(sites(:hostess), 'arthur', 'test')
     assert_equal users(:arthur), first_member
     assert_equal users(:arthur), hostess_member
     assert  first_member.site_admin?
@@ -69,11 +69,15 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_should_not_authenticate_for_non_member
-    assert_nil User.authenticate_for(sites(:garden), 'arthur', 'arthur')
+    assert_nil User.authenticate_for(sites(:garden), 'arthur', 'test')
   end
 
   def test_should_not_authenticate_expired
-    assert_nil User.authenticate_for(sites(:first), 'aaron', 'aaron')
+    assert_nil User.authenticate_for(sites(:first), 'aaron', 'test')
+  end
+
+  def test_should_find_non_admin_member_of_site
+    assert_equal users(:ben), User.authenticate_for(sites(:first), 'ben', 'test')
   end
 
   def test_should_find_member_by_token

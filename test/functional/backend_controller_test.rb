@@ -22,14 +22,14 @@ class BackendControllerTest < Test::Unit::TestCase
   end
 
   def test_meta_weblog_get_categories
-    args = [ 1, 'quentin', 'quentin' ]
+    args = [ 1, 'quentin', 'test' ]
 
     result = invoke_layered :metaWeblog, :getCategories, *args
     assert_equal 'Home', result.first
   end
 
   def test_meta_weblog_get_post
-    args = [ 1, 'quentin', 'quentin' ]
+    args = [ 1, 'quentin', 'test' ]
 
     result = invoke_layered :metaWeblog, :getPost, *args
     assert_equal 'Welcome to Mephisto', result['title'], result.inspect
@@ -37,14 +37,14 @@ class BackendControllerTest < Test::Unit::TestCase
   end
 
   def test_meta_weblog_get_recent_posts
-    args = [ 1, 'quentin', 'quentin', 2 ]
+    args = [ 1, 'quentin', 'test', 2 ]
 
     articles = invoke_layered :metaWeblog, :getRecentPosts, *args
     assert_equal %w(test-draft article-in-the-future), articles.collect { |a| a['permaLink'] }, articles.inspect
   end
 
   def test_meta_weblog_delete_post
-    args = [ 1, 1, 'quentin', 'quentin', 1 ]
+    args = [ 1, 1, 'quentin', 'test', 1 ]
 
     assert_difference Article, :count, -1 do
       result = invoke_layered :metaWeblog, :deletePost, *args
@@ -60,7 +60,7 @@ class BackendControllerTest < Test::Unit::TestCase
     article.published_at = post_time
 
     struct = MetaWeblogService.new(@controller).article_dto_from(article)
-    invoke_layered :metaWeblog, :editPost, contents(:welcome).id, 'quentin', 'quentin', struct, true
+    invoke_layered :metaWeblog, :editPost, contents(:welcome).id, 'quentin', 'test', struct, true
 
     assert_equal post_time, struct['dateCreated']
 
@@ -79,7 +79,7 @@ class BackendControllerTest < Test::Unit::TestCase
       article.excerpt = "extend me"
       article.published_at = Time.now.midnight.utc
 
-      args = [ 1, 'quentin', 'quentin', MetaWeblogService.new(@controller).article_dto_from(article), 1 ]
+      args = [ 1, 'quentin', 'test', MetaWeblogService.new(@controller).article_dto_from(article), 1 ]
 
       result = invoke_layered :metaWeblog, :newPost, *args
       assert result
@@ -96,7 +96,7 @@ class BackendControllerTest < Test::Unit::TestCase
     now = Time.now.utc
     media_object = new_media_object  
 
-    args = [ 1, 'quentin', 'quentin', media_object ]
+    args = [ 1, 'quentin', 'test', media_object ]
     result = invoke_layered :metaWeblog, :newMediaObject, *args
     assert result['url'] =~ /#{media_object['name']}$/
 
@@ -107,7 +107,7 @@ class BackendControllerTest < Test::Unit::TestCase
     media_object = new_media_object 'type' => nil, :name => 'filename.gif'
     assert_nil media_object['type']
     
-    args = [ 1, 'quentin', 'quentin', media_object ]
+    args = [ 1, 'quentin', 'test', media_object ]
     result = invoke_layered :metaWeblog, :newMediaObject, *args
     
     new_asset = Asset.find :first, :order => 'created_at DESC'
@@ -118,7 +118,7 @@ class BackendControllerTest < Test::Unit::TestCase
     media_object = new_media_object 'type' => nil
     assert_nil media_object['type']
     
-    args = [ 1, 'quentin', 'quentin', media_object ]
+    args = [ 1, 'quentin', 'test', media_object ]
     result = invoke_layered :metaWeblog, :newMediaObject, *args
     
     new_asset = Asset.find :first, :order => 'created_at DESC'

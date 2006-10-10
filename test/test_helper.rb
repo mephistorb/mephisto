@@ -162,7 +162,7 @@ class Test::Unit::TestCase
     user = user ? users(user) : nil
     site = sites(site || :first)
     host! site.host
-    @request.session[:user] = user ? User.authenticate_for(site, user.login, user.login) : nil
+    @request.session[:user] = user ? User.authenticate_for(site, user.login, 'test') : nil
     if block_given?
       yield
       reset!
@@ -287,13 +287,13 @@ end
 
 class ActionController::Integration::Session
   def login_as(login)
-    post '/account/login', :login => login, :password => login
+    post '/account/login', :login => login, :password => 'test'
     assert request.session[:user]
     assert redirect?
   end
 
   def get_with_basic(url, options = {})
-    get url, nil, 'authorization' => "Basic #{Base64.encode64("#{options[:login]}:#{options[:login]}")}"
+    get url, nil, 'authorization' => "Basic #{Base64.encode64("#{options[:login]}:test")}"
   end
 
   def assert_redirected_to(url)

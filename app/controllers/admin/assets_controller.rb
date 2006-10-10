@@ -1,4 +1,5 @@
 class Admin::AssetsController < Admin::BaseController
+  member_actions.push(*%w(index new create latest search add_bucket clear_bucket))
   before_filter :find_asset, :except => [:index, :new, :create, :latest, :search, :upload, :clear_bucket]
 
   def index

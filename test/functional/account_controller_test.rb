@@ -14,14 +14,14 @@ context "Account Controller Login" do
   end
 
   specify "should login as mephisto admin" do
-    post :login, :login => 'quentin', :password => 'quentin'
+    post :login, :login => 'quentin', :password => 'test'
     assert session[:user]
     # quentin has User.admin true
     assert_redirected_to :controller => 'admin/overview', :action => 'index'
   end
 
   specify "should login as site member" do
-    post :login, :login => 'arthur', :password => 'arthur'
+    post :login, :login => 'arthur', :password => 'test'
     assert session[:user]
     # arthur is an admin for the site :first
     assert_redirected_to :controller => 'admin/overview', :action => 'index'
@@ -30,7 +30,7 @@ context "Account Controller Login" do
   end
 
   specify "should login as site user" do
-    post :login, :login => 'ben', :password => 'arthur'
+    post :login, :login => 'ben', :password => 'test'
     assert session[:user]
     # ben is not an admin so should be redirected to the front page
     assert_redirected_to :controller => 'mephisto', :action => 'dispatch'
@@ -45,7 +45,7 @@ context "Account Controller Login" do
   end
 
   specify "should fail login for disabled user and not redirect" do
-    post :login, :login => 'aaron', :password => 'arthur'
+    post :login, :login => 'aaron', :password => 'test'
     assert_nil session[:user]
     assert_response :success
   end
@@ -69,12 +69,12 @@ context "Account Controller Cookie" do
   end
 
   specify "should remember me" do
-    post :login, :login => 'quentin', :password => 'quentin', :remember_me => "1"
+    post :login, :login => 'quentin', :password => 'test', :remember_me => "1"
     assert_not_nil @response.cookies['token']
   end
 
   specify "should not remember me" do
-    post :login, :login => 'quentin', :password => 'quentin', :remember_me => "0"
+    post :login, :login => 'quentin', :password => 'test', :remember_me => "0"
     assert_nil cookies[:auth_token]
   end
   

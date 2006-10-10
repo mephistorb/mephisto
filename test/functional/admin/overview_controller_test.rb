@@ -20,6 +20,18 @@ class Admin::OverviewControllerTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_allow_site_admins_to_access_site
+    login_as :arthur
+    get :index
+    assert_response :success
+  end
+
+  def test_should_allow_site_members_to_acces_overview
+    login_as :ben
+    get :index
+    assert_response :success
+  end
+
   def test_should_not_explode_on_home_page
     get :index
     assert_response :success
@@ -31,7 +43,7 @@ class Admin::OverviewControllerTest < Test::Unit::TestCase
   end
 
   def test_should_require_http_auth_on_feed
-    @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("quentin:quentin")}"
+    @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("quentin:test")}"
     get :feed
     assert_response :success
   end

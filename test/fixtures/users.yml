@@ -2,8 +2,8 @@ quentin:
   id: 1
   login: quentin
   email: quentin@example.com
-  salt: 62a636a58d0648eadf7410aa2e4444866174c96e
-  crypted_password: be61f3ff72492591afe5081857a8ff17a85b21f9 # quentin
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
   created_at: <%= 5.days.ago.to_s :db %>
   updated_at: <%= 5.days.ago.to_s :db %>
   filter: textile_filter
@@ -14,8 +14,8 @@ arthur:
   id: 2
   login: arthur
   email: arthur@example.com
-  salt: 55bc51360864c82dcd7ff4bcfec56a8d8e79e751
-  crypted_password: 37ba966058c6f39162e5b537adb516af91cd1fe6 # arthur
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
   created_at: <%= 1.days.ago.to_s :db %>
   updated_at: <%= 1.days.ago.to_s :db %>
   token: arthurtoken
@@ -25,8 +25,8 @@ aaron:
   id: 3
   login: aaron
   email: aaron@example.com
-  salt: 55bc51360864c82dcd7ff4bcfec56a8d8e79e751
-  crypted_password: 37ba966058c6f39162e5b537adb516af91cd1fe6 # arthur
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
   created_at: <%= 1.days.ago.to_s :db %>
   updated_at: <%= 1.days.ago.to_s :db %>
   deleted_at: <%= 5.hours.ago.to_s :db %>
@@ -35,8 +35,8 @@ ben:
   id: 4
   login: ben
   email: ben@example.com
-  salt: 55bc51360864c82dcd7ff4bcfec56a8d8e79e751
-  crypted_password: 37ba966058c6f39162e5b537adb516af91cd1fe6 # arthur
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
   created_at: <%= 1.days.ago.to_s :db %>
   updated_at: <%= 1.days.ago.to_s :db %>
   filter: markdown_filter

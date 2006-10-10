@@ -72,7 +72,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     post :update, :id => users(:quentin).id, :user => { :email => 'foo@example.com', :password => '', :password_confirmation => '' }
     users(:quentin).reload
     assert_equal 'foo@example.com', users(:quentin).email
-    assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin', 'quentin')
+    assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin', 'test')
     assert_response :success
   end
 
@@ -81,7 +81,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     post :update, :id => users(:quentin).id, :user => { :email => 'foo@example.com', :password => 'tea', :password_confirmation => '' }
     users(:quentin).reload
     assert_equal 'quentin@example.com', users(:quentin).email
-    assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin', 'quentin')
+    assert_equal users(:quentin), User.authenticate_for(sites(:first), 'quentin', 'test')
     assert_response :success
   end
 

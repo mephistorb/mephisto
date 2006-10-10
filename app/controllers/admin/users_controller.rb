@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::BaseController
-  MEMBER_ACTIONS = %w(show update).freeze unless const_defined?(:MEMBER_ACTIONS)
+  member_actions << 'show' << 'update'
   before_filter :find_all_users, :only => [:index, :show, :new]
   before_filter :find_user,      :only => [:show, :update, :enable, :admin, :destroy]
 
@@ -59,6 +59,6 @@ class Admin::UsersController < Admin::BaseController
     end
     
     def authorized?
-      logged_in? && (admin? || (current_user.id.to_s == params[:id] && MEMBER_ACTIONS.include?(action_name)))
+      logged_in? && (admin? || (current_user.id.to_s == params[:id] && member_actions.include?(action_name)))
     end
 end

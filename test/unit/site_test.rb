@@ -70,6 +70,7 @@ end
 
 context "Site Membership" do
   fixtures :sites, :users, :memberships
+
   specify "should find member by token" do
     assert_equal users(:quentin), sites(:first).user_by_token(users(:quentin).token)
   end
