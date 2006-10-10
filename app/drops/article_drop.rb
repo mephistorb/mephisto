@@ -15,20 +15,20 @@ class ArticleDrop < BaseDrop
   end
   
   def author
-    @author ||= liquidize(@source.user).first
+    @author ||= liquify(@source.user).first
   end
 
   def comments
-    @comments ||= liquidize(*@source.comments.reject(&:new_record?))
+    @comments ||= liquify(*@source.comments.reject(&:new_record?))
   end
   
   def sections
     @sections ||= @source.sections.inject([]) { |all, s| s.home? ? all : all << s.to_liquid } # your days are numbered, home section!
-    @sections ||= liquidize(*@source.sections) { |s| s.home? ? nil : s.to_liquid }
+    @sections ||= liquify(*@source.sections) { |s| s.home? ? nil : s.to_liquid }
   end
 
   def tags
-    @tags ||= liquidize(*@source.tags)
+    @tags ||= liquify(*@source.tags)
   end
 
   def blog_sections

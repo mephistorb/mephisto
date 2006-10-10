@@ -21,15 +21,15 @@ class SectionDrop < BaseDrop
   end
 
   def latest_articles(limit = nil)
-    liquidize(*@source.articles.find_by_date(:limit => (limit || @source.articles_per_page)))
+    liquify(*@source.articles.find_by_date(:limit => (limit || @source.articles_per_page)))
   end
 
   def latest_comments(limit = nil)
-    liquidize(*@source.find_comments(:limit => (limit || @source.articles_per_page)))
+    liquify(*@source.find_comments(:limit => (limit || @source.articles_per_page)))
   end
 
   def pages
-    @pages ||= liquidize(*@source.articles) { |article, i| article.to_liquid(:page => i.zero?) }
+    @pages ||= liquify(*@source.articles) { |article, i| article.to_liquid(:page => i.zero?) }
   end
 
   def url

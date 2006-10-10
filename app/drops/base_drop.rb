@@ -29,7 +29,7 @@ class BaseDrop < Liquid::Drop
   end
 
   # converts an array of records to an array of liquid drops, and assigns the given context to each of them
-  def self.liquidize(current_context, *records, &block)
+  def self.liquify(current_context, *records, &block)
     i = -1
     records = 
       records.inject [] do |all, r|
@@ -55,7 +55,7 @@ class BaseDrop < Liquid::Drop
       end
     end
     
-    def liquidize(*records, &block)
-      self.class.liquidize(@context, *records, &block)
+    def liquify(*records, &block)
+      self.class.liquify(@context, *records, &block)
     end
 end

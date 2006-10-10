@@ -27,18 +27,18 @@ module DropFilters
 
   def monthly_articles(section, date = nil)
     date = parse_date(date)
-    liquidize(*section.source.articles.find_all_in_month(date.year, date.month)) { |r| r.to_liquid :mode => :single }
+    liquify(*section.source.articles.find_all_in_month(date.year, date.month)) { |r| r.to_liquid :mode => :single }
   end
   
   def tagged_articles(tags)
-    liquidize(*@context['site'].source.articles.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'contents.created_at desc'))
+    liquify(*@context['site'].source.articles.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'contents.created_at desc'))
   end
   
   def assets_by_type(type)
-    liquidize(*@context['site'].source.assets.find_all_by_content_types([type.to_sym], :all, :order => 'created_at desc'))
+    liquify(*@context['site'].source.assets.find_all_by_content_types([type.to_sym], :all, :order => 'created_at desc'))
   end
   
   def tagged_assets(tags)
-    liquidize(*@context['site'].source.assets.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'assets.created_at desc'))
+    liquify(*@context['site'].source.assets.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'assets.created_at desc'))
   end
 end

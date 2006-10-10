@@ -6,7 +6,7 @@ class AssetDrop < BaseDrop
   end
   
   def tags
-    @tags ||= liquidize *@source.tags
+    @tags ||= liquify *@source.tags
   end
 
   def path

@@ -22,13 +22,13 @@ class SiteDrop < BaseDrop
 
   def latest_articles(limit = nil)
     return @articles if @articles && limit == @source.articles_per_page
-    articles = liquidize(*@source.articles.find_by_date(:limit => (limit || @source.articles_per_page)))
+    articles = liquify(*@source.articles.find_by_date(:limit => (limit || @source.articles_per_page)))
     limit == @source.articles_per_page ? (@articles = articles) : articles
   end
 
   def latest_comments(limit = nil)
     return @comments if @comments && limit == @source.articles_per_page
-    comments = liquidize(*@source.comments.find(:all, :limit => (limit || @source.articles_per_page)))
+    comments = liquify(*@source.comments.find(:all, :limit => (limit || @source.articles_per_page)))
     limit == @source.articles_per_page ? (@comments = comments) : comments
   end
 
@@ -37,17 +37,17 @@ class SiteDrop < BaseDrop
     return @section_index[path] if @section_index[path]
     @section_index[path] ||= @current_section_liquid if @current_section && @current_section.path == path
     @section_index[path] ||= @sections.detect { |s| s['path'] == path } if @sections
-    @section_index[path] ||= liquidize(@source.sections.find_by_path(path)).first
+    @section_index[path] ||= liquify(@source.sections.find_by_path(path)).first
   end
   
   def find_child_sections(path)
     path_search = path + (path == '' ? '%' : '/%')
-    liquidize(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ? AND path NOT LIKE ?', path, path_search, "#{path_search}/%"]))
+    liquify(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ? AND path NOT LIKE ?', path, path_search, "#{path_search}/%"]))
   end
   
   def find_descendant_sections(path)
     path_search = path + (path == '' ? '%' : '/%')
-    liquidize(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ?', path, path_search]))
+    liquify(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ?', path, path_search]))
   end
   
   def blog_sections

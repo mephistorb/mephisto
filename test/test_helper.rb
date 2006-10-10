@@ -223,8 +223,8 @@ class Test::Unit::TestCase
     end
   end
 
-  def liquidize(*records, &block)
-    BaseDrop.liquidize(@context, *records, &block)
+  def liquify(*records, &block)
+    BaseDrop.liquify(@context, *records, &block)
   end
 
   # Assert the block redirects to the login

@@ -54,7 +54,7 @@ module CoreFilters
   end
 
   protected
-    def liquidize(*records, &block)
-      BaseDrop.liquidize(@context, *records, &block)
+    def liquify(*records, &block)
+      BaseDrop.liquify(@context, *records, &block)
     end
 end
