@@ -53,11 +53,6 @@ class Admin::AssetsControllerPermissionsTest < Test::Unit::TestCase
     assert_equal 'updated gif', assets(:gif).reload.title
   end
 
-  def test_should_not_update_other_users_assets
-    put :update, :id => assets(:swf).id, :asset => { :title => 'updated swf' }
-      assert_redirected_to :controller => 'account', :action => 'login'
-  end
-
   def test_should_not_delete_other_users_assets
     assert_no_difference Asset, :count do
       delete :destroy, :id => assets(:swf).id

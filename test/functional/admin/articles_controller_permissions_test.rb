@@ -38,18 +38,6 @@ class Admin::ArticlesControllerPermissionsTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_not_edit_other_users_article
-    get :edit, :id => contents(:welcome).id
-    assert_redirected_to :controller => 'account', :action => 'login'
-  end
-  
-  def test_should_not_update_other_users_article
-    Time.mock! Time.local(2005, 1, 1, 12, 0, 0) do
-      post :update, :id => contents(:welcome).id, :article => { 'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10' }
-      assert_redirected_to :controller => 'account', :action => 'login'
-    end
-  end
-
   def test_should_edit_own_article
     get :edit, :id => contents(:site_map).id
     assert_response :success

@@ -13,8 +13,10 @@
     <!-- div.header -->
     <div id="header">
       <ul id="sec-nav">
-        <li><strong><%= link_to 'Blog', dispatch_path([]) %></strong></li>
+        <li><strong><%= link_to 'Website', dispatch_path([]) %></strong></li>
+      <% if admin? -%>
         <li><%= link_to 'Settings', :controller => 'settings' %></li>
+      <% end -%>
         <li><%= link_to 'Account', :controller => 'users', :action => 'show', :id => current_user %></li>
         <li><%= link_to 'Logout', :controller => '/account', :action => 'logout' %></li>
       </ul>
@@ -29,11 +31,13 @@
             <li><%= link_to 'Articles',  :controller => '/admin/articles' %></li>
             <li><%= link_to 'Assets',    :controller => '/admin/assets' %></li>
           </ul>
+          <% if admin? -%>
           <ul id="nav-r">
             <li><%= link_to 'Sections', :controller => '/admin/sections' %></li>
             <li><%= link_to 'Design',   :controller => '/admin/design' %></li>
             <li><%= link_to "Users",    :controller => "users" %></li>
           </ul>
+          <% end -%>
         <% end -%>
       </div> 
       <!-- /div.nav -->  

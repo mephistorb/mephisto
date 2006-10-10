@@ -1,5 +1,5 @@
 class Admin::ArticlesController < Admin::BaseController
-  member_actions.push(*%w(index show new create comments approve unapprove destroy_comment))
+  member_actions.push(*%w(index show new create comments approve unapprove destroy_comment edit update))
   skip_before_filter :login_required
   with_options :only => [:create, :update, :destroy, :upload] do |c|
     c.before_filter :set_default_section_ids

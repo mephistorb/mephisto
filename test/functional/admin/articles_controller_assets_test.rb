@@ -48,17 +48,6 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_not_upload_asset_to_other_users_article_as_member
-    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
-    
-    login_as :ben
-    assert_difference Asset, :count, asset_count do
-      post :upload, :id => contents(:welcome).id, 
-                    :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }
-      assert_redirected_to :controller => 'account', :action => 'login'
-    end
-  end
-
   def test_should_upload_asset_and_redirect_to_article_as_member
     asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
     
