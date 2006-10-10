@@ -3,7 +3,10 @@
 <div id="page-nav">
   <ul id="act-nav" class="clear">
     <li><%= link_to "Create new article", :controller => 'articles', :action => "new" %></li>
+  <% if admin? -%>
     <li><%= link_to "Create new section", :controller => 'sections' %></li>
+  <% end -%>
+    <li><%= link_to "Upload asset", new_asset_path %></li>
     
   <% if @articles.any? -%>
     <li><%= link_to "Moderate Comments",  :controller => 'comments' %></li>
