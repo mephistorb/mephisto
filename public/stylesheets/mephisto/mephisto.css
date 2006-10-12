@@ -1553,6 +1553,21 @@ li.current img {
   border: none;
 }
 
+#screenshot {
+  float: left;
+  width: 300px;
+  padding: 0 10px;
+}
+
+#screenshot p {
+  margin: 10px;
+  color: #777;
+}
+
+#theme-options {
+  margin-left: 300px;
+}
+
 #dialog {
   background-color: #000;
   opacity: 0.15;
@@ -1560,7 +1575,7 @@ li.current img {
 }
 
 #dialog-box {
-  width: 400px;
+  width: 500px;
   background: #eee;
   border: 5px solid #fff;
 }

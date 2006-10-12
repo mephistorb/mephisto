@@ -1,5 +1,15 @@
 * SVN *
 
+* Enhanced the theme preview slightly
+
+* Changed some wording on moderate comments area 
+
+* Added linked_section_list(article, separator)
+  
+  Pass in an article and it will return that articles sections all linked up.
+  {{ article | linked_section_list }}
+  {{ article | linked_section_list: ' and ' }}
+
 * Removed archive.liquid and index.liquid fallbacks
 
 * NEW FEATURE: Redirections (see environment.rb)
