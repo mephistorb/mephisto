@@ -13,8 +13,12 @@ module DropFilters
     @context['site'].find_descendant_sections(path)
   end
   
-  def linked_section_list(article, seperator = ', ')
-    article.sections.collect {|s| link_to_section s }.join(seperator)
+  def linked_section_list(article, separator = ', ')
+    article.sections.collect {|s| link_to_section s }.join(separator)
+  end
+  
+  def linked_tag_list(article, separator = ', ')
+    article.tags.collect {|t| link_to_tag t }.join(separator)
   end
 
   def latest_articles(site_or_section, limit = nil)

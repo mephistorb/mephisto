@@ -1,5 +1,7 @@
 * SVN *
 
+* Added linked_tag_list(article, separator).  Use like linked_section_list.
+
 * Enhanced the theme preview slightly
 
 * Changed some wording on moderate comments area 
