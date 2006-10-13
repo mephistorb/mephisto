@@ -43,12 +43,12 @@ context "Drop Filters" do
 
   specify "should find child sections" do
     assert_models_equal [sections(:about), sections(:earth), sections(:links)], child_sections('').collect(&:source)
-    assert_models_equal [sections(:europe), sections(:africa)], child_sections('earth').collect(&:source)
+    assert_models_equal [sections(:africa), sections(:europe)], child_sections('earth').collect(&:source)
   end
 
   specify "should find descendant sections" do
-    assert_models_equal sites(:first).sections.reject(&:home?), descendant_sections('').collect(&:source)
-    assert_models_equal [sections(:europe), sections(:africa), sections(:bucharest)], descendant_sections('earth').collect(&:source)
+    assert_models_equal sites(:first).sections.reject(&:home?).sort_by(&:path), descendant_sections('').collect(&:source)
+    assert_models_equal [sections(:africa), sections(:europe), sections(:bucharest)], descendant_sections('earth').collect(&:source)
   end
 
   specify "should find articles by month" do

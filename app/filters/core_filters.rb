@@ -45,6 +45,10 @@ module CoreFilters
     date ? date.strftime(format) : nil
   end
 
+  def index(array, index = 0)
+    array[index] if array.respond_to?(:[])
+  end
+
   def assign_to(value, name)
     @context[name] = value ; nil
   end

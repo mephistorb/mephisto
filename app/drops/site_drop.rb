@@ -42,12 +42,12 @@ class SiteDrop < BaseDrop
   
   def find_child_sections(path)
     path_search = path + (path == '' ? '%' : '/%')
-    liquify(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ? AND path NOT LIKE ?', path, path_search, "#{path_search}/%"]))
+    liquify(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ? AND path NOT LIKE ?', path, path_search, "#{path_search}/%"], :order => 'path'))
   end
   
   def find_descendant_sections(path)
     path_search = path + (path == '' ? '%' : '/%')
-    liquify(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ?', path, path_search]))
+    liquify(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ?', path, path_search], :order => 'path'))
   end
   
   def blog_sections
