@@ -20,14 +20,16 @@
           <dd>{{ article.updated_at | format_date: 'plain', true }}</dd>
         </dl>
       {% endif %}
+      {% if article.sections.size > 0 %}
         <dl>
           <dt>Sections:</dt>
           <dd>
 {% for section in article.sections %}
-  <a href="{{section.url}}" title="{{section.name}}">{{ section.name }}</a>
+  {{ section | link_to_section }}
 {% endfor %}
           </dd>
         </dl>
+      {% endif %}
       </div>
     </div>
     <div class="clear"></div>

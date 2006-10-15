@@ -9,7 +9,9 @@
         <div class="details">
           Posted on {{ article.published_at | format_date: 'stub', true }} | 
           {{ article | link_to_comments }} |
-          Filed Under: {% for section in article.sections %}<a href="{{section.url}}" title="{{section.name}}">{{ section.name }}</a>{% endfor %} | 
+          {% if article.sections.size > 0 %}
+          Filed Under: {% for section in article.sections %}{{ section | link_to_section }} | {% endfor %}
+          {% endif %}
           <span class="read-on"><a href="{{article.url}}">read on</a></span>
         </div>
       </div>
