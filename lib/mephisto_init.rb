@@ -98,15 +98,17 @@ class Time
     end
   end
       
-  # Borrowed from Typo
   def self.delta(year, month = nil, day = nil)
-    # XXX what to do here?  should we use UTC?
-    from = Time.mktime(year, month || 1, day || 1)
-
-    to   = from + 1.year
-    to   = from + 1.month unless month.blank?    
-    to   = from + 1.day   unless day.blank?
-    to   = to.tomorrow    unless month.blank? or day
+    from = Time.local(year, month || 1, day || 1)
+    
+    to = 
+      if !day.blank?
+        from.advance :days => 1
+      elsif !month.blank?
+        from.advance :months => 1
+      else
+        from.advance :years => 1
+      end
     return [from.midnight, to.midnight]
   end
 end

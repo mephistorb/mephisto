@@ -6,7 +6,9 @@ class TimeTest < Test::Unit::TestCase
   end
 
   def test_should_show_month_delta
-    assert_equal [Time.local(2006, 7, 1), Time.local(2006,8,1)], Time.local(2006,7,15).to_delta(:month)
+    assert_equal [Time.local(2006, 7, 1), Time.local(2006, 8, 1)], Time.local(2006, 7, 15).to_delta(:month)
+    assert_equal [Time.local(2006, 11, 1), Time.local(2006, 12, 1)], Time.local(2006, 11, 1).to_delta(:month)
+    assert_equal [Time.local(2006, 12, 1), Time.local(2007, 1, 1)], Time.local(2006, 12, 1).to_delta(:month)
   end
 
   def test_should_show_daily_delta
