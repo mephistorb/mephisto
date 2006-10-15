@@ -153,3 +153,55 @@ draft:
   comment_age: 30
   user_id: 1
   type: Article
+at_beginning_of_month:
+  id: 12
+  site_id: 1
+  title: At beginning of the month
+  permalink: at-beginning-of-the-month
+  body: Lalala
+  body_html: Lalala
+  created_at: <%= date = Time.now.utc.beginning_of_month.advance(:months => -2).to_s(:db) %>
+  updated_at: <%= date %>
+  published_at: <%= date %>
+  comment_age: 30
+  user_id: 1
+  type: Article
+at_middle_of_month:
+  id: 13
+  site_id: 1
+  title: At middle of the month
+  permalink: at-middle-of-the-month
+  body: Lalala
+  body_html: Lalala
+  created_at: <%= date = Time.now.utc.beginning_of_month.advance(:months => -1, :days => -15).to_s(:db) %>
+  updated_at: <%= date %>
+  published_at: <%= date %>
+  comment_age: 30
+  user_id: 1
+  type: Article
+at_end_of_month:
+  id: 14
+  site_id: 1
+  title: At end of the month
+  permalink: at-end-of-the-month
+  body: Lalala
+  body_html: Lalala
+  created_at: <%= date = (Time.now.utc.beginning_of_month.advance(:months => -1) -1).to_s(:db) %>
+  updated_at: <%= date %>
+  published_at: <%= date %>
+  comment_age: 30
+  user_id: 1
+  type: Article
+at_beginning_of_next_month:
+  id: 15
+  site_id: 1
+  title: At beginning of next month
+  permalink: at-beginning-of-next-month
+  body: Lalala
+  body_html: Lalala
+  created_at: <%= date = Time.now.utc.beginning_of_month.advance(:months => -1).to_s(:db) %>
+  updated_at: <%= date %>
+  published_at: <%= date %>
+  comment_age: 30
+  user_id: 1
+  type: Article

@@ -153,6 +153,16 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal contents(:welcome), sites(:first).articles.find_by_permalink(:year => contents(:welcome).year, :permalink => contents(:welcome).permalink)
   end
 
+  def test_should_find_all_in_month
+    two_months_ago = Time.now.utc.advance(:months => -2)
+    articles = Article.find_all_in_month(two_months_ago.year, two_months_ago.month)
+
+    assert_equal 3, articles.length
+    [:at_beginning_of_month, :at_end_of_month, :at_middle_of_month].each do |article|
+      assert articles.include?(contents(article))
+    end
+  end
+
   protected
     def create_article(options = {})
       Article.create options.reverse_merge(:user_id => 1, :site_id => 1, :title => 'foo')

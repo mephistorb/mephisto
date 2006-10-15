@@ -1,5 +1,11 @@
 * SVN *
 
+* change time delta so the end date is one second earlier, so a search doesn't include the articles on the next month.  [Jon Leighton]
+
+* use precise time methods when calculating time deltas [Jon Leighton]
+
+* remove .svn dirs when copying default them [Cristi Balan]
+
 * Added linked_tag_list(article, separator).  Use like linked_section_list.
 
 * Enhanced the theme preview slightly

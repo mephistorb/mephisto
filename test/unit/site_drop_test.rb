@@ -54,7 +54,8 @@ class SiteDropTest < Test::Unit::TestCase
   end
 
   def test_should_find_latest_articles
-    assert_models_equal [contents(:welcome), contents(:about), contents(:site_map), contents(:another)], @site.latest_articles.collect(&:source)
+    assert_models_equal [contents(:welcome), contents(:about), contents(:site_map), contents(:another), contents(:at_beginning_of_next_month), contents(:at_end_of_month), contents(:at_middle_of_month), contents(:at_beginning_of_month)], 
+      @site.latest_articles.collect(&:source)
     assert_models_equal [contents(:welcome), contents(:about)], @site.latest_articles(2).collect(&:source)
   end
 

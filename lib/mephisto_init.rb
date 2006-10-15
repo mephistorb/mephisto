@@ -109,7 +109,7 @@ class Time
       else
         from.advance :years => 1
       end
-    return [from.midnight, to.midnight]
+    return [from.midnight, to.midnight-1]
   end
 end
 

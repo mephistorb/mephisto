@@ -32,7 +32,8 @@ context "Drop Filters" do
   end
 
   specify "should find latest articles by site" do
-    assert_models_equal [contents(:welcome), contents(:about), contents(:site_map), contents(:another)], latest_articles(@site).collect(&:source)
+    assert_models_equal [contents(:welcome), contents(:about), contents(:site_map), contents(:another), contents(:at_beginning_of_next_month), contents(:at_end_of_month), contents(:at_middle_of_month), contents(:at_beginning_of_month)], 
+      latest_articles(@site).collect(&:source)
     assert_models_equal [contents(:welcome), contents(:about)], latest_articles(@site, 2).collect(&:source)
   end
   
