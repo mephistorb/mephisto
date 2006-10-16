@@ -56,7 +56,7 @@ module WordPress
         [wp_article.post_excerpt, wp_article.post_content] :
         [nil, wp_article.post_content]
 
-      article = ::Article.build \
+      article = ::Article.new \
         :site         => site,
         :title        => wp_article.post_title, 
         :excerpt      => excerpt,
@@ -69,14 +69,16 @@ module WordPress
         :section_ids  => section_ids,
         :filter       => 'textile_filter'
       article.save!
+      article
     rescue ActiveRecord::RecordInvalid
-      puts "Invalid Article: %s " % $1.record.errors.full_messages.join(' ')
-      puts $1.record.inspect
+      puts "Invalid Article: %s " % article.errors.full_messages.join(' ')
+      puts article.inspect
       raise
     end
 
     def create_comment(article, wp_comment)
-      comment = article.comments.build \
+      comment = ::Comment.new \
+        :article_id   => article.id,
         :body         => wp_comment.comment_content,
         :created_at   => wp_comment.comment_date,
         :updated_at   => wp_comment.comment_date,
@@ -88,9 +90,14 @@ module WordPress
         :filter       => 'textile_filter'
         comment.approved = (wp_comment.comment_approved.to_i == 1)
       comment.save!
+      comment
     rescue ActiveRecord::RecordInvalid
-      puts "Invalid Comment: %s " % $1.record.errors.full_messages.join(' ')
-      puts $1.record.inspect
+      if comment.errors.on "author_email"
+        wp_comment.comment_author_email = "invalid@nodomain.com"
+        retry
+      end
+      puts "Invalid Comment: %s " % comment.errors.full_messages.join(' ')
+      puts comment.inspect
       raise
     end
 

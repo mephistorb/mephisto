@@ -1,5 +1,7 @@
 * SVN *
 
+* fix wordpress converter bug, set default email on invalid comments. [Hampton Catlin]
+
 * change time delta so the end date is one second earlier, so a search doesn't include the articles on the next month.  [Jon Leighton]
 
 * use precise time methods when calculating time deltas [Jon Leighton]
