@@ -364,6 +364,24 @@ class CachingTest < ActionController::IntegrationTest
     end
   end
 
+  def test_should_not_cache_denied_route
+    assert_expires_page '/limited_deny' do
+      visit { |v| v.get '/limited_deny' }
+    end
+    
+    assert_not_cached '/limited_deny'
+  end
+
+  def test_should_not_cache_redirected_route
+    assert_expires_page '/redirect/external' do
+      visit do |v| 
+        v.get '/redirect/external'
+        assert v.redirect?
+        assert_equal 'http://external', v.headers["location"].first
+      end
+    end
+  end
+
   protected
     def visit_sections_and_feeds_with(visitor)
       assert_difference CachedPage, :count, 4 do

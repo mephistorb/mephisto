@@ -13,6 +13,7 @@ class MephistoController < ApplicationController
 
   protected
     def dispatch_redirect
+      @skip_caching = true
       # @section is the http status
       # @dispatch_path.first has the headers
       if @dispatch_path.first.is_a?(Hash)

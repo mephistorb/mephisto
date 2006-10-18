@@ -19,7 +19,7 @@ Rails::Initializer.run do |config|
   # Skip frameworks you're not going to use
   # config.frameworks -= [ :action_web_service ]
 
-  config.autoload_paths += %W( #{RAILS_ROOT}/app/cachers #{RAILS_ROOT}/app/drops #{RAILS_ROOT}/app/filters )
+  config.load_paths += %W( #{RAILS_ROOT}/app/cachers #{RAILS_ROOT}/app/drops #{RAILS_ROOT}/app/filters )
 
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
@@ -71,7 +71,7 @@ UserMailer.mail_from = 'webmaster@localhost'
 # Redirect with a more specific set of variables
 #
 #   Mephisto::Routing.redirect 'article/?/?/?' => 'new/$2/$1/$3'
-#
+
 # Multiple redirections at a time
 #
 #   Mephisto::Routing.redirect \
