@@ -1,5 +1,8 @@
 * SVN *
-
+* Added {{ mode }} so you can check what 'view' your in.  
+  
+  {% unless mode == 'single' %} Read more {% endunless %}
+  
 * Ensure templates are sorted by name [Brian Chapados]
 
 * Fix bug that was caching redirected routes.  

@@ -124,7 +124,7 @@ class MephistoController < ApplicationController
       show_404 and return unless @article || find_article
       Mephisto::Liquid::CommentForm.article = @article
       @article = @article.to_liquid(:mode => :single)
-      render_liquid_template_for(:single, assigns.merge('articles' => [@article], 'article' => @article))
+      render_liquid_template_for(:single, assigns.merge('articles' => [@article], 'article' => @article, 'mode' => 'single'))
     end
     alias dispatch_single show_article_with
 end
