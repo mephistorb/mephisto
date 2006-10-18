@@ -186,7 +186,6 @@ class Site < ActiveRecord::Base
   end
 
   def render_liquid_for(section, template_type, assigns = {}, controller = nil)
-    template_type       = set_template_type_for  section, template_type
     assigns['site']     = to_liquid(section)
     parse_inner_template(set_content_template(section, template_type), assigns, controller)
     parse_template(set_layout_template(section, template_type), assigns, controller)
@@ -265,13 +264,15 @@ class Site < ActiveRecord::Base
       true
     end
     
-    def set_template_type_for(section, template_type)
-      template_type == :section && section.show_paged_articles? ? :page : template_type
-    end
-    
     def set_content_template(section, template_type)
-      preferred_template = section.template if [:page, :section].include?(template_type)
-      preferred_template = section.archive_template if template_type == :archive
+      preferred_template = 
+        case template_type
+          when :page, :section
+            template_type = :single if template_type == :page
+            section.template
+          when :archive
+            section.archive_template
+        end
       find_preferred_template(template_type, preferred_template)
     end
     

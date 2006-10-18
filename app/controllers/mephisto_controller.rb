@@ -26,8 +26,8 @@ class MephistoController < ApplicationController
 
     def dispatch_list
       @articles = @section.articles.find_by_date(:include => :user, :limit => @section.articles_per_page)
-      render_liquid_template_for(:section, 'section'  => @section.to_liquid(true),
-                                           'articles' => @articles)
+      render_liquid_template_for(@section.show_paged_articles? ? :page : :section, 
+        'section'  => @section.to_liquid(true), 'articles' => @articles)
     end
 
     def dispatch_page
@@ -39,12 +39,12 @@ class MephistoController < ApplicationController
     end
     
     def dispatch_comments
-      show_404 and return unless find_article
       if request.get? || params[:comment].blank?
         @skip_caching = true
         redirect_to site.permalink_for(@article) and return
       end
-    
+
+      show_404 and return unless find_article
       @comment = @article.comments.build(params[:comment].merge(:author_ip => request.remote_ip, :user_agent => request.user_agent, :referrer => request.referer))
       @comment.check_approval site, request if @comment.valid?
       @comment.save!
@@ -124,7 +124,7 @@ class MephistoController < ApplicationController
       show_404 and return unless @article || find_article
       Mephisto::Liquid::CommentForm.article = @article
       @article = @article.to_liquid(:mode => :single)
-      render_liquid_template_for(:single, assigns.merge('articles' => [@article], 'article' => @article, 'mode' => 'single'))
+      render_liquid_template_for(:single, assigns.merge('articles' => [@article], 'article' => @article))
     end
     alias dispatch_single show_article_with
 end

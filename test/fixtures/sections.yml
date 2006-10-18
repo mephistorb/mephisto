@@ -14,6 +14,7 @@ about:
   path: about
   show_paged_articles: true
   articles_count: 3
+  template: page.liquid
   archive_path: archives
 cupcake_home:
   id: 3
@@ -30,6 +31,7 @@ cupcake_about:
   name: About
   path: about
   show_paged_articles: true
+  template: page.liquid
   articles_count: 1
   archive_path: archives
 earth:
@@ -70,5 +72,6 @@ links:
   name: Links
   path: links
   show_paged_articles: true
+  template: page.liquid
   articles_count: 0
   archive_path: archives

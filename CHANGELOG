@@ -1,5 +1,8 @@
 * SVN *
-* Added {{ mode }} so you can check what 'view' your in.  
+
+* Remove any notion of a template hierarchy, and the page template itself.  Paged sections now default to the 'single' template.
+
+* Added {{ mode }} so you can check what 'view' you're in.  
   
   {% unless mode == 'single' %} Read more {% endunless %}
   

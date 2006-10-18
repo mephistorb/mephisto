@@ -1,29 +1,15 @@
 class Templates < Attachments
-  @@hierarchy = {
-    :section => [:section],
-    :page    => [:page, :single],
-    :single  => [:single],
-    :archive => [:archive],
-    :search  => [:search],
-    :error   => [:error],
-    :tag     => [:tag],
-    :layout  => [:layout]
-  }
-
-  @@template_types = @@hierarchy.values ; @@template_types.flatten! ; @@template_types.uniq!
-  @@template_types.collect! { |f| "#{f}.liquid" }
+  @@template_types = [:section, :single, :archive, :search, :error, :tag, :layout].collect! { |f| "#{f}.liquid" }
   @@template_types.sort!
-  cattr_reader :hierarchy, :template_types
+  cattr_reader :template_types
 
   def [](template_name)
     template_name = File.basename(template_name.to_s).sub /\.liquid$/, ''
     theme.path + "#{template_name =~ /layout$/ ? 'layouts' : 'templates'}/#{template_name}.liquid"
   end
 
-  def collect_templates(template_type, custom_template = nil)
-    templates = hierarchy[template_type].dup
-    templates.unshift(custom_template) if custom_template
-    templates.collect! { |t| self[t] }
+  def collect_templates(template_type, *custom_templates)
+    custom_templates.push(template_type).collect! { |t| self[t] }
   end
 
   # adds the custom_template to the top of the hierarchy if given
