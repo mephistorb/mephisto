@@ -1,5 +1,7 @@
 * SVN *
 
+* Ensure templates are sorted by name [Brian Chapados]
+
 * Fix bug that was caching redirected routes.  
 
 * fix wordpress converter bug, set default email on invalid comments. [Hampton Catlin]

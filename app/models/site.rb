@@ -125,7 +125,7 @@ class Site < ActiveRecord::Base
       @themes.pop if @themes.last.similar_to?(theme)
     end
     def @themes.[](key) key = key.to_s ; detect { |t| t.name == key } ; end
-    @themes
+    @themes.sort! {|a,b| a.name <=> b.name}
   end
 
   def theme
