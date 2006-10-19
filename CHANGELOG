@@ -1,5 +1,7 @@
 * SVN *
 
+* Added global mode var to all templates to check what mode you're in: section, single, page, archive, search, tag
+
 * Remove any notion of a template hierarchy, and the page template itself.  Paged sections now default to the 'single' template.
 
 * Added {{ mode }} so you can check what 'view' you're in.  

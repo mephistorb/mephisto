@@ -186,7 +186,7 @@ class Site < ActiveRecord::Base
   end
 
   def render_liquid_for(section, template_type, assigns = {}, controller = nil)
-    assigns['site']     = to_liquid(section)
+    assigns.update('site' => to_liquid(section), 'mode' => template_type)
     parse_inner_template(set_content_template(section, template_type), assigns, controller)
     parse_template(set_layout_template(section, template_type), assigns, controller)
   end
