@@ -1,5 +1,7 @@
 * SVN *
 
+* Simplify and properly test admin/article permissions for non-admins.
+
 * Change child_section and descendent_section methods in the SiteDrop to search the preloaded sections array.
 
 * Added global mode var to all templates to check what mode you're in: section, single, page, archive, search, tag

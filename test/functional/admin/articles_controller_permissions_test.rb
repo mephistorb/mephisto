@@ -50,4 +50,31 @@ class Admin::ArticlesControllerPermissionsTest < Test::Unit::TestCase
       assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
     end
   end
+
+  def test_should_edit_other_article
+    get :edit, :id => contents(:welcome).id
+    assert_response :success
+  end
+  
+  def test_should_update_other_article_with_correct_time
+    Time.mock! Time.local(2005, 1, 1, 12, 0, 0) do
+      post :update, :id => contents(:welcome).id, :article => { 'published_at(1i)' => '2005', 'published_at(2i)' => '1', 'published_at(3i)' => '1', 'published_at(4i)' => '10' }
+      assert  assigns(:article).published?
+      assert_equal Time.local(2005, 1, 1, 9, 0, 0).utc, assigns(:article).published_at
+    end
+  end
+  
+  def test_should_destroy_own_article
+    assert_difference Content, :count, -1 do
+      xhr :delete, :destroy, :id => contents(:site_map).id
+      assert_response :success
+    end
+  end
+  
+  def test_should_not_destroy_other_article
+    assert_no_difference Content, :count do
+      xhr :delete, :destroy, :id => contents(:welcome).id
+      assert_response :redirect
+    end
+  end
 end
