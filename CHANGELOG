@@ -1,5 +1,7 @@
 * SVN *
 
+* Change child_section and descendent_section methods in the SiteDrop to search the preloaded sections array.
+
 * Added global mode var to all templates to check what mode you're in: section, single, page, archive, search, tag
 
 * Remove any notion of a template hierarchy, and the page template itself.  Paged sections now default to the 'single' template.

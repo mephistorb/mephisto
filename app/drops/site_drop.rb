@@ -33,21 +33,18 @@ class SiteDrop < BaseDrop
   end
 
   def find_section(path)
-    @section_index ||= {}
-    return @section_index[path] if @section_index[path]
-    @section_index[path] ||= @current_section_liquid if @current_section && @current_section.path == path
-    @section_index[path] ||= @sections.detect { |s| s['path'] == path } if @sections
-    @section_index[path] ||= liquify(@source.sections.find_by_path(path)).first
+    @section_index ||= sections.inject({}) { |memo, section| memo.update section['path'] => section }
+    @section_index[path]
   end
-  
+
   def find_child_sections(path)
-    path_search = path + (path == '' ? '%' : '/%')
-    liquify(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ? AND path NOT LIKE ?', path, path_search, "#{path_search}/%"], :order => 'path'))
+    path << '/' unless path.empty?
+    sections.select { |s| s['path'] != path && s['path'] =~ %r(^#{Regexp.escape path}[^/]+$) }
   end
   
   def find_descendant_sections(path)
-    path_search = path + (path == '' ? '%' : '/%')
-    liquify(*@source.sections.find(:all, :conditions => ['path != ? AND path LIKE ?', path, path_search], :order => 'path'))
+    path << '/' unless path.empty?
+    sections.select { |s| s['path'] != path && s['path'] =~ %r(^#{Regexp.escape path}) }
   end
   
   def blog_sections
