@@ -1,5 +1,7 @@
 * SVN *
 
+* Fix Site#tags query to return distinct tags [DeLynn Berry]
+
 * Simplify and properly test admin/article permissions for non-admins.
 
 * Change child_section and descendent_section methods in the SiteDrop to search the preloaded sections array.

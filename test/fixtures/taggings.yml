@@ -8,3 +8,18 @@ rails_another:
   tag_id: 2
   taggable_id: 2
   taggable_type: Content
+rails_future:
+  id: 3
+  tag_id: 2
+  taggable_id: 5
+  taggable_type: Content
+mongrel_future:
+  id: 4
+  tag_id: 3
+  taggable_id: 5
+  taggable_type: Content
+ruby_future:
+  id: 5
+  tag_id: 1
+  taggable_id: 5
+  taggable_type: Content

@@ -74,6 +74,6 @@ context "Article Tagging" do
   end
 
   specify "should find by tags in site" do
-    assert_models_equal [tags(:rails)], sites(:first).tags
+    assert_models_equal [tags(:mongrel), tags(:rails), tags(:ruby)], sites(:first).tags
   end
 end
