@@ -1,5 +1,7 @@
 * SVN *
 
+* Enhance error recovery in the wordpress converter [Chris Petrilli]
+
 * Fix Site#tags query to return distinct tags [DeLynn Berry]
 
 * Simplify and properly test admin/article permissions for non-admins.

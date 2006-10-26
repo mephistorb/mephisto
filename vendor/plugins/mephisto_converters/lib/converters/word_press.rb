@@ -93,7 +93,20 @@ module WordPress
       comment
     rescue ActiveRecord::RecordInvalid
       if comment.errors.on "author_email"
+        puts "  Retrying with new email"
         wp_comment.comment_author_email = "invalid@nodomain.com"
+        retry
+      elsif comment.errors.on "author_url"
+        puts "  Retrying with new URL"
+        wp_comment.comment_author_url = "http://nowhere.com/"
+        retry
+      elsif comment.errors.on "author"
+        puts "  Retrying with new author name"
+        wp_comment.comment_author = "unknown"
+        retry
+      elsif comment.errors.on "body"
+        puts "  Retrying with blank body"
+        wp_comment.comment_content = "empty"
         retry
       end
       puts "Invalid Comment: %s " % comment.errors.full_messages.join(' ')
