@@ -1,8 +1,8 @@
 Mephisto.module_eval do
-  def self.convert_from(engine, site_title = nil)
+  def self.convert_from(engine, options = {})
+    require "converters/base"
     require "converters/#{engine}"
-    site = site_title ? Site.find_by_title(site_title) : Site.find(:first)
     puts "converting #{engine.to_s.humanize}..."
-    engine.to_s.camelize.constantize.convert(site)
+    "#{engine.to_s.camelize}Converter".constantize.convert(options)
   end
 end
