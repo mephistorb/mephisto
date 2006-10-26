@@ -39,12 +39,12 @@ class MephistoController < ApplicationController
     end
     
     def dispatch_comments
-      if request.get? || params[:comment].blank?
+      show_404 and return unless find_article
+      if !request.post? || params[:comment].blank?
         @skip_caching = true
         redirect_to site.permalink_for(@article) and return
       end
 
-      show_404 and return unless find_article
       @comment = @article.comments.build(params[:comment].merge(:author_ip => request.remote_ip, :user_agent => request.user_agent, :referrer => request.referer))
       @comment.check_approval site, request if @comment.valid?
       @comment.save!
