@@ -9,7 +9,7 @@
 <%= error_messages_for :article %>
 
 <% content_for :form do -%>
-  <%= start_form_tag({:action => 'update', :id => @article}, {:id => 'article-form', :multipart => true}) %>
+  <%= form_tag({:action => 'update', :id => @article}, {:id => 'article-form', :multipart => true}) %>
 <% end -%>
 
 <% fields_for :article, @version do |f| -%>

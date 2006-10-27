@@ -9,7 +9,7 @@
 <% end %>
 
 <% content_for :form do -%>
-  <%= start_form_tag({:action => 'create'}, {:id => 'article-form', :multipart => true}) %>
+  <%= form_tag({:action => 'create'}, {:id => 'article-form', :multipart => true}) %>
 <% end -%>
 
 <% fields_for :article do |f| -%>

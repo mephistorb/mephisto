@@ -1,7 +1,7 @@
 <%= render :partial => "action_nav" %>
 
 <% content_for :action_nav do -%>
-<%= form_tag(assets_url,:id => 'filesearchform', :method => 'get') %>
+<% form_tag(assets_url,:id => 'filesearchform', :method => 'get') do -%>
   <div id="filter">
     <ul class="clear" id="type">
       <li id="spin"><img style="display:none;" src="/images/mephisto/spinner.gif" alt="spinner" id="spinner" />&nbsp;</li>
@@ -27,8 +27,8 @@
       <%= check_box_tag 'conditions[title]', '1', false, :id => 'ctitle-check' %>
       <%= check_box_tag 'conditions[date]',  '1', false, :id => 'cdate-check' %>
     </div>
-    <%= end_form_tag %>  
   </div>
+<% end -%>
 <% end -%>
 
 <div id="filelist">

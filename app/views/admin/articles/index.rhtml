@@ -10,7 +10,7 @@
   <ul class="clear">
     <li><a href="#">&nbsp;</a></li>
   </ul>
-  <%= start_form_tag({:action => 'index'}, :method => 'get', :id => 'article-search') %>
+  <% form_tag({:action => 'index'}, :method => 'get', :id => 'article-search') do -%>
   <ul id="attributes">
     <li><label for="search">Show articles:</label></li>
     <li>
@@ -32,7 +32,7 @@
     <li><input type="button" id="searchsubmit" value="Go" style="display:none" /></li>
   </ul>
     <div><%= hidden_field_tag :published, 1 %></div>
-  </form>
+  <% end -%>
 </div>
 <% end %>
 

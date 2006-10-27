@@ -31,7 +31,7 @@
 
 
 <div class="sbar-group box">
-  <%= start_form_tag(url_for_theme(:controller => 'resources', :action => 'upload', :filename => nil), { :multipart => true }) %>
+  <% form_tag(url_for_theme(:controller => 'resources', :action => 'upload', :filename => nil), { :multipart => true }) do -%>
   <dl class="sbar-form">
     <dt>
       <label for="resource">Upload new image</label>
@@ -43,7 +43,7 @@
       2. <%= submit_tag 'Upload', :onclick => "Element.show('upload-spinner')" %>
     </dd>
   </dl>
-  </form>
+  <% end -%>
 </div>
 
 

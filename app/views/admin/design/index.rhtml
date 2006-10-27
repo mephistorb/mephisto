@@ -7,7 +7,7 @@
   </div>
 <% end %>
 
-<%= start_form_tag url_for_theme(:action => 'create') %>
+<% form_tag url_for_theme(:action => 'create') do -%>
 <%= render :partial => 'form', :locals => { 
   :attachment => nil, 
   :title      => 'Create a new template',
@@ -16,6 +16,6 @@
                    :filename => 'Name of your template' }
  } %>
 <p class="btns"><%= submit_tag 'Create template' %></p>
-</form>
+<% end -%>
 
 <%= render :partial => 'sidebar' %>
