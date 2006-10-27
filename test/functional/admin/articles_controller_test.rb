@@ -45,7 +45,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_search_article_tags
     get :index, :q => 'rails', :filter => 'tags'
     assert_response :success
-    assert_models_equal [contents(:another)], assigns(:articles)
+    assert_models_equal [contents(:future), contents(:another)], assigns(:articles)
   end
 
   def test_should_search_article_body

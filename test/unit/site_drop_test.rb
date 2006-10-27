@@ -42,7 +42,7 @@ class SiteDropTest < Test::Unit::TestCase
   end
 
   def test_should_list_tags
-    assert_equal %w(rails), @site.tags
+    assert_equal %w(mongrel rails ruby), @site.tags
   end
 
   def test_should_find_home_section
