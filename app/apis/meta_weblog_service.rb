@@ -3,7 +3,7 @@ class MetaWeblogService < XmlRpcService
   before_invocation :authenticate
 
   def getCategories(blogid, username, password)
-    site.sections.find(:all).collect &:name
+    site.sections.find(:all, :order => 'id ASC').collect &:name
   end
 
   def getPost(postid, username, password)
@@ -19,13 +19,13 @@ class MetaWeblogService < XmlRpcService
     article = @user.articles.build :site => site
     post_it(article, username, password, struct, publish)
   end
-  
+
   def editPost(postid, username, password, struct, publish)
     article = @user.articles.find(postid)
     post_it(article, username, password, struct, publish)
     true
   end
-  
+
   def deletePost(appkey, postid, username, password, publish)
     article = @user.articles.find(postid)
     article.destroy
@@ -65,17 +65,19 @@ class MetaWeblogService < XmlRpcService
     def article_url(article)
       article.published? && article.full_permalink
     end
-    
-    def post_it(article, user, password, struct, publish)
-      article.attributes = {:updater => @user, :section_ids => Section.find(:all, :conditions => ['name IN (?)', struct['categories']]).collect(&:id),
-        :body => struct['description'].to_s, :title => struct['title'].to_s, :excerpt => struct['mt_excerpt'].to_s}
-      utc_date = Time.utc(struct['dateCreated'].year, struct['dateCreated'].month, struct['dateCreated'].day, struct['dateCreated'].hour, struct['dateCreated'].sec, struct['dateCreated'].min) rescue article.published_at
 
+    def post_it(article, user, password, struct, publish)
+      # make sure publish is true if it's 1 if not leave it the way it is.
+      publish = publish == 1 || publish
+      # if no categories are supplied do not attempt to set any.
+      article.section_ids = Section.find(:all, :conditions => ['name IN (?)', struct['categories']]).collect(&:id) if struct['categories']
+      article.attributes = {:updater => @user, :body => struct['description'].to_s, :title => struct['title'].to_s, :excerpt => struct['mt_excerpt'].to_s}
+      utc_date = Time.utc(struct['dateCreated'].year, struct['dateCreated'].month, struct['dateCreated'].day, struct['dateCreated'].hour, struct['dateCreated'].sec, struct['dateCreated'].min) rescue article.published_at || Time.now.utc
       article.published_at = publish == true ? utc_date : nil
       article.save!
       article.id
     end
-    
+
     def guess_content_type_from(name)
       if name =~ /(png|gif|jpe?g)/i
         "image/#{$1 == 'jpg' ? 'jpeg' : $1}"

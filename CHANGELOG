@@ -1,5 +1,7 @@
 * SVN *
 
+* Implement movable type xml-rpc API [Moritz Angermann]
+
 * Enhance error recovery in the wordpress converter [Chris Petrilli]
 
 * Fix Site#tags query to return distinct tags [DeLynn Berry]
