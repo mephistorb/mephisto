@@ -140,3 +140,9 @@ class ThemeError < StandardError
     super message
   end
 end
+
+Symbol.class_eval do 
+ def to_liquid
+   to_s
+ end
+end
