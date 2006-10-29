@@ -1,5 +1,7 @@
 * SVN *
 
+* Default theme is now Simpla (http://demo.ifelse.co.uk/index.php?wptheme=Simpla)
+
 * Implement movable type xml-rpc API [Moritz Angermann]
 
 * Enhance error recovery in the wordpress converter [Chris Petrilli]
