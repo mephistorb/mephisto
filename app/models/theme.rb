@@ -1,7 +1,7 @@
 class Theme
   @@root_theme_files   = %w(about.yml preview.png)
   @@theme_directories  = %w(templates layouts javascripts stylesheets images)
-  @@allowed_extensions = %w(.js .css .liquid .png .gif .jpg)
+  @@allowed_extensions = %w(.js .css .liquid .png .gif .jpg .swf)
   cattr_reader :root_theme_files, :theme_directories, :allowed_extensions
   attr_reader :path, :base_path
   attr_writer :current

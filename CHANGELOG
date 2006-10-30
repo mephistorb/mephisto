@@ -1,5 +1,7 @@
 * SVN *
 
+* recognize swf files in themes
+
 * Default theme is now Simpla (http://demo.ifelse.co.uk/index.php?wptheme=Simpla)
 
 * Implement movable type xml-rpc API [Moritz Angermann]
@@ -43,6 +45,8 @@
   Pass in an article and it will return that articles sections all linked up.
   {{ article | linked_section_list }}
   {{ article | linked_section_list: ' and ' }}
+
+* 0.7.0 PRE-RELEASE *
 
 * Removed archive.liquid and index.liquid fallbacks
 
