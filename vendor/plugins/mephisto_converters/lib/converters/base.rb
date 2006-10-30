@@ -122,9 +122,9 @@ class BaseConverter
       new_user
     end
   rescue ActiveRecord::RecordInvalid
-    if new_user.errors.on :email
+    if $!.record.errors.on :email
       puts "  Retrying with new email"
-      handle_bad_user_email other_user, "#{new_user.login}@nodomain.com"
+      handle_bad_user_email other_user, "#{$!.record.login}@nodomain.com"
       retry
     else
       raise
@@ -143,8 +143,8 @@ class BaseConverter
       @count[:articles] += 1
     end
   rescue ActiveRecord::RecordInvalid
-    puts "Invalid Article: %s " % article.errors.full_messages.join(' ')
-    puts article.inspect
+    puts "Invalid Article: %s " % $!.record.errors.full_messages.join(' ')
+    puts $!.record.inspect
     raise
   end
 
@@ -157,25 +157,25 @@ class BaseConverter
       @count[:comments] += 1
     end
   rescue ActiveRecord::RecordInvalid
-    if comment.errors.on :author_email
+    if $!.record.errors.on :author_email
       puts "  Retrying with new email"
       handle_bad_comment_author_email other_comment, "invalid@nodomain.com"
       retry
-    elsif comment.errors.on :author_url
+    elsif $!.record.errors.on :author_url
       puts "  Retrying with new URL"
       handle_bad_comment_author_url other_comment, "http://nowhere.com/"
       retry
-    elsif comment.errors.on :author
+    elsif $!.record.errors.on :author
       puts "  Retrying with new author name"
       handle_bad_comment_author other_comment, "unknown"
       retry
-    elsif comment.errors.on :body
+    elsif $!.record.errors.on :body
       puts "  Retrying with blank body"
       handle_bad_comment_content other_comment, "empty"
       retry
     end
-    puts "Invalid Comment: %s " % comment.errors.full_messages.join(' ')
-    puts comment.inspect
+    puts "Invalid Comment: %s " % $!.record.errors.full_messages.join(' ')
+    puts $!.record.inspect
     raise
   end
   

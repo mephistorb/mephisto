@@ -31,6 +31,7 @@ class WordPressConverter < BaseConverter
           :updated_at   => wp_article.post_modified,
           :user         => user,
           :updater      => user,
+          :tag          => converter.tagging_from_sections(wp_article),
           :section_ids  => converter.find_or_create_sections(wp_article)
       end
     end
@@ -78,6 +79,13 @@ class WordPressConverter < BaseConverter
   
   def handle_bad_comment_content(wp_comment, content)
     wp_comment.comment_content = content
+  end
+  
+  def tagging_from_sections(wp_article)
+    tags = wp_article.categories.inject([]) do |memo, cat|
+      memo << cat.category_nicename
+    end
+    tags.join(',')
   end
 
   def find_or_create_sections(wp_article)
