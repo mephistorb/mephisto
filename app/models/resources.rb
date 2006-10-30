@@ -11,6 +11,7 @@ class Resources < Attachments
       when '.png'          then 'image/png'
       when '.jpg', '.jpeg' then 'image/jpeg'
       when '.gif'          then 'image/gif'
+      when '.swf'          then 'application/x-shockwave-flash'
     end
   end
   
