@@ -1482,7 +1482,8 @@ ul#filefields img {
   border-bottom: 1px dotted #ccc;
 }
 
-#themelist img {
+#themelist img,
+#screenshot img {
   width: 125px;
   height: 125px;
   background: #fff;
