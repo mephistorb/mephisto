@@ -2,7 +2,7 @@ require 'test_helper'
 require 'mocha/object'
 require 'mocha/standalone'
 require 'mocha/test_case_adapter'
-require 'execution_point'
+require File.join(File.dirname(__FILE__), 'execution_point')
 
 class StubbaTestResultIntegrationTest < Test::Unit::TestCase
 

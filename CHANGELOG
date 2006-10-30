@@ -1,5 +1,8 @@
 * SVN *
 
+* big change to templates - store current site template in the Site db record.  Store templates in /themes/site-#{id}/*.  
+  no more current/other/rollback bs.
+
 * recognize swf files in themes
 
 * Default theme is now Simpla (http://demo.ifelse.co.uk/index.php?wptheme=Simpla)

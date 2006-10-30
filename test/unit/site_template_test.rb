@@ -51,7 +51,7 @@ context "Site Template" do
     sites(:first).import_theme sites(:first).theme_path + 'hemingway.zip', 'hemingway'
     assert_equal %w(current empty encytemedia hemingway), sites(:first).themes.collect(&:name)
     THEME_FILES.each do |path|
-      assert File.exists?(File.join(THEME_ROOT, 'site-1/other/hemingway', path)), "'site-1/other/hemingway/#{path}' does not exist"
+      assert File.exists?(File.join(THEME_ROOT, 'site-1/hemingway', path)), "'site-1/hemingway/#{path}' does not exist"
     end
   end
 
@@ -59,16 +59,11 @@ context "Site Template" do
     sites(:first).import_theme sites(:first).theme_path + 'hemingway.zip', 'current'
     assert_equal %w(current current_2 empty encytemedia), sites(:first).themes.collect(&:name)
     THEME_FILES.each do |path|
-      assert File.exists?(File.join(THEME_ROOT, 'site-1/other/current_2', path)), "'site-1/other/current_2/#{path}' does not exist"
+      assert File.exists?(File.join(THEME_ROOT, 'site-1/current_2', path)), "'site-1/current_2/#{path}' does not exist"
     end
 
     sites(:first).import_theme sites(:first).theme_path + 'hemingway.zip', 'current'
     assert_equal %w(current current_2 current_3 empty encytemedia), sites(:first).themes.collect(&:name)
-  end
-
-  specify "should find themes and ignore duplicates" do
-    sites(:first).change_theme_to :encytemedia
-    assert_equal %w(current empty), sites(:first).themes.collect(&:name)
   end
 
   specify "should read yml attributes for theme" do
