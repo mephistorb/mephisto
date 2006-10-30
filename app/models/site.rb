@@ -104,28 +104,19 @@ class Site < ActiveRecord::Base
     @theme_path ||= self.class.theme_path + "site-#{id}"
   end
 
-  {:attachment_base => :current, :rollback => :rollback, :other_themes => :other}.each do |key, value|
-    define_method "#{key}_path" do
-      inst_var = :"@#{key}_path"
-      instance_variable_set(inst_var, theme_path + value.to_s) if instance_variable_get(inst_var).nil?
-      instance_variable_get(inst_var)
-    end
-  end
-
   def attachment_path
     theme.path
   end
 
   def themes
     return @themes unless @themes.nil?
-    @themes = [theme]
-    FileUtils.mkdir_p other_themes_path
-    Dir.foreach other_themes_path do |e|
+    @themes = []
+    FileUtils.mkdir_p theme_path
+    Dir.foreach theme_path do |e|
       next if e.first == '.'
-      entry = other_themes_path + e
+      entry = theme_path + e
       next unless entry.directory?
-      @themes << Theme.new(entry)
-      @themes.pop if @themes.last.similar_to?(theme)
+      @themes << Theme.new(entry, self)
     end
     def @themes.[](key) key = key.to_s ; detect { |t| t.name == key } ; end
     @themes.sort! {|a,b| a.name <=> b.name}
@@ -133,41 +124,24 @@ class Site < ActiveRecord::Base
 
   def theme
     return @theme unless @theme.nil?
-    @theme = Theme.current(attachment_base_path)
-  end
-
-  def rollback_theme
-    return @rollback_theme unless @rollback_theme.nil?
-    @rollback_theme = Theme.new(rollback_path)
-  end
-
-  def rollback
-    tmp = other_themes_path + '_tmp'
-    FileUtils.cp_r rollback_path, tmp
-    change_theme_to themes['_tmp']
-    tmp.rmtree
+    @theme = themes[current_theme_path]
   end
 
   def change_theme_to(new_theme_path)
     new_theme = (new_theme_path.is_a?(Theme) ? new_theme_path : themes[new_theme_path]) || raise("No theme '#{new_theme_path}' found")
-    rollback_path.rmtree if rollback_path.exist?
-    if attachment_path.exist?
-      FileUtils.cp_r attachment_path, rollback_path
-      attachment_path.rmtree
-    end
-    FileUtils.cp_r new_theme.base_path, attachment_base_path
-    @theme = @themes = @rollback_theme = nil
+    update_attribute :current_theme_path, new_theme.path.basename.to_s
+    @theme = nil
     theme
   end
 
   def import_theme(zip_file, name)
-    imported_name = Theme.import zip_file, :to => other_themes_path + name
+    imported_name = Theme.import zip_file, :to => theme_path + name
     @theme = @themes = @rollback_theme = nil
     themes[imported_name]
   end
 
   def move_theme(theme, new_name)
-    FileUtils.move theme.base_path, other_themes_path + new_name
+    FileUtils.move theme.base_path, theme_path + new_name
   end
 
   [:attachments, :templates, :resources].each { |m| delegate m, :to => :theme }
@@ -300,7 +274,7 @@ class Site < ActiveRecord::Base
     
     def parse_template(template, assigns, controller)
       # give the include tag access to files in the site's fragments directory
-      Liquid::Template.file_system = Liquid::LocalFileSystem.new(File.join(attachment_base_path, 'templates'))
+      Liquid::Template.file_system = Liquid::LocalFileSystem.new(File.join(theme.path, 'templates'))
       tmpl = Liquid::Template.parse(template.read.to_s)
       returning tmpl.render(assigns, :registers => {:controller => controller}) do |result|
         yield tmpl, result if block_given?

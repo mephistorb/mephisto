@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 66) do
+ActiveRecord::Schema.define(:version => 67) do
 
   create_table "assets", :force => true do |t|
     t.column "content_type",     :string
@@ -132,23 +132,24 @@ ActiveRecord::Schema.define(:version => 66) do
   add_index "sessions", ["session_id"], :name => "sessions_session_id_index"
 
   create_table "sites", :force => true do |t|
-    t.column "title",             :string
-    t.column "subtitle",          :string
-    t.column "email",             :string
-    t.column "ping_urls",         :text
-    t.column "articles_per_page", :integer,                :default => 15
-    t.column "host",              :string
-    t.column "akismet_key",       :string,  :limit => 100
-    t.column "akismet_url",       :string
-    t.column "approve_comments",  :boolean
-    t.column "comment_age",       :integer
-    t.column "timezone",          :string
-    t.column "filter",            :string
-    t.column "permalink_style",   :string
-    t.column "search_path",       :string
-    t.column "tag_path",          :string
-    t.column "search_layout",     :string
-    t.column "tag_layout",        :string
+    t.column "title",              :string
+    t.column "subtitle",           :string
+    t.column "email",              :string
+    t.column "ping_urls",          :text
+    t.column "articles_per_page",  :integer,                :default => 15
+    t.column "host",               :string
+    t.column "akismet_key",        :string,  :limit => 100
+    t.column "akismet_url",        :string
+    t.column "approve_comments",   :boolean
+    t.column "comment_age",        :integer
+    t.column "timezone",           :string
+    t.column "filter",             :string
+    t.column "permalink_style",    :string
+    t.column "search_path",        :string
+    t.column "tag_path",           :string
+    t.column "search_layout",      :string
+    t.column "tag_layout",         :string
+    t.column "current_theme_path", :string
   end
 
   add_index "sites", ["host"], :name => "index_sites_on_host"

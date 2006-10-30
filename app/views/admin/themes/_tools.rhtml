@@ -18,7 +18,7 @@
       <li><%= link_to 'Download theme', :action => 'export', :id => @theme %></li>
     <% unless @theme.current? -%>
       <li><%= link_to_remote 'Delete theme', :url => {:action => 'destroy', :id => @theme}, :method => :delete,
-                :confirm => "Are you sure you wish to delete this theme stored at 'others/#{@theme.path.relative_path_from(site.other_themes_path).to_s}'?" %></li>
+                :confirm => "Are you sure you wish to delete this theme stored at 'others/#{@theme.path.relative_path_from(site.theme_path).to_s}'?" %></li>
     <% end -%>
     </ul>
   </div>

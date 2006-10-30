@@ -11,15 +11,7 @@ context "Site Template" do
   end
   
   specify "should set attachment base path" do
-    assert_equal Site.theme_path + 'site-1' + 'current', sites(:first).attachment_base_path
-  end
-  
-  specify "should set other themes path" do
-    assert_equal Site.theme_path + 'site-1' + 'other', sites(:first).other_themes_path
-  end
-
-  specify "should set rollback themes path" do
-    assert_equal Site.theme_path + 'site-1' + 'rollback', sites(:first).rollback_path
+    assert_equal Site.theme_path + 'site-1' + 'current', sites(:first).theme.path
   end
 
   specify "should set current theme" do
@@ -50,23 +42,11 @@ context "Site Template" do
     theme = sites(:first).change_theme_to :encytemedia
     assert theme.current?
     assert theme.path.exist?, "#{theme.path.to_s} does not exist"
-    assert_equal 'current',     theme.name
+    assert_equal 'encytemedia', sites(:first).reload.current_theme_path
+    assert_equal 'encytemedia', theme.name
     assert_equal 'Encytemedia', theme.title
   end
 
-  specify "should change theme and create rollback" do
-    theme = sites(:first).change_theme_to :encytemedia
-    assert sites(:first).rollback_theme.path.exist?, "#{sites(:first).rollback_theme.path.to_s} does not exist"
-    assert_equal 'rollback',  sites(:first).rollback_theme.name
-    assert_equal 'Hemingway', sites(:first).rollback_theme.title
-  end
-  
-  specify "should rollback theme" do
-    sites(:first).rollback
-    assert_equal 'Rollback', sites(:first).theme.title
-    assert_equal 'Hemingway', sites(:first).rollback_theme.title
-  end
-  
   specify "should import theme" do
     sites(:first).import_theme sites(:first).theme_path + 'hemingway.zip', 'hemingway'
     assert_equal %w(current empty encytemedia hemingway), sites(:first).themes.collect(&:name)

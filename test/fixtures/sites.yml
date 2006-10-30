@@ -16,6 +16,7 @@ first:
   permalink_style: ":year/:month/:day/:permalink"
   tag_path: tags
   search_path: search
+  current_theme_path: current
 hostess:
   id: 2
   title: Cupcake
@@ -29,6 +30,7 @@ hostess:
   permalink_style: ":year/:month/:day/:permalink"
   tag_path: tags
   search_path: search
+  current_theme_path: current
 garden:
   id: 3
   title: walled garden
@@ -38,3 +40,4 @@ garden:
   permalink_style: ":year/:month/:day/:permalink"
   tag_path: tags
   search_path: search
+  current_theme_path: current

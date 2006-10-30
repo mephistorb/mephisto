@@ -60,8 +60,9 @@ namespace :db do
     desc "Copy default theme to site theme"
     task :copy_default_theme do
       FileUtils.mkdir_p SITE_DIR
-      FileUtils.cp_r File.join(RAILS_ROOT, 'themes/default'), File.join(SITE_DIR, 'current')
-      Dir[File.join(RAILS_ROOT, 'themes/site-1/current/**/.svn')].each do |dir|
+      theme_path = File.join(SITE_DIR, 'simpla')
+      FileUtils.cp_r File.join(RAILS_ROOT, 'themes/default'), theme_path
+      Dir[File.join(theme_path, '**/.svn')].each do |dir|
         FileUtils.rm_rf dir
       end
     end

@@ -75,34 +75,12 @@ class Admin::ThemesControllerTest < Test::Unit::TestCase
     assert_match /deleted/, flash[:notice]
     assert_equal %w(current encytemedia), sites(:first).themes.collect(&:name)
   end
-  
-  specify "should not delete current theme with ajax" do
-    xhr :delete, :destroy, :id => 'current'
-    assert_response :success
-    assert_match /current/, flash[:error]
-    assert_equal %w(current empty encytemedia), sites(:first).themes.collect(&:name)
-  end
 
   specify "should change theme" do
     post :change_to, :id => 'encytemedia'
-    assert sites(:first).theme.current?
+    assert_equal 'encytemedia', sites(:first).reload.current_theme_path
     assert sites(:first).theme.path.exist?, "#{sites(:first).theme.path.to_s} does not exist"
-    assert_equal 'current',     sites(:first).theme.name
+    assert_equal 'encytemedia', sites(:first).theme.name
     assert_equal 'Encytemedia', sites(:first).theme.title
-  end
-
-  specify "should change theme and create rollback" do
-    post :change_to, :id => 'encytemedia'
-    assert sites(:first).rollback_theme.path.exist?, "#{sites(:first).rollback_theme.path.to_s} does not exist"
-    assert_equal 'rollback',  sites(:first).rollback_theme.name
-    assert_equal 'Hemingway', sites(:first).rollback_theme.title
-  end
-
-  specify "should rollback theme" do
-    post :rollback
-    assert_equal 'Rollback', sites(:first).theme.title
-    assert_equal 'Hemingway', sites(:first).rollback_theme.title
-    assert_match /rolled back/, flash[:notice]
-    assert_redirected_to :controller => 'design', :action => 'index'
   end
 end

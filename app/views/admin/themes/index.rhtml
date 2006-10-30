@@ -2,14 +2,6 @@
 <%= javascript_include_tag 'mephisto/dialog' %>
 <% end -%>
 
-<% content_for :sidebar do -%>
-<% if site.rollback_path.exist? -%>
-<h3>Rollback Available</h3>
-<p>You can rollback to the previous theme before the current theme was applied on <%= site.rollback_path.mtime.to_date.to_s :long %>.</p>
-<p><%= link_to 'Rollback', :action => 'rollback' %></p>
-<% end -%>
-<% end -%>
-
 <% content_for :action_nav do -%>
   <div id="page-nav">
     <ul id="act-nav" class="clear">

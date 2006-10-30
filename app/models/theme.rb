@@ -4,11 +4,6 @@ class Theme
   @@allowed_extensions = %w(.js .css .liquid .png .gif .jpg .swf)
   cattr_reader :root_theme_files, :theme_directories, :allowed_extensions
   attr_reader :path, :base_path
-  attr_writer :current
-  
-  def self.current(base)
-    returning(new(base)) { |theme| theme.current = true }
-  end
 
   def self.import(zip_file, options = {})
     dest        = options[:to].is_a?(Pathname) ? options[:to] : Pathname.new(options[:to] || '.')
@@ -43,7 +38,8 @@ class Theme
     raise ThemeError.new(dest, $!.message)
   end
 
-  def initialize(base)
+  def initialize(base, site = nil)
+    @site = site
     if base.is_a?(Pathname)
       @base_path = base.to_s
       @path      = base
@@ -54,7 +50,8 @@ class Theme
   end
 
   def current?
-    @current == true
+    @current ||= (@site && @site.current_theme_path == @path.basename.to_s) || :false
+    @current != :false
   end
 
   def name
