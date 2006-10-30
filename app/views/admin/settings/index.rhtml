@@ -29,6 +29,11 @@
     <dd><%= f.text_field :email %></dd>
     <dt><label for="site_timezone">Website Timezone</label></dt>
     <dd><%= select_tag 'site_timezone', options_for_select(['UTC'] + TZInfo::Timezone.all.map{|tz| [tz.to_s, tz.name]}.sort, @site.timezone.name), :name => 'site[timezone]' %></dd>
+    <dt>
+      <label for="site_current_theme_path">Current Theme Path</label>
+      <span class="hint">This is the path to the current template in /themes/site-<%= site.id %>.  Be careful with this setting!</span>
+    </dt>
+    <dd><%= f.text_field :current_theme_path %></dd>
   </dl>
 </div>
 
