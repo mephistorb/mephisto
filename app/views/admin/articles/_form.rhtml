@@ -1,12 +1,12 @@
 <%= error_messages_for 'article' %>
-
+<% @style = has_excerpt? ? "" : "display:none" %>
 <!-- begin required fields -->
 <div class="group">
   <dl>
     <dt><label for="article_title">Title</label></dt>
     <dd><%= form.text_field :title, :class => 'big'  %></dd>
-    <dt id="x-lbl" style="display:none;"><%= form.label_for :excerpt %> <span class="hint">(<%= link_to_function 'Cancel', %(['x-lbl', 'x-body'].each(Element.toggle)) %>)</span></dt>
-    <dd id="x-body" style="display:none"><%= form.text_area :excerpt, :rows => '8', :class => 'fat'  %></dd>
+    <dt id="x-lbl" style="<%= @style %>"><%= form.label_for :excerpt %> <span class="hint">(<%= link_to_function 'Cancel', %(['x-lbl', 'x-body'].each(Element.toggle)) %>)</span></dt>
+    <dd id="x-body" style="<%= @style %>"><%= form.text_area :excerpt, :rows => '8', :class => 'fat'  %></dd>
     <dt><label for="article_body">Write your article</label> <span class="hint">(<%= link_to_function 'Add an excerpt', %(['x-lbl', 'x-body'].each(Element.toggle)) %>)</span></dt>
     <dd><%= form.text_area :body, :class => 'fat', :rows => 25  %></dd>
     <dt><label for="article_tag">Tags</label> <span class="hint">Enter one or more tags separated by a comma.</span></dt>

@@ -78,6 +78,7 @@ class Admin::ArticlesController < Admin::BaseController
         else                   :all_comments
       end
     @comments = @article.send @comments
+    @articles = @site.unapproved_comments.count :all, :group => :article, :order => '1 desc'
   end
 
   # xhr baby

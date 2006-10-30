@@ -1,9 +1,15 @@
 * SVN *
 
+* Show excerpt by default on edit if the article has one
+
 * big change to templates - store current site template in the Site db record.  Store templates in /themes/site-#{id}/*.  
   no more current/other/rollback bs.
 
 * recognize swf files in themes
+
+* When moderating comments, article title now links to edit action, magnifying glass links to article on site.
+
+* Improve comment admin workflow by adding the comments awaiting moderation to to single moderation pages.
 
 * Default theme is now Simpla (http://demo.ifelse.co.uk/index.php?wptheme=Simpla)
 

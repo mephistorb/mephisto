@@ -1,7 +1,7 @@
 <%= render :partial => "page_nav" %>
 
 
-<h3>Comments on "<%= link_to_article @article %>"</h3>
+<h3 style="border-bottom:1px solid #ccc;padding:5px">Comments on <%= link_to @article.title, { :action => 'edit', :id => @article }, :style => 'border:none' %> <span class="right"><%= @article.published? ? link_to(image_tag('/images/mephisto/icons/24-zoom-in.png', :style => 'vertical-align: middle'), @article.full_permalink, :style => 'border:none;') : '&nbsp;' %></span></h3>
 
 <ul class="pagelist commentlist">
   <% if @comments.any? %>
@@ -30,6 +30,22 @@
     <li class="event-none shade">This article has no <%= params[:filter].to_s.humanize.downcase %> comments.</li>
   <% end %>
 </ul>
+
+
+<% content_for :sidebar do %>
+  <% if @articles.size > 1 -%>
+  <div class="sgroup">
+    <h3>Comments awaiting your approval</h3>
+    <ul class="slist">
+    <% @articles.each do |article, count| -%>
+    <% if article.title != @article.title -%>
+      <li><%= link_to "<strong>(#{count})</strong> #{h(article.title)}", :controller => 'articles', :action => 'comments', :id => article.id, :filter => :unapproved %></li>
+    <% end -%>
+    <% end -%>
+    </ul>
+  </div>
+  <% end -%>
+<% end %>
 
 
 <script type="text/javascript" language="javascript" charset="utf-8">

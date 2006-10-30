@@ -22,4 +22,9 @@ module Admin::ArticlesHelper
   def valid_filter?(filter = params[:filter])
     FILTER_TYPES.include? filter
   end
+  
+  def has_excerpt?
+    return false unless @article.excerpt 
+    @article.excerpt.length > 0
+  end
 end
