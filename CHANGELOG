@@ -1,6 +1,8 @@
 * SVN *
 
-* Show excerpt by default on edit if the article has one
+* Fixed duplicate body bug in default Simpla theme when article has no excerpt
+
+* Show excerpt by default on admin edit if the article has one
 
 * big change to templates - store current site template in the Site db record.  Store templates in /themes/site-#{id}/*.  
   no more current/other/rollback bs.

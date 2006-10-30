@@ -11,9 +11,11 @@
 		  <a href="{{ article.url }}">Read the rest of this entry</a>
 		  {% endunless %}
 		{% else %}
+		  {% unless mode == 'single' %}{{ article.body }}{% endunless %}
+		{% endif %}
+		{% if mode == 'single' %}
 		  {{ article.body }}
 		{% endif %}
-		{% if mode == 'single' %}{{ article.body }}{% endif %}
 	</div>
 	
 	<div class="entrymeta">
