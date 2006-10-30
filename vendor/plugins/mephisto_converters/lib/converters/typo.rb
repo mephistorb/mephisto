@@ -47,7 +47,7 @@ class TypoConverter < BaseConverter
         :author       => typo_comment.author,
         :author_url   => typo_comment.url,
         :author_email => typo_comment.email,
-        :author_ip    => typo_comment.ip,
+        :author_ip    => typo_comment.ip
     end
   end
 
