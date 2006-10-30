@@ -151,8 +151,10 @@ class BaseConverter
   def create_comment(article, other_comment, &block)
     ActiveRecord::Base.logger.info "adding comment"
     returning block.call(other_comment) do |comment|
-      comment.article_id = article.id
-      comment.filter   ||= 'textile_filter'
+      comment.article_id  = article.id
+      comment.filter    ||= 'textile_filter'
+      comment.author_ip ||= '127.0.0.1'
+      comment.approved    = true
       comment.save!
       @count[:comments] += 1
     end
