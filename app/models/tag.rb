@@ -12,9 +12,17 @@ class Tag < ActiveRecord::Base
     #   # => ['a', 'b', 'c']
     def parse(list)
       return list if list.is_a?(Array)
-      list.split(',').collect! { |s| s.gsub(/[^\w\ ]+/, '').downcase.strip }.delete_if { |s| s.blank? }
+      # more robust does handle all kinds of different tags. (comma seperated, space seperated (in quotation marks))
+      # should handle most the common keyword formats.
+      # e.g.: b'log, emacs fun, rails, ruby => "b'log", "emacs fun", "rails", "ruby"
+      #       "b'log" "emacs fun" "rails" "ruby" => "b'log", "emacs fun", "rails", "ruby"
+      #       'b\'log' 'emacs fun' 'rails' 'ruby' => "b'log", "emacs fun", "rails", "ruby"
+      #
+      list.scan(/((?: |)['"]{0,1})['"]?(.*?)(?:[,'"]|$)(?:\1(?: |$))/).collect{ |tag| tag.last }.uniq.delete_if{ |tag| tag == "" }
+      # the old version for legacy comparison.
+      #list.split(',').collect! { |s| s.gsub(/[^\w\ ]+/, '').downcase.strip }.delete_if { |s| s.blank? }
     end
-    
+
     # Parses comma separated tag list and returns tags for them.
     #
     #   Tag.parse_to_tags('a, b, c')
@@ -22,9 +30,9 @@ class Tag < ActiveRecord::Base
     def parse_to_tags(list)
       find_or_create(parse(list))
     end
-    
+
     # Returns Tags from an array of tag names
-    # 
+    #
     #   Tag.find_or_create(['a', 'b', 'c'])
     #   # => [Tag, Tag, Tag]
     def find_or_create(tag_names)
@@ -38,7 +46,7 @@ class Tag < ActiveRecord::Base
   def ==(comparison_object)
     super || name == comparison_object.to_s
   end
-  
+
   def to_s()     name end
   alias to_param  to_s
   alias to_liquid to_s

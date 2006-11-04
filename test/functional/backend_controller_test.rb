@@ -151,6 +151,54 @@ class BackendControllerTest < Test::Unit::TestCase
     end
   end
 
+  def test_meta_weblog_new_post_tags
+    # test weather we can create a new post, set tags and get away with it...
+    tags = 'blog, emacs, fun, rails, ruby'
+    article = MetaWeblogStructs::Article.new(:title => 'This is a title', :description => 'This is a post', :mt_keywords => tags)
+
+    args = [ 1, 'quentin', 'test', article, 1 ]
+
+    result = invoke_layered :metaWeblog, :newPost, *args
+    # assert result
+    new_post = Article.find(result)
+    assert_equal Tag.parse_to_tags(tags).collect(&:name).sort, new_post.tags.collect(&:name).sort
+  end
+
+  def test_meta_weblog_edit_post_tags
+    # changing tags
+    tags = 'blog, emacs, fun, rails, ruby'
+    article = MetaWeblogStructs::Article.new(:title => 'This is a title', :description => 'This is a post', :mt_keywords => tags)
+    args = [ 1, 'quentin', 'test', article, 1 ]
+    post_id = invoke_layered :metaWeblog, :newPost, *args
+
+    new_post = Article.find(post_id)
+    assert_equal Tag.parse_to_tags(tags).collect(&:name).sort, new_post.tags.collect(&:name).sort
+
+    tags = 'bar, baz, foo'
+    article = MetaWeblogStructs::Article.new(:title => 'This is a title', :description => 'This is a post', :mt_keywords => tags)
+    args = [ post_id, 'quentin', 'test', article, 1]
+    edit_result = invoke_layered :metaWeblog, :editPost, *args
+    assert_equal true, edit_result
+
+    new_post = Article.find(post_id)
+    assert_equal Tag.parse_to_tags(tags).collect(&:name).sort, new_post.tags.collect(&:name).sort
+  end
+
+  def test_meta_weblog_get_post_with_tags
+    # set tags and see if we recive them!
+    tags = 'blog, emacs, fun, rails, ruby'
+    article = MetaWeblogStructs::Article.new(:title => 'This is a title', :description => 'This is a post', :mt_keywords => tags)
+
+    args = [ 1, 'quentin', 'test', article, 1 ]
+    post_id = invoke_layered :metaWeblog, :newPost, *args
+
+    args = [ post_id, 'quentin', 'test' ]
+    result = invoke_layered :metaWeblog, :getPost, *args
+
+    assert_equal tags, result['mt_keywords']
+  end
+
+
   def test_meta_weblog_new_post_min
     # This is going to test weather a post is correctly submited or not without the published_at field!
     # See http://www.xmlrpc.com/metaWeblogApi#theStruct or
@@ -195,7 +243,6 @@ class BackendControllerTest < Test::Unit::TestCase
         assert_equal 'This is a title', new_post.title
         assert_equal c[:expect], new_post.status
       end
-
     end
   end
 
@@ -253,5 +300,4 @@ class BackendControllerTest < Test::Unit::TestCase
         'bits' => Base64.encode64(File.open(File.expand_path(RAILS_ROOT) + '/public/images/mephisto/shadow.png', 'rb') { |f| f.read })
       ))
     end
-
 end

@@ -24,7 +24,7 @@ context "Asset Tagging" do
     end
     assert_equal [], assets(:gif).reload.tags
   end
-  
+
   specify "should change tags" do
     assert_difference Tagging, :count, 2 do
       assert_difference Tag, :count do
@@ -63,7 +63,7 @@ context "Article Tagging" do
     end
     assert_equal [], contents(:another).reload.tags
   end
-  
+
   specify "should change tags" do
     assert_difference Tagging, :count, 2 do
       assert_difference Tag, :count do

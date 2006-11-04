@@ -1,5 +1,9 @@
 * SVN *
 
+* 0.7.1 PRE-RELEASE *
+
+* add more robust tagging [Moritz Angermann]
+
 * Fixed duplicate body bug in default Simpla theme when article has no excerpt
 
 * Show excerpt by default on admin edit if the article has one

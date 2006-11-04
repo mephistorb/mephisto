@@ -5,6 +5,23 @@ class TagTest < Test::Unit::TestCase
 
   def test_should_parse_comma_separated_tags
     assert_equal %w(a b c), Tag.parse('a, b, c')
+    assert_equal %w(a b\ c), Tag.parse('a, b c')
+  end
+
+  def test_should_parse_simple_tags
+    assert_equal %w(a b c), Tag.parse("'a' 'b' 'c'")
+    assert_equal %w(a b c), Tag.parse('"a" "b" "c"')
+  end
+
+  def test_should_parse_more_complicated_tags
+    # with quotation marks _in_ the string.
+    assert_equal %w(tagging it's weirdness), Tag.parse('tagging, it\'s, weirdness')
+    assert_equal %w(tagging it"s weirdness), Tag.parse('tagging, it"s, weirdness')
+    assert_equal %w(tagging it's weirdness), Tag.parse('"tagging" "it\'s" "weirdness"')
+    assert_equal %w(tagging it's weirdness), Tag.parse("'tagging' 'it's' 'weirdness'")
+    # with spaces...
+    assert_equal %w(tagging it's\ weirdness), Tag.parse("'tagging' 'it's weirdness'")
+    assert_equal %w(tagging it's\ weirdness), Tag.parse('"tagging" "it\'s weirdness"')
   end
 
   def test_should_return_tag_array
@@ -22,12 +39,12 @@ class TagTest < Test::Unit::TestCase
       Tag.parse_to_tags 'ruby, a, b, rails, c'
     end
   end
-  
+
   def test_tag_equality
     assert_equal tags(:ruby), 'ruby'
     assert_equal Tag.find_by_name('ruby'), tags(:ruby)
   end
-  
+
   def test_should_select_tags_by_name
     assert_equal tags(:ruby), Tag[:ruby]
   end

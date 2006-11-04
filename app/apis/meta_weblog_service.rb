@@ -52,7 +52,7 @@ class MetaWeblogService < XmlRpcService
       :categories        => article.sections.collect { |c| c.name },
       :mt_text_more      => article.body.to_s,
       :mt_excerpt        => article.excerpt.to_s,
-      # :mt_keywords       => article.keywords.to_s,
+      :mt_keywords       => article.tag,
       # :mt_allow_comments => article.allow_comments? ? 1 : 0,
       # :mt_allow_pings    => article.allow_pings? ? 1 : 0,
       # :mt_convert_breaks => (article.text_filter.name.to_s rescue ''),
@@ -72,6 +72,9 @@ class MetaWeblogService < XmlRpcService
       # if no categories are supplied do not attempt to set any.
       article.section_ids = Section.find(:all, :conditions => ['name IN (?)', struct['categories']]).collect(&:id) if struct['categories']
       article.attributes = {:updater => @user, :body => struct['description'].to_s, :title => struct['title'].to_s, :excerpt => struct['mt_excerpt'].to_s}
+      # Keywords/Tags support
+      Tagging.set_on article, struct['mt_keywords'] if struct['mt_keywords'] # set/modify keywords _only_ if they are supplied. mt_keywords _overwrite_ not alter the ``tags''
+
       utc_date = Time.utc(struct['dateCreated'].year, struct['dateCreated'].month, struct['dateCreated'].day, struct['dateCreated'].hour, struct['dateCreated'].sec, struct['dateCreated'].min) rescue article.published_at || Time.now.utc
       article.published_at = publish == true ? utc_date : nil
       article.save!
