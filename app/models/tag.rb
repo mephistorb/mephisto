@@ -7,20 +7,22 @@ class Tag < ActiveRecord::Base
     end
 
     # parses a comma separated list of tags into tag names
+    # handles all kinds of different tags. (comma seperated, space seperated (in quotation marks))
+    # should handle most the common keyword formats.
+    #
+    # e.g.: b'log, emacs fun, rails, ruby => "b'log", "emacs fun", "rails", "ruby"
+    #       "b'log" "emacs fun" "rails" "ruby" => "b'log", "emacs fun", "rails", "ruby"
+    #       'b\'log' 'emacs fun' 'rails' 'ruby' => "b'log", "emacs fun", "rails", "ruby"
     #
     #   Tag.parse('a, b, c')
     #   # => ['a', 'b', 'c']
     def parse(list)
       return list if list.is_a?(Array)
-      # more robust does handle all kinds of different tags. (comma seperated, space seperated (in quotation marks))
-      # should handle most the common keyword formats.
-      # e.g.: b'log, emacs fun, rails, ruby => "b'log", "emacs fun", "rails", "ruby"
-      #       "b'log" "emacs fun" "rails" "ruby" => "b'log", "emacs fun", "rails", "ruby"
-      #       'b\'log' 'emacs fun' 'rails' 'ruby' => "b'log", "emacs fun", "rails", "ruby"
-      #
-      list.scan(/((?: |)['"]{0,1})['"]?(.*?)(?:[,'"]|$)(?:\1(?: |$))/).collect{ |tag| tag.last }.uniq.delete_if{ |tag| tag == "" }
-      # the old version for legacy comparison.
-      #list.split(',').collect! { |s| s.gsub(/[^\w\ ]+/, '').downcase.strip }.delete_if { |s| s.blank? }
+      returning list.scan(/((?: |)['"]{0,1})['"]?(.*?)(?:[,'"]|$)(?:\1(?: |$))/) do |tags|
+        tags.collect! &:last
+        tags.uniq!
+        tags.delete_if &:blank?
+      end
     end
 
     # Parses comma separated tag list and returns tags for them.

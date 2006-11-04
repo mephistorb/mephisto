@@ -113,7 +113,7 @@ class Admin::AssetsController < Admin::BaseController
             
             if params[:conditions].has_key?(:tags)
               options[:include] << :tags
-              options[:conditions] << Asset.send(:sanitize_sql, ["(taggings.taggable_type = 'Asset' and tags.name IN (?))", Tag.parse(params[:q])])
+              options[:conditions] << Asset.send(:sanitize_sql, ["(taggings.taggable_type = 'Asset' and tags.name IN (?))", Tag.parse(params[:q].chomp("%"))])
             end
           end
         
