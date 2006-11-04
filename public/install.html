@@ -42,18 +42,18 @@
     	      
             <p><strong>Note:</strong> We are targetting Rails v1.2 for the Mephisto 1.0 release.  So you will have to freeze to edge rails to get Mephisto working properly.</p>
             
-            <pre><code>rake rails:freeze:edge REVISION=5212</code></pre>
+            <pre><code>rake rails:freeze:edge</code></pre>
             
             <p>As of this writing, Mephisto is fine on the absolute latest edge rails.</p>
     	      
-    	      <p>See the latest directions on the <a href="http://mephisto.stikipad.com/help/show/Installing+Mephisto">Mephisto Wiki</a>.</p>
+    	      <p>See the latest directions in the <a href="http://mephistoblog.com/docs/setup">Mephisto Docs</a>.</p>
     	      
     	      <ol style="padding-left: 20px">
     	        <li>Create a database named <strong>mephisto</strong> (or one of your choosing).</li>
     	        <li>Copy <strong>config/database.example.yml</strong> to <strong>config/database.yml</strong></li>
     	        <li>Open <strong>config/database.yml</strong> and set your database credentials.</li>
     	        <li>Upload the entire mephisto directory to your webserver.</li>
-    	        <li>Run <strong>rake db:bootstrap</strong> from a terminal of some sorts</li>
+    	        <li>Run <strong>rake db:bootstrap RAILS_ENV=production</strong> from a terminal of some sorts.</li>
     	        <li>Login to your administration at <strong>http://domain.com/admin</strong> with the username: <strong>admin</strong> and password: <strong>test</strong></li>
     	      </ol>
     	      
@@ -71,8 +71,8 @@
     	  <!-- div.right -->
     	  <div id="sbar">
     	    <h3>About Mephisto</h3>
-    	    <p>Mephisto was baked to golden perfection by <a href="http://techno-weenie.net">Rick Olson</a><em>(Development)</em> 
-    	      and <a href="#">Justin Palmer</a><em>(UI/Design)</em> with contributions from a bunch of wicked cool people.
+    	    <p>Mephisto was baked to golden perfection by <a href="http://weblog.techno-weenie.net">Rick Olson</a><em>(Development)</em> 
+    	      and <a href="http://encytemedia.com/">Justin Palmer</a><em>(UI/Design)</em> with contributions from a bunch of wicked cool people.
     	  </div>
     	  <!-- /div.right -->
     	</div>
