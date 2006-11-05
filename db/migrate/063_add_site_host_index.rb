@@ -4,6 +4,6 @@ class AddSiteHostIndex < ActiveRecord::Migration
   end
 
   def self.down
-    drop_index :sites, :host
+    remove_index :sites, :host
   end
 end
