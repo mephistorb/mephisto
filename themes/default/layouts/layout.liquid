@@ -1,13 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-{% head %}
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>{{ site.title }} {% if article %} {{ article.title }} {% else %} {{ site.subtitle }}  {% endif %}</title>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>{{ site.title }} {% if article %} {{ article.title }} {% else %} {{ site.subtitle }} {% endif %}</title>
   <meta name="generator" content="Mephisto" />
   {{ 'main' | stylesheet }}
-  {{ head.feed }}
-{% endhead %}
+  {{ site.home_section | articles_feed }}
+</head>
 <body>
 
   <div id="wrap">
@@ -23,7 +23,7 @@
         <label for="q">Search:</label>
 				<input type="text" id="q" value="" name="q" size="15" />
 			</form>
-      {% if site.page_sections  %}
+      {% if site.page_sections %}
         <h2>Pages</h2>
         <ul>
           {% for page in site.page_sections %}<li>{{ page | link_to_section }}</li>{% endfor %}

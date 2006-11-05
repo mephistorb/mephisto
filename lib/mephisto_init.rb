@@ -142,7 +142,7 @@ class ThemeError < StandardError
 end
 
 Symbol.class_eval do 
- def to_liquid
-   to_s
- end
+  def to_liquid
+    to_s
+  end
 end

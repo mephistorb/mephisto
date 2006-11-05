@@ -23,8 +23,7 @@ class ArticleDrop < BaseDrop
   end
   
   def sections
-    @sections ||= @source.sections.inject([]) { |all, s| s.home? ? all : all << s.to_liquid } # your days are numbered, home section!
-    @sections ||= liquify(*@source.sections) { |s| s.home? ? nil : s.to_liquid }
+    @sections ||= liquify(*@source.sections.reject(&:home?))
   end
 
   def tags
