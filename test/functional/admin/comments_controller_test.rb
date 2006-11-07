@@ -5,14 +5,17 @@ require 'admin/comments_controller'
 class Admin::CommentsController; def rescue_action(e) raise e end; end
 
 class Admin::CommentsControllerTest < Test::Unit::TestCase
+  fixtures :contents, :users, :sites, :memberships
   def setup
     @controller = Admin::CommentsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    login_as :ben
   end
 
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  def test_should_disable_comments_on_article
+    post :close, :id => contents(:welcome).id
+    assert_equal -1, contents(:welcome).reload.comment_age
+    assert_response :success
   end
 end
