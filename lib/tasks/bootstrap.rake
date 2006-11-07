@@ -5,6 +5,7 @@ namespace :db do
     mkdir_p File.join(RAILS_ROOT, 'log')
     
     require 'rubygems' unless Object.const_defined?(:Gem)
+    $:.push *Dir[File.join(RAILS_ROOT, 'vendor/tzinfo*/lib')]
     begin
       require 'tzinfo'
     rescue LoadError
