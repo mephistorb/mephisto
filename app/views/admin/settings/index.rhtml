@@ -33,7 +33,12 @@
       <label for="site_current_theme_path">Current Theme Path</label>
       <span class="hint">This is the path to the current template in /themes/site-<%= site.id %>.  Be careful with this setting!</span>
     </dt>
-    <dd><%= f.text_field :current_theme_path %></dd>
+    <dd>
+      <%= f.text_field :current_theme_path %>
+    <% unless site.theme.name == site.current_theme_path -%>
+      <strong>This setting is incorrect, set it to a valid theme path.</strong>
+    <% end -%>
+    </dd>
   </dl>
 </div>
 

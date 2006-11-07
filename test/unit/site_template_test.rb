@@ -29,6 +29,12 @@ context "Site Template" do
     assert sites(:first).theme.current?
     assert_equal theme, sites(:first).theme
   end
+  
+  specify "should find temporary template" do
+    sites(:first).update_attribute :current_theme_path, nil
+    assert_not_nil sites(:first).theme
+    assert_equal 'current', sites(:first).theme.name
+  end
 
   specify "should not barf on nil attributes for theme" do
     [:summary, :author, :version, :homepage].each { |attr_name| assert_nil sites(:first).themes[:empty].send(attr_name) }

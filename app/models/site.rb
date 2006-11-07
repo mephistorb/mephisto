@@ -123,8 +123,7 @@ class Site < ActiveRecord::Base
   end
 
   def theme
-    return @theme unless @theme.nil?
-    @theme = themes[current_theme_path]
+    @theme ||= themes[current_theme_path] || themes.first
   end
 
   def change_theme_to(new_theme_path)
