@@ -1,5 +1,7 @@
 * 0.7.2 OFFICIAL *
 
+* Add another possible key to check for HTTP Basic Authentication
+
 * Add shortcut to disable comments on an article from the comment moderation page.
 
 * 0.7.1 PRE-RELEASE *

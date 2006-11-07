@@ -54,9 +54,7 @@ module AuthenticatedSystem
     end
     
     def basic_auth_required
-      unless session[:user] = User.authenticate_for(*get_auth_data.unshift(site)) 
-        access_denied_with_basic_auth
-      end 
+      User.authenticate_for(*get_auth_data.unshift(site)) || access_denied_with_basic_auth
     end
     
     # adds ActionView helper methods
@@ -80,22 +78,10 @@ module AuthenticatedSystem
       render :text => "Could't authenticate you", :status => '401 Unauthorized'
     end
 
+    @@http_auth_headers = %w(X-HTTP_AUTHORIZATION HTTP_AUTHORIZATION Authorization)
     # gets BASIC auth info
     def get_auth_data
-      user, pass = '', '' 
-      # extract authorisation credentials 
-      if request.env.has_key? 'X-HTTP_AUTHORIZATION' 
-        # try to get it where mod_rewrite might have put it 
-        authdata = request.env['X-HTTP_AUTHORIZATION'].to_s.split 
-      elsif request.env.has_key? 'HTTP_AUTHORIZATION' 
-        # this is the regular location 
-        authdata = request.env['HTTP_AUTHORIZATION'].to_s.split  
-      end 
-       
-      # at the moment we only support basic authentication 
-      if authdata && authdata[0] == 'Basic' 
-        user, pass = Base64.decode64(authdata[1]).split(':')[0..1] 
-      end 
-      return [user, pass] 
+      authdata = request.env[@@http_auth_headers.detect { |h| request.env.has_key?(h) }].to_s.split
+      return authdata[0] == 'Basic' ? Base64.decode64(authdata[1]).split(':')[0..1] : ['', ''] 
     end
 end
