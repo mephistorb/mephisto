@@ -12,6 +12,9 @@ class <%= migration_name %> < ActiveRecord::Migration
       # required for images only
       t.column "width", :integer  
       t.column "height", :integer
+
+      # required for db-based files only
+      t.column "db_file_id", :integer
     end
 
     # only for db-based files
