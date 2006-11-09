@@ -5,20 +5,6 @@ module Technoweenie # :nodoc:
       def self.included(base) #:nodoc:
         base.before_update :rename_file
         base.after_save    :save_to_storage # so the id can be part of the url
-
-        # The attachment ID used in the full path of a file
-        base.class_eval do
-          protected
-          if base.attachment_attributes[:parent_id]
-            def attachment_path_id
-              parent_id || id
-            end
-          else
-            def attachment_path_id
-              id
-            end
-          end
-        end
       end
 
       # Gets the attachment data
@@ -48,6 +34,11 @@ module Technoweenie # :nodoc:
       # Used as the base path that #public_filename strips off full_filename to create the public path
       def base_path
         @base_path ||= File.join(RAILS_ROOT, 'public')
+      end
+
+      # The attachment ID used in the full path of a file
+      def attachment_path_id
+        ((attachment_attributes[:parent_id] && parent_id) || id).to_s
       end
 
       # Gets the public path to the file

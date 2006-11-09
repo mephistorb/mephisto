@@ -58,7 +58,7 @@ module Technoweenie # :nodoc:
           with_options :foreign_key => 'parent_id' do |m|
             m.has_many   :thumbnails, :dependent => :destroy, :class_name => options[:thumbnail_class].to_s
             m.belongs_to :parent, :class_name => self.base_class.to_s
-          end if attachment_attributes[:parent_id]
+          end #if attachment_attributes[:parent_id]
 
           include set_fs_path || options[:storage] == :file_system ? FileSystemMethods : DbFileMethods
           after_save :create_attachment_thumbnails # allows thumbnails with parent_id to be created

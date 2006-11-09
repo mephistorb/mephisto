@@ -1,24 +1,10 @@
 module Technoweenie # :nodoc:
   module ActsAsAttachment # :nodoc:
     module InstanceMethods
-      def self.included(base)
-        base.class_eval do
-          protected
-          if base.attachment_attributes[:parent_id]
-            def find_or_initialize_thumbnail(file_name_suffix)
-              thumbnail_class.find_or_initialize_by_thumbnail_and_parent_id(file_name_suffix.to_s, id)
-            end
-          else
-            def find_or_initialize_thumbnail(file_name_suffix)
-              thumbnail_class.find_or_initialize_by_thumbnail(file_name_suffix.to_s)
-            end
-          end
-        end
-      end
-
       # Checks whether the attachment's content type is an image content type
       def image?
-        self.class.image?(content_type.to_s.strip)
+        class << self; def image?() @is_image; end; end
+        @is_image = self.class.image?(content_type.to_s.strip)
       end
       
       def thumbnailable?
@@ -77,7 +63,7 @@ module Technoweenie # :nodoc:
           return nil
         end
         with_image data do |img|
-          resized_img       = (attachment_options[:resize_to] && (!attachment_attributes(:parent_id) || parent_id.nil?)) ? 
+          resized_img       = (attachment_options[:resize_to] && (!attachment_attributes[:parent_id] || parent_id.nil?)) ? 
             thumbnail_for_image(img, attachment_options[:resize_to]) : img
           data              = resized_img.to_blob
           self.width        = resized_img.columns if respond_to?(:width)
@@ -157,7 +143,13 @@ module Technoweenie # :nodoc:
             errors.add attr_name, ActiveRecord::Errors.default_error_messages[:inclusion] unless enum.nil? || enum.include?(send(attr_name))
           end
         end
-        
+
+        def find_or_initialize_thumbnail(file_name_suffix)
+          attachment_attributes[:parent_id] ?
+            thumbnail_class.find_or_initialize_by_thumbnail_and_parent_id(file_name_suffix.to_s, id) :
+            thumbnail_class.find_or_initialize_by_thumbnail(file_name_suffix.to_s)
+        end
+
         # Yanked from ActiveRecord::Callbacks, modified so I can pass args to the callbacks besides self.
         # Only accept blocks, however
         def callback_with_args(method, arg = self)
