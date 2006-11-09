@@ -67,7 +67,20 @@ class ImageThumbnail < FileAttachment
   acts_as_attachment :file_system_path => 'vendor/plugins/acts_as_attachment/test/files/thumbnails'
 end
 
-class SimpleAttachment < ActiveRecord::Base
-  acts_as_attachment
-  validates_as_attachment
-end
+# no parent
+#class OrphanAttachment < ActiveRecord::Base
+#  acts_as_attachment
+#  validates_as_attachment
+#end
+#
+## no filename, no size, no content_type
+#class MinimalAttachment < ActiveRecord::Base
+#  acts_as_attachment :file_system_path => 'vendor/plugins/acts_as_attachment/test/files'
+#  validates_as_attachment
+#end
+#
+## db attachment with no db_file_id
+#class InvalidAttachment < ActiveRecord::Base
+#  acts_as_attachment
+#  validates_as_attachment
+#end
