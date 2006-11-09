@@ -67,8 +67,7 @@ class OrphanAttachmentTest < Test::Unit::TestCase
     end
   end
 end
-#
-#class MinimalAttachmentTest < Test::Unit::TestCase
-#  include BaseAttachmentTests
-#  attachment_model MinimalAttachment
-#end
+
+class MinimalAttachmentTest < OrphanAttachmentTest
+  attachment_model MinimalAttachment
+end

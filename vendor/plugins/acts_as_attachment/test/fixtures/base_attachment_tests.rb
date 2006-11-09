@@ -36,7 +36,7 @@ module BaseAttachmentTests
       #assert_equal 1784, attachment.size
       assert_nil attachment.width
       assert_nil attachment.height
-      assert_equal [],   attachment.thumbnails
+      assert_equal [], attachment.thumbnails
     end
   end
   
