@@ -68,10 +68,10 @@ class ImageThumbnail < FileAttachment
 end
 
 # no parent
-#class OrphanAttachment < ActiveRecord::Base
-#  acts_as_attachment
-#  validates_as_attachment
-#end
+class OrphanAttachment < ActiveRecord::Base
+  acts_as_attachment
+  validates_as_attachment
+end
 #
 ## no filename, no size, no content_type
 #class MinimalAttachment < ActiveRecord::Base

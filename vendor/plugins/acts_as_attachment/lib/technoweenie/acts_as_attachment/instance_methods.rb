@@ -1,9 +1,28 @@
 module Technoweenie # :nodoc:
   module ActsAsAttachment # :nodoc:
     module InstanceMethods
+      def self.included(base)
+        base.class_eval do
+          protected
+          if base.attachment_attributes[:parent_id]
+            def find_or_initialize_thumbnail(file_name_suffix)
+              thumbnail_class.find_or_initialize_by_thumbnail_and_parent_id(file_name_suffix.to_s, id)
+            end
+          else
+            def find_or_initialize_thumbnail(file_name_suffix)
+              thumbnail_class.find_or_initialize_by_thumbnail(file_name_suffix.to_s)
+            end
+          end
+        end
+      end
+
       # Checks whether the attachment's content type is an image content type
       def image?
         self.class.image?(content_type.to_s.strip)
+      end
+      
+      def thumbnailable?
+        image? && attachment_attributes[:parent_id]
       end
 
       def thumbnail_class
@@ -19,7 +38,8 @@ module Technoweenie # :nodoc:
 
       # Creates or updates the thumbnail for the current attachment.
       def create_or_update_thumbnail(file_name_suffix, *size)
-        returning thumbnail_class.find_or_initialize_by_thumbnail_and_parent_id(file_name_suffix.to_s, id) do |thumb|
+        thumbnailable? || raise(ThumbnailError.new("Can't create a thumbnail if the content type is not an image or there is no parent_id column"))
+        returning find_or_initialize_thumbnail(file_name_suffix) do |thumb|
           resized_image = resize_image_to(size)
           return if resized_image.nil?
           thumb.attributes = {
@@ -57,7 +77,7 @@ module Technoweenie # :nodoc:
           return nil
         end
         with_image data do |img|
-          resized_img       = (attachment_options[:resize_to] && parent_id.nil?) ? 
+          resized_img       = (attachment_options[:resize_to] && (!attachment_attributes(:parent_id) || parent_id.nil?)) ? 
             thumbnail_for_image(img, attachment_options[:resize_to]) : img
           data              = resized_img.to_blob
           self.width        = resized_img.columns if respond_to?(:width)
@@ -121,7 +141,7 @@ module Technoweenie # :nodoc:
         
         # creates default thumbnails for parent attachments
         def create_attachment_thumbnails
-          if image? && @save_attachment && !attachment_options[:thumbnails].blank? && parent_id.nil?
+          if thumbnailable? && @save_attachment && !attachment_options[:thumbnails].blank? && parent_id.nil?
             attachment_options[:thumbnails].each { |suffix, size| create_or_update_thumbnail(suffix, size) }
           end
           if @save_attachment

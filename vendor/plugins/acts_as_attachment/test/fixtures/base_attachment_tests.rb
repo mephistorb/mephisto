@@ -52,7 +52,7 @@ module BaseAttachmentTests
       assert_equal 50,   thumbnail.width
       assert_equal 50,   thumbnail.height
       assert_equal [thumbnail], attachment.thumbnails
-      assert_equal attachment.id,  thumbnail.parent_id
+      assert_equal attachment.id,  thumbnail.parent_id if thumbnail.respond_to?(:parent_id)
       assert_equal "#{basename}_thumb.#{ext}", thumbnail.filename
     end
   end
@@ -69,7 +69,7 @@ module BaseAttachmentTests
       assert_equal 39,   thumbnail.width
       assert_equal 50,   thumbnail.height
       assert_equal [thumbnail], attachment.thumbnails
-      assert_equal attachment.id,  thumbnail.parent_id
+      assert_equal attachment.id,  thumbnail.parent_id if thumbnail.respond_to?(:parent_id)
       assert_equal "#{basename}_thumb.#{ext}", thumbnail.filename
     end
   end

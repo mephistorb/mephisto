@@ -3,6 +3,8 @@ module Technoweenie # :nodoc:
     @@content_types = ['image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png']
     mattr_reader :content_types
 
+    class ThumbnailError < StandardError; end
+
     def self.included(base) # :nodoc:
       base.extend ActMethods
     end
@@ -48,13 +50,15 @@ module Technoweenie # :nodoc:
         unless included_modules.include? InstanceMethods
           class_inheritable_accessor :attachment_options, :attachment_attributes
 
+          self.attachment_attributes = [:parent_id, :filename].inject({}) { |memo, attr_name| memo.update attr_name => column_names.include?(attr_name.to_s) }
+
           after_destroy :destroy_file
 
           before_validation     :sanitize_filename
           with_options :foreign_key => 'parent_id' do |m|
             m.has_many   :thumbnails, :dependent => :destroy, :class_name => options[:thumbnail_class].to_s
             m.belongs_to :parent, :class_name => self.base_class.to_s
-          end
+          end if attachment_attributes[:parent_id]
 
           include set_fs_path || options[:storage] == :file_system ? FileSystemMethods : DbFileMethods
           after_save :create_attachment_thumbnails # allows thumbnails with parent_id to be created
