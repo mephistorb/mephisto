@@ -82,9 +82,3 @@ class MinimalAttachment < ActiveRecord::Base
     "#{id}.file"
   end
 end
-
-## db attachment with no db_file_id
-#class InvalidAttachment < ActiveRecord::Base
-#  acts_as_attachment
-#  validates_as_attachment
-#end

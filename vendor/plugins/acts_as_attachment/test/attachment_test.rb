@@ -14,6 +14,16 @@ class DbAttachmentTest < Test::Unit::TestCase
   end
   
   test_against_subclass :test_should_call_after_attachment_saved, Attachment
+  
+  def test_should_rally_against_db_attachments_without_db_file_id
+    assert_raise Technoweenie::ActsAsAttachment::AttachmentError do
+      Class.new ActiveRecord::Base do
+        set_table_name 'invalid_attachments'
+        acts_as_attachment
+        validates_as_attachment
+      end
+    end
+  end
 end
 
 class OrphanAttachmentTest < Test::Unit::TestCase

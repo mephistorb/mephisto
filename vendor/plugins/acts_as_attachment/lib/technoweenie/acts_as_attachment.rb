@@ -3,7 +3,8 @@ module Technoweenie # :nodoc:
     @@content_types = ['image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png']
     mattr_reader :content_types
 
-    class ThumbnailError < StandardError; end
+    class ThumbnailError < StandardError;  end
+    class AttachmentError < StandardError; end
 
     def self.included(base) # :nodoc:
       base.extend ActMethods
@@ -50,7 +51,8 @@ module Technoweenie # :nodoc:
         unless included_modules.include? InstanceMethods
           class_inheritable_accessor :attachment_options, :attachment_attributes
 
-          self.attachment_attributes = [:parent_id, :filename].inject({}) { |memo, attr_name| memo.update attr_name => column_names.include?(attr_name.to_s) }
+          # so far, parent_id is the only attribute i care about checking
+          self.attachment_attributes = [:parent_id].inject({}) { |memo, attr_name| memo.update attr_name => column_names.include?(attr_name.to_s) }
 
           after_destroy :destroy_file
 
@@ -61,6 +63,11 @@ module Technoweenie # :nodoc:
           end if attachment_attributes[:parent_id]
 
           include set_fs_path || options[:storage] == :file_system ? FileSystemMethods : DbFileMethods
+          
+          if included_modules.include?(DbFileMethods) && !column_names.include?('db_file_id')
+            raise AttachmentError.new("Database attachments must have a db_file_id column")
+          end
+          
           after_save :create_attachment_thumbnails # allows thumbnails with parent_id to be created
 
           extend  ClassMethods
