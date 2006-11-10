@@ -10,9 +10,12 @@ require 'uri'
 # rewritten to be more rails-like
 class Akismet
   
+  cattr_accessor :valid_responses, :normal_responses
   attr_accessor :proxy_port, :proxy_host
   attr_reader :last_response
 
+  @@valid_responses  = Set.new(['false', ''])
+  @@normal_responses = @@valid_responses.dup << 'true'
   STANDARD_HEADERS = {
     'User-Agent'   => 'Mephisto/' << Mephisto::Version::STRING,
     'Content-Type' => 'application/x-www-form-urlencoded'
@@ -60,7 +63,7 @@ class Akismet
   # Other server enviroment variables
   #    In PHP there is an array of enviroment variables called $_SERVER which contains information about the web server itself as well as a key/value for every HTTP header sent with the request. This data is highly useful to Akismet as how the submited content interacts with the server can be very telling, so please include as much information as possible.
   def comment_check(options = {})
-    call_akismet('comment-check', options) != "false"
+    !@@valid_responses.include?(call_akismet('comment-check', options))
   end
   
   # This call is for submitting comments that weren't marked as spam but should have been. It takes identical arguments as comment check.
