@@ -38,7 +38,7 @@ module Technoweenie # :nodoc:
 
       # The attachment ID used in the full path of a file
       def attachment_path_id
-        ((attachment_attributes[:parent_id] && parent_id) || id).to_s
+        ((respond_to?(:parent_id) && parent_id) || id).to_s
       end
 
       # Gets the public path to the file

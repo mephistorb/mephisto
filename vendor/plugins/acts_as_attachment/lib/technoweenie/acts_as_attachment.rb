@@ -49,10 +49,7 @@ module Technoweenie # :nodoc:
 
         # only need to define these once on a class
         unless included_modules.include? InstanceMethods
-          class_inheritable_accessor :attachment_options, :attachment_attributes
-
-          # so far, parent_id is the only attribute i care about checking
-          self.attachment_attributes = [:parent_id].inject({}) { |memo, attr_name| memo.update attr_name => column_names.include?(attr_name.to_s) }
+          class_inheritable_accessor :attachment_options
 
           after_destroy :destroy_file
 
@@ -60,13 +57,9 @@ module Technoweenie # :nodoc:
           with_options :foreign_key => 'parent_id' do |m|
             m.has_many   :thumbnails, :dependent => :destroy, :class_name => options[:thumbnail_class].to_s
             m.belongs_to :parent, :class_name => self.base_class.to_s
-          end if attachment_attributes[:parent_id]
+          end
 
           include set_fs_path || options[:storage] == :file_system ? FileSystemMethods : DbFileMethods
-          
-          if included_modules.include?(DbFileMethods) && !column_names.include?('db_file_id')
-            raise AttachmentError.new("Database attachments must have a db_file_id column")
-          end
           
           after_save :create_attachment_thumbnails # allows thumbnails with parent_id to be created
 

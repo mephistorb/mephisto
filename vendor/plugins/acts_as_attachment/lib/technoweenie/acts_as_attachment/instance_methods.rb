@@ -8,7 +8,7 @@ module Technoweenie # :nodoc:
       end
       
       def thumbnailable?
-        image? && attachment_attributes[:parent_id]
+        image? && respond_to?(:parent_id)
       end
 
       def thumbnail_class
@@ -63,7 +63,7 @@ module Technoweenie # :nodoc:
           return nil
         end
         with_image data do |img|
-          resized_img       = (attachment_options[:resize_to] && (!attachment_attributes[:parent_id] || parent_id.nil?)) ? 
+          resized_img       = (attachment_options[:resize_to] && (!respond_to?(:parent_id) || parent_id.nil?)) ? 
             thumbnail_for_image(img, attachment_options[:resize_to]) : img
           data              = resized_img.to_blob
           self.width        = resized_img.columns if respond_to?(:width)
@@ -145,7 +145,7 @@ module Technoweenie # :nodoc:
         end
 
         def find_or_initialize_thumbnail(file_name_suffix)
-          attachment_attributes[:parent_id] ?
+          respond_to?(:parent_id) ?
             thumbnail_class.find_or_initialize_by_thumbnail_and_parent_id(file_name_suffix.to_s, id) :
             thumbnail_class.find_or_initialize_by_thumbnail(file_name_suffix.to_s)
         end

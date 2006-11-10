@@ -34,10 +34,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.column :size,            :integer
     t.column :content_type,    :string, :limit => 255
   end
-  #
-  #create_table :invalid_attachments, :force => true do |t|
-  #  t.column :size,            :integer
-  #end
 
   create_table :db_files, :force => true do |t|
     t.column :data, :binary
