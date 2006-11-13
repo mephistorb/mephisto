@@ -1,5 +1,7 @@
 * SVN *
 
+* don't sanitize custom anchor text for liquid filters [Jonathan Leighton]
+
 * Fix nil authorization header bug.
 
 * fix bug preventing plain html filter
