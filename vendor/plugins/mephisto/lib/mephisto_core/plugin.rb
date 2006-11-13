@@ -52,7 +52,7 @@ module Mephisto
     protected
       def find_plugin_migration(name)
         plugin_name = "mephisto_#{name}"
-        require(RAILS_PATH + 'vendor/plugins' + plugin_name + 'lib' + plugin_name + 'schemasc')
+        require(RAILS_PATH + 'vendor/plugins' + plugin_name + 'lib' + plugin_name + 'schema')
         Mephisto.const_get(name.to_s.camelize)::Schema
       end
   end
