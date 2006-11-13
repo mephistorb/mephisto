@@ -127,7 +127,7 @@ class Article < Content
   end
 
   def set_default_filter_from(filtered_object)
-    set_filter_from(filtered_object) if filter.blank?
+    set_filter_from(filtered_object) if filter.nil?
   end
 
   def set_default_filter!

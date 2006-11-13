@@ -52,34 +52,6 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal 'textile_filter', a.filter
   end
 
-  def test_should_modify_filter
-    assert_equal 'textile_filter', contents(:welcome).filter
-    
-    contents(:welcome).filter = 'markdown_filter'
-    contents(:welcome).save
-
-    assert_equal 'markdown_filter', contents(:welcome).reload.filter
-  end
-
-  def test_should_modify_filter_and_leave_comments_alone
-    assert_equal 'textile_filter', contents(:welcome_comment).filter
-    old_time = contents(:welcome_comment)
-    
-    contents(:welcome).filter = 'markdown_filter'
-    contents(:welcome).save
-
-    assert_equal 'textile_filter', contents(:welcome_comment).reload.filter
-  end
-
-  def test_should_modify_filter_and_not_modify_comment_timestamps
-    old_time = contents(:welcome_comment).updated_at
-    
-    contents(:welcome).filter = 'markdown_filter'
-    contents(:welcome).save
-
-    assert_equal old_time, contents(:welcome_comment).reload.updated_at
-  end
-
   def test_should_cache_bluecloth
     a = Article.create :title => 'simple Title', :user => users(:arthur), :body => "# bar\n\nfoo", :filter => 'markdown_filter', :site_id => 1
     assert_equal "<h1>bar</h1>\n\n<p>foo</p>", a.body_html
@@ -173,4 +145,33 @@ class ArticleTest < Test::Unit::TestCase
         def a.new_record?() false ; end
       end
     end
+end
+
+class ArticleFilterEditTest < Test::Unit::TestCase
+  fixtures :contents, :users, :sections, :sites
+
+  def setup
+    @old_time = contents(:welcome_comment).updated_at
+    assert_equal 'textile_filter', contents(:welcome).filter
+    contents(:welcome).filter = 'markdown_filter'
+    contents(:welcome).save!
+  end
+
+  def test_should_clear_filter
+    contents(:welcome).filter = ''
+    contents(:welcome).save!
+    assert_equal '', contents(:welcome).filter
+  end
+
+  def test_should_modify_filter
+    assert_equal 'markdown_filter', contents(:welcome).reload.filter
+  end
+
+  def test_should_modify_filter_and_leave_comments_alone
+    assert_equal 'textile_filter', contents(:welcome_comment).reload.filter
+  end
+
+  def test_should_modify_filter_and_not_modify_comment_timestamps
+    assert_equal @old_time, contents(:welcome_comment).reload.updated_at
+  end
 end
