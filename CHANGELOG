@@ -1,5 +1,11 @@
 * SVN *
 
+* Allow custom routes.
+
+  Mephisto::Routing.connect_with map do
+    map.foo ...
+  end
+
 * don't sanitize custom anchor text for liquid filters [Jonathan Leighton]
 
 * Fix nil authorization header bug.

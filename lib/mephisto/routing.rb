@@ -1,5 +1,10 @@
 module Mephisto
   class Routing
+    # Adds Mephisto routes.  Yield a given block to allow custom routes.
+    #
+    #   Mephisto::Routing.connect_with map do
+    #     map.foo ...
+    #   end
     def self.connect_with(map)
       map.feed    'feed/*sections', :controller => 'feed', :action => 'feed'
       
@@ -18,13 +23,15 @@ module Mephisto
       map.connect 'xmlrpc', :controller => 'backend', :action => 'xmlrpc' 
       
       map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/
+
+      yield if block_given?
       
       map.dispatch '*path', :controller => 'mephisto', :action => 'dispatch'
       map.home '', :controller => 'mephisto', :action => 'dispatch'
     end
     
-    def self.redirections
-      @redirections ||= {}
+    class << self
+      expiring_attr_reader :redirections,  '{}'
     end
     
     def self.deny(*paths)
@@ -53,8 +60,9 @@ module Mephisto
     end
     
     protected
+      @@sanitize_path_regex = /^(\/)|(https?:\/\/)/
       def self.sanitize_path(path)
-        path =~ /^(\/)|(https?:\/\/)/ ? path : "/#{path.split("://").last}"
+        path =~ @@sanitize_path_regex ? path : "/#{path.split("://").last}"
       end
       
       def self.convert_redirection_to_regex(path)
