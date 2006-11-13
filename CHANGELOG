@@ -1,3 +1,11 @@
+* SVN *
+
+* Fix nil authorization header bug.
+
+* fix bug preventing plain html filter
+
+* Fix akismet response issue
+
 * 0.7.2 OFFICIAL *
 
 * Allow safe fallback for bad Site#current_theme_path settings.

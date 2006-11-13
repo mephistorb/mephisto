@@ -54,4 +54,9 @@ class ApplicationControllerTest < Test::Unit::TestCase
     get :test_host
     assert_equal @uk, @controller.site
   end
+  
+  def test_should_return_nil_user_from_invalid_http_auth_data
+    get :test_host
+    @controller.send(:get_auth_data).each { |value| assert_nil value }
+  end
 end
