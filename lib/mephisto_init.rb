@@ -6,8 +6,6 @@ require 'coderay'
 require 'ruby_pants'
 require 'xmlrpc_patch'
 
-RAILS_PATH = Pathname.new(File.expand_path(RAILS_ROOT))
-
 ActiveRecord::Base.observers = [:article_observer, :comment_observer]
 
 class << Dispatcher

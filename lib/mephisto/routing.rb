@@ -25,6 +25,9 @@ module Mephisto
       map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/
 
       yield if block_given?
+      Mephisto::Plugin.custom_routes.each do |path, options|
+        map.connect path, options
+      end
       
       map.dispatch '*path', :controller => 'mephisto', :action => 'dispatch'
       map.home '', :controller => 'mephisto', :action => 'dispatch'

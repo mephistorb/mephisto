@@ -1,5 +1,7 @@
 # monkey patches galore!
 
+Object::RAILS_PATH = Pathname.new(File.expand_path(RAILS_ROOT))
+
 Inflector.inflections do |inflect|
   #inflect.plural /^(ox)$/i, '\1en'
   #inflect.singular /^(ox)en/i, '\1'
@@ -26,13 +28,13 @@ Pathname.class_eval do
   end
 end
 
-Symbol.class_eval do 
+Symbol.class_eval do
   def to_liquid
     to_s
   end
 end
 
-Class.class_eval do
+Module.class_eval do
   # Creates an expiring method that is called once, and overwrites itself so future calls are faster.  It does this
   # by setting an instance variable and an attr_reader on the singleton class.  Other instances of this object are
   # not affected.
@@ -90,3 +92,7 @@ ActiveRecord::Base.class_eval do
 
   expiring_attr_reader :referenced_cache_key, '"[#{[id, self.class.name] * ":"}]"'
 end
+
+
+require 'mephisto_core/admin'
+require 'mephisto_core/plugin'
