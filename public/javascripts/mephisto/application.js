@@ -152,12 +152,12 @@ var TinyTab = Class.create();
 TinyTab.callbacks ={
   'latest-files': function() {
     if($('latest-assets').childNodes.length == 0)
-      new Ajax.Request('/admin/assets;latest');
+      new Ajax.Request(Mephisto.root + '/admin/assets;latest');
   },
   'search-files': function(q) {
     if(!q) return;
     $('spinner').show();
-    new Ajax.Request('/admin/assets;search', {parameters: 'q=' + escape(q)});
+    new Ajax.Request(Mephisto.root + '/admin/assets;search', {parameters: 'q=' + escape(q)});
   }
 };
 
@@ -206,9 +206,8 @@ TinyTab.prototype = {
 Asset = {
   upload: function(form) {
     form = $(form);
-    '/admin/articles/edit/105'
     article_id   = location.href.match(/\/edit\/([0-9]+)/);
-    form.action  = "/admin/articles/upload"
+    form.action  = Mephisto.root + "/admin/articles/upload"
     if(article_id) form.action += "/" + article_id[1]
     form.submit();
   },
@@ -299,7 +298,7 @@ var ArticleForm = {
   
   getRevision: function() {
     var rev = $F(this)
-    var url = '/admin/articles/edit/' + location.href.match(/\/edit\/([0-9]+)/)[1];
+    var url = Mephisto.root + '/admin/articles/edit/' + location.href.match(/\/edit\/([0-9]+)/)[1];
     if(rev != '0') url += "/" + rev;
     location.href = url;
   }
@@ -314,11 +313,11 @@ Comments = {
 var UserForm = {
   toggle: function(chk) {
     $('user-' + chk.getAttribute('value') + '-progress').show();
-    new Ajax.Request('/admin/users/' + (chk.checked ? 'enable' : 'destroy') + '/' + chk.getAttribute('value'));
+    new Ajax.Request(Mephisto.root + '/admin/users/' + (chk.checked ? 'enable' : 'destroy') + '/' + chk.getAttribute('value'));
   },
   toggleAdmin: function(chk) {
     $('user-' + chk.getAttribute('value') + '-progress').show();
-    new Ajax.Request('/admin/users/admin/' + chk.getAttribute('value'));
+    new Ajax.Request(Mephisto.root + '/admin/users/admin/' + chk.getAttribute('value'));
   }
 }
 
@@ -348,7 +347,7 @@ var SectionForm = {
       qu.push('sorted_ids[]=' + li.getAttribute('id').substr(container_id.length));
       return qu;
     }).join('&')
-    new Ajax.Request('/admin/sections/order/' + section_id, {asynchronous:true, evalScripts:true, parameters:query});
+    new Ajax.Request(Mephisto.root + '/admin/sections/order/' + section_id, {asynchronous:true, evalScripts:true, parameters:query});
   }
 }
 
@@ -511,6 +510,7 @@ ToolBox.prototype = {
   }
 }
 
+var Mephisto = { root: ''; }
 
 Effect.DefaultOptions.duration = 0.25;
 Event.addBehavior({
@@ -553,7 +553,7 @@ Event.addBehavior({
     var img = this.down('img');
     var pieces = img.src.split('/');
     new Dialog.Rjs();
-    new Ajax.Request('/admin/themes/show/' + pieces[pieces.length-1]);
+    new Ajax.Request(Mephisto.root + '/admin/themes/show/' + pieces[pieces.length-1]);
   }
   
   //'.theme': function() {

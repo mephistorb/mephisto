@@ -6,6 +6,7 @@
     <title>Mephisto: <%= controller.controller_name %> Admin</title>
     <%= stylesheet_link_tag 'mephisto/fullscreen' %>
     <%= javascript_include_tag 'mephisto/prototype', 'mephisto/effects', 'mephisto/lowpro', 'mephisto/application' %>
+    <script type="text/javascript">Mephisto.root = '<%= ActionController::AbstractRequest.relative_url_root %>';</script>
   </head>
   <body id="body-<%= controller.controller_name %>">
   
