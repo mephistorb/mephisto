@@ -112,6 +112,19 @@ class UserTest < Test::Unit::TestCase
     assert_models_equal [users(:quentin)], User.find_admins(:all)
   end
 
+  def test_should_interpret_site_admin
+    @user = User.new
+    [1, '1', 't', true].each do |value|
+      @user.instance_variable_get(:@attributes)['site_admin'] = value
+      assert @user.site_admin?, "#{value.inspect} was false"
+    end
+
+    [0, '0', 'f', false, nil].each do |value|
+      @user.instance_variable_get(:@attributes)['site_admin'] = value
+      assert !@user.site_admin?, "#{value.inspect} was true"
+    end
+  end
+
   protected
     def create_user(options = {})
       User.create({ :login => 'quire', :email => 'quire@example.com', :password => 'quire', :password_confirmation => 'quire' }.merge(options))

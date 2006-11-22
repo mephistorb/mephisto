@@ -77,6 +77,11 @@ class User < ActiveRecord::Base
     token_expires_at && Time.now.utc < token_expires_at 
   end
 
+  # The site admin property is brought in from memberships.admin, when joined with the sites table.
+  def site_admin?
+    ActiveRecord::ConnectionAdapters::Column.value_to_boolean read_attribute(:site_admin)
+  end
+
   def reset_token!
     returning self.token = rand_key do |t|
       self.token_expires_at = 2.weeks.from_now.utc
