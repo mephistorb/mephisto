@@ -1,13 +1,15 @@
 module AuthenticatedSystem
   protected
     def logged_in?
-      (@current_user ||= session[:user] ? User.find_by_site(site, session[:user]) : :false).is_a?(User)
-    end
-
-    def current_user
-      @current_user if logged_in?
+      current_user != :false
     end
     
+    # Accesses the current user from the session.
+    def current_user
+      @current_user ||= (session[:user] && User.find_by_site(site, session[:user])) || :false
+    end
+    
+    # Store the given user in the session.
     def current_user=(new_user)
       session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
       @current_user = new_user

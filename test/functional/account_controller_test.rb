@@ -180,7 +180,7 @@ context "Account Controller Password Reset" do
   specify "should not activate invalid token" do
     old_token = users(:arthur).token
     get :activate, :id => users(:arthur).token
-    assert_nil @controller.send(:current_user)
+    assert !@controller.send(:logged_in?)
     assert_equal old_token, users(:arthur).reload.token
     assert_redirected_to :action => 'login'
     assert flash[:error]
