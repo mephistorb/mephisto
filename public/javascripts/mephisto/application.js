@@ -510,7 +510,7 @@ ToolBox.prototype = {
   }
 }
 
-var Mephisto = { root: ''; }
+var Mephisto = { root: '' };
 
 Effect.DefaultOptions.duration = 0.25;
 Event.addBehavior({
