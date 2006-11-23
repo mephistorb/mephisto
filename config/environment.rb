@@ -12,7 +12,7 @@
 require File.join(File.dirname(__FILE__), 'boot')
 
 # requires vendor-loaded redcloth
-require 'RedCloth-3.0.4/lib/redcloth'
+require 'RedCloth-3.0.4/lib/redcloth' unless Object.const_defined?(:RedCloth)
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
   
