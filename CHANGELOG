@@ -1,9 +1,5 @@
 * SVN *
 
-* Fix duplicate tag bug.
-
-* add Mephisto.root javascript variable in case a mephisto site sets the relative_url_root
-
 * Allow Modules to use #include_into to dynamically mixin to loaded classes (plugin stuff)
 
 * Allow custom routes.
@@ -11,6 +7,12 @@
   Mephisto::Routing.connect_with map do
     map.foo ...
   end
+
+* 0.7.3 *
+
+* Fix duplicate tag bug.
+
+* add Mephisto.root javascript variable in case a mephisto site sets the relative_url_root
 
 * don't sanitize custom anchor text for liquid filters [Jonathan Leighton]
 

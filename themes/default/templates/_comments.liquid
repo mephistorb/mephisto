@@ -18,9 +18,9 @@
 <h3 id="respond">Leave a Reply</h3>
 {% commentform %}
   <p>{{ form.name }}<label for="author"><small>Name (required)</small></label></p>
-  <p>{{ form.email }}<label for="email"><small>Mail (will not be published) <?php if ($req) echo "(required)"; ?></small></label></p>
+  <p>{{ form.email }}<label for="email"><small>Mail (will not be published)</small></label></p>
   <p>{{ form.url }}<label for="url"><small>Website</small></label></p>
-  <p><textarea name="comment[body]" id="comment" cols="100%" rows="10"></textarea></p>
+  <p><textarea name="comment[body]" id="comment" cols="100%" rows="10">{{ submitted.body }}</textarea></p>
   <p><input name="submit" type="submit" id="submit" value="Submit Comment" /></p>
 {% endcommentform %}
 
