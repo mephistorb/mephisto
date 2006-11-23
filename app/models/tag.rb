@@ -1,4 +1,5 @@
 class Tag < ActiveRecord::Base
+  @@tag_parse_regex = /((?: |)['"]{0,1})['"]?\s*(.*?)\s*(?:[,'"]|$)(?:\1(?: |$))/
   has_many :taggings
 
   class << self
@@ -18,8 +19,8 @@ class Tag < ActiveRecord::Base
     #   # => ['a', 'b', 'c']
     def parse(list)
       return list if list.is_a?(Array)
-      returning list.scan(/((?: |)['"]{0,1})['"]?(.*?)(?:[,'"]|$)(?:\1(?: |$))/) do |tags|
-        tags.collect! &:last
+      returning list.scan(@@tag_parse_regex) do |tags|
+        tags.collect! { |t| t.last.strip!; t.last }
         tags.uniq!
         tags.delete_if &:blank?
       end
