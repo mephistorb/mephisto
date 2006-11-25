@@ -108,6 +108,18 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_dispatch_action :page
   end
 
+  def test_should_not_show_future_page
+    dispatch 'about/future'
+    assert_dispatch_action :page
+    assert_response :missing
+  end
+
+  def test_should_not_show_draft_page
+    dispatch 'about/draft'
+    assert_dispatch_action :page
+    assert_response :missing
+  end
+
   def test_should_render_liquid_templates_on_home
     dispatch
     assert_tag 'h1', :content => 'This is the layout'
@@ -265,7 +277,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_show_navigation_on_paged_sections
     dispatch 'about'
     assert_tag 'ul', :attributes => { :id => 'nav' },
-               :children => { :count => 3, :only => { :tag => 'li' } }
+               :children => { :count => 5, :only => { :tag => 'li' } }
     assert_tag 'ul', :attributes => { :id => 'nav' },
                :descendant => { :tag => 'a', :attributes => { :class => 'selected' } }
     assert_tag 'a',  :attributes => { :class => 'selected' }, :content => 'Welcome to Mephisto'
@@ -273,7 +285,7 @@ class MephistoControllerTest < Test::Unit::TestCase
 
   def test_should_set_home_page_on_paged_sections
     dispatch 'about'
-    assert_equal 3, liquid(:section).pages.size
+    assert_equal 5, liquid(:section).pages.size
     [true, false, false].each_with_index do |expected, i|
       assert_equal expected, liquid(:section).pages[i][:is_page_home]
     end

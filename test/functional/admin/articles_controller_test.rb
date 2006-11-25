@@ -57,7 +57,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_search_article_by_section
     get :index, :filter => 'section', :section => '2'
     assert_response :success
-    assert_models_equal [contents(:welcome), contents(:about), contents(:site_map)], assigns(:articles)
+    assert_models_equal [contents(:future), contents(:welcome), contents(:about), contents(:site_map), contents(:draft)], assigns(:articles)
   end
 
   def test_should_search_article_by_section_and_title

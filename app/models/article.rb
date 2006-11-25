@@ -53,10 +53,14 @@ class Article < Content
   end
 
   class << self
+    def with_published(&block)
+      with_scope({:find => { :conditions => ['contents.published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } }, &block)
+    end
+
     def find_by_date(options = {})
-      find(:all, { :order => 'contents.published_at desc', 
-                   :conditions => ['contents.published_at <= ? AND contents.published_at IS NOT NULL', Time.now.utc] } \
-        .merge(options))
+      with_published do
+        find :all, {:order => 'contents.published_at desc'}.update(options)
+      end
     end
     
     def find_all_in_month(year, month, options = {})

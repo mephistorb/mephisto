@@ -19,8 +19,8 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
     assert_equal sites(:first), assigns(:site)
     assert_equal sections(:home), assigns(:home)
     assert_equal 7, assigns(:sections).length, "Sections: #{assigns(:sections).collect(&:id).to_sentence}"
-    assert_equal 4, assigns(:article_count)['1']
-    assert_equal 3, assigns(:article_count)['2']
+    assert_equal 2, assigns(:article_count)['1']
+    assert_equal 5, assigns(:article_count)['2']
   end
 
   def test_should_create_blog_section
@@ -67,8 +67,8 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
 
   def test_should_reorder_articles
     assert_reorder_articles sections(:about),
-      [contents(:welcome), contents(:about), contents(:site_map)],
-      [contents(:about), contents(:site_map), contents(:welcome)]
+      [contents(:welcome), contents(:about), contents(:site_map), contents(:draft), contents(:future)],
+      [contents(:future), contents(:about), contents(:site_map), contents(:welcome), contents(:draft)]
   end
 
   def test_should_destroy_section

@@ -109,8 +109,8 @@ class SectionTest < Test::Unit::TestCase
 
   specify "should order articles in sections" do
     assert_reorder_articles sections(:about),
-      [contents(:welcome), contents(:about), contents(:site_map)],
-      [contents(:about), contents(:site_map), contents(:welcome)]
+      [contents(:welcome), contents(:about), contents(:site_map), contents(:draft), contents(:future)],
+      [contents(:about), contents(:site_map), contents(:welcome), contents(:future), contents(:draft)]
   end
 
   protected

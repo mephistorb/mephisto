@@ -31,7 +31,9 @@ class MephistoController < ApplicationController
     end
 
     def dispatch_page
-      @article = @dispatch_path.empty? ? @section.articles.find_by_position : @section.articles.find_by_permalink(@dispatch_path.first)
+      Article.with_published do
+        @article = @dispatch_path.empty? ? @section.articles.find_by_position : @section.articles.find_by_permalink(@dispatch_path.first)
+      end
       show_404 and return unless @article
       Mephisto::Liquid::CommentForm.article = @article
       render_liquid_template_for(:page, 'section' => @section.to_liquid(true),

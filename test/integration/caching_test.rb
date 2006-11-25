@@ -81,6 +81,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_sections_when_publishing_draft
+    AssignedSection.delete_all 'id > 9'
     visitor = visit
     writer  = login_as :quentin
     
