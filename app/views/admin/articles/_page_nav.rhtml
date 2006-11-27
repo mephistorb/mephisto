@@ -2,7 +2,12 @@
 <% content_for :action_nav do %>
 <div id="page-nav">
   <ul id="act-nav" class="clear">
-  <% if admin? || @article.user_id == current_user.id -%>
+    <% if controller.action_name == 'comments' && @comments.any? -%>
+      <li><%= link_to_remote "Delete these #{@filter != 'all' ? @filter : ''} comments", :confirm => "Are you sure you wish to delete all #{@filter != 'all' ? @filter : ''} comments?",
+          :url => { :action => 'destroy_comment', :id => @article }, :with => "ArticleForm.getAvailableComments().toQueryString('comment')"
+        %></li>
+    <% end -%>
+  <% if (admin? || @article.user_id == current_user.id) && controller.action_name != 'comments' -%>
     <li><%= link_to_remote 'Delete this article', :url => {:action => 'destroy', :id => @article}, :confirm => 'Are you sure you want to delete this article?' %></li>
   <% unless @article.comment_age == -1 -%>
     <li id="close-article-comments"><%= link_to_remote 'Close comments for this article', 
@@ -22,11 +27,6 @@
         <% if @article.comments.any? && controller.action_name != 'comments' -%>
           <li><%= link_to "View comments", :controller => 'articles', :action => 'comments', :id => @article %></li>
         <% end %>
-        <% if controller.action_name == 'comments' && @comments.any? -%>
-          <li><%= link_to_remote "Delete all #{@filter != 'all' ? @filter : ''} comments", :confirm => "Are you sure you wish to delete all #{@filter != 'all' ? @filter : ''} comments?",
-              :url => { :action => 'destroy_comment', :id => @article }, :with => "ArticleForm.getAvailableComments().toQueryString('comment')"
-            %></li>
-        <% end -%>
         </ul>
       </div>
     </li>
