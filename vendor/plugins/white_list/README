@@ -10,26 +10,20 @@ the extensive test suite.
 
 You can add or remove tags/attributes if you want to customize it a bit.
 
-add table tags
+Add table tags
   
-  WhiteListHelper.tags += %w(table td th)
+  WhiteListHelper.tags.merge %w(table td th)
 
-remove tags
+Remove tags
   
-  WhiteListHelper.tags -= %w(div span)
+  WhiteListHelper.tags.delete 'div'
 
-clear any attributes that are allowed for <a> tags
+Change allowed attributes
 
-  WhiteListHelper.attributes['a'] = []
+  WhiteListHelper.attributes.merge %w(id class style)
 
-allow a new attribute for the <img> tag
+white_list accepts a block for custom tag escaping.  Shown below is the default block that white_list uses if none is given.
+The block is called for all bad tags, and every text node.  node is an instance of HTML::Node (either HTML::Tag or HTML::Text).  
+bad is nil for text nodes inside good tags, or is the tag name of the bad tag.  
 
-  WhiteListHelper.attributes['img'] += %w(style)
-
-add new tag with attributes
-
-  WhiteListHelper.attributes['table'] = %w(cellpadding cellspacing)
-
-change allowed attributes for all tags
-
-  WhiteListHelper.attributes[nil] = %w(id class style)
+  <%= white_list(@article.body) { |node, bad| white_listed_bad_tags.include?(bad) ? nil : node.to_s.gsub(/</, '&lt;') } %>

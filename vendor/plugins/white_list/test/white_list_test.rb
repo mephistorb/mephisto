@@ -5,17 +5,17 @@ class WhiteListTest < Test::Unit::TestCase
   include WhiteListHelper
   public :contains_bad_protocols?
 
-  (WhiteListHelper.tags + WhiteListHelper.attributes.keys).compact.each do |tag_name|
+  WhiteListHelper.tags.each do |tag_name|
     define_method "test_should_allow_#{tag_name}_tag" do
       assert_white_listed "start <#{tag_name} title=\"1\" name=\"foo\">foo <bad>bar</bad> baz</#{tag_name}> end", "start <#{tag_name} title='1'>foo &lt;bad>bar&lt;/bad> baz</#{tag_name}> end"
     end
   end
 
   def test_should_allow_anchors
-    assert_white_listed %(<a href="foo" onclick="bar"><script>baz</script></a>), "<a href='foo'>&lt;script>baz&lt;/script></a>"
+    assert_white_listed %(<a href="foo" onclick="bar"><script>baz</script></a>), "<a href='foo'></a>"
   end
 
-  WhiteListHelper.attributes['img'].each do |img_attr|
+  %w(src width height alt).each do |img_attr|
     define_method "test_should_allow_image_#{img_attr}_attribute" do
       assert_white_listed %(<img #{img_attr}="foo" onclick="bar" />), "<img #{img_attr}='foo' />"
     end
@@ -37,7 +37,7 @@ class WhiteListTest < Test::Unit::TestCase
 
   def test_should_allow_custom_tags_with_attributes
     text = "<fieldset foo='bar'>foo</fieldset>"
-    assert_equal(text, white_list(text, :attributes => {'fieldset' => %w(foo)}))
+    assert_equal(text, white_list(text, :attributes => ['foo']))
   end
 
   [%w(img src), %w(a href)].each do |(tag, attr)|
@@ -64,7 +64,7 @@ class WhiteListTest < Test::Unit::TestCase
   end
 
   def test_should_block_script_tag
-    assert_white_listed %(<SCRIPT\nSRC=http://ha.ckers.org/xss.js></SCRIPT>), "&lt;script src='http:' />&lt;/script>"
+    assert_white_listed %(<SCRIPT\nSRC=http://ha.ckers.org/xss.js></SCRIPT>), ""
   end
 
   [%(<IMG SRC="javascript:alert('XSS');">), 
@@ -92,16 +92,16 @@ class WhiteListTest < Test::Unit::TestCase
   end
   
   def test_should_sanitize_invalid_script_tag
-    assert_white_listed %(<SCRIPT/XSS SRC="http://ha.ckers.org/xss.js"></SCRIPT>), "&lt;script />&lt;/script>"
+    assert_white_listed %(<SCRIPT/XSS SRC="http://ha.ckers.org/xss.js"></SCRIPT>), ""
   end
   
   def test_should_sanitize_script_tag_with_multiple_open_brackets
-    assert_white_listed %(<<SCRIPT>alert("XSS");//<</SCRIPT>), "&lt;&lt;script>alert(\"XSS\");//&lt;&lt;/script>"
+    assert_white_listed %(<<SCRIPT>alert("XSS");//<</SCRIPT>), "&lt;"
     assert_white_listed %(<iframe src=http://ha.ckers.org/scriptlet.html\n<), "&lt;iframe src='http:' />&lt;"
   end
   
   def test_should_sanitize_unclosed_script
-    assert_white_listed %(<SCRIPT SRC=http://ha.ckers.org/xss.js?<B>), "&lt;script src='http:' /><b>"
+    assert_white_listed %(<SCRIPT SRC=http://ha.ckers.org/xss.js?<B>), "<b>"
   end
   
   def test_should_sanitize_half_open_scripts
@@ -112,7 +112,15 @@ class WhiteListTest < Test::Unit::TestCase
     img_hack = %(<IMG\nSRC\n=\n"\nj\na\nv\na\ns\nc\nr\ni\np\nt\n:\na\nl\ne\nr\nt\n(\n'\nX\nS\nS\n'\n)\n"\n>)
     assert_white_listed img_hack, "<img>"
   end
-  
+
+  def test_should_allow_custom_block
+    html = %(<SCRIPT type="javascript">foo</SCRIPT><img>blah</img><blink>blah</blink>)
+    safe = white_list html do |node, bad|
+      bad == 'script' ? nil : node
+    end
+    assert_equal "<img>blah</img><blink>blah</blink>", safe
+  end
+
   protected
     def assert_white_listed(text, expected = nil)
       assert_equal((expected || text), white_list(text))
