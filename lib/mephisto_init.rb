@@ -27,9 +27,11 @@ end
 
 Dispatcher.register_liquid_tags
 
+WhiteListHelper.tags.merge %w(table tr td)
+
 ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS.update \
   :standard  => '%B %d, %Y @ %I:%M %p',
-  :stub      => '%B %d', # XXX what is the meaning of stub in this context?  (Basically it means short)
+  :stub      => '%B %d',
   :time_only => '%I:%M %p',
   :plain     => '%B %d %I:%M %p',
   :mdy       => '%B %d, %Y',
