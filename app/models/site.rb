@@ -1,6 +1,7 @@
 class Site < ActiveRecord::Base
-  @@theme_path = Pathname.new(RAILS_ROOT) + 'themes'
-  cattr_reader :theme_path
+  @@default_assigns = {}
+  @@theme_path      = Pathname.new(RAILS_ROOT) + 'themes'
+  cattr_reader :theme_path, :default_assigns
 
   cattr_accessor :multi_sites_enabled, :cache_sweeper_tracing
 
@@ -163,6 +164,7 @@ class Site < ActiveRecord::Base
 
   def render_liquid_for(section, template_type, assigns = {}, controller = nil)
     assigns.update('site' => to_liquid(section), 'mode' => template_type)
+    assigns.update(default_assigns) unless default_assigns.empty?
     parse_inner_template(set_content_template(section, template_type), assigns, controller)
     parse_template(set_layout_template(section, template_type), assigns, controller)
   end
