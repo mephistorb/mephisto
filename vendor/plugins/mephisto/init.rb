@@ -122,6 +122,7 @@ ActiveRecord::Base.class_eval do
   expiring_attr_reader :referenced_cache_key, '"[#{[id, self.class.name] * ":"}]"'
 end
 
+Liquid::For.send :include, Mephisto::Liquid::ForWithSorting
 
 require 'mephisto_core/admin'
 require 'mephisto_core/plugin'

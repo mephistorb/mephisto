@@ -9,6 +9,11 @@
   end
 
 * fix that only published articles are available as section pages.
+* SVN *
+
+Add sorting for liquid for statements.
+
+  {% for page in section.pages limit: 3 sort_by: title %}
 
 * 0.7.3 *
 

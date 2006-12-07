@@ -103,7 +103,7 @@ context "Home Section Feed" do
   specify "should sanitize content" do
     text = @contents.first.get_text.to_s.strip
     evil = "<script>hi</script><a onclick=\"foo\" href=\"#\">linkage</a></p>"
-    good = "&lt;script>hi&lt;/script><a href='#'>linkage</a></p>"
+    good = "<a href='#'>linkage</a></p>"
     assert !text.ends_with(CGI::escapeHTML(evil)), "'#{text.inspect}' was not sanitized"
     assert  text.ends_with(CGI::escapeHTML(good)), "'#{text.inspect}' was not sanitized"
   end

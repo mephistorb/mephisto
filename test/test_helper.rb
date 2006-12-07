@@ -91,6 +91,10 @@ class Test::Unit::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
 
+  def assert_template_result(expected, template, assigns={}, message=nil)
+    assert_equal expected, Liquid::Template.parse(template).render(assigns)
+  end 
+
   def host!(hostname)
     @request.host = hostname
   end
