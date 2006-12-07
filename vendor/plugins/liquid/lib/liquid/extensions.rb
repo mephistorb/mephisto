@@ -1,56 +1,56 @@
 require 'time'
 require 'date'
 
-class String
+class String # :nodoc:
   def to_liquid
     self
   end
 end
 
-class Array 
+class Array  # :nodoc:
   def to_liquid
     self
   end
 end
 
-class Hash 
+class Hash  # :nodoc:
   def to_liquid
     self
   end
 end
 
-class Numeric
+class Numeric  # :nodoc:
   def to_liquid
     self
   end
 end
 
-class Time
+class Time  # :nodoc:
   def to_liquid
     self
   end
 end
 
-class DateTime < Date
+class DateTime < Date  # :nodoc:
   def to_liquid
     self
   end
 end
 
-class Date
+class Date  # :nodoc:
   def to_liquid
     self
   end
 end
 
-def true.to_liquid
+def true.to_liquid  # :nodoc:
   self
 end
 
-def false.to_liquid
+def false.to_liquid # :nodoc:
   self
 end
 
-def nil.to_liquid
+def nil.to_liquid # :nodoc:
   self
 end

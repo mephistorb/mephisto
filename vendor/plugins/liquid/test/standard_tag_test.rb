@@ -1,14 +1,14 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/helper'
 
 
-class TemplateTest < Test::Unit::TestCase
+class StandardTagTest < Test::Unit::TestCase
   include Liquid
   
   
   def test_tag 
     tag = Tag.new([], [])
     assert_equal 'liquid::tag', tag.name 
-    assert_equal '', tag.render(Context.new(Liquid::Template.new))    
+    assert_equal '', tag.render(Context.new)    
   end
   
   def test_no_transform
@@ -68,6 +68,10 @@ HERE
 {%endfor%}  
 HERE
     assert_template_result(expected,template,'array' => [1,2,3])
+  end
+  
+  def test_for_with_range
+    assert_template_result(' 1  2  3 ','{%for item in (1..3) %} {{item}} {%endfor%}')    
   end
 
   def test_for_with_variable
@@ -274,6 +278,25 @@ HERE
     assert_template_result('true',  '{% case true %}{% when true %}true{% when false %}false{% else %}else{% endcase %}', {})     
     assert_template_result('else',  '{% case NULL %}{% when true %}true{% when false %}false{% else %}else{% endcase %}', {})     
   end
+  
+  def test_assign_from_case    
+    # Example from the shopify forums
+    code = %q({% case collection.handle %}{% when 'menswear-jackets' %}{% assign ptitle = 'menswear' %}{% when 'menswear-t-shirts' %}{% assign ptitle = 'menswear' %}{% else %}{% assign ptitle = 'womenswear' %}{% endcase %}{{ ptitle }})
+    template = Liquid::Template.parse(code)
+    assert_equal "menswear",   template.render("collection" => {'handle' => 'menswear-jackets'})
+    assert_equal "menswear",   template.render("collection" => {'handle' => 'menswear-t-shirts'})
+    assert_equal "womenswear", template.render("collection" => {'handle' => 'x'})
+    assert_equal "womenswear", template.render("collection" => {'handle' => 'y'})
+    assert_equal "womenswear", template.render("collection" => {'handle' => 'z'})
+  end
+  
+  def test_assign
+    assert_equal 'variable', Liquid::Template.parse( '{% assign a = "variable"%}{{a}}'  ).render            
+  end
+  
+  def test_assign_is_global
+    assert_equal 'variable', Liquid::Template.parse( '{%for i in (1..2) %}{% assign a = "variable"%}{% endfor %}{{a}}'  ).render        
+  end  
   
   def test_case_detects_bad_syntax
     assert_raise(SyntaxError) do

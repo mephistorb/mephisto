@@ -70,19 +70,7 @@ module Liquid
     def errors
       @errors ||= []
     end
-    
-    def handle_error(e)
-      errors.push(e)
-      raise if @rethrow_errors
-      
-      case e
-      when SyntaxError        
-        "Liquid syntax error: #{e.message}"        
-      else
-        "Liquid error: #{e.message}"
-      end      
-    end
-    
+        
     # Render takes a hash with local variables.
     #
     # if you use the same filters over and over again consider registering them globally 
@@ -102,9 +90,9 @@ module Liquid
         args.shift
       when Hash
         self.assigns.merge!(args.shift)        
-        Context.new(self)
+        Context.new(assigns, registers, @rethrow_errors)
       when nil
-        Context.new(self)
+        Context.new(assigns, registers, @rethrow_errors)
       end
       
       case args.last
@@ -123,10 +111,15 @@ module Liquid
       when Array
         context.add_filters(args.pop)            
       end
-                                    
+                              
+                              
       # render the nodelist.
       # for performance reasons we get a array back here. to_s will make a string out of it
-      @root.render(context).to_s
+      begin
+        @root.render(context).to_s
+      ensure
+        @errors = context.errors      
+      end
     end
     
     def render!(*args)

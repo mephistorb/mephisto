@@ -28,8 +28,8 @@ module Liquid
   VariableAttributeSeparator  = '.'
   TagStart                    = /\{\%/
   TagEnd                      = /\%\}/
-  VariableSignature           = /[\w\-\.\[\]]/
-  VariableSegment             = /[\w\-]/
+  VariableSignature           = /\(?[\w\-\.\[\]]\)?/
+  VariableSegment             = /[\w\-]\??/
   VariableStart               = /\{\{/
   VariableEnd                 = /\}\}/
   QuotedFragment              = /"[^"]+"|'[^']+'|[^\s,|]+/

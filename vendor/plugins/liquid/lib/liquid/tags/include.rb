@@ -27,8 +27,7 @@ module Liquid
       source  = Liquid::Template.file_system.read_template_file(context[@template_name])      
       partial = Liquid::Template.parse(source)      
       
-      
-      variable = context[@variable_name]
+      variable = context[@variable_name || @template_name[1..-2]]
       
       context.stack do
         @attributes.each do |key, value|

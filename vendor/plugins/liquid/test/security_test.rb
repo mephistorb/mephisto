@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/helper'
 
 module SecurityFilter
   def add_one(input)

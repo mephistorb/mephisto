@@ -1,6 +1,6 @@
 module Liquid
   class Assign < Tag
-    Syntax = /(\w+)\s*=\s*(#{QuotedFragment}+)/   
+    Syntax = /(#{VariableSignature}+)\s*=\s*(#{QuotedFragment}+)/   
   
     def initialize(markup, tokens)
       if markup =~ Syntax
@@ -12,8 +12,8 @@ module Liquid
     end
   
     def render(context)
-       context[@to] = context[@from]
-       ''       
+       context.scopes.last[@to.to_s] = context[@from]
+       ''
     end 
   
   end  

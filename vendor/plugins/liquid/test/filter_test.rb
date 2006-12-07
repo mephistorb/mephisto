@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/helper'
 
 
 module MoneyFilter
@@ -23,7 +23,7 @@ class FiltersTest < Test::Unit::TestCase
   include Liquid
   
   def setup
-    @context = Context.new(Liquid::Template.new)
+    @context = Context.new
   end
     
   def test_local_filter    

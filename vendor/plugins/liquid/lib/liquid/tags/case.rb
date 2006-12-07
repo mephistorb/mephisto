@@ -11,54 +11,65 @@ module Liquid
       else
         raise SyntaxError.new("Syntax Error in tag 'case' - Valid syntax: case [condition]")
       end
-
-      push_block('case', markup)
-      
+            
       super
     end
 
     def unknown_tag(tag, markup, tokens)
-      if ['when', 'else'].include?(tag)
-        push_block(tag, markup)
+      @nodelist = []
+      case tag
+      when 'when'
+        record_when_condition(markup)
+      when 'else'
+        record_else_condition(markup)
       else
         super
       end
     end
 
-    def render(context)
-      @blocks.inject([]) do |output, block|
-
-        if block.else?
-           return render_all(block.attachment, context) if output.empty? || output.join !~ /\S/
-        else
-          
-          if block.evaluate(context)
-            context.stack do          
-              output += render_all(block.attachment, context)
-            end          
-          end
-          
-        end
-              
+    def render(context)      
+      context.stack do          
+        execute_else_block = true
         
-        output
-      end.join
+        @blocks.inject([]) do |output, block|
+      
+          if block.else? 
+            
+            return render_all(block.attachment, context) if execute_else_block
+            
+          elsif block.evaluate(context)
+            
+            execute_else_block = false        
+            output += render_all(block.attachment, context)                    
+          end            
+      
+          output
+        end
+      end          
     end
     
     private
     
-    def push_block(tag, markup)            
-      
-      block = if tag == 'else'
-        ElseCondition.new
-      elsif markup =~ WhenSyntax
-        Condition.new(@left, '==', $1)        
-      else
-        raise SyntaxError.new("Syntax Error in tag 'case' - Valid when condition: when [condition] ")
+    def record_when_condition(markup)                
+      # Create a new nodelist and assign it to the new block
+      if not markup =~ WhenSyntax
+        raise SyntaxError.new("Syntax Error in tag 'case' - Valid when condition: {% when [condition] %} ")
       end
-            
-      @blocks.push(block)      
-      @nodelist = block.attach(Array.new) 
+
+      block = Condition.new(@left, '==', $1)        
+      block.attach(@nodelist)
+      @blocks.push(block)            
+    end
+
+    def record_else_condition(markup)            
+
+      if not markup.strip.empty?
+        raise SyntaxError.new("Syntax Error in tag 'case' - Valid else condition: {% else %} (no parameters) ")
+      end
+         
+      block = ElseCondition.new            
+      block.attach(@nodelist)
+      @blocks << block
     end
     
         

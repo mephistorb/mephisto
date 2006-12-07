@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/helper'
 class HundredCentes
   def to_liquid
     100
@@ -9,11 +9,34 @@ class CentsDrop < Liquid::Drop
   def amount
     HundredCentes.new
   end
+  
+  def non_zero?
+    true
+  end
 end
 
 class ContextSensitiveDrop < Liquid::Drop
   def test
     @context['test']
+  end
+end
+
+class Category < Liquid::Drop
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
+
+  def to_liquid
+    CategoryDrop.new(self)
+  end
+end
+
+class CategoryDrop
+  attr_accessor :category, :context
+  def initialize(category)
+    @category = category
   end
 end
 
@@ -23,7 +46,7 @@ class ContextTest < Test::Unit::TestCase
 
   def setup
     @template = Liquid::Template.new
-    @context = Liquid::Context.new(@template)
+    @context = Liquid::Context.new(@template.assigns, @template.registers)
   end
 
   def test_variables
@@ -53,7 +76,7 @@ class ContextTest < Test::Unit::TestCase
     assert_equal nil, @context['nil']
     assert_equal nil, @context['nil']    
   end
-
+  
   def test_variables_not_existing
     assert_equal nil, @context['does_not_exist']
   end
@@ -267,12 +290,17 @@ class ContextTest < Test::Unit::TestCase
     @context.merge( "cents" => CentsDrop.new )
     assert_equal 100, @context['cents.amount']     
   end
-
+  
   def test_nested_cents_through_drop
     @context.merge( "vars" => {"cents" => CentsDrop.new} )
     assert_equal 100, @context['vars.cents.amount']     
   end
   
+  def test_drop_methods_with_question_marks
+    @context.merge( "cents" => CentsDrop.new )
+    assert @context['cents.non_zero?']     
+  end
+
   def test_context_from_within_drop
     @context.merge( "test" => '123', "vars" => ContextSensitiveDrop.new )
     assert_equal '123', @context['vars.test']     
@@ -281,6 +309,13 @@ class ContextTest < Test::Unit::TestCase
   def test_nested_context_from_within_drop
     @context.merge( "test" => '123', "vars" => {"local" => ContextSensitiveDrop.new }  )
     assert_equal '123', @context['vars.local.test']     
+  end
+  
+  def test_ranges
+    @context.merge( "test" => '5' )
+    assert_equal (1..5), @context['(1..5)']
+    assert_equal (1..5), @context['(1..test)']
+    assert_equal (5..5), @context['(test..test)']
   end
 
   def test_cents_through_drop_nestedly
@@ -337,4 +372,10 @@ class ContextTest < Test::Unit::TestCase
     assert_equal 345392, @context['magic']    
   end
   
+  def test_to_liquid_and_context_at_first_level
+    @context['category'] = Category.new("foobar")
+    assert_kind_of CategoryDrop, @context['category']
+    assert_equal @context, @context['category'].context
+  end
+
 end

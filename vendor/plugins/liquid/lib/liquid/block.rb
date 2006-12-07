@@ -76,7 +76,7 @@ module Liquid
     def render(context)
       render_all(@nodelist, context)
     end
-
+    
     protected
 
     def assert_missing_delimitation!
@@ -92,7 +92,7 @@ module Liquid
             token.to_s
           end
         rescue Exception => e          
-          context.template.handle_error(e)
+          context.handle_error(e)
         end
           
       end      

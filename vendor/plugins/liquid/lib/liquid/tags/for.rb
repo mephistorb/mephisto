@@ -22,6 +22,7 @@ module Liquid
       context.registers[:for] ||= Hash.new(0)
     
       collection = context[@collection_name]
+      collection = collection.to_a if collection.is_a?(Range)
     
       return '' if collection.nil? or collection.empty?
     

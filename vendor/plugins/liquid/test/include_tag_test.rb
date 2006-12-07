@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/helper'
 
 class TestFileSystem 
   def read_template_file(template_path)
@@ -38,6 +38,11 @@ class IncludeTagTest < Test::Unit::TestCase
   def test_include_tag_with    
     assert_equal "Product: Draft 151cm ", 
                  Template.parse("{% include 'product' with products[0] %}").render( "products" => [ {'title' => 'Draft 151cm'}, {'title' => 'Element 155cm'} ]  )
+  end
+
+  def test_include_tag_with_default_name    
+    assert_equal "Product: Draft 151cm ", 
+                 Template.parse("{% include 'product' %}").render( "product" => {'title' => 'Draft 151cm'}  )
   end
 
   def test_include_tag_for

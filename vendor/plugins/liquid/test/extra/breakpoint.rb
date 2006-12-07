@@ -16,7 +16,7 @@
 # license please contact me.
 
 require 'irb'
-require 'binding_of_caller'
+require 'caller'
 require 'drb'
 require 'drb/acl'
 require 'thread'

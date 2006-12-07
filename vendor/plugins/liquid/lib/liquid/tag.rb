@@ -14,7 +14,7 @@ module Liquid
     def name
       self.class.name.downcase
     end
-    
+        
     def render(context)
       ''
     end    

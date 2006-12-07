@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require File.dirname(__FILE__) + '/test_helper'
+require File.dirname(__FILE__) + '/helper'
 
 class ParsingQuirksTest < Test::Unit::TestCase
   include Liquid

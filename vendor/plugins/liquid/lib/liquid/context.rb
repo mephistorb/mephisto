@@ -17,20 +17,18 @@ module Liquid
   #   context['bob']  #=> nil  class Context
   class Context
     attr_reader :scopes
-    attr_reader :template
+    attr_reader :errors, :registers
     
-    def initialize(template)
-      @template   = template
-      @scopes     = [template.assigns]
-    end
+    def initialize(assigns = {}, registers = {}, rethrow_errors = false)
+      @scopes     = [(assigns || {})]
+      @registers  = registers
+      @errors     = []
+      @rethrow_errors = rethrow_errors
+    end    
            
     def strainer
       @strainer ||= Strainer.create(self)
-    end
-    
-    def registers
-      @template.registers
-    end
+    end  
                
     # adds filters to this context. 
     # this does not register the filters with the main Template object. see <tt>Template.register_filter</tt> 
@@ -38,12 +36,22 @@ module Liquid
     def add_filters(filters)
       filters = [filters].flatten.compact
       
-      raise ArgumentError, "Expected module but got: #{filter_module.class}" unless filters.all? { |f| f.is_a?(Module)}
-      
       filters.each do |f|         
+        raise ArgumentError, "Expected module but got: #{f.class}" unless f.is_a?(Module)
         strainer.extend(f)
       end      
     end
+    
+    def handle_error(e)
+      errors.push(e)
+      raise if @rethrow_errors
+      
+      case e
+      when SyntaxError then "Liquid syntax error: #{e.message}"        
+      else "Liquid error: #{e.message}"
+      end
+    end
+    
                               
     def invoke(method, *args)
       if strainer.respond_to?(method)
@@ -115,7 +123,7 @@ module Liquid
     #
     def resolve(key)
       case key
-      when nil
+      when nil, 'nil', 'null', ''
         nil
       when 'true'
         true
@@ -123,8 +131,6 @@ module Liquid
         false
       when 'empty'
         :empty?
-      when 'nil', 'null'
-        nil
       # Single quoted strings
       when /^'(.*)'$/
         $1.to_s
@@ -134,11 +140,15 @@ module Liquid
       # Integer and floats
       when /^(\d+)$/ 
         $1.to_i
+      # Ranges
+      when /^\((\S+)\.\.(\S+)\)$/        
+        (resolve($1).to_i..resolve($2).to_i)
+      # Floats
       when /^(\d[\d\.]+)$/ 
         $1.to_f
       else
         variable(key)
-      end
+      end      
     end
     
     # fetches an object starting at the local scope and then moving up 
@@ -148,7 +158,8 @@ module Liquid
         if scope.has_key?(key)
           variable = scope[key] 
           variable = scope[key] = variable.call(self) if variable.is_a?(Proc)
-          variable.context = self if variable.respond_to?(:context=)                          
+          variable = variable.to_liquid
+          variable.context = self if variable.respond_to?(:context=)
           return variable
         end
       end
@@ -166,7 +177,7 @@ module Liquid
     def variable(markup)
       parts   = markup.scan(VariableParser)      
       
-      if object = find_variable(parts.shift).to_liquid
+      if object = find_variable(parts.shift)
             
         parts.each do |part|        
 
@@ -177,8 +188,9 @@ module Liquid
           if object.respond_to?(:has_key?) and object.has_key?(part)
           
             # if its a proc we will replace the entry in the hash table with the proc
-            object[part] = object[part].call(self) if object[part].is_a?(Proc) and object.respond_to?(:[]=)
-            object = object[part].to_liquid
+            res = object[part]
+            res = object[part] = res.call(self) if res.is_a?(Proc) and object.respond_to?(:[]=)
+            object = res.to_liquid
 
           # Array
           elsif object.respond_to?(:fetch) and part =~ /^\d+$/ 
