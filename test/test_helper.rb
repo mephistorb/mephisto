@@ -215,10 +215,7 @@ class Test::Unit::TestCase
   
   # mocks a Liquid::Context
   def mock_context(assigns = {}, registers = {})
-    t = Liquid::Template.new
-    t.assigns.update assigns
-    t.registers.update registers
-    returning Liquid::Context.new(t) do |context|
+    returning Liquid::Context.new(assigns, registers) do |context|
       assigns.keys.each { |k| context[k].context = context }
     end
   end
