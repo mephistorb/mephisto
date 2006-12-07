@@ -316,10 +316,7 @@ class MephistoControllerTest < Test::Unit::TestCase
   def test_should_sanitize_comment
     date = contents(:welcome).published_at
     dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
-    evil = %(<p>rico&#8217;s evil <script>hi</script> and <a onclick="foo" href="#">linkage</a></p>)
-    good = %(<p>rico&#8217;s evil &lt;script>hi&lt;/script> and <a href='#'>linkage</a></p>)
-    assert !@response.body.include?(evil), "includes unsanitized code"
-    assert  @response.body.include?(good), "does not include sanitized code"
+    assert !@response.body.include?('script'), "'#{@response.body}' includes unsanitized code"
   end
 
   def test_should_show_comments_form

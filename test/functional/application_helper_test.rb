@@ -55,14 +55,6 @@ class ApplicationHelperTest < Test::Unit::TestCase
     assert_match assets(:png).public_filename, asset_image_for(assets(:png))
   end
 
-  def test_should_not_sanitize_tables
-    assert_equal "&lt;table&gt;", sanitize_feed_content('<table>')
-  end
-
-  def test_should_sanitize_tables
-    assert_equal "&amp;lt;table&gt;", sanitize_feed_content('<table>', true)
-  end
-
   protected
     def asset_image_args_for(*args)
       controller.send(:asset_image_args_for, *args)
