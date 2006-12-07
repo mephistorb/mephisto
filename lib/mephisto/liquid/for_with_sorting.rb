@@ -13,7 +13,11 @@ module Mephisto
         
         return '' if collection.nil? or collection.empty?
         
-        context[@collection_name] = collection.sort_by { |i| i[@attributes['sort_by']] } if @attributes['sort_by']
+        if @attributes['sort_by']
+          sorted_name = "sorted_#{@collection_name.tr '.', '_'}"
+          context[sorted_name] = collection.sort_by { |i| i[@attributes['sort_by']] }
+          @collection_name = sorted_name
+        end
         
         render_without_sorting(context)
       end
