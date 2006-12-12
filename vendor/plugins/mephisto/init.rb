@@ -123,6 +123,3 @@ ActiveRecord::Base.class_eval do
 end
 
 Liquid::For.send :include, Mephisto::Liquid::ForWithSorting
-
-require 'mephisto_core/admin'
-require 'mephisto_core/plugin'
