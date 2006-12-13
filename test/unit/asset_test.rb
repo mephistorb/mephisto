@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class AssetTest < Test::Unit::TestCase
   fixtures :sites, :assets, :tags, :taggings
-  
+
   def test_should_upload_and_create_asset_records
     asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
     
@@ -17,13 +17,14 @@ class AssetTest < Test::Unit::TestCase
       end
     end
   end
-  
+
   def test_should_upload_file
     process_upload
     assert_assets_exist :logo
   end  
 
   def test_should_rename_non_unique_filename
+    Site.multi_sites_enabled = false
     asset = process_upload
     assert_equal 'logo.png', asset.filename
     asset = process_upload
@@ -32,12 +33,13 @@ class AssetTest < Test::Unit::TestCase
   end
 
   def test_should_rename_non_unique_filename_when_renaming
+    Site.multi_sites_enabled = false
     now   = Time.now.utc
     asset = process_upload
     assert_equal 'logo.png', asset.filename
     asset = process_upload(:filename => 'logo_reloaded.png')
     assert_assets_exist :logo_reloaded, now
-    
+
     asset.update_attributes :filename => 'logo.png'
     assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, "logo_1.png")
   end
@@ -168,7 +170,7 @@ class AssetTest < Test::Unit::TestCase
   protected
     def process_upload(options = {})
       a = sites(:first).assets.create(options.reverse_merge(:filename => 'logo.png', :content_type => 'image/png', 
-        :attachment_data => IO.read(File.join(RAILS_ROOT, 'public/images/mephisto/logo.png'))))
+        :attachment_data => IO.read(File.join(RAILS_ROOT, 'public','images','mephisto','logo.png'))))
       assert_valid a
       a
     end
