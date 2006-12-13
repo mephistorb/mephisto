@@ -313,10 +313,11 @@ class MephistoControllerTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_sanitize_comment
+  def test_should_sanitize_comment_not_article
     date = contents(:welcome).published_at
     dispatch "#{date.year}/#{date.month}/#{date.day}/welcome-to-mephisto"
-    assert !@response.body.include?('script'), "'#{@response.body}' includes unsanitized code"
+    assert_select "body script", true, "Article can have some <script> tags"
+    assert_select ".comments script", false, "Comments block should not have any <script> tags"
   end
 
   def test_should_show_comments_form

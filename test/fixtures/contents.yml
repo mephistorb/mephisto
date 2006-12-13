@@ -43,8 +43,8 @@ welcome_comment:
   article_id: 1
   title: Welcome to Mephisto
   permalink: welcome-to-mephisto
-  body: "rico's evil <script>hi</script> and <a onclick=\"foo\" href=\"#\">linkage</a>"
-  body_html: "<p>rico&#8217;s evil <script>hi</script> and <a onclick=\"foo\" href=\"#\">linkage</a></p>"
+  body: "rico's evil script <script>hi</script> and <a onclick=\"foo\" href=\"#\">linkage</a> <scrip\nt>alert!"
+  body_html: "<p>rico&#8217;s evil script <script>hi</script> and <a onclick=\"foo\" href=\"#\">linkage</a></p><\nscrip\nt>alert!"
   created_at: <%= (3.days + 55.minutes).ago.utc.to_s(:db) %>
   updated_at: <%= (3.days + 55.minutes).ago.utc.to_s(:db) %>
   published_at: <%= 3.days.ago.utc.to_s(:db) %>
