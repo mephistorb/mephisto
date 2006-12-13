@@ -22,7 +22,7 @@
   <dt id="publish-date-lbl"<%= %( style="display:none") unless @article.new_record? || @published -%>><%= label_tag 'article_created_at', 'Publish on this date:' %></dt>
   <dd id="publish-date"<%= %( style="display:none") unless @article.new_record? || @published -%>>
     <%= form.datetime_select :published_at, 
-          :start_year => (@article.published_at || Time.now.utc).year-1, :discard_year => true, :order => [:month, :day, :year] %>
+          :start_year => (@article.published_at || Time.now.utc).year-1, :order => [:month, :day, :year] %>
   </dd>
 </dl>
 <!-- /end optional fields -->
