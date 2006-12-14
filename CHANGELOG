@@ -1,5 +1,15 @@
 * SVN *
 
+* update liquid plugin
+
+* use default test.host domain where possible [courtenay]
+
+* fix test ensuring that comments, not articles are sanitized for script tags [courtenay]
+
+* fix articles form for latest rails 1.2 changes to date helpers [courtenay]
+
+* fix test that breaks in multi-site mode [courtenay]
+
 * Allow Modules to use #include_into to dynamically mixin to loaded classes (plugin stuff)
 
 * Allow custom routes.
