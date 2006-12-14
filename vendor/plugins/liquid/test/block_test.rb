@@ -42,6 +42,14 @@ class VariableTest < Test::Unit::TestCase
     assert_equal 3, template.root.nodelist.size
   end
   
+  def test_with_custom_tag 
+    Liquid::Template.register_tag("testtag", Block) 
+     
+    assert_nothing_thrown do 
+      template = Liquid::Template.parse( "{% testtag %} {% endtesttag %}") 
+    end 
+  end
+  
   private
   
   def block_types(nodelist)

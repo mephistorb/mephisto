@@ -6,7 +6,7 @@ class StandardTagTest < Test::Unit::TestCase
   
   
   def test_tag 
-    tag = Tag.new([], [])
+    tag = Tag.new('tag', [], [])
     assert_equal 'liquid::tag', tag.name 
     assert_equal '', tag.render(Context.new)    
   end

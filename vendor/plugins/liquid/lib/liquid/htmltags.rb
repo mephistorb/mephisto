@@ -2,9 +2,7 @@ module Liquid
   class TableRow < Block                                             
     Syntax = /(\w+)\s+in\s+(#{VariableSignature}+)/   
     
-    def initialize(markup, tokens)
-      super
-
+    def initialize(tag_name, markup, tokens)
       if markup =~ Syntax
         @variable_name = $1
         @collection_name = $2
@@ -15,6 +13,8 @@ module Liquid
       else
         raise SyntaxError.new("Syntax Error in 'table_row loop' - Valid syntax: table_row [item] in [collection] cols=3")
       end
+      
+      super      
     end
     
     def render(context)        

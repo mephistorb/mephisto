@@ -2,7 +2,7 @@ module Liquid
   class Include < Tag
     Syntax = /(#{QuotedFragment}+)(\s+(?:with|for)\s+(#{QuotedFragment}+))?/
   
-    def initialize(markup, tokens)
+    def initialize(tag_name, markup, tokens)      
       if markup =~ Syntax
 
         @template_name = $1        

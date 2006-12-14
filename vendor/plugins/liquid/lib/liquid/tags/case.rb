@@ -3,7 +3,7 @@ module Liquid
     Syntax     = /(#{QuotedFragment})/
     WhenSyntax = /(#{QuotedFragment})/
 
-    def initialize(markup, tokens)
+    def initialize(tag_name, markup, tokens)      
       @blocks = []
       
       if markup =~ Syntax

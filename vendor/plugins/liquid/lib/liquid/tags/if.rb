@@ -2,7 +2,8 @@ module Liquid
   class If < Block
     Syntax = /(#{QuotedFragment})\s*([=!<>]+)?\s*(#{QuotedFragment})?/
     
-    def initialize(markup, tokens)    
+    def initialize(tag_name, markup, tokens)    
+    
       @blocks = []
       
       push_block('if', markup)

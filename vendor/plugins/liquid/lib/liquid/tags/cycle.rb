@@ -3,7 +3,7 @@ module Liquid
     SimpleSyntax = /#{QuotedFragment}/        
     NamedSyntax = /(#{QuotedFragment})\s*\:\s*(.*)/
   
-    def initialize(markup, tokens)
+    def initialize(tag_name, markup, tokens)      
       case markup
       when NamedSyntax
       	@variables = variables_from_string($2)
@@ -14,7 +14,8 @@ module Liquid
       else
         raise SyntaxError.new("Syntax Error in 'cycle' - Valid syntax: cycle [name :] var [, var2, var3 ...]")
       end
-    
+
+      super    
     end    
   
     def render(context)

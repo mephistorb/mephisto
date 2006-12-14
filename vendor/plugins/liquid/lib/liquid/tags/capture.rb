@@ -2,13 +2,14 @@ module Liquid
   class Capture < Block
     Syntax = /(\w+)/
 
-    def initialize(markup, tokens)
+    def initialize(tag_name, markup, tokens)      
       if markup =~ Syntax
         @to = $1
-        super 
       else
         raise SyntaxError.new("Syntax Error in 'capture' - Valid syntax: capture [var]")
       end
+      
+      super       
     end
 
     def render(context)

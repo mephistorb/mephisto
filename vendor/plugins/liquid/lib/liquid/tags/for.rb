@@ -2,9 +2,7 @@ module Liquid
   class For < Block                                             
     Syntax = /(\w+)\s+in\s+(#{VariableSignature}+)/   
   
-    def initialize(markup, tokens)
-      super
-
+    def initialize(tag_name, markup, tokens)
       if markup =~ Syntax
         @variable_name = $1
         @collection_name = $2
@@ -16,6 +14,8 @@ module Liquid
       else
         raise SyntaxError.new("Syntax Error in 'for loop' - Valid syntax: for [item] in [collection]")
       end
+
+      super
     end
   
     def render(context)        
