@@ -12,7 +12,7 @@ end
 class ApplicationControllerTest < Test::Unit::TestCase
   fixtures :sites
   def setup
-    @sub   = Site.create!(:title => 'sub', :host => 'sub.test.com')
+    @sub   = Site.create!(:title => 'sub', :host => 'sub.test.host')
     @uk    = Site.create!(:title => 'sub', :host => 'sub.test.co.uk')
     @controller = AccountController.new
     @request    = ActionController::TestRequest.new
@@ -20,25 +20,25 @@ class ApplicationControllerTest < Test::Unit::TestCase
   end
 
   def test_should_find_site_by_host
-    host! 'test.com'
+    host! 'test.host'
     get :test_host
     assert_equal sites(:first), @controller.site
   end
 
   def test_should_find_site_with_www_prefix
-    host! 'www.test.com'
+    host! 'www.test.host'
     get :test_host
     assert_equal sites(:first), @controller.site
   end
   
   def test_should_find_site_by_subdomain_and_host
-    host! 'sub.test.com'
+    host! 'sub.test.host'
     get :test_host
     assert_equal @sub, @controller.site
   end
   
   def test_should_find_site_by_subdomain_and_host_with_www_prefix
-    host! 'www.sub.test.com'
+    host! 'www.sub.test.host'
     get :test_host
     assert_equal @sub, @controller.site
   end

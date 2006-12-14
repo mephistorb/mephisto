@@ -7,7 +7,7 @@
 first:
   id: 1
   title: Mephisto
-  host: test.com
+  host: test.host
   filter: textile_filter
   approve_comments: false
   comment_age: 30

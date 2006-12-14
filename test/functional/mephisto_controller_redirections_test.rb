@@ -11,7 +11,6 @@ context "Mephisto Controller Redirections" do
     @controller = MephistoController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-    host! 'test.com'
   end
 
   specify "should handle denied requests" do

@@ -213,7 +213,7 @@ class Test::Unit::TestCase
       'value'   => users(user).activation_code,
       'expires' => 2.weeks.from_now,
       'path'    => '/',
-      'domain'  => 'example.com'
+      'domain'  => 'test.host'
     ) : nil
   end
   
@@ -278,6 +278,7 @@ class ActionController::IntegrationTest
   # creates an anonymous session
   def visit
     open_session do |sess|
+      sess.host = 'test.host'
       sess.extend Mephisto::Integration::Actor
       yield sess if block_given?
     end
@@ -294,7 +295,7 @@ end
 
 class ActionController::Integration::Session
   def login_as(login)
-    post '/account/login', :login => login, :password => 'test'
+    post 'http://test.host/account/login', :login => login, :password => 'test'
     assert request.session[:user]
     assert redirect?
   end

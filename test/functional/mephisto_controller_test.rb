@@ -12,7 +12,6 @@ class MephistoControllerTest < Test::Unit::TestCase
     @controller = MephistoController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-    host! 'test.com'
   end
 
   def test_should_list_on_home

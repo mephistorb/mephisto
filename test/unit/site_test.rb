@@ -22,7 +22,7 @@ context "Site" do
   end
   
   specify "should find by host" do
-    assert_equal sites(:first), Site.find_by_host('test.com')
+    assert_equal sites(:first), Site.find_by_host('test.host')
     assert_equal sites(:hostess), Site.find_by_host('cupcake.com')
   end
 
