@@ -22,7 +22,7 @@ module Mephisto
       
       map.connect 'xmlrpc', :controller => 'backend', :action => 'xmlrpc' 
       
-      map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/
+      map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/, :id => /[^\/]*/
 
       yield if block_given?
       Mephisto::Plugin.custom_routes.each do |path, options|
