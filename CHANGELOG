@@ -1,5 +1,9 @@
 * SVN *
 
+* add tags to atom feed [evilchelu]
+
+* flexible theme names in routes [evilchelu]
+
 * update liquid plugin
 
 * use default test.host domain where possible [courtenay]
