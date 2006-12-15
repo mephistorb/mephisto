@@ -8,6 +8,9 @@ xm.entry 'xml:base' => home_url do
   article.sections.each do |section|
     xm.category "term" => section.name unless section.home?
   end
+  article.tags.each do |tag|
+    xm.category "term" => tag.name
+  end
   xm.link "rel" => "alternate", "type" => "text/html", 
     "href" => "http://#{request.host_with_port}#{request.relative_url_root}#{site.permalink_for(article)}"
   xm.title     strip_tags(article.title)
