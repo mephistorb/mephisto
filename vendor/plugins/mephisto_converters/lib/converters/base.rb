@@ -42,6 +42,14 @@ class BaseConverter
   def old_users
     raise NotImplementedError
   end
+  
+  # override this to find all assets from the source database.
+  # Save them to @old_assets.
+  #
+  #   @old_assets = Asset.find(:all)
+  def old_assets
+    raise NotImplementedError
+  end
 
   # override this to retrieve the login name from the source user model
   def get_login(other_user)
