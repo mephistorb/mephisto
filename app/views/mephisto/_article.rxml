@@ -7,7 +7,7 @@ xm.entry 'xml:base' => home_url do
   xm.updated   article.updated_at.xmlschema
   article.sections.each do |section|
     xm.category "term" => section.name unless section.home?
-  end
+  end if article.respond_to?(:sections)
   article.tags.each do |tag|
     xm.category "term" => tag.name
   end
