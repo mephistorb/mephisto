@@ -2,6 +2,7 @@ desc "freeze rails edge"
 task :deploy_edge do
   ENV['SHARED_PATH']  = '../../shared' unless ENV['SHARED_PATH']
   ENV['RAILS_PATH'] ||= File.join(ENV['SHARED_PATH'], 'rails')
+  ENV['REPO_BRANCH'] ||= 'trunk'
   
   checkout_path = File.join(ENV['RAILS_PATH'], 'trunk')
   export_path   = "#{ENV['RAILS_PATH']}/rev_#{ENV['REVISION']}"
@@ -11,7 +12,7 @@ task :deploy_edge do
   unless File.exists?(checkout_path)
     puts 'setting up rails trunk'    
     get_framework_for checkout_path do |framework|
-      system "svn co http://dev.rubyonrails.org/svn/rails/trunk/#{framework}/lib #{checkout_path}/#{framework}/lib --quiet"
+      system "svn co http://dev.rubyonrails.org/svn/rails/#{ENV['REPO_BRANCH']}/#{framework}/lib #{checkout_path}/#{framework}/lib --quiet"
     end
   end
 
