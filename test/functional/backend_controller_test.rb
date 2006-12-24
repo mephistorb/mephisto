@@ -7,7 +7,7 @@ require 'backend_controller'
 class BackendController; def rescue_action(e) raise e end; end
 
 class BackendControllerTest < Test::Unit::TestCase
-  fixtures :users, :sections, :assigned_sections, :contents, :sites
+  fixtures :users, :sections, :assigned_sections, :contents, :sites, :assets
 
   def setup
     @controller = BackendController.new
@@ -268,15 +268,11 @@ class BackendControllerTest < Test::Unit::TestCase
     assert_equal 'image/gif', new_asset.content_type
   end
 
-  def test_should_guess_content_type_for_jpg
-    media_object = new_media_object 'type' => nil
-    assert_nil media_object['type']
-
-    args = [ 1, 'quentin', 'test', media_object ]
-    result = invoke_layered :metaWeblog, :newMediaObject, *args
-
-    new_asset = Asset.find :first, :order => 'created_at DESC'
-    assert_equal 'image/jpeg', new_asset.content_type
+  def test_should_guess_content_type
+    svc = MetaWeblogService.new nil
+    {'foo.png' => 'image/png', 'foo.jpg' => 'image/jpeg', 'foo.gif' => 'image/gif'}.each do |filename, expected|
+      assert_equal expected, svc.send(:guess_content_type_from, filename)
+    end
   end
 
   def test_should_show_filters
@@ -292,12 +288,11 @@ class BackendControllerTest < Test::Unit::TestCase
   end
 
   protected
-
     def new_media_object(options = {})
       MetaWeblogStructs::MediaObject.new(options.reverse_merge!(
-        'name' => Digest::SHA1.hexdigest("upload-test--#{Time.now}--") + ".jpg",
-        'type' => 'image/jpeg',
-        'bits' => Base64.encode64(File.open(File.expand_path(RAILS_ROOT) + '/public/images/mephisto/shadow.png', 'rb') { |f| f.read })
+        'name' => Digest::SHA1.hexdigest("upload-test--#{Time.now}--") + ".png",
+        'type' => 'image/png',
+        'bits' => Base64.encode64(File.read(File.expand_path(RAILS_ROOT) + '/public/images/mephisto/shadow.png'))
       ))
     end
 end

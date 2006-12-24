@@ -33,11 +33,11 @@ class MetaWeblogService < XmlRpcService
   end
 
   def newMediaObject(blogid, username, password, data)
-    asset = site.assets.create!(
-      :filename => data['name'],
+    asset = site.assets.build \
+      :filename     => data['name'],
       :content_type => (data['type'] || guess_content_type_from(data['name'])),
-      :attachment_data => data['bits']
-      )
+      :temp_data    => Base64.decode64(data['bits'])
+    asset.save!
     MetaWeblogStructs::Url.new("url" => asset.public_filename)
   end
 

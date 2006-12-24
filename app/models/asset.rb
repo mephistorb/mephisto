@@ -6,10 +6,10 @@ class Asset < ActiveRecord::Base
   # use #send due to a ruby 1.8.2 issue
   @@movie_condition = send(:sanitize_sql, ['content_type LIKE ? OR content_type IN (?)', 'video%', extra_content_types[:movie]]).freeze
   @@audio_condition = send(:sanitize_sql, ['content_type LIKE ? OR content_type IN (?)', 'audio%', extra_content_types[:audio]]).freeze
-  @@image_condition = send(:sanitize_sql, ['content_type IN (?)', Technoweenie::ActsAsAttachment.content_types]).freeze
+  @@image_condition = send(:sanitize_sql, ['content_type IN (?)', Technoweenie::AttachmentFu.content_types]).freeze
   @@other_condition = send(:sanitize_sql, [
     'content_type NOT LIKE ? AND content_type NOT LIKE ? AND content_type NOT IN (?)',
-    'audio%', 'video%', (extra_content_types[:movie] + extra_content_types[:audio] + Technoweenie::ActsAsAttachment.content_types)]).freeze
+    'audio%', 'video%', (extra_content_types[:movie] + extra_content_types[:audio] + Technoweenie::AttachmentFu.content_types)]).freeze
   cattr_reader *%w(movie audio image other).collect! { |t| "#{t}_condition".to_sym }
 
   class << self
@@ -45,7 +45,7 @@ class Asset < ActiveRecord::Base
   include Mephisto::TaggableMethods
 
   belongs_to :site
-  acts_as_attachment :storage => :file_system, :thumbnails => { :thumb => '120>', :tiny => '50>' }, :max_size => 30.megabytes
+  has_attachment :storage => :file_system, :thumbnails => { :thumb => '120>', :tiny => '50>' }, :max_size => 30.megabytes
   before_validation_on_create :set_site_from_parent
   validates_presence_of :site_id
   validates_as_attachment

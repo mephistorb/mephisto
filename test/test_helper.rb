@@ -91,6 +91,12 @@ class Test::Unit::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
 
+  def use_temp_file(path)
+    temp_path = File.join(ASSET_PATH, File.basename(path))
+    FileUtils.cp path, temp_path
+    yield temp_path
+  end
+
   def assert_template_result(expected, template, assigns={}, message=nil)
     assert_equal expected, Liquid::Template.parse(template).render(assigns)
   end 
