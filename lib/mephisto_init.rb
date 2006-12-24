@@ -6,6 +6,8 @@ require 'coderay'
 require 'ruby_pants'
 require 'xmlrpc_patch'
 
+FileUtils.mkdir_p File.join(RAILS_ROOT, 'tmp', 'attachment_fu')
+
 ActiveRecord::Base.observers = [:article_observer, :comment_observer]
 
 class << Dispatcher

@@ -69,6 +69,7 @@ class Asset < ActiveRecord::Base
   end
 
   after_attachment_saved do |record|
+    File.chmod 0644, full_filename
     Asset.update_all ['thumbnails_count = ?', record.thumbnails.count], ['id = ?', record.id] unless record.parent_id
   end
 
