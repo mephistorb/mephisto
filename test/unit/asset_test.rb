@@ -88,7 +88,7 @@ class AssetTest < Test::Unit::TestCase
 
   def test_should_report_image_type
     a = Asset.new
-    Technoweenie::ActsAsAttachment.content_types.each do |content_type|
+    Technoweenie::AttachmentFu.content_types.each do |content_type|
       a.content_type = content_type
       assert a.image?, "#{content_type} was not an image"
     end
