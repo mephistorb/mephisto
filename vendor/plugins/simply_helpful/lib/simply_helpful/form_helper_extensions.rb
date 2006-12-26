@@ -18,7 +18,7 @@ module ActionView
           
               object_name = SimplyHelpful::RecordIdentifier.singular_class_name(name_or_object)
               object      = name_or_object
-              url         = SimplyHelpful::RecordIdentifier.named_route(object, self)
+              url         = SimplyHelpful::RecordIdentifier.polymorphic_url(object, self)
           
               html_options = if object.new_record?
                 { :class  => dom_class(object, :new),  :id => dom_id(object), :method => :post }

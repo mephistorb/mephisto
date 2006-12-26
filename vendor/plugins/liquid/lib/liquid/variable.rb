@@ -8,16 +8,17 @@ module Liquid
     def initialize(markup)
       @markup = markup                            
       @name = markup.match(/\s*(#{QuotedFragment})/)[1]
+      @filters = []
       if markup.match(/#{FilterSperator}\s*(.*)/)
         filters = Regexp.last_match(1).split(/#{FilterSperator}/)
         
-        @filters = filters.collect do |f|          
-          filtername = f.match(/\s*(\w+)/)[1]
-          filterargs = f.scan(/(?:#{FilterArgumentSeparator}|#{ArgumentSeparator})\s*(#{QuotedFragment})/).flatten            
-          [filtername.to_sym, filterargs]
+        filters.each do |f|    
+          if matches = f.match(/\s*(\w+)/)
+            filtername = matches[1]
+            filterargs = f.scan(/(?:#{FilterArgumentSeparator}|#{ArgumentSeparator})\s*(#{QuotedFragment})/).flatten            
+            @filters << [filtername.to_sym, filterargs]
+          end
         end
-      else
-        @filters = []
       end
     end                        
 

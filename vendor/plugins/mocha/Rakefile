@@ -23,7 +23,7 @@ Rake::RDocTask.new do |task|
   task.rdoc_dir = 'doc'
   task.template = "html_with_google_analytics"
   task.options << "--line-numbers" << "--inline-source"
-  task.rdoc_files.include('README', 'RELEASE', 'COPYING', 'MIT-LICENSE', 'agiledox.txt', 'lib/mocha/auto_verify.rb', 'lib/mocha/mock_methods.rb', 'lib/mocha/expectation.rb', 'lib/stubba/object.rb')
+  task.rdoc_files.include('README', 'RELEASE', 'COPYING', 'MIT-LICENSE', 'agiledox.txt', 'lib/mocha/auto_verify.rb', 'lib/mocha/mock_methods.rb', 'lib/mocha/expectation.rb', 'lib/mocha/object.rb')
 end
 task :rdoc => :examples
 
@@ -88,7 +88,7 @@ specification = Gem::Specification.new do |s|
   s.rdoc_options << '--title' << 'Mocha' << '--main' << 'README' << '--line-numbers'
                          
   s.autorequire = 'mocha'
-  s.files = FileList['{lib,test}/**/*.rb', '[A-Z]*'].exclude('TODO').to_a
+  s.files = FileList['{lib,test,examples}/**/*.rb', '[A-Z]*'].exclude('TODO').to_a
 	s.test_file = "test/all_tests.rb"
 end
 

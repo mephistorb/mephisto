@@ -11,4 +11,12 @@ class ParsingQuirksTest < Test::Unit::TestCase
     assert_equal text, template.render
     assert_equal [String], template.root.nodelist.collect {|i| i.class}
   end
+  
+  def test_error_on_empty_filter
+    assert_nothing_raised do
+      Template.parse("{{test |a|b|}}")      
+      Template.parse("{{test}}")      
+      Template.parse("{{|test|}}")      
+    end
+  end
 end

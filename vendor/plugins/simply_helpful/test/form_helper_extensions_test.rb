@@ -65,7 +65,7 @@ class FormHelperExtensionsTest < Test::Unit::TestCase
     _erbout = ''
     form_for(@record) {}
     
-    expected = "<form action='#{post_url(@record)}' class='edit_post' id='edit_post_1' method='post'><input type='hidden' name='_method' value='put' /></form>"
+    expected = "<form action='#{post_url(@record)}' class='edit_post' id='edit_post_1' method='post'><div style='margin:0;padding:0'><input name='_method' type='hidden' value='put' /></div></form>"
     assert_dom_equal expected, _erbout
   end
 
@@ -90,7 +90,7 @@ class FormHelperExtensionsTest < Test::Unit::TestCase
     _erbout = ''
     remote_form_for(@record) {}
     
-    expected = %(<form action='#{post_url(@record)}' onsubmit="new Ajax.Request('#{post_url(@record)}', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;" class='edit_post' id='edit_post_1' method='post'><input type='hidden' name='_method' value='put' /></form>)
+    expected = %(<form action='#{post_url(@record)}' id='edit_post_1' method='post' onsubmit="new Ajax.Request('#{post_url(@record)}', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;" class='edit_post'><div style='margin:0;padding:0'><input name='_method' type='hidden' value='put' /></div></form>)
     assert_dom_equal expected, _erbout
   end
 end
