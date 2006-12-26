@@ -68,7 +68,8 @@ class Comment < Content
 
   protected
     def snag_article_attributes
-      self.attributes = { :site => article.site, :filter => article.site.filter, :title => article.title, :published_at => article.published_at, :permalink => article.permalink }
+      self.filter ||= article.site.filter
+      self.attributes = { :site => article.site, :title => article.title, :published_at => article.published_at, :permalink => article.permalink }
     end
 
     def check_comment_expiration
