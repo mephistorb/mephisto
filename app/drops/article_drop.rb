@@ -6,12 +6,12 @@ class ArticleDrop < BaseDrop
   
   def initialize(source, options = {})
     super source
-    @options        = options
+    @options  = options
     @liquid.update \
-      'body'             => @source.body_html,
-      'excerpt'          => (@source.excerpt_html.nil? || @source.excerpt_html.empty? ? nil : @source.excerpt_html),
-      'accept_comments'  => @source.accept_comments?,
-      'is_page_home'     => (options[:page] == true)
+      'body'            => @source.body_html,
+      'excerpt'         => (@source.excerpt_html.blank? ? nil : @source.excerpt_html),
+      'accept_comments' => @source.accept_comments?,
+      'is_page_home'    => (options[:page] == true)
   end
   
   def author
