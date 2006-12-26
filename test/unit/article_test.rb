@@ -18,6 +18,13 @@ class ArticleTest < Test::Unit::TestCase
     assert_equal 'meph1sto-r0x', Article.permalink_for(title)
   end
 
+  def test_should_pass_changed_attributes_down_to_comments
+    contents(:welcome).update_attributes(:title => 'foo bar', :published_at => Time.utc(2000, 1, 1), :permalink => 'foo-bar')
+    assert_equal 'foo bar', contents(:welcome_comment).title
+    assert_equal Time.utc(2000, 1, 1), contents(:welcome_comment).published_at
+    assert_equal 'foo-bar', contents(:welcome_comment).permalink
+  end
+
   def test_full_permalink
     date = 3.days.ago.utc
     assert_equal ['', date.year, date.month, date.day, 'welcome-to-mephisto'].join('/'), contents(:welcome).full_permalink

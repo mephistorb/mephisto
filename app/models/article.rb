@@ -7,6 +7,7 @@ class Article < Content
   after_validation :convert_to_utc
   before_create :create_permalink
   after_save    :save_assigned_sections
+  after_update  :reset_comment_attributes
 
   acts_as_versioned :if_changed => [:title, :body, :excerpt], :limit => 5 do
     def self.included(base)
@@ -159,5 +160,9 @@ class Article < Content
       end
     
       @new_sections = nil
+    end
+    
+    def reset_comment_attributes
+      Content.update_all ['title = ?, published_at = ?, permalink = ?', title, published_at, permalink], ['article_id = ?', id]
     end
 end
