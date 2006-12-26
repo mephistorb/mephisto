@@ -11,7 +11,7 @@ class FilteredColumnTest < Test::Unit::TestCase
 
     define_method "test_should_filter_model_attribute_with_#{filter_name}" do
       assert_filters_called_on "#{filter_name}_filter".to_sym do
-        a = Article.create! :body => values[:input], :filter => "#{filter_name}_filter"
+        a = Article.create :body => values[:input], :filter => "#{filter_name}_filter"
         assert_equal values[:output], a.body_html
       end
     end
@@ -45,7 +45,7 @@ class FilteredColumnTest < Test::Unit::TestCase
   end
   
   def test_should_parse_content_with_html_tokenizer
-    article = Article.create! :body => '*foo*', :filter => "#{filter_name}_filter"
+    article = Article.create :body => '*foo*', :filter => "textile_filter"
     assert_kind_of HTML::Document, article.body_doc
   end
 end

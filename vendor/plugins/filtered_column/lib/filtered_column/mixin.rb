@@ -20,8 +20,8 @@ module FilteredColumn
           (self.filtered_options    ||= {})[name] = options
           (self.filtered_attributes ||= []) << name
           define_method("#{name}_doc") do
-            class << self; attr_accessor "#{name}_doc}"; end
-            instance_variable_set("#{name}_doc}", HTML::Document.new(send("#{name}_html")))
+            class << self; attr_accessor "#{name}_doc"; end
+            instance_variable_set("@#{name}_doc", HTML::Document.new(send("#{name}_html")))
           end
         end
       end

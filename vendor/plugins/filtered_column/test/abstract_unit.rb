@@ -1,7 +1,8 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 
 require 'test/unit'
-require File.expand_path(File.join(File.dirname(__FILE__), '../../../../config/environment.rb'))
+require File.expand_path(File.join(File.dirname(__FILE__), '../../../../config/environment'))
+require 'action_controller/vendor/html-scanner/html/document'
 require 'breakpoint'
 
 Test::Unit::TestCase.class_eval do
@@ -27,7 +28,7 @@ end
 
 class SampleMacro < FilteredColumn::Macros::Base
   def self.filter(attributes, inner_text = '')
-    "foo: #{attributes[:foo]} - flip: #{attributes[:flip]} - text: #{inner_text}"
+    "foo: #{attributes[:foo] || attributes[:foo_bar]} - flip: #{attributes[:flip]} - text: #{inner_text}"
   end
 end
 
