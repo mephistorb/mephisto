@@ -28,13 +28,15 @@ class TypoConverter < BaseConverter
           :title        => typo_article.title, 
           :excerpt      => excerpt,
           :body         => body,
+          :permalink    => typo_article.permalink,
           :created_at   => typo_article.created_at,
           :published_at => typo_article.created_at,
           :updated_at   => typo_article.updated_at,
           :user         => user,
           :updater      => user,
           :section_ids  => converter.find_or_create_sections(typo_article),
-          :tag          => typo_article.tags.collect(&:name) * ','
+          :tag          => typo_article.tags.collect(&:name) * ',',
+          :filter       => converter.old_filters
       end
     end
     
@@ -49,6 +51,13 @@ class TypoConverter < BaseConverter
         :author_email => typo_comment.email,
         :author_ip    => typo_comment.ip
     end
+  end
+
+  def old_filters
+    @old_filters ||= {
+      Typo::TextFilter.find_by_name("markdown").id             => "markdown_filter",
+      Typo::TextFilter.find_by_name("markdown smartypants").id => "smartypants_filter",
+      Typo::TextFilter.find_by_name("textile").id              => "textile_filter" }
   end
 
   def old_articles

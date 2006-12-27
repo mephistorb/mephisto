@@ -1,5 +1,7 @@
 * SVN *
 
+* Convert typo filters and permalinks to mephisto [Josh Susser]
+
 * replace acts_as_attachment with attachment_fu plugin
 
 * add tags to atom feed [evilchelu]
