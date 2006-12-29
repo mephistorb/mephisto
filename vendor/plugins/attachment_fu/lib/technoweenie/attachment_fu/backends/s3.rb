@@ -66,7 +66,6 @@ module Technoweenie # :nodoc:
         class S3BucketExists < StandardError; end
 
         def self.included(base) #:nodoc:
-          base.attachment_options[:s3_access] ||= :public_read
           begin
             require 'aws/s3'
           rescue LoadError
@@ -110,6 +109,10 @@ module Technoweenie # :nodoc:
           write_to_temp_file current_data
         end
 
+        def current_data
+          AWS::S3::S3Object.value filename, bucket
+        end
+
         protected
           # Destroys the file.  Called in the after_destroy callback
           def destroy_file
@@ -118,20 +121,16 @@ module Technoweenie # :nodoc:
           
           def rename_file
             return unless @old_filename && @old_filename != filename
-            AWS::S3::S3Object.rename(@old_filename, filename, bucket, :access => :public_read)
+            AWS::S3::S3Object.rename(@old_filename, filename, bucket, :access => attachment_options[:s3_access])
             @old_filename = nil
             true
           end
           
           # Saves the file to S3
           def save_to_storage
-            AWS::S3::S3Object.store(filename, attachment_data, bucket, :content_type => content_type, :access => attachment_options[:s3_access]) if save_attachment?
+            AWS::S3::S3Object.store(filename, temp_data, bucket, :content_type => content_type, :access => attachment_options[:s3_access]) if save_attachment?
             @old_filename = nil
             true
-          end
-          
-          def current_data
-            AWS::S3::S3Object.value filename, bucket
           end
       end
     end

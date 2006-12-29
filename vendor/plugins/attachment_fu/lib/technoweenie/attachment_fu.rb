@@ -4,6 +4,7 @@ module Technoweenie # :nodoc:
     @@tempfile_path      = File.join(RAILS_ROOT, 'tmp', 'attachment_fu')
     @@content_types      = ['image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png']
     mattr_reader :content_types, :tempfile_path, :default_processors
+    mattr_writer :tempfile_path
 
     class ThumbnailError < StandardError;  end
     class AttachmentError < StandardError; end
@@ -42,6 +43,7 @@ module Technoweenie # :nodoc:
         options[:size]             ||= (options[:min_size]..options[:max_size])
         options[:thumbnails]       ||= {}
         options[:thumbnail_class]  ||= self
+        options[:s3_access]        ||= :public_read
 
         # only need to define these once on a class
         unless included_modules.include? InstanceMethods
@@ -69,7 +71,7 @@ module Technoweenie # :nodoc:
               processors = Technoweenie::AttachmentFu.default_processors.dup
               begin
                 include Technoweenie::AttachmentFu::Processors.const_get(processors.first) if processors.any?
-              rescue LoadError
+              rescue LoadError, MissingSourceFile
                 processors.shift
                 retry
               end
@@ -238,7 +240,12 @@ module Technoweenie # :nodoc:
         return nil if file_data.nil? || file_data.size == 0 
         self.content_type = file_data.content_type
         self.filename     = file_data.original_filename if respond_to?(:filename)
-        self.temp_path    = file_data.path
+        if file_data.is_a?(StringIO)
+          file_data.rewind
+          self.temp_data = file_data.read
+        else
+          self.temp_path    = file_data.path
+        end
       end
 
       # Gets the latest temp path from the collection of temp paths.  While working with an attachment,
