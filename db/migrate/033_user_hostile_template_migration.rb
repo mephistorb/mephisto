@@ -5,7 +5,7 @@ class UserHostileTemplateMigration < ActiveRecord::Migration
   class DbFile < ActiveRecord::Base; end
   class Attachment < ActiveRecord::Base
     belongs_to :site
-    acts_as_attachment
+    has_attachment
   end
   class Avatar   < Attachment; end
   class Asset    < Attachment; end
