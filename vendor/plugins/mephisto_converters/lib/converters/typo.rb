@@ -5,6 +5,7 @@ require 'converters/typo/comment'
 require 'converters/typo/category'
 require 'converters/typo/user'
 require 'converters/typo/tag'
+require 'converters/typo/text_filter'
 
 class TypoConverter < BaseConverter
   def self.convert(options = {})
