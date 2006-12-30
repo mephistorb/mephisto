@@ -41,9 +41,9 @@ class MephistoController < ApplicationController
     end
     
     def dispatch_comments
+      @skip_caching = true
       show_404 and return unless find_article
       if !request.post? || params[:comment].blank?
-        @skip_caching = true
         redirect_to site.permalink_for(@article) and return
       end
 
@@ -58,6 +58,7 @@ class MephistoController < ApplicationController
     end
     
     def dispatch_comment
+      @skip_caching = true
       show_article_with 'message' => 'Thanks for the comment!'
     end
 
