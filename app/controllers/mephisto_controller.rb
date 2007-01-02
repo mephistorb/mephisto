@@ -1,6 +1,6 @@
 class MephistoController < ApplicationController
   layout nil
-  session :off
+  session :new_session => false
   caches_page_with_references :dispatch
   cache_sweeper :comment_sweeper
 
@@ -47,7 +47,7 @@ class MephistoController < ApplicationController
         redirect_to site.permalink_for(@article) and return
       end
 
-      @comment = @article.comments.build(params[:comment].merge(:author_ip => request.remote_ip, :user_agent => request.user_agent, :referrer => request.referer))
+      @comment = @article.comments.build(params[:comment].merge(:user_id => session[:user], :author_ip => request.remote_ip, :user_agent => request.user_agent, :referrer => request.referer))
       @comment.check_approval site, request if @comment.valid?
       @comment.save!
       redirect_to dispatch_path(:path => (site.permalink_for(@article)[1..-1].split('/') << 'comments' << @comment.id.to_s), :anchor => @comment.dom_id)

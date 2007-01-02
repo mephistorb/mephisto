@@ -5,6 +5,7 @@ class CommentDropTest < Test::Unit::TestCase
   
   def setup
     @comment = contents(:welcome_comment).to_liquid
+    @mock_comment = [:published_at, :created_at, :author, :author_email, :author_ip, :title, :approved?].inject({:body_html => 'foo'}) { |h, i| h.update i => true }
   end
   
   def test_should_convert_comment_to_drop
@@ -50,4 +51,26 @@ class CommentDropTest < Test::Unit::TestCase
     t = Time.now.utc - 3.days
     assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto", @comment.url
   end
+  
+  def test_should_return_correct_presentation_class_for_article_author
+    @comment = CommentDrop.new(create_comment_stub(:user_id => 5, :article => stub(:user_id => 5)))
+    assert_equal 'by-author', @comment.presentation_class
+  end
+  
+  def test_should_return_correct_presentation_class_for_guest
+    @comment = CommentDrop.new(create_comment_stub(:user_id => nil, :article => stub(:user_id => 5)))
+    assert_equal 'by-guest', @comment.presentation_class
+  end
+  
+  def test_should_return_correct_presentation_class_for_user
+    @comment = CommentDrop.new(create_comment_stub(:user_id => 3, :article => stub(:user_id => 5)))
+    assert_equal 'by-user', @comment.presentation_class
+  end
+  
+  private
+    def create_comment_stub(options)
+      returning stub(@mock_comment.merge(options)) do |stub|
+        def stub.id() 55; end
+      end
+    end
 end

@@ -1,5 +1,7 @@
 * SVN *
 
+* Link comments to the currently logged in user, requires latest edge/1.2 rails [Josh Susser]
+
 * Convert typo filters and permalinks to mephisto [Josh Susser]
 
 * replace acts_as_attachment with attachment_fu plugin

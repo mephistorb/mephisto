@@ -22,4 +22,15 @@ class CommentDrop < BaseDrop
   def author_link
     @source.author_url.blank? ? "<span>#{CGI::escapeHTML(@source.author)}</span>" : %Q{<a href="#{CGI::escapeHTML author_url}">#{CGI::escapeHTML @source.author}</a>}
   end
+  
+  def presentation_class
+    @presentation_class ||= case @source.user_id
+        when @source.article.user_id
+          "by-author"
+        when nil
+          "by-guest"
+        else
+          "by-user"
+      end
+  end
 end
