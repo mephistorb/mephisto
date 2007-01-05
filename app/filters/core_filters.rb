@@ -56,6 +56,10 @@ module CoreFilters
   def assign_to_global(value, name)
     @context.scopes.last[name] = value ; nil
   end
+  
+  def contains(source, text)  
+    !source[text].nil?
+  end
 
   protected
     def liquify(*records, &block)
