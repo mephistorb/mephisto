@@ -45,7 +45,7 @@ class TypoConverter < BaseConverter
           :user         => user,
           :updater      => user,
           :section_ids  => sec_ids,
-          :tag          => tag_string
+          :tag          => tag_string,
           :filter       => converter.old_filters
       end
     end
