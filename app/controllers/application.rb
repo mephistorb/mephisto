@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
   helper_method  :site
   attr_reader    :site
   
+  filter_parameter_logging "password"
+  
   protected
     helper_method :admin?
     

@@ -1,5 +1,7 @@
 * SVN *
 
+* filter password fields in logs [chrissturm]
+
 * add *.ico to list of approved extensions for theme resources [myles_b]
 
 * Link comments to the currently logged in user, requires latest edge/1.2 rails [Josh Susser]
