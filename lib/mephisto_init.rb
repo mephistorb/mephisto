@@ -25,6 +25,10 @@ class << Dispatcher
   alias_method_chain :reset_application!, :plugins
 end
 
+module Liquid
+  AllowedVariableCharacters = /[a-zA-Z_.-]/
+end
+
 Dispatcher.register_liquid_tags
 
 WhiteListHelper.tags.merge %w(table tr td)
