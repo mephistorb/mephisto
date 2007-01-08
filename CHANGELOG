@@ -1,5 +1,7 @@
 * SVN *
 
+* Replace a couple @article.full_permalink instances with @site.permalink_for(@article) [defunkt]
+
 # Allow Resource#non_image_extnames to be overridden by plugins [myles_b]
 
 * filter password fields in logs [chrissturm]

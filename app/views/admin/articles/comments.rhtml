@@ -1,7 +1,7 @@
 <%= render :partial => "page_nav" %>
 
 
-<h3 style="border-bottom:1px solid #ccc;padding:5px">Comments on <%= link_to @article.title, { :action => 'edit', :id => @article }, :style => 'border:none' %> <span class="right"><%= @article.published? ? link_to(image_tag('/images/mephisto/icons/24-zoom-in.png', :style => 'vertical-align: middle'), @article.full_permalink, :style => 'border:none;') : '&nbsp;' %></span></h3>
+<h3 style="border-bottom:1px solid #ccc;padding:5px">Comments on <%= link_to @article.title, { :action => 'edit', :id => @article }, :style => 'border:none' %> <span class="right"><%= @article.published? ? link_to(image_tag('/images/mephisto/icons/24-zoom-in.png', :style => 'vertical-align: middle'), @site.permalink_for(@article), :style => 'border:none;') : '&nbsp;' %></span></h3>
 
 <ul class="pagelist commentlist">
   <% if @comments.any? %>
