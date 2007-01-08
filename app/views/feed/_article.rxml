@@ -12,7 +12,7 @@ xm.entry 'xml:base' => home_url do
     xm.category "term" => tag.name
   end
   xm.link "rel" => "alternate", "type" => "text/html", 
-    "href" => "http://#{request.host_with_port}#{request.relative_url_root}#{site.permalink_for(article)}"
+    "href" => "http://#{request.host_with_port}#{request.relative_url_root}#{section_url_for article}"
   xm.title     strip_tags(article.title)
   unless article.excerpt_html.blank?
     xm << %{<summary type="html">#{sanitize_feed_content article.excerpt_html}</summary>}

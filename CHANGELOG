@@ -1,5 +1,7 @@
 * SVN *
 
+* paged section feeds will show the paged url for articles instead of the long permalink.
+
 * Replace a couple @article.full_permalink instances with @site.permalink_for(@article) [defunkt]
 
 # Allow Resource#non_image_extnames to be overridden by plugins [myles_b]

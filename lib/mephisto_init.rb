@@ -26,7 +26,7 @@ class << Dispatcher
 end
 
 module Liquid
-  AllowedVariableCharacters = /[a-zA-Z_.-]/
+  AllowedVariableCharacters = /[a-zA-Z_.-]/ unless Liquid.const_defined?(:AllowedVariableCharacters)
 end
 
 Dispatcher.register_liquid_tags

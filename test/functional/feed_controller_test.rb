@@ -12,14 +12,6 @@ class FeedControllerTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
-
-  def test_feed_assigns
-    get :feed, :sections => ['about']
-    assert_equal sections(:about), assigns(:section)
-    assert_equal [contents(:welcome), contents(:about), contents(:site_map)], assigns(:articles)
-    assert_select 'feed>title', 'Mephisto - About'
-    assert_atom_entries_size 3
-  end
   
   def test_feed_comes_from_site
     host! 'cupcake.com'
@@ -35,7 +27,7 @@ class FeedControllerTest < Test::Unit::TestCase
     assert_models_equal [sections(:cupcake_home)], [assigns(:section)]
     assert_models_equal [contents(:cupcake_welcome)], assigns(:articles)
     assert_atom_entries_size 1
-    assert_tag 'link', :attributes => {:href => 'http://cupcake.com/'}
+    assert_select 'link[href=?]', 'http://cupcake.com/'
   end
   
   def test_should_return_record_not_found_for_bad_feed_urls
@@ -61,6 +53,39 @@ class FeedControllerTest < Test::Unit::TestCase
   end
 end
 
+context "About Section Feed" do
+  fixtures :contents, :sections, :assigned_sections, :sites
+  def setup
+    @controller = FeedController.new
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+    get :feed, :sections => ['about']
+  end
+
+  specify "should select correct records" do
+    assert_equal sections(:about), assigns(:section)
+    assert_equal [contents(:welcome), contents(:about), contents(:site_map)], assigns(:articles)
+  end
+  
+  specify "should show correct titles" do
+    assert_select 'feed>title', 'Mephisto - About'
+    assert_select 'feed>entry>title', 3 do |titles|
+      assert_equal 'Welcome to Mephisto', titles[0].children.first.content
+      assert_equal 'About this page',     titles[1].children.first.content
+      assert_equal 'The Site Map',        titles[2].children.first.content
+    end
+  end
+  
+  specify "should show correct links" do
+    assert_select 'feed>link[href=?][type=?]', 'http://test.host/about', 'text/html'
+    assert_select 'feed>entry>link[href]', 3 do |hrefs|
+      assert_equal "http://test.host/about",                 hrefs[0]['href']
+      assert_equal "http://test.host/about/about-this-page", hrefs[1]['href']
+      assert_equal "http://test.host/about/the-site-map",    hrefs[2]['href']
+    end
+  end
+end
+
 context "Home Section Feed" do
   fixtures :contents, :sections, :assigned_sections, :sites
   def setup
@@ -72,13 +97,18 @@ context "Home Section Feed" do
   end
   
   specify "should show titles" do
-    assert_xpath '/feed/entry[title="Welcome to Mephisto"]'
-    assert_xpath '/feed/entry[title="Another Welcome to Mephisto"]'
+    assert_select 'feed>title', 'Mephisto - Home'
+    assert_select 'feed>entry>title', 2 do |elements|
+      assert_equal 'Welcome to Mephisto',         elements[0].children.first.content
+      assert_equal 'Another Welcome to Mephisto', elements[1].children.first.content
+    end
   end
   
-  specify "show absolute urls" do
-    assert_select 'feed entry link' do
-      assert_select '[href=?]', /^http\:\/\/test\.host\/\d{4}\/.*$/
+  specify "should show correct links" do
+    assert_select 'feed>link[href=?][type=?]', 'http://test.host/', 'text/html'
+    assert_select 'feed>entry>link[href]', 2 do |hrefs|
+      assert_equal "http://test.host/2007/1/5/welcome-to-mephisto",         hrefs[0]['href']
+      assert_equal "http://test.host/2007/1/4/another-welcome-to-mephisto", hrefs[1]['href']
     end
   end
 
