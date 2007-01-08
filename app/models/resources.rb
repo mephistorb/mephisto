@@ -1,7 +1,8 @@
 class Resources < Attachments
-  NON_IMAGE_EXTNAMES = %w(.js .css)
+  @@non_image_extnames = %w(.js .css)
+  cattr_reader :non_image_extnames
   def image?(path)
-    !NON_IMAGE_EXTNAMES.include?(path.extname)
+    !non_image_extnames.include?(path.extname)
   end
   
   def content_type(path)
