@@ -1,5 +1,10 @@
 * SVN *
 
+* Make ImageScience the default image processor for assets. 
+  If you wish to configure this, set ASSET_IMAGE_PROCESSOR to one of 3 values in environment.rb
+  
+    ASSET_IMAGE_PROCESSOR = :image_science || :rmagick || :none
+
 * paged section feeds will show the paged url for articles instead of the long permalink.
 
 * Replace a couple @article.full_permalink instances with @site.permalink_for(@article) [defunkt]

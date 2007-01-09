@@ -91,6 +91,14 @@ class Test::Unit::TestCase
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures  = false
 
+  def self.has_image_processor?
+    @has_image_processor ||= Object.const_defined?(:ImageScience) || Object.const_defined?(:Magick)
+  end
+  
+  def has_image_processor?
+    self.class.has_image_processor?
+  end
+
   def use_temp_file(path)
     temp_path = File.join(ASSET_PATH, File.basename(path))
     FileUtils.cp path, temp_path

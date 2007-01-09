@@ -53,6 +53,9 @@ require 'mephisto_init'
 UserMailer.default_url_options[:host] = 'localhost:3000'
 UserMailer.mail_from = 'webmaster@localhost'
 
+# defaults to ImageScience, then RMagick, then nothing
+# ASSET_IMAGE_PROCESSOR = :image_science || :rmagick || :none
+
 # OPTIONAL - Redirections
 # Deny a route by immediately returning a 404
 #

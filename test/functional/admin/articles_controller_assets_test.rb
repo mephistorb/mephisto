@@ -16,7 +16,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
   end
 
   def test_should_upload_asset
-    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
+    asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     assert_difference Asset, :count, asset_count do
       post :upload, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }
@@ -26,7 +26,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
   end
 
   def test_should_upload_asset_and_redirect_to_article
-    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
+    asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     assert_difference Asset, :count, asset_count do
       post :upload, :id => contents(:welcome).id, 
@@ -38,7 +38,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
   end
 
   def test_should_upload_asset_as_member
-    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
+    asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     login_as :ben
     assert_difference Asset, :count, asset_count do
@@ -49,7 +49,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
   end
 
   def test_should_upload_asset_and_redirect_to_article_as_member
-    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
+    asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     login_as :ben
     assert_difference Asset, :count, asset_count do

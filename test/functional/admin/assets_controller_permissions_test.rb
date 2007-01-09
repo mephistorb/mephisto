@@ -21,7 +21,7 @@ class Admin::AssetsControllerPermissionsTest < Test::Unit::TestCase
   end
   
   def test_should_upload_and_create_asset_records
-    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
+    asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     assert_difference sites(:first).assets, :count do
       assert_difference Asset, :count, asset_count do

@@ -16,7 +16,7 @@ class Admin::AssetsControllerUploadTest < Test::Unit::TestCase
     Fixtures.delete_existing_fixtures_for(Asset.connection, :assets)
   end
 
-if Object.const_defined?(:Magick)
+if has_image_processor?
   def test_should_sort_assets
     assert_difference sites(:first).assets, :count, 21 do
       assert_difference Asset, :count, 63 do

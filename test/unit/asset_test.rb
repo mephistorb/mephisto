@@ -4,13 +4,13 @@ class AssetTest < Test::Unit::TestCase
   fixtures :sites, :assets, :tags, :taggings
 
   def test_should_upload_and_create_asset_records
-    asset_count = Object.const_defined?(:Magick) ? 3 : 1 # asset + 2 thumbnails
+    asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     assert_difference sites(:first).assets, :count do
       assert_difference Asset, :count, asset_count do 
         process_upload
         
-        if Object.const_defined?(:Magick)
+        if has_image_processor?
           asset = Asset.find(:first, :conditions => 'id > 7', :order => 'created_at')
           assert_equal 2, asset.thumbnails_count
         end
@@ -49,7 +49,7 @@ class AssetTest < Test::Unit::TestCase
     process_upload
     now = Time.now.utc
     assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo.png')
-    if Object.const_defined?(:Magick)
+    if has_image_processor?
       assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_thumb.png')
       assert_file_exists File.join(ASSET_PATH, sites(:first).host, now.year.to_s, now.month.to_s, now.day.to_s, 'logo_tiny.png')
     end
@@ -179,7 +179,7 @@ class AssetTest < Test::Unit::TestCase
     
     def assert_assets_exist(filename, created_at = Time.now.utc)
       assert_file_exists File.join(ASSET_PATH, created_at.year.to_s, created_at.month.to_s, created_at.day.to_s, "#{filename}.png")
-      if Object.const_defined?(:Magick)
+      if has_image_processor?
         assert_file_exists File.join(ASSET_PATH, created_at.year.to_s, created_at.month.to_s, created_at.day.to_s, "#{filename}_thumb.png")
         assert_file_exists File.join(ASSET_PATH, created_at.year.to_s, created_at.month.to_s, created_at.day.to_s, "#{filename}_tiny.png")
       end
