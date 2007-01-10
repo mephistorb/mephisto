@@ -1,5 +1,7 @@
 * SVN *
 
+* Support rel-tag microformat by default in liquid filters
+
 * Make ImageScience the default image processor for assets. 
   If you wish to configure this, set ASSET_IMAGE_PROCESSOR to one of 3 values in environment.rb
   
