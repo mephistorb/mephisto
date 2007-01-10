@@ -55,7 +55,7 @@ module UrlFilters
   end
 
   def link_to_tag(tag)
-    content_tag :a, h(tag), :href => tag_url(tag)
+    content_tag :a, h(tag), :href => tag_url(tag), :rel => 'tag'
   end
 
   def link_to_month(section, date = nil, format = 'my')
