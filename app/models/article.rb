@@ -1,15 +1,11 @@
 class Article < Content
   class CommentNotAllowed < StandardError; end
-  
-  @@translation_to   = 'ascii//ignore//translit'
-  @@translation_from = 'utf-8'
-  cattr_reader :translation_to, :translation_from
-  
+    
   validates_presence_of :title, :user_id, :site_id
 
   before_validation { |record| record.set_default_filter! }
   after_validation :convert_to_utc
-  before_create :create_permalink
+  has_permalink :title
   after_save    :save_assigned_sections
   after_update  :reset_comment_attributes
 
@@ -79,12 +75,7 @@ class Article < Content
     end
     
     def permalink_for(str)
-      returning Iconv.iconv(translation_to, translation_from, str).to_s do |s|
-        s.gsub!(/\W+/, ' ')
-        s.strip!
-        s.downcase!
-        s.gsub!(/\ +/, '-')
-      end
+      PermalinkFu.escape(str)
     end
   end
 
@@ -149,10 +140,6 @@ class Article < Content
   end
 
   protected
-    def create_permalink
-      self.permalink = self.class.permalink_for(title.to_s) if permalink.blank?
-    end
-
     def convert_to_utc
       self.published_at = published_at.utc if published_at
     end
