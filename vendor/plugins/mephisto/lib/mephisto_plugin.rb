@@ -10,9 +10,9 @@ class MephistoPlugin < ActiveRecord::Base
 
   class << self
     expiring_attr_reader :plugin_name, 'name.demodulize.underscore'
-    expiring_attr_reader :plugin_path, "RAILS_PATH + 'vendor/plugins' + plugin_name"
+    expiring_attr_reader :plugin_path, "RAILS_PATH + 'vendor/plugins' + ('mephisto_' + plugin_name)"
 
-    plugin_property_source = %w(desc author version homepage).collect! do |property|
+    plugin_property_source = %w(author version homepage notes).collect! do |property|
       <<-END
         def #{property}(value = nil)
           @#{property} = value if value
@@ -80,12 +80,12 @@ class MephistoPlugin < ActiveRecord::Base
     #   => installs the mephisto_foo plugin.
     #
     def install
-      Schema.install
+      self::Schema.install
     end
     
     # Uninstalls the plugin's tables using the schema file in lib/#{plugin_name}/schema.rb
     def uninstall
-      Schema.uninstall
+      self::Schema.uninstall
     end
     
     # Adds a custom route to Mephisto from a plugin.  These routes are created in the order they are added.  
@@ -142,7 +142,7 @@ class MephistoPlugin < ActiveRecord::Base
     # Your views will then be stored in #{YOUR_PLUGIN}/views/foo/*.rhtml.
     def public_controller(title, name = nil)
       returning((name || title.underscore).to_sym) do |controller_name|
-        view_paths[controller_name] = plugin_path + 'views'
+        view_paths[controller_name] = (plugin_path + 'views').to_s
       end
     end
 
@@ -177,7 +177,7 @@ class MephistoPlugin < ActiveRecord::Base
     end
   end
 
-  plugin_property_source = %w(desc author version homepage plugin_name plugin_path default_options).collect! do |property|
+  plugin_property_source = %w(author version homepage notes plugin_name plugin_path default_options).collect! do |property|
     "def #{property}() self.class.#{property} end"
   end
   eval plugin_property_source * "\n"

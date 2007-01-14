@@ -49,7 +49,7 @@ class PluginTest < Test::Unit::TestCase
   end
   
   def test_should_get_and_set_plugin_properties
-    properties = %w(desc author version homepage)
+    properties = %w(notes author version homepage)
     properties.each do |property|
       assert_nil MephistoPlugins::PluginWhammyJammy.send(property)
       MephistoPlugins::PluginWhammyJammy.send(property, 'foo')

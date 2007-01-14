@@ -2,7 +2,7 @@ class Admin::PluginsController < Admin::BaseController
   before_filter :find_plugin, :except => :index
 
   def index
-    @plugins = Mephisto::DirectoryPlugin.scan
+    @plugins = DirectoryPlugin.scan
   end
   
   def update

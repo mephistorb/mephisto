@@ -2,19 +2,18 @@
 <% content_for :sidebar do %>
 <div class="sgroup">
 	<h3>Errata</h3>
-	<% if @plugin.respond_to?(:notation) -%>
+	<% unless @plugin.notes.blank? -%>
 		<p><b>Notes</b>:</p>
-		<br/>
-		<p> <%= simple_format @plugin.notation %> </p>
+		<p> <%= simple_format @plugin.notes %> </p>
 		<br/>
 	<% end %>
-	<% if @plugin.respond_to?(:author) -%>
+	<% unless @plugin.author.blank? -%>
 		<p><b>Author</b>: <%=h @plugin.author %></p>
 	<% end -%>
-	<% if @plugin.respond_to?(:url) -%>
-		<p><b>URL</b>:	<a href="<%= @plugin.url %>"><%= @plugin.url %></a> </p>
+	<% unless @plugin.homepage.blank? -%>
+		<p><b>Homepage</b>:	<a href="<%= @plugin.homepage %>"><%= @plugin.homepage %></a> </p>
 	<% end -%>
-	<% if @plugin.respond_to?(:version) -%>
+	<% unless @plugin.version.blank? -%>
 		<p><b>Ver.</b>: <%= @plugin.version %> </p>
 	<% end -%>
 </div>
