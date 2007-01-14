@@ -37,12 +37,12 @@
 	<%= form_tag({:action => :update, :id => @plugin.plugin_name}, {:id => 'plugin-config-form'}) %>
 <% end -%>
 
-<% if @plugin.default_options -%>
+<% if @plugin.default_options.any? -%>
 <div class="group">
 	<dl>
 		<dt><label for="plugin_config">Configuration</label></dt>
 			<% @plugin.default_options.keys.each do |key| %>
-				<dd><label for="options_<%= key %>"><%= key.to_s.humanize %></label></dt> <dd> <%= text_field_tag "options[#{key}]", @plugin.send(key) %> </dd>
+				<dd><label for="options_<%= key %>"><%= key.to_s.humanize %></label></dt> <dd> <%= send "#{@plugin.default_options[key]}_tag", "options[#{key}]", @plugin.send(key) %> </dd>
 			<% end %>
 	</dl>
 		

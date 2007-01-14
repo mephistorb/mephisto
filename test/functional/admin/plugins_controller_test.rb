@@ -35,7 +35,7 @@ class Admin::PluginsControllerTest < Test::Unit::TestCase
   end
   
   def test_should_show_plugin
-    assert_not_nil Mephisto::Plugins::TestPlugin.new
+    assert_not_nil MephistoPlugins::TestPlugin.new
     get :show, :id => 'test_plugin'
     assert_response :success
   end

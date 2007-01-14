@@ -1,8 +1,3 @@
-require 'mephisto/plugin'
-require 'mephisto/plugins'
-require 'mephisto/directory_plugin'
-require 'yaml'
-
 class Admin::PluginsController < Admin::BaseController
   before_filter :find_plugin, :except => :index
 
@@ -24,6 +19,6 @@ class Admin::PluginsController < Admin::BaseController
   
   protected
     def find_plugin
-      @plugin = Mephisto::Plugin[params[:id]]
+      @plugin = MephistoPlugin[params[:id]]
     end
 end

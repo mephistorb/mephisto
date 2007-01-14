@@ -1,14 +1,10 @@
-module Mephisto
-  module Plugins
-    class TestPlugin < Mephisto::Plugin
-      homepage 'http://foo.com'
-      author 'Captain Problematic'
-      version 'deathstar'
+module MephistoPlugins
+  class TestPlugin < MephistoPlugin
+    homepage 'http://foo.com'
+    author 'Captain Problematic'
+    version 'deathstar'
 
-      default_options \
-        :config  => {'one' => 'test'},
-        :notes   => 'notes'
-      
-    end
+    option :config, 'one' => 'test'
+    option :notes, 'notes'
   end
 end

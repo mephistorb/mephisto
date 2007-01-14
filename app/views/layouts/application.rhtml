@@ -31,7 +31,7 @@
             <li><%= link_to 'Overview',  :controller => '/admin/overview' %></li>
             <li><%= link_to 'Articles',  :controller => '/admin/articles' %></li>
             <li><%= link_to 'Assets',    :controller => '/admin/assets' %></li>
-          <% Mephisto::Plugin.tabs.each do |tab| -%>
+          <% MephistoPlugin.tabs.each do |tab| -%>
             <li><%= link_to tab.first, tab.last %></li>
           <% end -%>
           </ul>
@@ -41,7 +41,7 @@
             <li><%= link_to 'Design',   :controller => '/admin/design' %></li>
             <li><%= link_to "Users",    :controller => "users" %></li>
             <li><%= link_to 'Plugins',  :controller => '/admin/plugins' %></li>
-          <% Mephisto::Plugin.admin_tabs.each do |tab| -%>
+          <% MephistoPlugin.admin_tabs.each do |tab| -%>
             <li><%= link_to tab.first, tab.last %></li>
           <% end -%>
           </ul>
