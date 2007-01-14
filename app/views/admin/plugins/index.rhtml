@@ -1,0 +1,23 @@
+
+<% content_for :sidebar do %>
+<div class="sgroup">
+Configurable plugins may include modifiable properties, notation, URL, author, and version information.
+</div>
+<% end %>
+
+<% if @plugins.any? %>
+	<!-- begin plugin list -->
+	<table id="plugin-list" cellspacing="0" cellpadding="0" align="center" width="75%">
+	 <thead>
+	   <tr>
+	     <th scope="col">Plugin</th>
+	     <th scope="col">Configurable?</th>
+	     <th scope="col">&nbsp;</th>
+	   </tr>
+	 </thead>
+	 <tbody id="plugins">
+	     <%= render :partial => 'plugin', :collection => @plugins -%>
+	 </tbody>
+	</table>
+<!-- /end plugin list -->
+<% end %>

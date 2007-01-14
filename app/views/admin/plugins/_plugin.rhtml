@@ -1,0 +1,10 @@
+<tr class="published" >
+  <td class="published">
+	<% if plugin.configurable? -%>
+		<%= link_to plugin.path, :action => :show, :id => plugin.path %>
+	<% else -%>
+		<%=h plugin.path %>
+	<% end -%>
+</td>
+  <td  class="published"><%= plugin.configurable? ? link_to(image_tag('/images/mephisto/icons/8-em-check.png', :style => 'vertical-align: middle'), :action => "show", :id => plugin.path) : '&nbsp;' %></span> </td>
+ </tr>

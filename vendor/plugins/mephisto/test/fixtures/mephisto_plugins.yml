@@ -1,0 +1,4 @@
+whammy_jammy:
+  id: 1
+  name: plugin_whammy_jammy
+  type: PluginWhammyJammy

@@ -1,0 +1,55 @@
+
+<% content_for :sidebar do %>
+<div class="sgroup">
+	<h3>Errata</h3>
+	<% if @plugin.respond_to?(:notation) -%>
+		<p><b>Notes</b>:</p>
+		<br/>
+		<p> <%= simple_format @plugin.notation %> </p>
+		<br/>
+	<% end %>
+	<% if @plugin.respond_to?(:author) -%>
+		<p><b>Author</b>: <%=h @plugin.author %></p>
+	<% end -%>
+	<% if @plugin.respond_to?(:url) -%>
+		<p><b>URL</b>:	<a href="<%= @plugin.url %>"><%= @plugin.url %></a> </p>
+	<% end -%>
+	<% if @plugin.respond_to?(:version) -%>
+		<p><b>Ver.</b>: <%= @plugin.version %> </p>
+	<% end -%>
+</div>
+<% end %>
+
+<% content_for :action_nav do %>
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
+	<li>
+ 	 	<%= link_to 'Restore Defaults', :action => :destroy, :id => @plugin.plugin_name %>
+	</li>
+	<li>
+ 	 	<%= link_to 'Index', :action => :index %>
+	</li>
+  </ul>
+</div>
+<% end %>
+
+<% content_for :form  do -%>
+	<%= form_tag({:action => :update, :id => @plugin.plugin_name}, {:id => 'plugin-config-form'}) %>
+<% end -%>
+
+<% if @plugin.default_options -%>
+<div class="group">
+	<dl>
+		<dt><label for="plugin_config">Configuration</label></dt>
+			<% @plugin.default_options.keys.each do |key| %>
+				<dd><label for="options_<%= key %>"><%= key.to_s.humanize %></label></dt> <dd> <%= text_field_tag "options[#{key}]", @plugin.send(key) %> </dd>
+			<% end %>
+	</dl>
+		
+	<p class="buttons">	
+		<%= submit_tag %> 
+	</p>
+</div>
+<% else -%>
+No configuration listed (perhaps not needed).
+<% end -%>
