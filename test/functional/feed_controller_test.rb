@@ -105,10 +105,11 @@ context "Home Section Feed" do
   end
   
   specify "should show correct links" do
+    
     assert_select 'feed>link[href=?][type=?]', 'http://test.host/', 'text/html'
     assert_select 'feed>entry>link[href]', 2 do |hrefs|
-      assert_equal "http://test.host/2007/1/5/welcome-to-mephisto",         hrefs[0]['href']
-      assert_equal "http://test.host/2007/1/4/another-welcome-to-mephisto", hrefs[1]['href']
+      assert_match /\/welcome-to-mephisto$/,         hrefs[0]['href']
+      assert_match /\/another-welcome-to-mephisto$/, hrefs[1]['href']
     end
   end
 
