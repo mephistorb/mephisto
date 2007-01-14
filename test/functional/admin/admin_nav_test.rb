@@ -23,7 +23,7 @@ class Admin::AdminNavTest < Test::Unit::TestCase
   
   def test_should_show_secondary_nav
     assert_select "#header #nav #nav-r a" do |anchors|
-      assert_equal %w(Sections Design Users), anchors.collect { |a| a.children.first.content }
+      assert_equal %w(Sections Design Users Plugins), anchors.collect { |a| a.children.first.content }
     end
   end
   

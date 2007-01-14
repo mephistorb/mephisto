@@ -1,5 +1,7 @@
 * SVN *
 
+* Initial Plugin Whammy Jammy [Nick Faiz, Rick Olson]
+
 * link_to_section adds class='selected' for the current section [Tammo Freese]
 
 * Process article permalinks with Iconv.
