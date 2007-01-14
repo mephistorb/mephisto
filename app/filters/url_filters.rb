@@ -17,7 +17,7 @@ module UrlFilters
   end
   
   def link_to_section(section, text = nil)
-    content_tag :a, text || h(section['name']), :href => section['url'], :title => section['title']
+    content_tag :a, text || h(section['name']), section_anchor_options(section)
   end
 
   def img_tag(img, options = {})
@@ -114,6 +114,12 @@ module UrlFilters
     def page_anchor_options(page, section = nil)
       options = {:href => page_url(page, section)}
       current_page_article == page ? options.update(:class => 'selected') : options
+    end
+    
+    # marks a section as class=selected
+    def section_anchor_options(section)
+      options = {:href => section['url'], :title => section['title']}
+      (current_page_section && (current_page_section.url == section.url)) ? options.update(:class => 'selected') : options
     end
     
     def current_page_section

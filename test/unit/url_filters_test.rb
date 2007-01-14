@@ -43,6 +43,26 @@ context "Url Filters" do
     assert_equal "/welcome-to-cupcake", page_url(contents(:cupcake_welcome).to_liquid)
   end
 
+  specify "should generate paged url for home section" do
+    assert_equal "/",                    page_url(contents(:welcome).to_liquid(:page => true), sections(:home).to_liquid)
+    assert_equal "/welcome-to-mephisto", page_url(contents(:welcome).to_liquid, sections(:home).to_liquid)
+  end
+  
+  specify "should generate section links" do
+    other_section = link_to_section(sections(:home).to_liquid)
+    home_section  = link_to_section(sections(:about).to_liquid)
+    
+    assert_match    %r(href="/"),         other_section
+    assert_match    %r(href="/about"),    home_section
+    assert_match    %r(class="selected"), home_section
+    assert_no_match %r(class="selected"), other_section
+  end
+
+  specify "should generate paged url for home section" do
+    assert_equal "/",                    page_url(contents(:welcome).to_liquid(:page => true), sections(:home).to_liquid)
+    assert_equal "/welcome-to-mephisto", page_url(contents(:welcome).to_liquid, sections(:home).to_liquid)
+  end
+
   specify "should generate asset urls" do
     assert_equal "/javascripts/foo.js",  javascript_url('foo.js')
     assert_equal "/stylesheets/foo.css", stylesheet_url('foo.css')

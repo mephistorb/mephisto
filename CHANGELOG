@@ -1,5 +1,7 @@
 * SVN *
 
+* link_to_section adds class='selected' for the current section [Tammo Freese]
+
 * Process article permalinks with Iconv.
 
 * Support rel-tag microformat by default in liquid filters
