@@ -1,6 +1,10 @@
 class Article < Content
   class CommentNotAllowed < StandardError; end
   
+  @@translation_to   = 'ascii//ignore//translit'
+  @@translation_from = 'utf-8'
+  cattr_reader :translation_to, :translation_from
+  
   validates_presence_of :title, :user_id, :site_id
 
   before_validation { |record| record.set_default_filter! }
@@ -75,7 +79,12 @@ class Article < Content
     end
     
     def permalink_for(str)
-      str.gsub(/\W+/, ' ').strip.downcase.gsub(/\ +/, '-')
+      returning Iconv.iconv(translation_to, translation_from, str).to_s do |s|
+        s.gsub!(/\W+/, ' ')
+        s.strip!
+        s.downcase!
+        s.gsub!(/\ +/, '-')
+      end
     end
   end
 

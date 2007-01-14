@@ -17,6 +17,10 @@ class ArticleTest < Test::Unit::TestCase
     title = '////// meph1sto r0x ! \\\\\\'
     assert_equal 'meph1sto-r0x', Article.permalink_for(title)
   end
+  
+  def test_permalink_with_non_ascii_chars
+    assert_equal 'acegiklnu', Article.permalink_for('āčēģīķļņū')
+  end
 
   def test_should_pass_changed_attributes_down_to_comments
     contents(:welcome).update_attributes(:title => 'foo bar', :published_at => Time.utc(2000, 1, 1), :permalink => 'foo-bar')
