@@ -75,7 +75,7 @@ context "Url Filters" do
   end
   
   specify "should generate tag links" do
-    assert_equal "<a href=\"/tags/foo\">foo</a>", link_to_tag('foo')
+    assert_equal "<a href=\"/tags/foo\" rel=\"tag\">foo</a>", link_to_tag('foo')
   end
   
   specify "should generate search urls" do
