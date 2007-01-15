@@ -2,7 +2,7 @@ require 'RMagick'
 module Technoweenie # :nodoc:
   module AttachmentFu # :nodoc:
     module Processors
-      module Rmagick
+      module RmagickProcessor
         def self.included(base)
           base.send :extend, ClassMethods
           base.alias_method_chain :process_attachment, :processing
@@ -16,7 +16,7 @@ module Technoweenie # :nodoc:
             rescue
               # Log the failure to load the image.  This should match ::Magick::ImageMagickError
               # but that would cause acts_as_attachment to require rmagick.
-              logger.warn(" >>> Exception working with RMagick: #{$!}")
+              logger.debug("Exception working with image: #{$!}")
               binary_data = nil
             end
             block.call binary_data if block && binary_data

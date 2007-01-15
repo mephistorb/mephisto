@@ -67,19 +67,19 @@ module Technoweenie # :nodoc:
           after_destroy :destroy_file
           extend  ClassMethods
           include InstanceMethods
-          include Technoweenie::AttachmentFu::Backends.const_get("#{options[:storage].to_s.classify}")
+          include Technoweenie::AttachmentFu::Backends.const_get("#{options[:storage].to_s.classify}Backend")
           case options[:processor]
             when :none
             when nil
               processors = Technoweenie::AttachmentFu.default_processors.dup
               begin
-                include Technoweenie::AttachmentFu::Processors.const_get(processors.first) if processors.any?
+                include Technoweenie::AttachmentFu::Processors.const_get("#{processors.first}Processor") if processors.any?
               rescue LoadError, MissingSourceFile
                 processors.shift
                 retry
               end
             else
-              include Technoweenie::AttachmentFu::Processors.const_get("#{options[:processor].to_s.classify}")
+              include Technoweenie::AttachmentFu::Processors.const_get("#{options[:processor].to_s.classify}Processor")
           end
           after_validation :process_attachment
         end
