@@ -124,7 +124,7 @@ class Site < ActiveRecord::Base
   end
 
   def theme
-    @theme ||= themes[current_theme_path] || themes.first
+    @theme ||= themes[current_theme_path] || themes.first || raise(MissingThemesError.new(self))
   end
 
   def change_theme_to(new_theme_path)

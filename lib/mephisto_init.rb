@@ -50,6 +50,14 @@ class MissingTemplateError < StandardError
   end
 end
 
+class MissingThemesError < StandardError
+  attr_reader :site
+  def initialize(site)
+    @site = site
+    super "No themes found in '#{site.theme_path.to_s}/#{site.current_theme_path}'.  This must be set correctly in the site settings."
+  end
+end
+
 class ThemeError < StandardError
   attr_reader :theme
   def initialize(theme, message)

@@ -52,4 +52,11 @@ context "Theme" do
     end
     assert !dest.exist?
   end
+  
+  specify "should raise MissingThemesError on missing themes" do
+    site = Site.new
+    site.stubs(:themes).returns([])
+    site.stubs(:current_theme_path).returns(0)
+    assert_raises(MissingThemesError) { site.theme }
+  end
 end
