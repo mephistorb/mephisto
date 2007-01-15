@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ArticleDropTest < Test::Unit::TestCase
-  fixtures :sites, :sections, :contents, :assigned_sections, :users, :tags, :taggings
+  fixtures :sites, :sections, :contents, :assigned_sections, :users, :tags, :taggings, :assigned_assets, :assets
   
   def setup
-    @article = contents(:welcome).to_liquid :mode => :single
+    @article = contents(:welcome).to_liquid(:mode => :single)
     @article.context = mock_context('site' => sites(:first).to_liquid)
   end
 
@@ -70,22 +70,26 @@ class ArticleDropTest < Test::Unit::TestCase
     assert_equal '<p>body</p>', a.send(:body_for_mode, :list)
   end
   
-  def test_article_url
+  specify "should show article url" do
     t = Time.now.utc - 3.days
     assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto", @article.url
   end
   
-  def test_comments_feed_url
+  specify "should show comments feed url" do
     t = Time.now.utc - 3.days
     assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto/comments.xml", @article.comments_feed_url
   end
   
-  def test_changes_feed_url
+  specify "should change feed url" do
     t = Time.now.utc - 3.days
     assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto/changes.xml", @article.changes_feed_url
   end
 
   specify "should show taggable tags" do
     assert_equal %w(rails), contents(:another).to_liquid.tags
+  end
+
+  specify "should find article assets" do
+    assert_models_equal [assets(:gif), assets(:mp3)], @article.assets.collect(&:source)
   end
 end

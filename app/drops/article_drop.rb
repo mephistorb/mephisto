@@ -53,6 +53,10 @@ class ArticleDrop < BaseDrop
   def changes_feed_url
     @changes_feed_url ||= url + '/changes.xml'
   end
+  
+  def assets
+    @assets ||= liquify(*@source.assets)
+  end
 
   protected
     def body_for_mode(mode)

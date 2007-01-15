@@ -1,0 +1,1 @@
+page["label-attached-widget-#{params[:version]}"].replace_html "Save"

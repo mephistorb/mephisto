@@ -1,3 +1,17 @@
-<li id="<%= widget.dom_id(:widget) %>">
+<li id="<%= widget.dom_id("#{prefix}-widget") %>" class="widget<%= ' selected-widget' if @article && @article.assets.include?(widget) %>">
+<% if prefix == 'attached' -%>
+  <div>
+    <%= link_to asset_image_for(widget), widget.public_filename %>
+    <span>
+      <%= text_field_tag :version, (widget.respond_to?(:label) ? widget.label : nil), :id => widget.dom_id("#{prefix}-widget-version"), :class => 'txt' %>
+      <a href="#" class="label-widget" id="<%= widget.dom_id("label-#{prefix}-widget") %>">Save</a>
+    </span>
+  </div>
+<% else -%>
   <%= link_to asset_image_for(widget), widget.public_filename %>
+<% end -%>
+  <a href="#"><%= image_tag('mephisto/icons/8-em-cross.png', :size => '16x16', :id => widget.dom_id("detach-#{prefix}-widget"), 
+        :style => 'display:none', :class => 'detach-widget') %></a>
+  <a href="#"><%= image_tag('mephisto/icons/8-em-plus.png', :size => '16x16', :id => widget.dom_id("attach-#{prefix}-widget"), 
+        :style => 'display:none', :class => 'attach-widget') %></a>
 </li>

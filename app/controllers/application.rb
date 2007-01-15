@@ -16,7 +16,8 @@ class ApplicationController < ActionController::Base
   
     # so not the best place for this...
     def asset_image_args_for(asset, thumbnail = :tiny, options = {})
-      options = options.reverse_merge(:title => "#{asset.title} \n #{asset.tags.join(', ')}")
+      thumb_size = Array.new(2).fill(Asset.attachment_options[:thumbnails][thumbnail].to_i).join('x')
+      options    = options.reverse_merge(:title => "#{asset.title} \n #{asset.tags.join(', ')}", :size => thumb_size)
       if asset.movie?
         ['/images/mephisto/icons/video.png', options]
       elsif asset.audio?
@@ -26,9 +27,9 @@ class ApplicationController < ActionController::Base
       elsif asset.other?
         ['/images/mephisto/icons/doc.png', options]
       elsif asset.thumbnails_count.zero?
-        [asset.public_filename, options.update(:size => Array.new(2).fill(Asset.attachment_options[:thumbnails][thumbnail].to_i).join('x'))]
+        [asset.public_filename, options]
       else
-        [asset.public_filename(thumbnail), options]
+        [asset.public_filename(thumbnail), options.merge(:size => asset.image_size)]
       end
     end
     helper_method :asset_image_args_for

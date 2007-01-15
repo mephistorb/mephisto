@@ -5,7 +5,7 @@ require 'admin/articles_controller'
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
 class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
-  fixtures :contents, :content_versions, :sections, :assigned_sections, :users, :sites, :tags, :taggings, :memberships
+  fixtures :contents, :content_versions, :sections, :assigned_sections, :users, :sites, :tags, :taggings, :memberships, :assigned_assets, :assets
 
   def setup
     @controller = Admin::ArticlesController.new
@@ -15,7 +15,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
     FileUtils.mkdir_p ASSET_PATH
   end
 
-  def test_should_upload_asset
+  specify "should upload asset" do
     asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     assert_difference Asset, :count, asset_count do
@@ -25,7 +25,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_upload_asset_and_redirect_to_article
+  specify "should upload asset and redirect to article" do
     asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     assert_difference Asset, :count, asset_count do
@@ -37,7 +37,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_upload_asset_as_member
+  specify "should upload asset as member" do
     asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     login_as :ben
@@ -48,7 +48,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_upload_asset_and_redirect_to_article_as_member
+  specify "should upload asset and redirect to article as member" do
     asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     login_as :ben
@@ -61,7 +61,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_not_error_on_new_article_asset_upload
+  specify "should not error on new article asset upload" do
     assert_no_difference Asset, :count do
       post :upload
       assert_response :success
@@ -69,7 +69,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_not_error_on_article_asset_upload
+  specify "should not error on article asset upload" do
     assert_no_difference Asset, :count do
       post :upload, :id => contents(:welcome).id
       assert_response :success
@@ -78,7 +78,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_not_create_article_when_uploading_asset
+  specify "should not create article when uploading asset" do
     Time.mock! Time.local(2005, 1, 1, 12, 0, 0) do
       assert_no_difference Article, :count do
         post :upload, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }, 
@@ -92,6 +92,29 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
         assert_equal users(:quentin), assigns(:article).updater
       end
     end
+  end
+
+  specify "should add asset to article" do
+    assert_difference AssignedAsset, :count do
+      post :attach, :id => contents(:welcome).id, :version => assets(:mov).id, :label => 'avatar'
+    end
+    assert_models_equal [assets(:gif), assets(:mp3), assets(:mov)], contents(:welcome).assets(true)
+    assert_equal 'avatar', contents(:welcome).assets[2].label
+  end
+  
+  specify "should add inactive asset to article" do
+    assert_no_difference AssignedAsset, :count do
+      post :attach, :id => contents(:welcome).id, :version => assets(:png).id, :label => 'avatar'
+    end
+    assert_models_equal [assets(:gif), assets(:mp3), assets(:png)], contents(:welcome).assets(true)
+    assert_equal 'avatar', contents(:welcome).assets[2].label
+  end
+
+  specify "should find deactivate article assets" do
+    assert_no_difference AssignedAsset, :count do
+      post :detach, :id => contents(:welcome).id, :version => assets(:mp3).id
+    end
+    assert_models_equal [assets(:gif)], contents(:welcome).assets
   end
 
   def teardown

@@ -45,6 +45,7 @@ class Asset < ActiveRecord::Base
   include Mephisto::TaggableMethods
 
   belongs_to :site
+  has_many :assigned_assets, :order => 'position', :dependent => :destroy
   has_attachment :storage => :file_system, :thumbnails => { :thumb => '120>', :tiny => '50>' }, :max_size => 30.megabytes, 
     :processor => (Object.const_defined?(:ASSET_IMAGE_PROCESSOR) ? ASSET_IMAGE_PROCESSOR : nil)
   before_validation_on_create :set_site_from_parent

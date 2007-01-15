@@ -9,7 +9,7 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :convert_times_to_utc, :only => [:create, :update, :upload]
   before_filter :check_for_new_draft,  :only => [:create, :update, :upload]
   
-  before_filter :find_site_article, :only => [:edit, :update, :comments, :approve, :unapprove, :destroy]
+  before_filter :find_site_article, :only => [:edit, :update, :comments, :approve, :unapprove, :destroy, :attach, :detach]
   before_filter :login_required, :except => :upload
   before_filter :load_sections, :only => [:new, :edit]
 
@@ -115,6 +115,20 @@ class Admin::ArticlesController < Admin::BaseController
       @article = current_user.articles.build params[:article].merge(:updater => current_user, :site => site)
       render :action => 'new'
     end
+  end
+
+  def attach
+    @asset = site.assets.find(params[:version])
+    @article.assets.add @asset
+  end
+
+  def detach
+    @asset = site.assets.find(params[:version])
+    @article.assets.remove @asset
+  end
+
+  def label
+    AssignedAsset.update_all ['label = ?', params[:label]], ['article_id = ? and asset_id = ?', params[:id], params[:version]]
   end
 
   protected

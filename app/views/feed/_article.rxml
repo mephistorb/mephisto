@@ -22,4 +22,5 @@ xm.entry 'xml:base' => home_url do
             #{sanitize_feed_content [article.excerpt_html, article.body_html].compact * "\n"}
           </content>}
   end
+  article.add_xml(xm)
 end

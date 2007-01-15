@@ -32,6 +32,10 @@ module DropFilters
   def latest_comments(site, limit = nil)
     site.latest_comments(limit || site['articles_per_page'])
   end
+  
+  def find_asset(article, label)
+    article.assets.detect { |a| a.source.label == label }
+  end
 
   def monthly_articles(section, date = nil)
     date = parse_date(date)

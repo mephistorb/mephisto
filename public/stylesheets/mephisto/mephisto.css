@@ -1305,34 +1305,84 @@ li.event-article  { background-image: url(/images/mephisto/icons/articleb.gif); 
  *=ASSET MANAGEMENT
  */
 
-#assets, #files, #latest-assets, #bucket-assets, #search-assets {
+#assets, #files, ul.asset-list {
   list-style: none;
   margin-top: 5px;
 }
 
-#assets li, #files li, #latest-assets li, #bucket-assets li, #search-assets li {
+#assets li, #files li, ul.asset-list li {
   display: inline;
+  white-space: no-wrap;
   margin-left: 5px;
   margin-bottom: 5px;
 }
 
-#assets li a img,
+#attached-assets li {
+  display:block;
+}
+
+#attached-assets li div {
+  position:relative;
+}
+
+#attached-assets li div a {
+  display:inline;
+}
+
+#attached-assets div input.txt {
+  width:125px;
+}
+
+#attached-assets div span {
+  position:absolute;
+  top:20px;  right:8px;
+}
+
+ul.asset-list .widget {
+  position:relative;
+}
+
+.widget .attach-widget {
+  z-index:500;
+  position:absolute;
+  top:-13px; left:-23px;
+}
+
+.widget .detach-widget {
+  z-index:500;
+  position:absolute;
+  top:-36px; left:-23px;
+}
+
+#attached-assets .widget .attach-widget {
+  position:absolute;
+  top:11px; left:-23px;
+}
+
+#attached-assets .widget .detach-widget {
+  position:absolute;
+  top:34px; left:-23px;
+}
+
+#assets        li a img,
 #latest-assets li a img,
 #bucket-assets li a img,
-#search-assets li a img {
+#search-assets li a img,
+ul.asset-list  li a img {
   padding: 4px;
   background: #fff;
 }
 
-#assets img,
-#latest-assets img,
-#bucket-assets img,
-#search-assets img {
+ul.asset-list img {
   max-height: 50px;
   max-width: 50px;
   padding: 3px;
   background: #fff;
   border: 1px solid #8BCACD;
+}
+
+ul.asset-list .selected-widget img {
+  border-color:#000;
 }
 
 #assets span,

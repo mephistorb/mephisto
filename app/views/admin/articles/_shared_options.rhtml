@@ -14,6 +14,7 @@
 <div class="sgroup" id="filetabs">
   <ul class="stabs">
     <li id="tab-latest"><a href="#latest-files" class="selected" title="Latest files uploaded">Latest</a></li>
+    <li id="tab-attached"><a href="#attached-files" title="Attached Assets">Attached</a></li>
     <li id="tab-search"><a href="#search-files" title="Search for files">Search</a></li>
     <li id="tab-files"><a href="#upload-files" title="Upload new files">Upload</a></li>
     <li id="tab-bucket"><a href="#bucket" title="Upload new files">Bucket</a></li>
@@ -21,8 +22,13 @@
   
   <div id="tabpanels">
     <div class="tabpanel" id="latest-files">
-      <ul id="latest-assets">
-        <%= render :partial => "admin/assets/widget", :collection => @assets %>
+      <ul id="latest-assets" class="asset-list">
+        <%= render :partial => "admin/assets/widget", :collection => @assets, :locals => { :prefix => 'latest' } %>
+      </ul>
+    </div>
+    <div class="tabpanel" id="attached-files" style="display:none;">
+      <ul id="attached-assets" class="asset-list">
+        <%= render :partial => "admin/assets/widget", :collection => @article.assets, :locals => { :prefix => 'attached' } %>
       </ul>
     </div>
     <div class="tabpanel" id="search-files" style="display:none;">
@@ -32,7 +38,7 @@
       </label>
       <input class="searchbox" type="text" size="30" name="q" id="search-files-q" />
       <input type="button" value="Search" onclick="TinyTab.callbacks['search-files']($F('search-files-q'))" />
-      <ul id="search-assets"></ul>
+      <ul id="search-assets" class="asset-list"></ul>
     </div>
     <div class="tabpanel" id="upload-files" style="display:none;">
       <p>
@@ -42,7 +48,7 @@
       <p><strong>2.</strong> <input type="button" value="Upload" onclick="Asset.upload('article-form');" /></p>
     </div>
     <div class="tabpanel" id="bucket" style="display:none;">
-      <ul id="bucket-assets">
+      <ul id="bucket-assets" class="asset-list">
         <% session[:bucket].each do |filename, values| -%>
         <li>
           <%= link_to(image_tag(*values), filename, :target => '_blank') %>

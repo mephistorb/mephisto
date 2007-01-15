@@ -78,10 +78,11 @@ context "About Section Feed" do
   
   specify "should show correct links" do
     assert_select 'feed>link[href=?][type=?]', 'http://test.host/about', 'text/html'
-    assert_select 'feed>entry>link[href]', 3 do |hrefs|
+    assert_select 'feed>entry>link[href]', 4 do |hrefs|
       assert_equal "http://test.host/about",                 hrefs[0]['href']
-      assert_equal "http://test.host/about/about-this-page", hrefs[1]['href']
-      assert_equal "http://test.host/about/the-site-map",    hrefs[2]['href']
+      assert_match /asset\.mp3$/,                            hrefs[1]['href']
+      assert_equal "http://test.host/about/about-this-page", hrefs[2]['href']
+      assert_equal "http://test.host/about/the-site-map",    hrefs[3]['href']
     end
   end
 end
@@ -105,12 +106,16 @@ context "Home Section Feed" do
   end
   
   specify "should show correct links" do
-    
     assert_select 'feed>link[href=?][type=?]', 'http://test.host/', 'text/html'
-    assert_select 'feed>entry>link[href]', 2 do |hrefs|
+    assert_select 'feed>entry>link[href]', 3 do |hrefs|
       assert_match /\/welcome-to-mephisto$/,         hrefs[0]['href']
-      assert_match /\/another-welcome-to-mephisto$/, hrefs[1]['href']
+      assert_match /asset\.mp3$/,                    hrefs[1]['href']
+      assert_match /\/another-welcome-to-mephisto$/, hrefs[2]['href']
     end
+  end
+
+  specify "should show podcast" do
+    assert_select 'feed>entry>link[rel=?][length=?][type=?]', 'enclosure', '252366', 'audio/mpeg'
   end
 
   specify "show absolute urls with custom relative url root" do

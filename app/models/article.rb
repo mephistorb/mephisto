@@ -52,6 +52,21 @@ class Article < Content
     end
     comment.has_many :all_comments
   end
+  
+  has_many :assigned_assets, :order => 'position', :dependent => :destroy
+  has_many :assets, :through => :assigned_assets, :conditions => ['assigned_assets.active = ?', true], :select => 'assets.*, assigned_assets.label' do
+    def add(asset, label = nil)
+      returning AssignedAsset.find_or_create_by_article_id_and_asset_id(proxy_owner.id, asset.id) do |aa|
+        aa.label  = label
+        aa.active = true
+        aa.save!
+      end
+    end
+    
+    def remove(asset)
+      AssignedAsset.update_all ['active = ?', false], ['article_id = ? AND asset_id = ?', proxy_owner.id, asset.id]
+    end
+  end
 
   class << self
     def with_published(&block)
@@ -139,6 +154,10 @@ class Article < Content
     set_default_filter_from user
   end
 
+  def add_xml(builder)
+    add_podcast_xml(builder)
+  end
+
   protected
     def convert_to_utc
       self.published_at = published_at.utc if published_at
@@ -160,5 +179,11 @@ class Article < Content
     
     def reset_comment_attributes
       Content.update_all ['title = ?, published_at = ?, permalink = ?', title, published_at, permalink], ['article_id = ?', id]
+    end
+    
+    def add_podcast_xml(builder)
+      if asset = assets.find(:first, :conditions => ['label = ?', 'podcast'], :select => 'assets.*, assigned_assets.label')
+        builder.link :rel => :enclosure, :type => asset.content_type, :length => asset.size, :href => asset.public_filename
+      end
     end
 end

@@ -206,9 +206,9 @@ TinyTab.prototype = {
 Asset = {
   upload: function(form) {
     form = $(form);
-    article_id   = location.href.match(/\/edit\/([0-9]+)/);
+    article_id   = location.href.match(/\/(edit|upload)\/([0-9]+)/);
     form.action  = Mephisto.root + "/admin/articles/upload"
-    if(article_id) form.action += "/" + article_id[1]
+    if(article_id) form.action += "/" + article_id[2]
     form.submit();
   },
   
@@ -295,7 +295,32 @@ var ArticleForm = {
   getAvailableComments: function() {
     return $$('ul.commentlist li').reject(function(div) { return !(div.visible() && !div.hasClassName('disabled') && div.id.match(/^comment-/)); }).collect(function(div) { return div.id.match(/comment-(\d+)/)[1] });
   },
-  
+
+  attachAsset: function(assetId) {
+    var articleId = location.href.match(/\/(edit|upload)\/([0-9]+)/)[2];
+    var attached  = $('attached-widget-' + assetId);
+    if(attached) return;
+    new Ajax.Request('/admin/articles/attach/' + articleId + '/' + assetId);
+    $$('.widget').each(function(asset) { if(assetId == asset.getAttribute('id').match(/-(\d+)$/)[1]) asset.addClassName('selected-widget'); });
+  },
+
+  labelAsset: function(assetId) {
+    var articleId = location.href.match(/\/(edit|upload)\/([0-9]+)/)[2];
+    var attached  = $('attached-widget-' + assetId);
+    var label     = $('attached-widget-version-' + assetId);
+    new Ajax.Request('/admin/articles/label/' + articleId + '/' + assetId + '?label=' + escape(label.value));
+    if(attached) return;
+  },
+
+  detachAsset: function(assetId) {
+    var articleId = location.href.match(/\/(edit|upload)\/([0-9]+)/)[2];
+    var attached  = $('attached-widget-' + assetId);
+    if(!attached) return;
+    new Ajax.Request('/admin/articles/detach/' + articleId + '/' + assetId);
+    new Effect.DropOut(attached, {afterFinish: function() { attached.remove(); }});
+    $$('.widget').each(function(asset) { if(assetId == asset.getAttribute('id').match(/-(\d+)$/)[1]) asset.removeClassName('selected-widget'); });
+  },
+
   getRevision: function() {
     var rev = $F(this)
     var url = Mephisto.root + '/admin/articles/edit/' + location.href.match(/\/edit\/([0-9]+)/)[1];
@@ -548,7 +573,37 @@ Event.addBehavior({
     $('published').value = '0';
     $('article-search').submit();
   },
+
+  'li.widget:mouseover': function() {
+    var attach = $('attach-' + this.getAttribute('id'));
+    var detach = $('detach-' + this.getAttribute('id'));
+    if(attach) attach.show();
+    if(detach) detach.show();
+  },
   
+  'li.widget:mouseout': function() {
+    var attach = $('attach-' + this.getAttribute('id'));
+    var detach = $('detach-' + this.getAttribute('id'));
+    if(attach) attach.hide();
+    if(detach) detach.hide();
+  },
+  
+  '.attach-widget:click': function() {
+    ArticleForm.attachAsset(this.getAttribute('id').match(/-(\d+)$/)[1]);
+    return false;
+  },
+  
+  '.label-widget:click': function() {
+    ArticleForm.labelAsset(this.getAttribute('id').match(/-(\d+)$/)[1]);
+    this.innerHTML = 'Saving...'
+    return false;
+  },
+  
+  '.detach-widget:click': function() {
+    ArticleForm.detachAsset(this.getAttribute('id').match(/-(\d+)$/)[1]);
+    return false;
+  },
+
   'a.theme_dialog:click': function() {
     var img = this.down('img');
     var pieces = img.src.split('/');
