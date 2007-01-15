@@ -225,7 +225,7 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal 'welcome', liquid(:search_string)
     assert_equal 1, liquid(:search_count)
     assert_equal sections(:about).to_liquid, liquid(:section)
-    assert_preferred_template :page
+    assert_preferred_template :search
     assert_layout_template    :alt_layout
     assert_template_type      :search
   end
@@ -238,7 +238,7 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal 'about', liquid(:search_string)
     assert_equal sections(:home).to_liquid, liquid(:section)
     assert_equal 0, liquid(:search_count)
-    assert_preferred_template :home
+    assert_preferred_template :search
     assert_layout_template    :alt_layout
     assert_template_type      :search
   end
