@@ -76,9 +76,16 @@ class MephistoController < ApplicationController
     end
 
     def dispatch_search
+      @section = params[:s].nil? ? nil : site.sections.detect { |s| s.path == params[:s] }
+      joins          = nil
       conditions     = ['(published_at IS NOT NULL AND published_at <= :now) AND (title LIKE :q OR excerpt LIKE :q OR body LIKE :q)', 
                        { :now => Time.now.utc, :q => "%#{params[:q]}%" }]
-      search_count   = site.articles.count(:all, :conditions => conditions)
+      if @section
+        conditions.first << ' AND (assigned_sections.section_id = :section)'
+        conditions.last[:section] = @section.id
+        joins = "INNER JOIN assigned_sections ON assigned_sections.article_id = contents.id"
+      end
+      search_count   = site.articles.count(:all, :conditions => conditions, :joins => joins)
       @article_pages = Paginator.new self, search_count, site.articles_per_page, params[:page]
       @articles      = site.articles.find(:all, :conditions => conditions, :order => 'published_at DESC',
                          :include => [:user, :sections],
@@ -89,7 +96,8 @@ class MephistoController < ApplicationController
                                           'previous_page' => paged_search_url_for(@article_pages.current.previous),
                                           'next_page'     => paged_search_url_for(@article_pages.current.next),
                                           'search_string' => params[:q],
-                                          'search_count'  => search_count)
+                                          'search_count'  => search_count,
+                                          'section'       => @section)
       @skip_caching = true
     end
     

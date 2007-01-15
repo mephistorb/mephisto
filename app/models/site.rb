@@ -250,6 +250,8 @@ class Site < ActiveRecord::Base
             section.template
           when :archive
             section.archive_template
+          else
+            section.template if section
         end
       find_preferred_template(template_type, preferred_template)
     end

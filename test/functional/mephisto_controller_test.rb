@@ -210,9 +210,36 @@ class MephistoControllerTest < Test::Unit::TestCase
     assert_equal [contents(:another)], assigns(:articles)
     assert_equal sites(:first).articles_per_page, liquid(:site).before_method(:articles_per_page)
     assert_equal 'another', liquid(:search_string)
+    assert_nil liquid(:section)
     assert_equal 1, liquid(:search_count)
     assert_preferred_template :search
     assert_layout_template    :layout
+    assert_template_type      :search
+  end
+
+  def test_should_search_entries_in_section
+    Section.update_all ['layout = ?', 'alt_layout'], ['id = ?', sections(:about).id]
+    dispatch 'search', :q => 'welcome', :s => 'about'
+    assert_dispatch_action :search
+    assert_equal [contents(:welcome)], assigns(:articles)
+    assert_equal 'welcome', liquid(:search_string)
+    assert_equal 1, liquid(:search_count)
+    assert_equal sections(:about).to_liquid, liquid(:section)
+    assert_preferred_template :page
+    assert_layout_template    :alt_layout
+    assert_template_type      :search
+  end
+
+  def test_should_search_entries_in_home_section
+    Section.update_all ['layout = ?', 'alt_layout'], ['id = ?', sections(:home).id]
+    dispatch 'search', :q => 'about', :s => ''
+    assert_dispatch_action :search
+    assert_equal [], assigns(:articles)
+    assert_equal 'about', liquid(:search_string)
+    assert_equal sections(:home).to_liquid, liquid(:section)
+    assert_equal 0, liquid(:search_count)
+    assert_preferred_template :home
+    assert_layout_template    :alt_layout
     assert_template_type      :search
   end
 
