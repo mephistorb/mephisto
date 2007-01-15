@@ -261,7 +261,7 @@ class Site < ActiveRecord::Base
         else
           case template_type
             when :tag    then tag_layout
-            when :search then search_layout
+            when :search then sections.detect(&:home?).layout
           end
         end
       find_preferred_template(:layout, layout_template)

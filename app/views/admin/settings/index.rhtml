@@ -79,16 +79,6 @@
       <label for="site_search_path">Search area url</label>
     </dt>
     <dd><%= f.text_field :search_path %></dd>
-    <% if @layouts.any? -%>
-    <dt>
-      <label for="site_search_layout">Search area layout</label>
-    </dt>
-    <dd>
-      <select name="site[search_layout]">
-        <%= options_from_templates_for_select(@layouts, @site.search_layout) %>
-      </select>
-    </dd>
-    <% end -%>
     <dt>
       <label for="site_tag_path">Tag area url</label>
     </dt>

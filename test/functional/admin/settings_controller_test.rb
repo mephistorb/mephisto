@@ -27,8 +27,7 @@ class Admin::SettingsControllerTest < Test::Unit::TestCase
 
   def test_should_clear_layouts
     login_as :quentin
-    post :update, :site => { :title => 'foo', :search_layout => '-', :tag_layout => '-' }
-    assert_nil sites(:first).reload.search_layout
+    post :update, :site => { :title => 'foo', :tag_layout => '-' }
     assert_nil sites(:first).tag_layout
   end
 

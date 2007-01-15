@@ -1,5 +1,7 @@
 * SVN *
 
+* RIP: Site#search_layout
+
 * Add link_to_search_result filter that uses either a paged or blog permalink, depending on the search section.
 
 * Allow search page to take ?s parameter to specify section path.  
