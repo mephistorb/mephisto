@@ -24,6 +24,15 @@ module UrlFilters
     tag 'img', {:src => asset_url(img), :alt => img.split('.').first }.merge(options)
   end
   
+  # Special link that checks for current section.  If it exists and it's a paged section, use link_to_page instead.
+  def link_to_search_result(article, text = nil)
+    if current_page_section && current_page_section[:is_paged]
+      link_to_page(article, current_page_section, text)
+    else
+      link_to_article(article, text)
+    end
+  end
+  
   def stylesheet_url(css)
     absolute_url :stylesheets, css
   end

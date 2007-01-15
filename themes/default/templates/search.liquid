@@ -6,7 +6,7 @@
           {% for article in articles %}
             <li>
               <span class="date">{{article.published_at | date: '%d.%m.%y' }}</span>  
-              {{ article | link_to_article }} posted in 
+              {{ article | link_to_search_result }} posted in 
               {% for section in article.sections %}
                 {{section | link_to_section }}
               {% endfor %}

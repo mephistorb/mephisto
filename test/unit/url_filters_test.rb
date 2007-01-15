@@ -152,7 +152,7 @@ context "Url Filters" do
     assert_match /title="About Articles"/, content
   end
   
-  specify "should html encoding of anchor text" do
+  specify "should html encode anchor text" do
     unencoded = 'Tom & Jerry'
     contents(:welcome).title = unencoded
     @article = contents(:welcome).to_liquid
@@ -162,6 +162,22 @@ context "Url Filters" do
     assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_page(@article)
     assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_section(@context['section'])
     assert_match %r{>Tom &amp; Jerry<\/a>}, link_to_tag(unencoded)
+  end
+  
+  specify "should link to search result with article link" do
+    @article = contents(:welcome).to_liquid
+    @article.context = @context
+    @context['section'] = nil
+    assert_match /href="\/\d{4}\/\d+\/\d+\/welcome-to-mephisto"/, link_to_search_result(@article)
+  end
+  
+  specify "should link to search result with page link" do
+    @article = contents(:welcome).to_liquid(:page => true)
+    @article.context = @context
+    @article2 = contents(:another).to_liquid
+    @article2.context = @context
+    assert_match /href="\/about"/, link_to_search_result(@article)
+    assert_match /href="\/about\/another-welcome-to-mephisto"/, link_to_search_result(@article2)
   end
 end
 
