@@ -212,7 +212,7 @@ class Site < ActiveRecord::Base
     def check_permalink_style
       permalink_style.sub! /^\//, ''
       permalink_style.sub! /\/$/, ''
-      pieces = permalink_style.split(Regexp.new('/|-'))
+      pieces = permalink_style.split('/')
       errors.add :permalink_style, 'cannot have blank paths' if pieces.any?(&:blank?)
       pieces.each do |p|
         errors.add :permalink_style, "cannot contain '#{p}' variable" unless p.blank? || permalink_variable_format?(p).nil? || permalink_variable?(p)

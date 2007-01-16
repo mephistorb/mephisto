@@ -1,6 +1,6 @@
 * SVN *
 
-* Allow hyphens as an allowed separator for permalink styles. [Chris Wanstrath]
+* RESTRICT hyphens as a possible separator for permalink styles. [Chris Wanstrath]
 
 * Initial article/asset assignment support.  Perfect for podcasting.  
 
