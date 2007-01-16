@@ -1,5 +1,7 @@
 * SVN *
 
+* Allow hyphens as an allowed separator for permalink styles. [Chris Wanstrath]
+
 * Initial article/asset assignment support.  Perfect for podcasting.  
 
 * Raise MissingThemesError if Site#theme is nil

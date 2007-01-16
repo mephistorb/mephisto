@@ -42,6 +42,11 @@ context "Site Permalink Validations" do
     assert !@site.valid?
     assert_equal "cannot contain ':foo' variable", @site.errors.on(:permalink_style)
   end
+
+  specify "should recongize hyphens as token separators" do
+    @site.permalink_style = ':id-:permalink'
+    assert_valid @site
+  end
 end
 
 context "Site Permalink Generation" do
