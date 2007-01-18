@@ -27,9 +27,9 @@ class ApplicationController < ActionController::Base
       elsif asset.other?
         ['/images/mephisto/icons/doc.png', options]
       elsif asset.thumbnails_count.zero?
-        [asset.public_filename, options]
+        [asset.public_filename(thumbnail), options]
       else
-        [asset.public_filename(thumbnail), options.merge(:size => asset.image_size)]
+        [asset.public_filename, options]
       end
     end
     helper_method :asset_image_args_for
