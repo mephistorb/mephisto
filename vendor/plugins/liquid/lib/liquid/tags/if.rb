@@ -1,6 +1,6 @@
 module Liquid
   class If < Block
-    Syntax = /(#{QuotedFragment})\s*([=!<>]+)?\s*(#{QuotedFragment})?/
+    Syntax = /(#{QuotedFragment})\s*([=!<>a-z_]+)?\s*(#{QuotedFragment})?/
     
     def initialize(tag_name, markup, tokens)    
     

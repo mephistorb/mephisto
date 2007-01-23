@@ -6,23 +6,27 @@ module Liquid
     attr_accessor :filters, :name
     
     def initialize(markup)
-      @markup = markup                            
-      @name = markup.match(/\s*(#{QuotedFragment})/)[1]
+      @markup  = markup                            
+      @name    = nil
       @filters = []
-      if markup.match(/#{FilterSperator}\s*(.*)/)
-        filters = Regexp.last_match(1).split(/#{FilterSperator}/)
-        
-        filters.each do |f|    
-          if matches = f.match(/\s*(\w+)/)
-            filtername = matches[1]
-            filterargs = f.scan(/(?:#{FilterArgumentSeparator}|#{ArgumentSeparator})\s*(#{QuotedFragment})/).flatten            
-            @filters << [filtername.to_sym, filterargs]
+      if match = markup.match(/\s*(#{QuotedFragment})/)
+        @name = match[1]
+        if markup.match(/#{FilterSperator}\s*(.*)/)
+          filters = Regexp.last_match(1).split(/#{FilterSperator}/)
+
+          filters.each do |f|    
+            if matches = f.match(/\s*(\w+)/)
+              filtername = matches[1]
+              filterargs = f.scan(/(?:#{FilterArgumentSeparator}|#{ArgumentSeparator})\s*(#{QuotedFragment})/).flatten            
+              @filters << [filtername.to_sym, filterargs]
+            end
           end
         end
       end
     end                        
 
     def render(context)      
+      return '' if @name.nil?
       output = context[@name]
       @filters.inject(output) do |output, filter|
         filterargs = filter[1].to_a.collect do |a|

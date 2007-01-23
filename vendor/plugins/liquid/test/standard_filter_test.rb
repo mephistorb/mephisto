@@ -45,7 +45,8 @@ class StandardFiltersTest < Test::Unit::TestCase
   def test_truncatewords
     assert_equal 'one two three', @filters.truncatewords('one two three', 4)
     assert_equal 'one two...', @filters.truncatewords('one two three', 2)
-    assert_equal 'one two three', @filters.truncatewords('one two three')    
+    assert_equal 'one two three', @filters.truncatewords('one two three')
+    assert_equal 'Two small (13&#8221; x 5.5&#8221; x 10&#8221; high) baskets fit inside one large basket (13&#8221;...', @filters.truncatewords('Two small (13&#8221; x 5.5&#8221; x 10&#8221; high) baskets fit inside one large basket (13&#8221; x 16&#8221; x 10.5&#8221; high) with cover.', 15)    
   end
   
   def test_strip_html

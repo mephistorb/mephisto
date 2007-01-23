@@ -7,6 +7,20 @@ module Liquid
   #   c.evaluate #=> true
   #
   class Condition
+    @@operators = {
+      '==' => lambda { |cond, left, right|  cond.send(:equal_variables, left, right) },
+      '!=' => lambda { |cond, left, right| !cond.send(:equal_variables, left, right) },
+      '<>' => lambda { |cond, left, right| !cond.send(:equal_variables, left, right) },
+      '<'  => :<,
+      '>'  => :>,
+      '>=' => :>=,
+      '<=' => :<=
+    }
+    
+    def self.operators
+      @@operators
+    end
+
     attr_reader :attachment
     attr_accessor :left, :operator, :right
   
@@ -57,20 +71,12 @@ module Liquid
 
       left, right = context[left], context[right]
 
-      operation = case op
-      when '==' then return equal_variables(left, right)
-      when '!=' then return !equal_variables(left, right)
-      when '<>' then return !equal_variables(left, right)
-      when '>'  then :>
-      when '<'  then :<
-      when '>=' then :>=
-      when '<=' then :<=
-      else
-        raise ArgumentError.new("Error in tag '#{name}' - Unknown operator #{op}")        
-      end
+      operation = self.class.operators[op] || raise(ArgumentError.new("Error in tag '#{name}' - Unknown operator #{op}"))
 
-      if left.respond_to?(operation) and right.respond_to?(operation)
-        left.send(operation, right)      
+      if operation.respond_to?(:call)
+        operation.call(self, left, right)
+      elsif left.respond_to?(operation) and right.respond_to?(operation)
+        left.send(operation, right)
       else
         nil
       end
