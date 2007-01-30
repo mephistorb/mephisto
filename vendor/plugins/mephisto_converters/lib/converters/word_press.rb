@@ -32,7 +32,8 @@ class WordPressConverter < BaseConverter
           :user         => user,
           :updater      => user,
           :tag          => converter.tagging_from_sections(wp_article),
-          :section_ids  => converter.find_or_create_sections(wp_article)
+          :section_ids  => converter.find_or_create_sections(wp_article),
+          :filter       => ''
       end
     end
     

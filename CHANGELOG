@@ -1,5 +1,7 @@
 * SVN *
 
+* [converters] use no filter for wordpress articles
+
 * Small bug fixes
   - show correct asset thumbnail url
   - assert with correct named asset resource route
