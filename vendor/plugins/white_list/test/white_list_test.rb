@@ -7,17 +7,17 @@ class WhiteListTest < Test::Unit::TestCase
 
   WhiteListHelper.tags.each do |tag_name|
     define_method "test_should_allow_#{tag_name}_tag" do
-      assert_white_listed "start <#{tag_name} title=\"1\" name=\"foo\">foo <bad>bar</bad> baz</#{tag_name}> end", "start <#{tag_name} title='1'>foo &lt;bad>bar&lt;/bad> baz</#{tag_name}> end"
+      assert_white_listed "start <#{tag_name} title=\"1\" name=\"foo\">foo <bad>bar</bad> baz</#{tag_name}> end", %(start <#{tag_name} title="1">foo &lt;bad>bar&lt;/bad> baz</#{tag_name}> end)
     end
   end
 
   def test_should_allow_anchors
-    assert_white_listed %(<a href="foo" onclick="bar"><script>baz</script></a>), "<a href='foo'></a>"
+    assert_white_listed %(<a href="foo" onclick="bar"><script>baz</script></a>), %(<a href="foo"></a>)
   end
 
   %w(src width height alt).each do |img_attr|
     define_method "test_should_allow_image_#{img_attr}_attribute" do
-      assert_white_listed %(<img #{img_attr}="foo" onclick="bar" />), "<img #{img_attr}='foo' />"
+      assert_white_listed %(<img #{img_attr}="foo" onclick="bar" />), %(<img #{img_attr}="foo" />)
     end
   end
 
@@ -36,13 +36,13 @@ class WhiteListTest < Test::Unit::TestCase
   end
 
   def test_should_allow_custom_tags_with_attributes
-    text = "<fieldset foo='bar'>foo</fieldset>"
+    text = %(<fieldset foo="bar">foo</fieldset>)
     assert_equal(text, white_list(text, :attributes => ['foo']))
   end
 
   [%w(img src), %w(a href)].each do |(tag, attr)|
     define_method "test_should_strip_#{attr}_attribute_in_#{tag}_with_bad_protocols" do
-      assert_white_listed %(<#{tag} #{attr}="javascript:bang" title="1">boo</#{tag}>), %(<#{tag} title='1'>boo</#{tag}>)
+      assert_white_listed %(<#{tag} #{attr}="javascript:bang" title="1">boo</#{tag}>), %(<#{tag} title="1">boo</#{tag}>)
     end
   end
 
@@ -97,7 +97,7 @@ class WhiteListTest < Test::Unit::TestCase
   
   def test_should_sanitize_script_tag_with_multiple_open_brackets
     assert_white_listed %(<<SCRIPT>alert("XSS");//<</SCRIPT>), "&lt;"
-    assert_white_listed %(<iframe src=http://ha.ckers.org/scriptlet.html\n<), "&lt;iframe src='http:' />&lt;"
+    assert_white_listed %(<iframe src=http://ha.ckers.org/scriptlet.html\n<), %(&lt;iframe src="http:" />&lt;)
   end
   
   def test_should_sanitize_unclosed_script
@@ -119,6 +119,10 @@ class WhiteListTest < Test::Unit::TestCase
       bad == 'script' ? nil : node
     end
     assert_equal "<img>blah</img><blink>blah</blink>", safe
+  end
+
+  def test_should_sanitize_attributes
+    assert_white_listed %(<SPAN title="'><script>alert()</script>">blah</SPAN>), %(<span title="'&gt;&lt;script&gt;alert()&lt;/script&gt;">blah</span>)
   end
 
   protected

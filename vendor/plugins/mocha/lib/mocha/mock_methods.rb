@@ -1,4 +1,5 @@
 require 'mocha/expectation'
+require 'mocha/metaclass'
 
 module Mocha
   # Methods added to mock objects.
@@ -41,12 +42,15 @@ module Mocha
       method_names = method_names.is_a?(Hash) ? method_names : { method_names => nil }
       method_names.each do |method_name, return_value|
         expectations << Expectation.new(self, method_name, backtrace).returns(return_value)
+        self.__metaclass__.send(:undef_method, method_name) if self.__metaclass__.method_defined?(method_name)
       end
       expectations.last
     end
 
-    # :call-seq: expects(method_name) -> expectation
-    #            expects(method_names) -> last expectation
+    alias_method :__expects__, :expects
+
+    # :call-seq: stubs(method_name) -> expectation
+    #            stubs(method_names) -> last expectation
     #
     # Adds an expectation that a method identified by +method_name+ symbol may be called any number of times with any parameters.
     # Returns the new expectation which can be further modified by methods on Mocha::Expectation.
@@ -68,10 +72,13 @@ module Mocha
       method_names = method_names.is_a?(Hash) ? method_names : { method_names => nil }
       method_names.each do |method_name, return_value|
         expectations << Stub.new(self, method_name, backtrace).returns(return_value)
+        self.__metaclass__.send(:undef_method, method_name) if self.__metaclass__.method_defined?(method_name)
       end
       expectations.last
     end
     
+    alias_method :__stubs__, :stubs
+
     # :stopdoc:
 
     def method_missing(symbol, *arguments, &block)
@@ -102,7 +109,7 @@ module Mocha
     end
 	
   	def matching_expectation(symbol, *arguments)
-      expectations.detect { |expectation| expectation.match?(symbol, *arguments) }
+      expectations.reverse.detect { |expectation| expectation.match?(symbol, *arguments) }
     end
   
     def verify(&block)

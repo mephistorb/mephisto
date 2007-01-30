@@ -35,23 +35,19 @@ class MockTest < Test::Unit::TestCase
     assert_equal true, mock.stub_everything
   end
   
-  def test_should_use_default_inspect_message
+  def test_should_display_object_id_for_inspect_if_mock_has_no_name
     mock = Mock.new
-    assert_equal mock.mocha_inspect_before_hijacked_by_named_mocks, mock.mocha_inspect
+    assert_match Regexp.new("#<Mock:0x[0-9A-Fa-f]{6}>"), mock.mocha_inspect
   end
   
-  def test_should_give_name_in_inspect_message
+  def test_should_display_name_for_inspect_if_mock_has_name
     mock = Mock.new(false, 'named_mock')
     assert_equal "#<Mock:named_mock>", mock.mocha_inspect
   end
-  
-  def test_should_be_able_to_mock_some_standard_object_methods_on_blank_mock
-    mock = BlankMock.new
-    mock.expects(:type)
-    mock.expects(:kind_of?)
-    mock.type
-    mock.kind_of?
-    assert_nothing_raised(ExpectationError) { mock.verify }
+
+  def test_should_give_name_in_inspect_message
+    mock = Mock.new(false, 'named_mock')
+    assert_equal "#<Mock:named_mock>", mock.mocha_inspect
   end
   
   def test_should_be_able_to_extend_mock_object_with_module
@@ -59,9 +55,30 @@ class MockTest < Test::Unit::TestCase
     assert_nothing_raised(ExpectationError) { mock.extend(Module.new) }
   end
   
-  def test_should_be_equal_to_avoid_strange_breakage_of_published_review_list_test_in_revieworld
+  def test_should_be_equal
     mock = Mock.new
     assert_equal true, mock.eql?(mock)
   end
     
+  def test_should_be_able_to_mock_standard_object_methods
+    mock = Mock.new
+    object_methods = Object.public_instance_methods.reject { |m| m =~ /^__.*__$/ }.sort
+    object_methods.each { |method| mock.__expects__(method.to_sym).returns(method) }
+    object_methods.each { |method| assert_equal method, mock.__send__(method.to_sym) }
+    assert_nothing_raised(ExpectationError) { mock.verify }
+  end
+
+  def test_should_be_able_to_stub_standard_object_methods
+    mock = Mock.new
+    object_methods = Object.public_instance_methods.reject { |m| m =~ /^__.*__$/ }.sort
+    object_methods.each { |method| mock.__stubs__(method.to_sym).returns(method) }
+    object_methods.each { |method| assert_equal method, mock.__send__(method.to_sym) }
+  end
+  
+  def test_should_respond_to_expected_methods
+    mock = Mock.new
+    mock.expects(:method1)
+    assert_equal true, mock.respond_to?(:method1)
+  end
+  
 end
