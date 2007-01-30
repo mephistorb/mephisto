@@ -28,7 +28,7 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
         process_upload ['logo.png']
         assert_equal 'logo.png', assigns(:assets).first.title
         assert_match /logo\.png/, flash[:notice]
-        assert_redirected_to asset_path
+        assert_redirected_to assets_path
       end
     end
   end
@@ -58,7 +58,7 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
       assert_difference Asset, :count, asset_count do
         process_upload %w(logo.png logo.png)
         assert_match /2 assets/, flash[:notice]
-        assert_redirected_to asset_path
+        assert_redirected_to assets_path
       end
     end
   end

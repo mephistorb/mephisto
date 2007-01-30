@@ -27,9 +27,9 @@ class ApplicationController < ActionController::Base
       elsif asset.other?
         ['/images/mephisto/icons/doc.png', options]
       elsif asset.thumbnails_count.zero?
-        [asset.public_filename(thumbnail), options]
-      else
         [asset.public_filename, options]
+      else
+        [asset.public_filename(thumbnail), options]
       end
     end
     helper_method :asset_image_args_for
@@ -47,17 +47,17 @@ class ApplicationController < ActionController::Base
         # use collect so it doesn't modify @articles
         assigns['articles'] = assigns['articles'].collect &:to_liquid 
       end
-      status          = (assigns.delete(:status) || '200 OK')
+      status          = (assigns.delete(:status) || :ok)
       @liquid_assigns = assigns
       render :text => site.render_liquid_for(@section, template_type, assigns, self), :status => status
     end
 
-    def show_error(message = 'An error occurred.', status = '500 Error')
+    def show_error(message = 'An error occurred.', status = :internal_server_error)
       render_liquid_template_for(:error, 'message' => message, :status => status)
     end
 
     def show_404
-      show_error 'Page Not Found', '404 NotFound'
+      show_error 'Page Not Found', :not_found
     end
 
     def set_cache_root
@@ -78,9 +78,9 @@ class ApplicationController < ActionController::Base
       exception.backtrace.each { |t| logger.debug " > #{t}" }
       case exception
         when ActiveRecord::RecordNotFound, ::ActionController::UnknownController, ::ActionController::UnknownAction
-          render :file => File.join(RAILS_ROOT, 'public/404.html'), :status => '404 Not Found'
+          render :file => File.join(RAILS_ROOT, 'public/404.html'), :status => :not_found
         else
-          render :file => File.join(RAILS_ROOT, 'public/500.html'), :status => '500 Error'
+          render :file => File.join(RAILS_ROOT, 'public/500.html'), :status => :internal_server_error
       end
     end
 end

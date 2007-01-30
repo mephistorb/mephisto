@@ -1,5 +1,11 @@
 * SVN *
 
+* Small bug fixes
+  - show correct asset thumbnail url
+  - assert with correct named asset resource route
+  - add missing fixtures for About Section Feed Test
+  - update asset labeling tests to reflect current behavior
+
 * RESTRICT hyphens as a possible separator for permalink styles. [Chris Wanstrath]
 
 * Initial article/asset assignment support.  Perfect for podcasting.  

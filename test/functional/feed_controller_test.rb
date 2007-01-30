@@ -54,7 +54,7 @@ class FeedControllerTest < Test::Unit::TestCase
 end
 
 context "About Section Feed" do
-  fixtures :contents, :sections, :assigned_sections, :sites
+  fixtures :contents, :sections, :assigned_sections, :sites, :users, :assets, :assigned_assets
   def setup
     @controller = FeedController.new
     @request    = ActionController::TestRequest.new

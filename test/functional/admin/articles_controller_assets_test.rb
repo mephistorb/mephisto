@@ -96,18 +96,16 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
 
   specify "should add asset to article" do
     assert_difference AssignedAsset, :count do
-      post :attach, :id => contents(:welcome).id, :version => assets(:mov).id, :label => 'avatar'
+      post :attach, :id => contents(:welcome).id, :version => assets(:mov).id
     end
     assert_models_equal [assets(:gif), assets(:mp3), assets(:mov)], contents(:welcome).assets(true)
-    assert_equal 'avatar', contents(:welcome).assets[2].label
   end
   
   specify "should add inactive asset to article" do
     assert_no_difference AssignedAsset, :count do
-      post :attach, :id => contents(:welcome).id, :version => assets(:png).id, :label => 'avatar'
+      post :attach, :id => contents(:welcome).id, :version => assets(:png).id
     end
     assert_models_equal [assets(:gif), assets(:mp3), assets(:png)], contents(:welcome).assets(true)
-    assert_equal 'avatar', contents(:welcome).assets[2].label
   end
 
   specify "should find deactivate article assets" do

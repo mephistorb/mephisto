@@ -29,7 +29,7 @@ class Admin::AssetsControllerPermissionsTest < Test::Unit::TestCase
         assert_equal users(:ben).id, assigns(:assets).first.user_id
         assert_equal 'logo.png', assigns(:assets).first.title
         assert_match /logo\.png/, flash[:notice]
-        assert_redirected_to asset_path
+        assert_redirected_to assets_path
       end
     end
   end

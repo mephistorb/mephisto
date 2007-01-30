@@ -46,11 +46,13 @@ module DropFilters
     liquify(*@context['site'].source.articles.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'contents.created_at desc'))
   end
   
-  def assets_by_type(type)
-    liquify(*@context['site'].source.assets.find_all_by_content_types([type.to_sym], :all, :order => 'created_at desc'))
+  def assets_by_type(type, drop = nil)
+    drop ||= @context['site']
+    liquify(*drop.source.assets.find_all_by_content_types([type.to_sym], :all, :order => 'created_at desc'))
   end
   
-  def tagged_assets(tags)
-    liquify(*@context['site'].source.assets.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'assets.created_at desc'))
+  def tagged_assets(tags, drop = nil)
+    drop ||= @context['site']
+    liquify(*drop.source.assets.find(:all, :include => :tags, :conditions => ['tags.name in (?)', Tag.parse(tags)], :order => 'assets.created_at desc'))
   end
 end
