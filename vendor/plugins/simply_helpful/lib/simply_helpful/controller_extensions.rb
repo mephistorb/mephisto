@@ -1,16 +1,22 @@
 module SimplyHelpful
   module ActionControllerExtensions
+    POLYMORPHIC_ROUTES = %w(
+      polymorphic_url polymorphic_path
+      edit_polymorphic_url edit_polymorphic_path
+      new_polymorphic_url new_polymorphic_path
+      formatted_polymorphic_url formatted_polymorphic_path
+     )
+    
     def self.included(base)
-      base.helper_method :polymorphic_url
-      base.helper_method :polymorphic_path
+      POLYMORPHIC_ROUTES.each { |route| base.helper_method(route) }
     end
 
-    def polymorphic_url(record)
-      SimplyHelpful::RecordIdentifier.polymorphic_url(record, self)
-    end
-
-    def polymorphic_path(record)
-      SimplyHelpful::RecordIdentifier.polymorphic_path(record, self)
+    POLYMORPHIC_ROUTES.each do |route|
+      module_eval <<-EOT
+        def #{route}(record)
+          SimplyHelpful::PolymorphicRoutes.#{route}(record, self)
+        end
+      EOT
     end
     
     def redirect_to_with_record_identification(*args)
@@ -22,11 +28,12 @@ module SimplyHelpful
       when String, Symbol, Hash
         redirect_to_without_record_identification *args
       else
-        redirect_to_without_record_identification SimplyHelpful::RecordIdentifier.polymorphic_url(potential_object, self)
+        redirect_to_without_record_identification SimplyHelpful::PolymorphicRoutes.polymorphic_url(potential_object, self)
       end
     end
   end
 end
+
 module ActionController
   class Base
     include SimplyHelpful::ActionControllerExtensions

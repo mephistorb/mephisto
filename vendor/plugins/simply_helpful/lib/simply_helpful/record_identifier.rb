@@ -2,18 +2,6 @@ module SimplyHelpful
   module RecordIdentifier
     extend self
 
-    def polymorphic_url(record, url_writer)
-      record.new_record? ? 
-        url_writer.send(plural_class_name(record)   + "_url") : 
-        url_writer.send(singular_class_name(record) + "_url", record)
-    end
-
-    def polymorphic_path(record, url_writer)
-      record.new_record? ? 
-        url_writer.send(plural_class_name(record)   + "_path") : 
-        url_writer.send(singular_class_name(record) + "_path", record)
-    end
-
     def partial_path(record_or_class)
       klass = class_from_record_or_class(record_or_class)
       "#{klass.name.tableize}/#{klass.name.demodulize.underscore}"

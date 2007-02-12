@@ -64,7 +64,7 @@ module ActionView
           when Hash, String, Symbol, NilClass
             link_to_without_record_identification(attr_name, record, html_options, *parameters_for_method_reference)
           else
-            url = SimplyHelpful::RecordIdentifier.polymorphic_url(record, self)
+            url = SimplyHelpful::PolymorphicRoutes.polymorphic_url(record, self)
             link_text = record.respond_to?(attr_name) ? record.send(attr_name) : attr_name
             link_to_without_record_identification(link_text, url, html_options, *parameters_for_method_reference)
         end
