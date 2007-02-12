@@ -59,4 +59,14 @@ context "Theme" do
     site.stubs(:current_theme_path).returns(0)
     assert_raises(MissingThemesError) { site.theme }
   end
+  
+  specify "should retrieve extension" do
+    assert_equal ".liquid", @theme.extension
+  end
+  
+  specify "should find templates" do
+    assert_equal 15, @theme.attachments.size
+    assert_equal 12, @theme.templates.size
+    assert_equal 3, @theme.resources.size
+  end
 end

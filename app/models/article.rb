@@ -158,6 +158,31 @@ class Article < Content
     add_podcast_xml(builder)
   end
 
+  def next(section=nil)
+    self.class.with_published do
+      if section
+        site.articles.find :first, :conditions => ['published_at > ? and assigned_sections.section_id = ?', published_at, section.id], 
+          :joins => 'inner join assigned_sections on contents.id = assigned_sections.article_id',
+          :order => 'published_at'
+      else
+        site.articles.find :first, :conditions => ['published_at > ?', published_at], :order => 'published_at'
+      end
+    end
+  end
+
+  def previous(section=nil)
+    self.class.with_published do
+      if section
+        site.articles.find :first, :conditions => ['published_at < ? and assigned_sections.section_id = ?', published_at, section.id], 
+          :joins => 'inner join assigned_sections on contents.id = assigned_sections.article_id',
+          :order => 'published_at desc'
+      else
+        site.articles.find :first, :conditions => ['published_at < ?', published_at], :order => 'published_at desc'
+      end
+    end
+  end
+
+
   protected
     def convert_to_utc
       self.published_at = published_at.utc if published_at

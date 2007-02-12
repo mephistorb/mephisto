@@ -118,6 +118,14 @@ module UrlFilters
     atom_feed '/feed/' + section.source.to_feed_url.join('/'), (title.blank? ? "Articles for #{section['name']}" : title)
   end
 
+  def next(article, section = nil)
+    article.next(section)
+  end
+
+  def previous(article, section = nil)
+    article.previous(section)
+  end
+
   private
     # marks a page as class=selected
     def page_anchor_options(page, section = nil)

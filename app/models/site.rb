@@ -4,6 +4,25 @@ class Site < ActiveRecord::Base
   cattr_reader :theme_path, :default_assigns
 
   cattr_accessor :multi_sites_enabled, :cache_sweeper_tracing
+  
+  # @@template_handlers = HashWithIndifferentAccess.new if @@template_handlers.nil?
+  @@template_handlers = {}
+  
+  # Register a class that knows how to handle template files with the given
+  # extension. This can be used to implement new template types.
+  # The constructor for the class must take a Site instance
+  # as a parameter, and the class must implement a #render method that
+  # has the following signature
+  # def render(section, layout, template, assigns ={}, controller = nil)
+  # and return the rendered template as a string.
+  def self.register_template_handler(extension, klass)
+    @@template_handlers[extension] = klass
+  end
+  register_template_handler(".liquid", Mephisto::Liquid::LiquidTemplate)
+
+  def self.extensions
+    @@template_handlers.keys
+  end
 
   has_many  :sections, :order => "position" do
     def home
@@ -162,13 +181,15 @@ class Site < ActiveRecord::Base
     comment_age.to_i > -1
   end
 
-  def render_liquid_for(section, template_type, assigns = {}, controller = nil)
+  def call_render(section, template_type, assigns = {}, controller = nil)
     assigns.update('site' => to_liquid(section), 'mode' => template_type)
     assigns.update(default_assigns) unless default_assigns.empty?
-    parse_inner_template(set_content_template(section, template_type), assigns, controller)
-    parse_template(set_layout_template(section, template_type), assigns, controller)
+    template = set_content_template(section, template_type)
+    layout = set_layout_template(section, template_type)
+    handler = @@template_handlers[theme.extension] || @@template_handlers[".liquid"]
+    handler.new(self).render(section, layout, template, assigns, controller)
   end
-
+  
   def to_liquid(current_section = nil)
     SiteDrop.new self, current_section
   end
@@ -194,6 +215,13 @@ class Site < ActiveRecord::Base
       pages.each { |p| controller.expire_page(p.url) }
       CachedPage.expire_pages(self, pages)
     end
+  end
+
+#need non protected method for ErbTemplate - psq
+  def find_preferred_template(template_type, custom_template)
+    preferred = templates.find_preferred(template_type, custom_template)
+    return preferred if preferred && preferred.file?
+    raise MissingTemplateError.new(template_type, templates.collect_templates(template_type, custom_template).collect(&:basename))
   end
 
   protected
@@ -267,27 +295,4 @@ class Site < ActiveRecord::Base
       find_preferred_template(:layout, layout_template)
     end
 
-    def find_preferred_template(template_type, custom_template)
-      preferred = templates.find_preferred(template_type, custom_template)
-      return preferred if preferred && preferred.file?
-      raise MissingTemplateError.new(template_type, templates.collect_templates(template_type, custom_template).collect(&:basename))
-    end
-    
-    def parse_template(template, assigns, controller)
-      # give the include tag access to files in the site's fragments directory
-      Liquid::Template.file_system = Liquid::LocalFileSystem.new(File.join(theme.path, 'templates'))
-      tmpl = Liquid::Template.parse(template.read.to_s)
-      returning tmpl.render(assigns, :registers => {:controller => controller}) do |result|
-        yield tmpl, result if block_given?
-      end
-    end
-    
-    def parse_inner_template(template, assigns, controller)
-      parse_template(template, assigns, controller) do |tmpl, result|
-        # Liquid::Template takes a copy of the assigns.  
-        # merge any new values in to the assigns and pass them to the layout
-        tmpl.assigns.each { |k, v| assigns[k] = v } if tmpl.respond_to?(:assigns)
-        assigns['content_for_layout'] = result
-      end
-    end
 end

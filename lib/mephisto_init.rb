@@ -102,3 +102,9 @@ class Time
     end
   end
 end
+
+class Object
+  def tap
+    yield self; self;
+  end
+end

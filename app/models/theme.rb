@@ -1,9 +1,9 @@
 class Theme
   @@root_theme_files   = %w(about.yml preview.png)
   @@theme_directories  = %w(templates layouts javascripts stylesheets images)
-  @@allowed_extensions = %w(.js .css .liquid .png .gif .jpg .swf .ico)
+  @@allowed_extensions = %w(.js .css .png .gif .jpg .swf .ico) | Site.extensions
   cattr_reader :root_theme_files, :theme_directories, :allowed_extensions
-  attr_reader :path, :base_path
+  attr_reader :path, :base_path, :extension
 
   def self.import(zip_file, options = {})
     dest        = options[:to].is_a?(Pathname) ? options[:to] : Pathname.new(options[:to] || '.')
@@ -47,6 +47,8 @@ class Theme
       @base_path = base
       @path      = Pathname.new(@base_path)
     end
+    layout = (@path + "layouts").children(false).select {|v| v.to_s =~ /^layout/}[0] if (@path + "layouts").directory?
+    @extension = layout.extname if layout
   end
 
   def current?
@@ -98,7 +100,7 @@ class Theme
     Pathname.glob(File.join(base_path, '*/*')).each do |path|
       next unless path.file?
       @attachments << path
-      (path.extname == '.liquid' ? @templates : @resources) << path
+      ((path.extname == @extension) ? @templates : @resources) << path
     end
     @attachments
   end

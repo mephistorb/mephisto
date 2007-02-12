@@ -28,7 +28,7 @@ class Admin::TemplatesController < Admin::DesignController
       if !@tmpl.file?
         page.flash.errors "File does not exist"
         page.visual_effect :fade, params[:context], :duration => 0.3
-      elsif @theme.templates.custom.include?(@tmpl.basename.to_s)
+      elsif @theme.templates.custom(@theme.extension).include?(@tmpl.basename.to_s)
         @tmpl.unlink
         page.visual_effect :fade, params[:context], :duration => 0.3
       else

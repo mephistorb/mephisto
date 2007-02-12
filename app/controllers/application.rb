@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
       end
       status          = (assigns.delete(:status) || :ok)
       @liquid_assigns = assigns
-      render :text => site.render_liquid_for(@section, template_type, assigns, self), :status => status
+      render :text => site.call_render(@section, template_type, assigns, self), :status => status
     end
 
     def show_error(message = 'An error occurred.', status = :internal_server_error)

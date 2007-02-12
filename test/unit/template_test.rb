@@ -34,5 +34,17 @@ context "Template" do
 
   def test_should_find_custom
     assert_equal ['alt_layout.liquid', 'author.liquid', 'home.liquid', 'index.liquid', 'page.liquid'], sites(:first).templates.custom.sort
+    assert_equal ['alt_layout.liquid', 'author.liquid', 'home.liquid', 'index.liquid', 'page.liquid'], sites(:first).templates.custom(".liquid").sort
   end
+
+  def test_template_types_should_use_extension
+    assert_equal ["archive.liquid", "error.liquid", "layout.liquid", "search.liquid", "section.liquid", "single.liquid", "tag.liquid"], sites(:first).templates.template_types
+    assert_equal ["archive.test", "error.test", "layout.test", "search.test", "section.test", "single.test", "tag.test"], sites(:first).templates.template_types(".test")
+  end
+  
+  def test_collect_templates_find_correct_template
+    assert sites(:first).templates.collect_templates(:section, nil).include?(sites(:first).theme.path+"templates/section.liquid") 
+    assert sites(:first).templates.collect_templates(:section, "home.liquid").include?(sites(:first).theme.path+"templates/home.liquid") 
+  end
+
 end

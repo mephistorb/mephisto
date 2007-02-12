@@ -3,10 +3,10 @@
 <p>Modify a template by selecting it from the list below.  Add a new layout by creating a Liquid template with an 
   *_layout suffix (e.g custom_layout).</p>
 <ul id="attachments">
-  <% @theme.templates.template_types.each do |template| -%>
+  <% @theme.templates.template_types(@theme.extension).each do |template| -%>
     <li><%= link_to template, url_for_theme(:controller => 'templates', :action => 'edit', :filename => template) %></li>
   <% end -%>
-  <% @theme.templates.custom.each_with_index do |template, i| -%>
+  <% @theme.templates.custom(@theme.extension).each_with_index do |template, i| -%>
     <li id="templates-<%= i %>">
       <%= delete_link :templates, template, "templates-#{i}" %>
       <%= link_to template, url_for_theme(:controller => 'templates', :action => 'edit', :filename => template) %>

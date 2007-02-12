@@ -60,6 +60,11 @@ context "Site" do
                             [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:about)]
   end
 
+  specify "should find at least one extension (.liquid)" do
+    assert !Site.extensions.empty?
+    assert Site.extensions.include?(".liquid")
+  end
+
   protected
     def assert_reorder_sections(old_order, expected)
       assert_models_equal old_order, sites(:first).sections

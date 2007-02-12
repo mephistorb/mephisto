@@ -1,8 +1,20 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ArticleTest < Test::Unit::TestCase
-  fixtures :contents, :users, :sections, :sites
+  fixtures :contents, :users, :sections, :sites, :assigned_sections
 
+  def test_find_next
+    assert_equal contents(:another).next, contents(:site_map)
+    assert_equal contents(:another).next(sections(:home)), contents(:welcome)
+    assert_equal contents(:cupcake_welcome).next(sections(:cupcake_home)), nil
+  end
+
+  def test_should_find_previous
+    assert_equal contents(:another).previous, contents(:at_beginning_of_next_month)
+    assert_equal contents(:another).previous(sections(:home)), nil
+    assert_not_equal contents(:another).previous(sections(:cupcake_home)), contents(:at_beginning_of_next_month)
+  end
+  
   def test_should_create_permalink
     a = create_article :title => 'This IS a Tripped out title!!.!1  (well/ not really)', :body => 'foo'
     assert_equal 'this-is-a-tripped-out-title-1-well-not-really', a.permalink

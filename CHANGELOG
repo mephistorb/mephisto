@@ -1,5 +1,9 @@
 * SVN *
 
+* Extract template rendering code to separate handler class, add support for alternate template handlers. [Pascal Belloncle]
+
+* Add {{ article.next }} and {{ article | next: section }} for paginating articles [Pascal Belloncle]
+
 * [converters] initial movable type support [sd]
 
 * [converters] use no filter for wordpress articles

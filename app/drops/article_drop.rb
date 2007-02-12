@@ -58,6 +58,18 @@ class ArticleDrop < BaseDrop
     @assets ||= liquify(*@source.assets)
   end
 
+  def next(section=nil)
+    if nxt = @source.next(section ? section.source : nil)
+      nxt.to_liquid.tap { |n| n.context = @context if n }
+    end
+  end
+
+  def previous(section=nil)
+    if prev = @source.previous(section ? section.source : nil)
+      prev.to_liquid.tap { |p| p.context = @context if p }
+    end
+  end
+
   protected
     def body_for_mode(mode)
       contents = [before_method(:excerpt), before_method(:body)]
