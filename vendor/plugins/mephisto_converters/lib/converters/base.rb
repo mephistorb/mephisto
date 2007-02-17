@@ -144,7 +144,7 @@ class BaseConverter
       article.site        = site
       article.user      ||= default_user
       article.updater   ||= default_user
-      article.filter    ||= 'textile_filter'
+      article.filter    ||= "#{@options[:filter] || :textile}_filter"
       article.author_ip ||= '127.0.0.1'
       article.save!
       @article_index[other_article] = article
@@ -160,7 +160,7 @@ class BaseConverter
     ActiveRecord::Base.logger.info "adding comment"
     returning block.call(other_comment) do |comment|
       comment.article_id  = article.id
-      comment.filter    ||= 'textile_filter'
+      comment.filter    ||= site.filter
       comment.author_ip ||= '127.0.0.1'
       comment.approved    = true
       comment.save!
