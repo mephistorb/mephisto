@@ -4,15 +4,26 @@ class ArticleTest < Test::Unit::TestCase
   fixtures :contents, :users, :sections, :sites, :assigned_sections
 
   def test_find_next
-    assert_equal contents(:another).next, contents(:site_map)
+    assert_equal contents(:another).next, contents(:welcome)
     assert_equal contents(:another).next(sections(:home)), contents(:welcome)
-    assert_equal contents(:cupcake_welcome).next(sections(:cupcake_home)), nil
+    assert_equal contents(:another).next(sections(:about)), nil
+    assert_equal contents(:welcome).next(sections(:about)), contents(:about)
+    assert_equal contents(:article_1_only_in_page_section).next, contents(:article_2_only_in_page_section)
+    assert_equal contents(:article_1_only_in_page_section).next(sections(:paged_section)), contents(:article_2_only_in_page_section)
+    assert_equal contents(:article_2_only_in_page_section).next, nil
+    assert_equal contents(:article_2_only_in_page_section).next(sections(:paged_section)), nil
   end
 
   def test_should_find_previous
-    assert_equal contents(:another).previous, contents(:at_beginning_of_next_month)
+    assert_equal contents(:another).previous, nil
     assert_equal contents(:another).previous(sections(:home)), nil
+    assert_equal contents(:another).previous(sections(:about)), nil
+    assert_equal contents(:welcome).previous(sections(:home)), contents(:another)
     assert_not_equal contents(:another).previous(sections(:cupcake_home)), contents(:at_beginning_of_next_month)
+    assert_equal contents(:article_2_only_in_page_section).previous, contents(:article_1_only_in_page_section)
+    assert_equal contents(:article_2_only_in_page_section).previous(sections(:paged_section)), contents(:article_1_only_in_page_section)
+    assert_equal contents(:article_1_only_in_page_section).previous, nil
+    assert_equal contents(:article_1_only_in_page_section).previous(sections(:paged_section)), nil
   end
   
   def test_should_create_permalink

@@ -56,3 +56,13 @@ future_about:
   article_id: 5
   section_id: 2
   position: 5
+paged_section_article_1:
+  id: 12
+  article_id: 16
+  section_id: 10
+  position: 1
+paged_section_article_2:
+  id: 13
+  article_id: 17
+  section_id: 10
+  position: 2

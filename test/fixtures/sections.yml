@@ -84,3 +84,13 @@ links:
   articles_count: 0
   archive_path: archives
   position: 7
+paged_section:
+  id: 10
+  site_id: 1
+  name: Paged Section
+  path: paged-section
+  show_paged_articles: true
+  template: page.liquid
+  articles_count: 2
+  archive_path: archives
+  position: 8

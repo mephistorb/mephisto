@@ -16,7 +16,7 @@ class Admin::ArticlesControllerPermissionsTest < Test::Unit::TestCase
 
   def test_should_show_articles
     get :index
-    assert_equal 10, assigns(:articles).length
+    assert_equal 12, assigns(:articles).length
   end
 
   def test_should_show_new_article_form

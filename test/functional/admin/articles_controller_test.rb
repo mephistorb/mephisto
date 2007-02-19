@@ -28,12 +28,12 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   
   def test_should_show_articles
     get :index
-    assert_equal 10, assigns(:articles).length
+    assert_equal 12, assigns(:articles).length
   end
   
   def test_should_show_articles_with_empty_seartest_should_show_checked_sectionsch
     get :index, :q => '', :filter => 'title', :section => '0'
-    assert_equal 10, assigns(:articles).length
+    assert_equal 12, assigns(:articles).length
   end
 
   def test_should_search_article_titles

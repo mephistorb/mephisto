@@ -56,8 +56,8 @@ context "Site" do
   end
 
   specify "should order sections in site" do
-    assert_reorder_sections [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links)],
-                            [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:about)]
+    assert_reorder_sections [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:paged_section)],
+                            [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:about), sections(:paged_section)]
   end
 
   specify "should find at least one extension (.liquid)" do

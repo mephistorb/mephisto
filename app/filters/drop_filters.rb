@@ -36,6 +36,18 @@ module DropFilters
   def find_asset(article, label)
     article.assets.detect { |a| a.source.label == label }
   end
+  
+  def next_article(article, section=nil)
+    if nxt = article.source.next(section ? section.source : nil)
+      nxt.to_liquid.tap { |n| n.context = @context if n }
+    end
+  end
+  
+  def previous_article(article, section=nil)
+    if prev = article.source.previous(section ? section.source : nil)
+      prev.to_liquid.tap { |p| p.context = @context if p }
+    end
+  end
 
   def monthly_articles(section, date = nil)
     date = parse_date(date)

@@ -18,8 +18,8 @@ class SiteDropTest < Test::Unit::TestCase
   end
 
   def test_should_list_all_sections
-    assert_models_equal [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links)], @site.sections.collect(&:source)
-    assert_equal [false, false, false, false, false, false, false], @site.sections.collect(&:current)
+    assert_models_equal [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:paged_section)], @site.sections.collect(&:source)
+    assert_equal [false, false, false, false, false, false, false, false], @site.sections.collect(&:current)
   end
   
   def test_should_default_to_no_current_section
@@ -30,7 +30,7 @@ class SiteDropTest < Test::Unit::TestCase
     @site = SiteDrop.new(sites(:first), sections(:about))
     @site.context = mock_context
     assert_equal sections(:about), @site.current_section.source
-    assert_equal [false, true, false, false, false, false, false], @site.sections.collect(&:current)
+    assert_equal [false, true, false, false, false, false, false, false], @site.sections.collect(&:current)
   end
   
   def test_should_list_only_blog_sections
@@ -38,7 +38,7 @@ class SiteDropTest < Test::Unit::TestCase
   end
   
   def test_should_list_only_paged_sections
-    assert_models_equal [sections(:about), sections(:links)], @site.page_sections.collect(&:source)
+    assert_models_equal [sections(:about), sections(:links), sections(:paged_section)], @site.page_sections.collect(&:source)
   end
 
   def test_should_list_tags
@@ -54,7 +54,7 @@ class SiteDropTest < Test::Unit::TestCase
   end
 
   def test_should_find_latest_articles
-    assert_models_equal [contents(:welcome), contents(:about), contents(:site_map), contents(:another), contents(:at_beginning_of_next_month), contents(:at_end_of_month), contents(:at_middle_of_month), contents(:at_beginning_of_month)], 
+    assert_models_equal [contents(:welcome), contents(:about), contents(:site_map), contents(:another), contents(:at_beginning_of_next_month), contents(:article_1_only_in_page_section), contents(:article_2_only_in_page_section), contents(:at_end_of_month), contents(:at_middle_of_month), contents(:at_beginning_of_month)], 
       @site.latest_articles.collect(&:source)
     assert_models_equal [contents(:welcome), contents(:about)], @site.latest_articles(2).collect(&:source)
   end

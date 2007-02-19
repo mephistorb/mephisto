@@ -18,7 +18,7 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
     get :index
     assert_equal sites(:first), assigns(:site)
     assert_equal sections(:home), assigns(:home)
-    assert_equal 7, assigns(:sections).length, "Sections: #{assigns(:sections).collect(&:id).to_sentence}"
+    assert_equal 8, assigns(:sections).length, "Sections: #{assigns(:sections).collect(&:id).to_sentence}"
     assert_equal 4, assigns(:article_count)['1']
     assert_equal 5, assigns(:article_count)['2']
   end
@@ -77,8 +77,8 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
   end
 
   def test_should_reorder_sections
-    assert_reorder_sections [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links)],
-                            [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:about)]
+    assert_reorder_sections [sections(:home), sections(:about), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:paged_section)],
+                            [sections(:home), sections(:earth), sections(:europe), sections(:africa), sections(:bucharest), sections(:links), sections(:about), sections(:paged_section)]
   end
 
   protected

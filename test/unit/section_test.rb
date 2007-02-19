@@ -103,8 +103,8 @@ class SectionTest < Test::Unit::TestCase
   end
 
   specify "should return correct sections" do
-    assert_models_equal [sections(:about), sections(:africa), sections(:bucharest), sections(:earth), sections(:europe), sections(:home), sections(:links)], sites(:first).sections.find(:all, :order => 'name')
-    assert_models_equal [sections(:about), sections(:links)], sites(:first).sections.find_paged
+    assert_models_equal [sections(:about), sections(:africa), sections(:bucharest), sections(:earth), sections(:europe), sections(:home), sections(:links), sections(:paged_section)], sites(:first).sections.find(:all, :order => 'name')
+    assert_models_equal [sections(:about), sections(:links), sections(:paged_section)], sites(:first).sections.find_paged
   end
 
   specify "should order articles in sections" do

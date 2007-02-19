@@ -205,3 +205,29 @@ at_beginning_of_next_month:
   comment_age: 30
   user_id: 1
   type: Article
+article_1_only_in_page_section:
+  id: 16
+  site_id: 1
+  title: Article 1
+  permalink: article-1
+  body: Lalala
+  body_html: Lalala
+  created_at: <%= date = Time.now.utc.beginning_of_month.advance(:months => -1).to_s(:db) %>
+  updated_at: <%= date %>
+  published_at: <%= date %>
+  comment_age: 30
+  user_id: 1
+  type: Article
+article_2_only_in_page_section:
+  id: 17
+  site_id: 1
+  title: Article 2
+  permalink: article-2
+  body: Lalala
+  body_html: Lalala
+  created_at: <%= date = Time.now.utc.beginning_of_month.advance(:months => -1).to_s(:db) %>
+  updated_at: <%= date %>
+  published_at: <%= date %>
+  comment_age: 30
+  user_id: 1
+  type: Article

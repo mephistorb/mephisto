@@ -71,26 +71,6 @@ class ArticleDropTest < Test::Unit::TestCase
     assert_equal '<p>body</p>', a.send(:body_for_mode, :list)
   end
 
-  def test_find_next
-    another = contents(:another).to_liquid
-    another.context = @context
-    cupcake_welcome = contents(:cupcake_welcome).to_liquid
-    cupcake_welcome.context = @context
-
-    assert_equal another.next, contents(:site_map).to_liquid
-    assert_equal another.next(sections(:home).to_liquid), contents(:welcome).to_liquid
-    assert_equal cupcake_welcome.next(sections(:cupcake_home).to_liquid), nil
-  end
-
-  def test_should_find_previous
-    another = contents(:another).to_liquid
-    another.context = @context
-
-    assert_equal another.previous, contents(:at_beginning_of_next_month).to_liquid
-    assert_equal another.previous(sections(:home).to_liquid), nil
-    assert_not_equal another.previous(sections(:cupcake_home).to_liquid), contents(:at_beginning_of_next_month).to_liquid
-  end
-  
   specify "should show article url" do
     t = Time.now.utc - 3.days
     assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto", @article.url
