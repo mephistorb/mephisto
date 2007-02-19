@@ -1,5 +1,7 @@
 * SVN *
 
+* Change plugin class/module to Mephisto::Plugin and Mephisto::Plugins.  Sorry for the breakage (still technically experimental!)
+
 * Fix admin overview date timezone.  [Ben Wyrosdick]
 
 * Extract template rendering code to separate handler class, add support for alternate template handlers. [Pascal Belloncle]

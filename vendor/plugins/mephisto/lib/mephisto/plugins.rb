@@ -1,3 +1,5 @@
 # Empty module to hold plugin models
-module MephistoPlugins
+module Mephisto
+  module Plugins
+  end
 end

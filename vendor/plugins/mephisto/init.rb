@@ -123,3 +123,4 @@ ActiveRecord::Base.class_eval do
 end
 
 Liquid::For.send :include, Mephisto::Liquid::ForWithSorting
+Dependencies.autoloaded_constants.delete "Mephisto"
