@@ -86,14 +86,19 @@ Module.class_eval do
       @@class_mixins[klass].uniq!
     end
   end
+  
+  # add any class mixins that have been registered for this class
+  def auto_include!
+    mixins = @@class_mixins[name]
+    send(:include, *mixins) if mixins
+  end
 end
 
 Class.class_eval do
   # Instantiates a class and adds in any class_mixins that have been registered for it.
   def inherited_with_mixins(klass)
     returning inherited_without_mixins(klass) do |value|
-      mixins = @@class_mixins[klass.name]
-      klass.send(:include, *mixins) if mixins
+      klass.auto_include!
     end
   end
   

@@ -4,6 +4,12 @@ class ApplicationController < ActionController::Base
   before_filter  :set_cache_root
   helper_method  :site
   attr_reader    :site
+
+  auto_include!
+  def self.inherited(klass)
+    super
+    klass.auto_include!
+  end
   
   filter_parameter_logging "password"
   
