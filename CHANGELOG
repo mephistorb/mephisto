@@ -1,5 +1,9 @@
 * SVN *
 
+* turn off session for mephisto controller.  sorry, caused way too many problems.
+
+* fix url_for calls with symbolized controllers/actions.
+
 * Fix controllers so include_into works with them.
 
 * Change plugin class/module to Mephisto::Plugin and Mephisto::Plugins.  Sorry for the breakage (still technically experimental!)
