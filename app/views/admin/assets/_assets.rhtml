@@ -29,6 +29,6 @@
 
 <% if @asset_pages.page_count > 1 %>
   <div id="pagination">
-    Pages: <strong><%= pagination_remote_links @asset_pages, :params => { :action => :index } %></strong>
+    Pages: <strong><%= pagination_remote_links @asset_pages, :params => { :action => 'index' } %></strong>
   </div>
 <% end %>

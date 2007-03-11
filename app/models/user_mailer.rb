@@ -6,7 +6,7 @@ class UserMailer < ActionMailer::Base
   def forgot_password(user)
     setup_email(user)
     @subject += 'Request to change your password'
-    @body[:url]  = url_for :controller => :account, :action => :activate, :id => user.token
+    @body[:url]  = url_for :controller => 'account', :action => 'activate', :id => user.token
   end
 
   protected

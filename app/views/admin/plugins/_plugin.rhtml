@@ -1,7 +1,7 @@
 <tr class="published" >
   <td class="published">
 	<% if plugin.configurable? -%>
-		<%= link_to plugin.path, :action => :show, :id => plugin.path %>
+		<%= link_to plugin.path, :action => 'show', :id => plugin.path %>
 	<% else -%>
 		<%=h plugin.path %>
 	<% end -%>

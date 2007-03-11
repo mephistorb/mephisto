@@ -1,5 +1,5 @@
 <div class="little-box">
-<% form_tag({:controller=>:account, :action=>:login}, { :id => 'login_form' }) do -%>
+<% form_tag({:controller=>'account', :action=>'account'}, { :id => 'login_form' }) do -%>
   <dl>
     <dt><%= label_tag 'login', 'Login' %></dt>
     <dd><%= text_field_tag 'login', params[:login], :class => 'big' %></dd>

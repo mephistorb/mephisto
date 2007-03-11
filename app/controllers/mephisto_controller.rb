@@ -1,6 +1,6 @@
 class MephistoController < ApplicationController
   layout nil
-  session :new_session => false
+  session :off
   caches_page_with_references :dispatch
   cache_sweeper :comment_sweeper
 
@@ -95,7 +95,7 @@ class MephistoController < ApplicationController
       render_liquid_template_for(:search, 'articles'      => @articles,
                                           'previous_page' => paged_search_url_for(@article_pages.current.previous),
                                           'next_page'     => paged_search_url_for(@article_pages.current.next),
-                                          'search_string' => params[:q],
+                                          'search_string' => CGI::escapeHTML(params[:q]),
                                           'search_count'  => search_count,
                                           'section'       => @section)
       @skip_caching = true

@@ -58,7 +58,7 @@
 <!-- begin pagination -->
 <div id="pagination">
 <% if @article_pages.page_count > 1 -%>
-Pages: <strong><%= pagination_links @article_pages, :params => { :action => :index } %></strong>
+Pages: <strong><%= pagination_links @article_pages, :params => { :action => 'index' } %></strong>
 <% end -%>
 </div>
 <!-- /end pagination -->

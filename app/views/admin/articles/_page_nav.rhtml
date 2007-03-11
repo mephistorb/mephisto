@@ -22,7 +22,7 @@
       <div id="optgroup" style="display: none">
         <ul id="options">
         <% unless @article.new_record? -%>
-          <li><%= link_to 'Edit this article', :action => :edit, :id => @article, :version => nil %></li>
+          <li><%= link_to 'Edit this article', :action => 'edit', :id => @article, :version => nil %></li>
         <% end -%>
         <% if @article.comments.any? && controller.action_name != 'comments' -%>
           <li><%= link_to "View comments", :controller => 'articles', :action => 'comments', :id => @article %></li>

@@ -2,7 +2,7 @@
 <!-- begin cached pages list -->
 <div class="pages">
 <% if @cached_page_pages.page_count > 1 %>
-Pages: <strong><%= pagination_remote_links @cached_page_pages, :params => { :action => :index } %></strong>
+Pages: <strong><%= pagination_remote_links @cached_page_pages, :params => { :action => 'index' } %></strong>
 <% end %>
 </div>
 <h2>Cached Pages</h2><br/>
@@ -28,7 +28,7 @@ Pages: <strong><%= pagination_remote_links @cached_page_pages, :params => { :act
 <!-- begin pagination -->
 <div id="pagination">
 <% if @cached_page_pages.page_count > 1 %>
-Pages: <strong><%= pagination_links @cached_page_pages, :params => { :action => :index } %></strong>
+Pages: <strong><%= pagination_links @cached_page_pages, :params => { :action => 'index' } %></strong>
 <% end %>
 </div>
 <!-- /end pagination -->

@@ -23,17 +23,17 @@
 <div id="page-nav">
   <ul id="act-nav" class="clear">
 	<li>
- 	 	<%= link_to 'Restore Defaults', :action => :destroy, :id => @plugin.plugin_name %>
+ 	 	<%= link_to 'Restore Defaults', :action => 'destroy', :id => @plugin.plugin_name %>
 	</li>
 	<li>
- 	 	<%= link_to 'Index', :action => :index %>
+ 	 	<%= link_to 'Index', :action => 'index' %>
 	</li>
   </ul>
 </div>
 <% end %>
 
 <% content_for :form  do -%>
-	<%= form_tag({:action => :update, :id => @plugin.plugin_name}, {:id => 'plugin-config-form'}) %>
+	<%= form_tag({:action => 'update', :id => @plugin.plugin_name}, {:id => 'plugin-config-form'}) %>
 <% end -%>
 
 <% if @plugin.default_options.any? -%>

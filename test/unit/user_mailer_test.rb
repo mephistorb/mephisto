@@ -23,7 +23,7 @@ class UserMailerTest < Test::Unit::TestCase
     user = users(:quentin)
     response = UserMailer.deliver_forgot_password(user)
     assert_equal user.email, response.to[0]
-    assert_match /#{url_for :controller => :account, :action => :activate, :id => user.token}/, response.body
+    assert_match /#{url_for :controller => 'account', :action => 'activate', :id => user.token}/, response.body
   end
 
   private
