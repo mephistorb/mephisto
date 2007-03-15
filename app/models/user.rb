@@ -6,7 +6,10 @@ class User < ActiveRecord::Base
 
   # Virtual attribute for the unencrypted password
   attr_accessor :password
-
+  
+  #Only these can be modified through bulk-setters like update_attributes, new, create
+  attr_accessible :login, :email, :password, :password_confirmation, :filter
+  
   validates_presence_of     :login, :email
   validates_format_of       :email, :with => Format::EMAIL
   validates_presence_of     :password,                   :if => :password_required?
