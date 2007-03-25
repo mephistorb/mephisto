@@ -37,7 +37,7 @@ class MephistoController < ApplicationController
       show_404 and return unless @article
       Mephisto::Liquid::CommentForm.article = @article
       render_liquid_template_for(:page, 'section' => @section.to_liquid(true),
-                                        'article' => @article.to_liquid(:mode => :single))
+                                        'article' => @article.to_liquid(:mode => :single, :page => @dispatch_path.empty?))
     end
     
     def dispatch_comments
