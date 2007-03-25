@@ -2,7 +2,7 @@ require 'digest/md5'
 module ApplicationHelper
 
   def author_link_for(comment)
-    return comment.author if comment.author_url.blank?
+    return h(comment.author) if comment.author_url.blank?
     link_to h(comment.author), "#{'http://' unless comment.author_url =~ /^https?:\/\//}#{comment.author_url}"
   end
 
