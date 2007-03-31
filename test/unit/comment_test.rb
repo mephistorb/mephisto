@@ -29,7 +29,7 @@ class CommentTest < Test::Unit::TestCase
   def test_should_allow_set_filter_on_comment
     old_times = contents(:welcome).comments.collect &:updated_at
     comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'markdown_filter'
-    assert_equal 'markdown_filter', comment.filter
+    comment.filter = 'markdown_filter'
     assert_valid comment
     assert_equal old_times, contents(:welcome).comments(true).collect(&:updated_at)
   end

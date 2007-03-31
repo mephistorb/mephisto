@@ -7,11 +7,12 @@ class Comment < Content
   before_validation :clean_up_author_url
   after_validation_on_create  :snag_article_attributes
   before_create  :check_comment_expiration
+  before_create  :sanitize_attributes
   before_save    :update_counter_cache
   before_destroy :decrement_counter_cache
   belongs_to :article
   has_one :event, :dependent => :destroy
-  attr_protected :approved
+  attr_accessible :article, :article_id, :user_id, :user, :excerpt, :body, :author, :author_url, :author_email, :author_ip, :updater_id, :updater, :comment_age, :user_agent, :referrer
 
   def self.find_all_by_section(section, options = {})
     find :all, options.update(:conditions => ['contents.approved = ? and assigned_sections.section_id = ?', true, section.id], 
@@ -67,9 +68,15 @@ class Comment < Content
   end
 
   protected
+    def sanitize_attributes
+      [:author, :author_url, :author_email, :author_ip, :user_agent, :referrer].each do |a|
+        self.send("#{a}=", CGI::escapeHTML(self.send(a).to_s))
+      end
+    end
+
     def snag_article_attributes
       self.filter ||= article.site.filter
-      self.attributes = { :site => article.site, :title => article.title, :published_at => article.published_at, :permalink => article.permalink }
+      [:site, :title, :published_at, :permalink].each { |a| self.send("#{a}=", article.send(a)) }
     end
 
     def check_comment_expiration

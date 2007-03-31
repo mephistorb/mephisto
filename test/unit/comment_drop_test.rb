@@ -36,6 +36,7 @@ class CommentDropTest < Test::Unit::TestCase
     assert_equal %Q{<a href="https://abc">rico</a>}, @comment.author_link
     @comment.source.author     = '<strong>rico</strong>'
     @comment.source.author_url = '<strong>https://abc</strong>'
+    @comment.source.send(:sanitize_attributes)
     assert_equal %Q{<a href="http://&lt;strong&gt;https://abc&lt;/strong&gt;">&lt;strong&gt;rico&lt;/strong&gt;</a>}, @comment.author_link
   end
   

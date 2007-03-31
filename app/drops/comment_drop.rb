@@ -20,7 +20,7 @@ class CommentDrop < BaseDrop
   end
 
   def author_link
-    @source.author_url.blank? ? "<span>#{CGI::escapeHTML(@source.author)}</span>" : %Q{<a href="#{CGI::escapeHTML author_url}">#{CGI::escapeHTML @source.author}</a>}
+    @source.author_url.blank? ? "<span>#{@source.author}</span>" : %Q{<a href="#{author_url}">#{@source.author}</a>}
   end
   
   def presentation_class
