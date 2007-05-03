@@ -3,7 +3,7 @@ context "Drop Filters" do
   fixtures :sites, :sections, :contents, :assigned_sections, :assigned_assets, :assets
   include DropFilters, CoreFilters
 
-  def setup
+  setup do
     @site    = sites(:first).to_liquid
     @context = mock_context 'site' => @site, 'section' => sections(:about).to_liquid
   end
@@ -101,8 +101,8 @@ context "Drop Filters" do
     assert_models_equal [assets(:word), assets(:pdf)], assets_by_type('other').collect(&:source)
   end
 
-  specify "should find assets by tag" do
-    assert_models_equal [contents(:welcome)], tagged_articles("rails").collect(&:source)
+  specify "should find articles by tag" do
+    assert_models_equal [contents(:future), contents(:another)], tagged_articles("rails").collect(&:source)
   end
 
   specify "should find assets by tag" do

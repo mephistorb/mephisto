@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ArticleDropTest < Test::Unit::TestCase
+context "Article Drop" do
   fixtures :sites, :sections, :contents, :assigned_sections, :users, :tags, :taggings, :assigned_assets, :assets
   
-  def setup
+  setup do
     @context = mock_context('site' => sites(:first).to_liquid)
     @article = contents(:welcome).to_liquid(:mode => :single)
     @article.context = @context

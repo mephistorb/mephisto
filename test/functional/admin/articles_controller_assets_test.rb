@@ -4,10 +4,10 @@ require 'admin/articles_controller'
 # Re-raise errors caught by the controller.
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
-class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
+context "Admin Articles Controller Assets" do
   fixtures :contents, :content_versions, :sections, :assigned_sections, :users, :sites, :tags, :taggings, :memberships, :assigned_assets, :assets
 
-  def setup
+  setup do
     @controller = Admin::ArticlesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
@@ -115,7 +115,7 @@ class Admin::ArticlesControllerAssetsTest < Test::Unit::TestCase
     assert_models_equal [assets(:gif)], contents(:welcome).assets
   end
 
-  def teardown
+  teardown do
     FileUtils.rm_rf ASSET_PATH
   end
 end

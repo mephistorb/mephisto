@@ -1,5 +1,9 @@
 * SVN *
 
+* convert tests to use test/spec instead of simply bdd [Chris McGrath]
+
+* move xmlrpc stuff to plugin.  rails doesn't include AWS anymore.  May need some simple autodetection so the plugin just prints a warning if AWS isn't found.
+
 * turn off session for mephisto controller.  sorry, caused way too many problems.
 
 * fix url_for calls with symbolized controllers/actions.

@@ -4,9 +4,10 @@ require 'admin/themes_controller'
 # Re-raise errors caught by the controller.
 class Admin::ThemesController; def rescue_action(e) raise e end; end
 
-class Admin::ThemesControllerTest < Test::Unit::TestCase
+context "Admin Themes Controller" do
   fixtures :users, :sections, :sites, :memberships
-  def setup
+  
+  setup do
     @controller = Admin::ThemesController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new

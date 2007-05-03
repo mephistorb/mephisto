@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class SectionTest < Test::Unit::TestCase
+context "Section" do
   fixtures :sections, :contents, :assigned_sections, :sites, :users
 
   def test_find_or_create_sanity_check
