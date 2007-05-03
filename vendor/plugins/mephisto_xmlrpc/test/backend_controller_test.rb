@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + '/../../../../test/test_helper'
+require 'action_web_service/test_invoke'
 require 'meta_weblog_api'
 require 'movable_type_api'
 require 'backend_controller'
