@@ -32,8 +32,8 @@ end
 # needed for the asset tests
 # may have to rethink this...
 Fixtures.class_eval do
-  case ActiveRecord::Base.connection
-    when ActiveRecord::ConnectionAdapters::MysqlAdapter
+  case ActiveRecord::Base.connection.class.name
+    when /Mysql/
       def delete_existing_fixtures
         self.class.delete_existing_fixtures_for @connection, @table_name
       end
@@ -42,7 +42,7 @@ Fixtures.class_eval do
         connection.delete  "TRUNCATE TABLE #{table_name}", 'Fixture Delete'
         connection.execute "ALTER TABLE #{table_name} AUTO_INCREMENT = 1", 'Renumber Auto Increment'
       end
-    when ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
+    when /PostgreSQL/
       def delete_existing_fixtures
         self.class.delete_existing_fixtures_for @connection, @table_name
       end

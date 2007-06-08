@@ -1,5 +1,9 @@
 * SVN *
 
+* unit test fixes for those not using mysql or psql [Mislav]
+
+* add comment moderation links to the overview [court3nay]
+
 * convert tests to use test/spec instead of simply bdd [Chris McGrath]
 
 * move xmlrpc stuff to plugin.  rails doesn't include AWS anymore.  May need some simple autodetection so the plugin just prints a warning if AWS isn't found.
