@@ -28,6 +28,14 @@ class EventTest < Test::Unit::TestCase
     end
   end
 
+  def test_should_not_create_article_event_for_save_without_revision
+    assert_no_event_created do
+      article = contents(:welcome)
+      article.body = 'bar.'
+      article.save_without_revision!
+    end
+  end
+
   def test_should_not_create_comment_article_event_for_unnaproved
     assert_no_event_created do
       contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1'
