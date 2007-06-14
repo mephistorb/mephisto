@@ -85,14 +85,15 @@ class Admin::AssetsController < Admin::BaseController
 
     def search_assets(limit)
       @types  = params[:filter].blank? ? [] : params[:filter].keys
-      @asset_pages = Paginator.new self, count_by_conditions, limit, params[:page]
+      options = search_options.merge(:per_page => limit, :page => params[:page], :total_entries => count_by_conditions)
+
       @assets = @types.any? ?
-        site.assets.find_all_by_content_types(@types, :all, search_options) :
-        site.assets.find(:all, search_options)
+        site.assets.paginate_by_content_types(@types, :all, options) :
+        site.assets.paginate(options) 
     end
 
     def search_options
-      search_conditions.merge(:order => 'created_at desc', :limit => @asset_pages.items_per_page, :offset => @asset_pages.current.offset)
+      search_conditions.merge(:order => 'created_at desc')
     end
 
     def search_conditions

@@ -37,6 +37,11 @@
 <% end %>
 
 <% if @articles.any? %>
+
+<% content_tag :p, :class => 'total' do %>
+  Total: <%= content_tag :strong, @articles.total_entries %> articles.
+<% end %>
+
 <!-- begin article list -->
 <table id="article-list" cellspacing="0" cellpadding="0">
   <thead>
@@ -54,13 +59,10 @@
 </table>
 <!-- /end article list -->
 
-
 <!-- begin pagination -->
-<div id="pagination">
-<% if @article_pages.page_count > 1 -%>
-Pages: <strong><%= pagination_links @article_pages, :params => { :action => 'index' } %></strong>
+<% if @articles.page_count > 1 -%>
+  <%= will_paginate @articles, :id => 'pagination' %>
 <% end -%>
-</div>
 <!-- /end pagination -->
 
 <% else %>

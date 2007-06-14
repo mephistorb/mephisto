@@ -1,14 +1,4 @@
 module Admin::CachedPagesHelper
-  def pagination_remote_links(paginator, options={}, html_options={})
-     name   = options[:name]    || ActionController::Pagination::DEFAULT_OPTIONS[:name]
-     params = (options[:params] || ActionController::Pagination::DEFAULT_OPTIONS[:params]).clone
-     
-     pagination_links_each(paginator, options) do |n|
-       params[name] = n
-       link_to n.to_s, :page => n
-     end
-  end
-
   def display_cached_page_date(page)
     if Date.today == page.updated_at.to_date 
       if page.updated_at > Time.now - 4.hours

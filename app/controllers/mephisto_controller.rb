@@ -83,20 +83,17 @@ class MephistoController < ApplicationController
       if @section
         conditions.first << ' AND (assigned_sections.section_id = :section)'
         conditions.last[:section] = @section.id
-        joins = "INNER JOIN assigned_sections ON assigned_sections.article_id = contents.id"
       end
-      search_count   = site.articles.count(:all, :conditions => conditions, :joins => joins)
-      @article_pages = Paginator.new self, search_count, site.articles_per_page, params[:page]
-      @articles      = site.articles.find(:all, :conditions => conditions, :order => 'published_at DESC',
-                         :include => [:user, :sections],
-                         :limit   =>  @article_pages.items_per_page,
-                         :offset  =>  @article_pages.current.offset)
+
+      @articles = site.articles.paginate(:conditions => conditions, :order => 'published_at DESC',
+                                         :include => [:user, :sections],
+                                         :per_page => site.articles_per_page, :page => params[:page])
       
       render_liquid_template_for(:search, 'articles'      => @articles,
-                                          'previous_page' => paged_search_url_for(@article_pages.current.previous),
-                                          'next_page'     => paged_search_url_for(@article_pages.current.next),
+                                          'previous_page' => paged_search_url_for(@articles.previous_page),
+                                          'next_page'     => paged_search_url_for(@articles.next_page),
                                           'search_string' => CGI::escapeHTML(params[:q]),
-                                          'search_count'  => search_count,
+                                          'search_count'  => @articles.total_entries,
                                           'section'       => @section)
       @skip_caching = true
     end

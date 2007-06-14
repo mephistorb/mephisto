@@ -1199,6 +1199,14 @@ li.event-article  { background-image: url(/images/mephisto/icons/articleb.gif); 
   text-align: center;
   border-top: 1px solid #ccc;
   padding: 10px 0;
+  font-weight:bold;
+}
+
+#main p.total {
+  margin:-0.3em 0 1.2em 0;
+  padding: 0.3em 3em;
+  background: #eee;
+  text-align:center;
 }
 
 

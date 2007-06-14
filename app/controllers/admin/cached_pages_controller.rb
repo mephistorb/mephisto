@@ -3,10 +3,9 @@ class Admin::CachedPagesController < Admin::BaseController
 
   def index
     CachedPage.with_current_scope do
-      @cached_page_pages = Paginator.new self, site.cached_pages.count, 30, params[:page]
-      offset = (((params[:page] || 1).to_i - 1) * @cached_page_pages.items_per_page)
-      @cached_pages = site.cached_pages.find(:all, :order => 'updated_at', :limit => @cached_page_pages.items_per_page, :offset => offset,
-        :conditions => (params[:query] && ['url LIKE ?', ["#{params[:query]}%"]]))
+      @cached_pages = site.cached_pages.paginate(:order => 'updated_at',
+                                                 :conditions => (params[:query] && ['url LIKE ?', ["#{params[:query]}%"]]),
+                                                 :page => params[:page])
     end
   end
   alias_method :query, :index

@@ -1,5 +1,7 @@
 * SVN *
 
+* Switch to will_paginate plugin [Mislav]
+
 * unit test fixes for those not using mysql or psql [Mislav]
 
 * add comment moderation links to the overview [court3nay]
