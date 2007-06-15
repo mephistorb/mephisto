@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 68) do
+ActiveRecord::Schema.define(:version => 72) do
 
   create_table "assets", :force => true do |t|
     t.column "content_type",     :string
@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(:version => 68) do
     t.column "section_id", :integer
     t.column "position",   :integer, :default => 1
   end
+
+  add_index "assigned_sections", ["article_id", "section_id"], :name => "idx_a_sections_article_section"
 
   create_table "cached_pages", :force => true do |t|
     t.column "url",        :string
@@ -101,6 +103,9 @@ ActiveRecord::Schema.define(:version => 68) do
     t.column "assets_count",   :integer,                 :default => 0
   end
 
+  add_index "contents", ["published_at"], :name => "idx_articles_published"
+  add_index "contents", ["article_id", "approved", "type"], :name => "idx_comments"
+
   create_table "events", :force => true do |t|
     t.column "mode",       :string
     t.column "user_id",    :integer
@@ -111,6 +116,15 @@ ActiveRecord::Schema.define(:version => 68) do
     t.column "author",     :string,   :limit => 100
     t.column "comment_id", :integer
     t.column "site_id",    :integer
+  end
+
+  create_table "feedbacks", :force => true do |t|
+    t.column "site_id",    :integer
+    t.column "name",       :string
+    t.column "email",      :string
+    t.column "body",       :text
+    t.column "key",        :string
+    t.column "created_at", :datetime
   end
 
   create_table "memberships", :force => true do |t|
