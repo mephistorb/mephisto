@@ -3,7 +3,9 @@ require File.join(File.dirname(__FILE__), 'abstract_unit')
 class FilteredColumnTest < Test::Unit::TestCase
   {
     :textile  => { :input  => '*foo*',        :output => '<p><strong>foo</strong></p>' },
-    :markdown => { :input  => "# bar\n\nfoo", :output => "<h1>bar</h1>\n\n<p>foo</p>" }
+    :markdown => { :input  => "# bar\n\nfoo", :output => "<h1>bar</h1>\n\n<p>foo</p>" },
+    :smartypants => { :input => "\"abc\" `<def ghi=\"jkl\">`\n\n    <mno pqr=\"stu\">...</mno>",
+      :output => "<p>&#8220;abc&#8221; <code>&lt;def ghi=\"jkl\"&gt;</code></p>\n\n<pre><code>&lt;mno pqr=\"stu\"&gt;...&lt;/mno&gt;\n</code></pre>" },
   }.each do |filter_name, values|
     define_method "test_should_filter_with_#{filter_name}" do
       assert_equal values[:output], FilteredColumn::Processor.new("#{filter_name}_filter", values[:input]).filter
