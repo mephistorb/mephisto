@@ -34,7 +34,7 @@ class Article < Content
 
   has_many :events,   :order => 'created_at desc', :dependent => :delete_all
   with_options :order => 'created_at', :class_name => 'Comment' do |comment|
-    comment.has_many :comments,            :conditions => ['contents.approved = ?', true], :dependent => :delete_all  do
+    comment.has_many :comments,            :conditions => ['contents.approved = ?', true]  do
       def unapprove(id)
         returning find(id) do |comment|
           comment.approved = false
@@ -50,7 +50,7 @@ class Article < Content
         end
       end
     end
-    comment.has_many :all_comments
+    comment.has_many :all_comments, :dependent => :delete_all
   end
   
   has_many :assigned_assets, :order => 'position', :dependent => :destroy
