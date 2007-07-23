@@ -1,5 +1,6 @@
 class AddSomeIndexingIdiot < ActiveRecord::Migration
   def self.up
+    return if indexes(:assigned_sections).any? { |idx| idx.name == 'idx_a_sections_article_section' }
     add_index :assigned_sections, [:article_id, :section_id], :name => :idx_a_sections_article_section
     add_index :contents, :published_at, :name => :idx_articles_published
     add_index :contents, [:article_id, :approved, :type], :name => :idx_comments
