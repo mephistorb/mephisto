@@ -173,7 +173,7 @@ class Test::Unit::TestCase
   end
 
   def assert_atom_entries_size(entries)
-    assert_equal 1, get_xpath(%{/feed[@xmlns="http://www.w3.org/2005/Atom" and count(child::entry)=#{entries}]}).size, "Atom 1.0 feed has wrong number of feed/entry nodes"
+    assert_equal 1, get_xpath(%{/feed[count(child::entry)=#{entries}]}).size, "Atom 1.0 feed has wrong number of feed/entry nodes"
   end
 
   # Sets the current user in the session from the user fixtures.
