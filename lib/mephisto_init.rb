@@ -10,10 +10,8 @@ ActiveRecord::Base.observers = [:article_observer, :comment_observer]
 
 class << Dispatcher
   def register_liquid_tags
-    [CoreFilters, DropFilters, UrlFilters].each { |f| Liquid::Template.register_filter f }
-    Liquid::Template.register_tag(:textile,     Mephisto::Liquid::Textile)
-    Liquid::Template.register_tag(:commentform, Mephisto::Liquid::CommentForm)
-    Liquid::Template.register_tag(:head,        Mephisto::Liquid::Head)
+    Mephisto.liquid_filters.each { |mod| Liquid::Template.register_filter mod }
+    Mephisto.liquid_tags.each { |name, klass| Liquid::Template.register_tag name, klass }
   end
   
   def reset_application_with_plugins!
