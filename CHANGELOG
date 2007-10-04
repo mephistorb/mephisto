@@ -1,5 +1,7 @@
 * SVN *
 
+* tweak mephisto_init to support the new ActionController::Dispatcher class.  [Rob Anderton]
+
 * Don't generate an article event for unversioned changes. [Marcus Brito]
 
 * Switch to will_paginate plugin [Mislav]

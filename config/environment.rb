@@ -20,6 +20,9 @@ Rails::Initializer.run do |config|
   config.frameworks -= [ :active_resource ]
 
   config.load_paths += %W( #{RAILS_ROOT}/app/cachers #{RAILS_ROOT}/app/drops #{RAILS_ROOT}/app/filters )
+  
+  # NFI why this is here.  find and eradicate the bug.
+  config.load_paths += %W( #{RAILS_ROOT}/vendor/rails/actionwebservice/lib )
 
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)

@@ -1,33 +1,33 @@
 # this is for standard library loading and configurationg.  All the hardcore monkey patching is in the mephisto plugin.
 require 'tzinfo'
 require 'zip/zipfilesystem'
-require 'dispatcher'
+require 'action_controller/dispatcher'
 require 'coderay'
 require 'ruby_pants'
 require 'xmlrpc_patch'
 
 ActiveRecord::Base.observers = [:article_observer, :comment_observer]
 
-class << Dispatcher
-  def register_liquid_tags
+class ActionController::Dispatcher
+  def self.register_liquid_tags
     Mephisto.liquid_filters.each { |mod| Liquid::Template.register_filter mod }
     Mephisto.liquid_tags.each { |name, klass| Liquid::Template.register_tag name, klass }
   end
   
-  def reset_application_with_plugins!
-    returning reset_application_without_plugins! do
+  def cleanup_application_with_plugins(force = false)
+    returning cleanup_application_without_plugins(force) do
       register_liquid_tags
     end
   end
   
-  alias_method_chain :reset_application!, :plugins
+  alias_method_chain :cleanup_application, :plugins
 end
 
 module Liquid
   AllowedVariableCharacters = /[a-zA-Z_.-]/ unless Liquid.const_defined?(:AllowedVariableCharacters)
 end
 
-Dispatcher.register_liquid_tags
+ActionController::Dispatcher.register_liquid_tags
 
 WhiteListHelper.tags.merge %w(table tr td)
 
