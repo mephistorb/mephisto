@@ -16,7 +16,7 @@ class ActionController::Dispatcher
   
   def cleanup_application_with_plugins(force = false)
     returning cleanup_application_without_plugins(force) do
-      register_liquid_tags
+      self.class.register_liquid_tags
     end
   end
   

@@ -29,8 +29,14 @@ class Admin::AssetsController < Admin::BaseController
     end
     Asset.transaction { @assets.each &:save! }
     flash[:notice] = @assets.size == 1 ? "'#{CGI.escapeHTML @assets.first.title}' was uploaded." : "#{@assets.size} assets were uploaded."
-    @assets.size.zero? ?  render(:action => 'new') : redirect_to(assets_path)
-  rescue ActiveRecord::RecordInvalid
+    if @assets.size.zero? 
+      @asset = Asset.new
+      render :action => 'new'
+    else
+      redirect_to assets_path
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    @asset = e.record
     render :action => 'new'
   end
 
