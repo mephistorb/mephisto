@@ -1,4 +1,4 @@
-Module.class_eval do
+module ExpiringAttrReader
   # Creates an expiring method that is called once, and overwrites itself so future calls are faster.  It does this
   # by setting an instance variable and an attr_reader on the singleton class.  Other instances of this object are
   # not affected.
@@ -26,10 +26,11 @@ Module.class_eval do
   #     end
   #   end
   def expiring_attr_reader(method_name, value)
+    var_name    = method_name.to_s.gsub(/\W/, '')
     class_eval(<<-EOS, __FILE__, __LINE__)
       def #{method_name}
-        class << self; attr_reader :#{method_name}; end
-        @#{method_name} = eval(%(#{value}))
+        def self.#{method_name}; @#{var_name}; end
+        @#{var_name} ||= eval(%(#{value}))
       end
     EOS
   end

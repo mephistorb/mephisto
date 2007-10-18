@@ -14,9 +14,6 @@ require File.join(File.dirname(__FILE__), 'boot')
 # requires vendor-loaded redcloth
 require 'RedCloth-3.0.4/lib/redcloth' unless Object.const_defined?(:RedCloth)
 
-# extend ruby defaults - this is needed here before we use it
-require File.join(File.dirname(__FILE__), '../lib/mephisto/ruby_extensions')
-
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
   

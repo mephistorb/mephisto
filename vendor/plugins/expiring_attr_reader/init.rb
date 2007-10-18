@@ -1,0 +1,1 @@
+Module.send :include, ExpiringAttrReader
