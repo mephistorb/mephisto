@@ -5,209 +5,209 @@
 ActiveRecord::Schema.define(:version => 74) do
 
   create_table "assets", :force => true do |t|
-    t.column "content_type",     :string
-    t.column "filename",         :string
-    t.column "size",             :integer
-    t.column "parent_id",        :integer
-    t.column "thumbnail",        :string
-    t.column "width",            :integer
-    t.column "height",           :integer
-    t.column "site_id",          :integer
-    t.column "created_at",       :datetime
-    t.column "title",            :string
-    t.column "thumbnails_count", :integer,  :default => 0
-    t.column "user_id",          :integer
+    t.string   "content_type"
+    t.string   "filename"
+    t.integer  "size"
+    t.integer  "parent_id"
+    t.string   "thumbnail"
+    t.integer  "width"
+    t.integer  "height"
+    t.integer  "site_id"
+    t.datetime "created_at"
+    t.string   "title"
+    t.integer  "thumbnails_count", :default => 0
+    t.integer  "user_id"
   end
 
   create_table "assigned_assets", :force => true do |t|
-    t.column "article_id", :integer
-    t.column "asset_id",   :integer
-    t.column "position",   :integer
-    t.column "label",      :string
-    t.column "created_at", :datetime
-    t.column "active",     :boolean
+    t.integer  "article_id"
+    t.integer  "asset_id"
+    t.integer  "position"
+    t.string   "label"
+    t.datetime "created_at"
+    t.boolean  "active"
   end
 
   create_table "assigned_sections", :force => true do |t|
-    t.column "article_id", :integer
-    t.column "section_id", :integer
-    t.column "position",   :integer, :default => 1
+    t.integer "article_id"
+    t.integer "section_id"
+    t.integer "position",   :default => 1
   end
 
   add_index "assigned_sections", ["article_id", "section_id"], :name => "idx_a_sections_article_section"
 
   create_table "cached_pages", :force => true do |t|
-    t.column "url",        :string
-    t.column "references", :text
-    t.column "updated_at", :datetime
-    t.column "site_id",    :integer
-    t.column "cleared_at", :datetime
+    t.string   "url"
+    t.text     "references"
+    t.datetime "updated_at"
+    t.integer  "site_id"
+    t.datetime "cleared_at"
   end
 
   create_table "content_versions", :force => true do |t|
-    t.column "content_id",     :integer
-    t.column "version",        :integer
-    t.column "article_id",     :integer
-    t.column "user_id",        :integer
-    t.column "title",          :string
-    t.column "permalink",      :string
-    t.column "excerpt",        :text
-    t.column "body",           :text
-    t.column "excerpt_html",   :text
-    t.column "body_html",      :text
-    t.column "created_at",     :datetime
-    t.column "updated_at",     :datetime
-    t.column "published_at",   :datetime
-    t.column "author",         :string,   :limit => 100
-    t.column "author_url",     :string
-    t.column "author_email",   :string
-    t.column "author_ip",      :string,   :limit => 100
-    t.column "comments_count", :integer,                 :default => 0
-    t.column "updater_id",     :integer
-    t.column "versioned_type", :string,   :limit => 20
-    t.column "site_id",        :integer
-    t.column "approved",       :boolean,                 :default => false
-    t.column "comment_age",    :integer,                 :default => 0
-    t.column "filter",         :string
-    t.column "user_agent",     :string
-    t.column "referrer",       :string
-    t.column "assets_count",   :integer,                 :default => 0
+    t.integer  "content_id"
+    t.integer  "version"
+    t.integer  "article_id"
+    t.integer  "user_id"
+    t.string   "title"
+    t.string   "permalink"
+    t.text     "excerpt"
+    t.text     "body"
+    t.text     "excerpt_html"
+    t.text     "body_html"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "published_at"
+    t.string   "author",         :limit => 100
+    t.string   "author_url"
+    t.string   "author_email"
+    t.string   "author_ip",      :limit => 100
+    t.integer  "comments_count",                :default => 0
+    t.integer  "updater_id"
+    t.string   "versioned_type", :limit => 20
+    t.integer  "site_id"
+    t.boolean  "approved",                      :default => false
+    t.integer  "comment_age",                   :default => 0
+    t.string   "filter"
+    t.string   "user_agent"
+    t.string   "referrer"
+    t.integer  "assets_count",                  :default => 0
   end
 
   create_table "contents", :force => true do |t|
-    t.column "article_id",     :integer
-    t.column "user_id",        :integer
-    t.column "title",          :string
-    t.column "permalink",      :string
-    t.column "excerpt",        :text
-    t.column "body",           :text
-    t.column "excerpt_html",   :text
-    t.column "body_html",      :text
-    t.column "created_at",     :datetime
-    t.column "updated_at",     :datetime
-    t.column "published_at",   :datetime
-    t.column "type",           :string,   :limit => 20
-    t.column "author",         :string,   :limit => 100
-    t.column "author_url",     :string
-    t.column "author_email",   :string
-    t.column "author_ip",      :string,   :limit => 100
-    t.column "comments_count", :integer,                 :default => 0
-    t.column "updater_id",     :integer
-    t.column "version",        :integer
-    t.column "site_id",        :integer
-    t.column "approved",       :boolean,                 :default => false
-    t.column "comment_age",    :integer,                 :default => 0
-    t.column "filter",         :string
-    t.column "user_agent",     :string
-    t.column "referrer",       :string
-    t.column "assets_count",   :integer,                 :default => 0
+    t.integer  "article_id"
+    t.integer  "user_id"
+    t.string   "title"
+    t.string   "permalink"
+    t.text     "excerpt"
+    t.text     "body"
+    t.text     "excerpt_html"
+    t.text     "body_html"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "published_at"
+    t.string   "type",           :limit => 20
+    t.string   "author",         :limit => 100
+    t.string   "author_url"
+    t.string   "author_email"
+    t.string   "author_ip",      :limit => 100
+    t.integer  "comments_count",                :default => 0
+    t.integer  "updater_id"
+    t.integer  "version"
+    t.integer  "site_id"
+    t.boolean  "approved",                      :default => false
+    t.integer  "comment_age",                   :default => 0
+    t.string   "filter"
+    t.string   "user_agent"
+    t.string   "referrer"
+    t.integer  "assets_count",                  :default => 0
   end
 
   add_index "contents", ["published_at"], :name => "idx_articles_published"
   add_index "contents", ["article_id", "approved", "type"], :name => "idx_comments"
 
   create_table "events", :force => true do |t|
-    t.column "mode",       :string
-    t.column "user_id",    :integer
-    t.column "article_id", :integer
-    t.column "title",      :text
-    t.column "body",       :text
-    t.column "created_at", :datetime
-    t.column "author",     :string,   :limit => 100
-    t.column "comment_id", :integer
-    t.column "site_id",    :integer
+    t.string   "mode"
+    t.integer  "user_id"
+    t.integer  "article_id"
+    t.text     "title"
+    t.text     "body"
+    t.datetime "created_at"
+    t.string   "author",     :limit => 100
+    t.integer  "comment_id"
+    t.integer  "site_id"
   end
 
   create_table "feedbacks", :force => true do |t|
-    t.column "site_id",    :integer
-    t.column "name",       :string
-    t.column "email",      :string
-    t.column "body",       :text
-    t.column "key",        :string
-    t.column "created_at", :datetime
+    t.integer  "site_id"
+    t.string   "name"
+    t.string   "email"
+    t.text     "body"
+    t.string   "key"
+    t.datetime "created_at"
   end
 
   create_table "memberships", :force => true do |t|
-    t.column "site_id",    :integer
-    t.column "user_id",    :integer
-    t.column "created_at", :datetime
-    t.column "admin",      :boolean,  :default => false
+    t.integer  "site_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.boolean  "admin",      :default => false
   end
 
   create_table "mephisto_plugins", :force => true do |t|
-    t.column "name",    :string
-    t.column "options", :text
-    t.column "type",    :string
+    t.string "name"
+    t.text   "options"
+    t.string "type"
   end
 
   create_table "sections", :force => true do |t|
-    t.column "name",                :string
-    t.column "show_paged_articles", :boolean, :default => false
-    t.column "articles_per_page",   :integer, :default => 15
-    t.column "layout",              :string
-    t.column "template",            :string
-    t.column "site_id",             :integer
-    t.column "path",                :string
-    t.column "articles_count",      :integer, :default => 0
-    t.column "archive_path",        :string
-    t.column "archive_template",    :string
-    t.column "position",            :integer, :default => 1
+    t.string  "name"
+    t.boolean "show_paged_articles", :default => false
+    t.integer "articles_per_page",   :default => 15
+    t.string  "layout"
+    t.string  "template"
+    t.integer "site_id"
+    t.string  "path"
+    t.integer "articles_count",      :default => 0
+    t.string  "archive_path"
+    t.string  "archive_template"
+    t.integer "position",            :default => 1
   end
 
   create_table "sessions", :force => true do |t|
-    t.column "session_id", :string
-    t.column "data",       :text
-    t.column "updated_at", :datetime
+    t.string   "session_id"
+    t.text     "data"
+    t.datetime "updated_at"
   end
 
   add_index "sessions", ["session_id"], :name => "sessions_session_id_index"
 
   create_table "sites", :force => true do |t|
-    t.column "title",              :string
-    t.column "subtitle",           :string
-    t.column "email",              :string
-    t.column "ping_urls",          :text
-    t.column "articles_per_page",  :integer,                :default => 15
-    t.column "host",               :string
-    t.column "akismet_key",        :string,  :limit => 100
-    t.column "akismet_url",        :string
-    t.column "approve_comments",   :boolean
-    t.column "comment_age",        :integer
-    t.column "timezone",           :string
-    t.column "filter",             :string
-    t.column "permalink_style",    :string
-    t.column "search_path",        :string
-    t.column "tag_path",           :string
-    t.column "tag_layout",         :string
-    t.column "current_theme_path", :string
+    t.string  "title"
+    t.string  "subtitle"
+    t.string  "email"
+    t.text    "ping_urls"
+    t.integer "articles_per_page",                 :default => 15
+    t.string  "host"
+    t.string  "akismet_key",        :limit => 100
+    t.string  "akismet_url"
+    t.boolean "approve_comments"
+    t.integer "comment_age"
+    t.string  "timezone"
+    t.string  "filter"
+    t.string  "permalink_style"
+    t.string  "search_path"
+    t.string  "tag_path"
+    t.string  "tag_layout"
+    t.string  "current_theme_path"
   end
 
   add_index "sites", ["host"], :name => "index_sites_on_host"
 
   create_table "taggings", :force => true do |t|
-    t.column "tag_id",        :integer
-    t.column "taggable_id",   :integer
-    t.column "taggable_type", :string
+    t.integer "tag_id"
+    t.integer "taggable_id"
+    t.string  "taggable_type"
   end
 
   create_table "tags", :force => true do |t|
-    t.column "name", :string
+    t.string "name"
   end
 
   create_table "users", :force => true do |t|
-    t.column "login",            :string,   :limit => 40
-    t.column "email",            :string,   :limit => 100
-    t.column "crypted_password", :string,   :limit => 40
-    t.column "salt",             :string,   :limit => 40
-    t.column "activation_code",  :string,   :limit => 40
-    t.column "activated_at",     :datetime
-    t.column "created_at",       :datetime
-    t.column "updated_at",       :datetime
-    t.column "deleted_at",       :datetime
-    t.column "token",            :string
-    t.column "token_expires_at", :datetime
-    t.column "filter",           :string
-    t.column "admin",            :boolean,                 :default => false
+    t.string   "login",            :limit => 40
+    t.string   "email",            :limit => 100
+    t.string   "crypted_password", :limit => 40
+    t.string   "salt",             :limit => 40
+    t.string   "activation_code",  :limit => 40
+    t.datetime "activated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "deleted_at"
+    t.string   "token"
+    t.datetime "token_expires_at"
+    t.string   "filter"
+    t.boolean  "admin",                           :default => false
   end
 
 end
