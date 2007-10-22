@@ -41,7 +41,7 @@ class CommentDropTest < Test::Unit::TestCase
   end
   
   def test_should_show_filtered_text
-    comment  = contents(:welcome).comments.create :body => '*test* comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'
+    comment  = contents(:welcome).comments.create :body => '*test* comment', :author => 'bob', :author_ip => '127.0.0.1'
     assert_valid comment
     assert_equal 'textile_filter', comment.filter
     liquid   = comment.to_liquid

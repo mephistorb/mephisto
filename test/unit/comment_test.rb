@@ -10,7 +10,7 @@ class CommentTest < Test::Unit::TestCase
 
   def test_should_add_comment_and_retrieve_attributes_from_article
     assert_difference Comment, :count do
-      comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'
+      comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1'
       assert_equal contents(:welcome).site_id,      comment.site_id
       assert_equal contents(:welcome).title,        comment.title
       assert_equal contents(:welcome).published_at, comment.published_at
@@ -28,7 +28,7 @@ class CommentTest < Test::Unit::TestCase
 
   def test_should_allow_set_filter_on_comment
     old_times = contents(:welcome).comments.collect &:updated_at
-    comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'markdown_filter'
+    comment = contents(:welcome).comments.create :body => 'test comment', :author => 'bob', :author_ip => '127.0.0.1'
     comment.filter = 'markdown_filter'
     assert_valid comment
     assert_equal old_times, contents(:welcome).comments(true).collect(&:updated_at)
@@ -77,7 +77,7 @@ class CommentTest < Test::Unit::TestCase
 
   def test_should_clean_up_email_and_url
     comments = contents(:welcome).comments
-    options = {:body => 'test', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'}
+    options = {:body => 'test', :author => 'bob', :author_ip => '127.0.0.1'}
     comment = comments.build options.merge(:author_email => '   bob@example.com   ')
     assert_valid comment
     assert_equal 'bob@example.com', comment.author_email
@@ -97,7 +97,7 @@ class CommentTest < Test::Unit::TestCase
 
   def test_should_validate_emails
     comments = contents(:welcome).comments
-    options = {:body => 'test', :author => 'bob', :author_ip => '127.0.0.1', :filter => 'textile_filter'}
+    options = {:body => 'test', :author => 'bob', :author_ip => '127.0.0.1'}
     comment = comments.build options.merge(:author_email => 'bob@example.com')
     assert_valid comment
     comment = comments.build options.merge(:author_email => 'bobexample.com')
