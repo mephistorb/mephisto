@@ -106,7 +106,7 @@ class ArticleTest < Test::Unit::TestCase
   def test_comment_expiration_date_on_draft
     a = create_fake_article
     a.published_at = nil
-    assert_equal 10.days.from_now.utc.to_i, a.comments_expired_at.to_i
+    assert_equal (Time.now.utc+10.days).to_i, a.comments_expired_at.utc.to_i
   end
 
   def test_comment_expiration_date
