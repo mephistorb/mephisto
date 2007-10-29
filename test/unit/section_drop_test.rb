@@ -36,7 +36,8 @@ class SectionDropTest < Test::Unit::TestCase
   end
   
   def test_should_get_month_array
-    months = sections(:home).articles.collect { |a| a.published? ? a.published_at.beginning_of_month.to_date.to_s(:db) : nil }.compact.uniq.sort.reverse
+    this_month = Time.now.utc.beginning_of_month.to_date
+    months = sections(:home).articles.collect { |a| (a.published? && ( a.published_at.beginning_of_month.to_date <= this_month)) ? a.published_at.beginning_of_month.to_date.to_s(:db) : nil }.compact.uniq.sort.reverse
     assert_equal months, sections(:home).to_liquid['months'].collect { |d| d.to_s(:db) }
   end
 end
