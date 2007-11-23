@@ -7,8 +7,11 @@ describe ActionView::Base, "with RSpec extensions", :behaviour_type => :view do
     template.render :partial => "name"
   end
   
-  it "should raise when render has NOT been received", :should_raise => [Spec::Mocks::MockExpectationError]  do
+  it "should raise when render has NOT been received" do
     template.expect_render(:partial => "name")
+    lambda {
+      template.verify_rendered
+    }.should raise_error
   end
   
   it "should not raise when stubbing and render has been received" do

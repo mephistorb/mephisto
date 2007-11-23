@@ -45,6 +45,14 @@ describe "OptionParser" do
     options.colour.should == false
   end
 
+  it "should print help to stdout if no args" do
+    pending 'A regression since 1.0.8' do
+      options = parse([])
+      @out.rewind
+      @out.read.should match(/Usage: spec \(FILE\|DIRECTORY\|GLOB\)\+ \[options\]/m)
+    end
+  end
+
   it "should print help to stdout" do
     options = parse(["--help"])
     @out.rewind
@@ -52,7 +60,10 @@ describe "OptionParser" do
   end
 
   it "should print instructions about how to require missing formatter" do
-    lambda { options = parse(["--format", "Custom::MissingFormatter"]) }.should raise_error(NameError)
+    lambda do 
+      options = parse(["--format", "Custom::MissingFormatter"]) 
+      options.formatters
+    end.should raise_error(NameError)
     @err.string.should match(/Couldn't find formatter class Custom::MissingFormatter/n)
   end
 
@@ -123,6 +134,7 @@ describe "OptionParser" do
   it "should use html formatter with explicit output when format is html:test.html" do
     FileUtils.rm 'test.html' if File.exist?('test.html')
     options = parse(["--format", "html:test.html"])
+    options.formatters # creates the file
     File.should be_exist('test.html')
     options.formatters[0].class.should equal(Spec::Runner::Formatter::HtmlFormatter)
     options.formatters[0].close
@@ -147,16 +159,6 @@ describe "OptionParser" do
   it "should use progress bar formatter by default" do
     options = parse([])
     options.formatters[0].class.should equal(Spec::Runner::Formatter::ProgressBarFormatter)
-  end
-
-  it "should use rdoc formatter when format is r" do
-    options = parse(["--format", "r"])
-    options.formatters[0].class.should equal(Spec::Runner::Formatter::RdocFormatter)
-  end
-
-  it "should use rdoc formatter when format is rdoc" do
-    options = parse(["--format", "rdoc"])
-    options.formatters[0].class.should equal(Spec::Runner::Formatter::RdocFormatter)
   end
 
   it "should use specdoc formatter when format is s" do
@@ -230,7 +232,7 @@ describe "OptionParser" do
     @err.string.should match(/You must specify one file, not a directory when using the --line option/n)
   end
 
-  it "should fail with error message if file is dir along with --line" do
+  it "should fail with error message if file does not exist along with --line" do
     spec_parser = mock("spec_parser")
     @parser.instance_variable_set('@spec_parser', spec_parser)
 
@@ -304,12 +306,12 @@ describe "OptionParser" do
     FileUtils.rm 'test.spec.opts'
   end
 
-  it "should call DrbCommandLine when --drb is specified" do
-    options = Spec::Runner::OptionParser.parse(["some/spec.rb", "--diff", "--colour"], @err, @out)
+  it "when --drb is specified, calls DrbCommandLine all of the other ARGV arguments" do
+    options = Spec::Runner::OptionParser.parse([
+      "some/spec.rb", "--diff", "--colour"
+    ], @err, @out)
     Spec::Runner::DrbCommandLine.should_receive(:run).and_return do |options|
-      options.differ_class.should == Spec::Expectations::Differs::Default
-      options.colour.should be_true
-      options.files.should == ["some/spec.rb"]
+      options.argv.should == ["some/spec.rb", "--diff", "--colour"]
     end
     parse(["some/spec.rb", "--diff", "--drb", "--colour"])
   end
@@ -320,37 +322,45 @@ describe "OptionParser" do
 
   it "should set an mtime comparator when --loadby mtime" do
     options = parse(["--loadby", 'mtime'])
+    runner = Spec::Runner::ExampleGroupRunner.new(options)
+    Spec::Runner::ExampleGroupRunner.should_receive(:new).
+      with(options).
+      and_return(runner)
+    runner.should_receive(:load_files).with(["most_recent_spec.rb", "command_line_spec.rb"])
+
     Dir.chdir(File.dirname(__FILE__)) do
       options.files << 'command_line_spec.rb'
       options.files << 'most_recent_spec.rb'
       FileUtils.touch "most_recent_spec.rb"
-      options.paths.should == ["most_recent_spec.rb", "command_line_spec.rb"]
+      options.run_examples
       FileUtils.rm "most_recent_spec.rb"
     end
   end
 
   it "should use the standard runner by default" do
+    runner = ::Spec::Runner::ExampleGroupRunner.new(@parser.options)
+    ::Spec::Runner::ExampleGroupRunner.should_receive(:new).
+      with(@parser.options).
+      and_return(runner)
     options = parse([])
-    options.custom_runner.should be_nil
+    options.run_examples
   end
 
   it "should use a custom runner when given" do
-    options = parse(["--runner", "Custom::BehaviourRunner"])
-    options.custom_runner.class.should equal(Custom::BehaviourRunner)
+    runner = Custom::ExampleGroupRunner.new(@parser.options, nil)
+    Custom::ExampleGroupRunner.should_receive(:new).
+      with(@parser.options, nil).
+      and_return(runner)
+    options = parse(["--runner", "Custom::ExampleGroupRunner"])
+    options.run_examples
   end
 
   it "should use a custom runner with extra options" do
-    options = parse(["--runner", "Custom::BehaviourRunner:something"])
-    options.custom_runner.class.should equal(Custom::BehaviourRunner)
+    runner = Custom::ExampleGroupRunner.new(@parser.options, 'something')
+    Custom::ExampleGroupRunner.should_receive(:new).
+      with(@parser.options, 'something').
+      and_return(runner)
+    options = parse(["--runner", "Custom::ExampleGroupRunner:something"])
+    options.run_examples
   end
-
-  it "should not have a custom runner by default" do
-    options = Spec::Runner::OptionParser.parse([], @err, @out)
-    options.custom_runner.should be_nil
-  end
-
-  it "should return the correct default behaviour runner" do
-   options = Spec::Runner::OptionParser.parse(["--runner", "Custom::BehaviourRunner"], @err, @out)
-    options.custom_runner.class.should equal(Custom::BehaviourRunner)
-  end  
 end

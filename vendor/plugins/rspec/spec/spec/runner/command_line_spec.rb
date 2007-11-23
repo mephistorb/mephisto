@@ -9,7 +9,7 @@ module Spec
       end
 
       it "should run directory" do
-        file = File.dirname(__FILE__) + '/../../../examples'
+        file = File.dirname(__FILE__) + '/../../../examples/pure'
         Spec::Runner::CommandLine.run(OptionParser.parse([file], @err, @out))
 
         @out.rewind
@@ -39,7 +39,8 @@ module Spec
       end
 
       it "should dump even if Interrupt exception is occurred" do
-        behaviour = Class.new(::Spec::DSL::Example).describe("behaviour") do
+        behaviour = Class.new(::Spec::Example::ExampleGroup) do
+          describe("behaviour")
           it "no error" do
           end
 
@@ -51,26 +52,26 @@ module Spec
         options = ::Spec::Runner::Options.new(@err, @out)
         ::Spec::Runner::Options.should_receive(:new).with(@err, @out).and_return(options)
         options.reporter.should_receive(:dump)
-        options.add_behaviour(behaviour)
+        options.add_example_group(behaviour)
 
         Spec::Runner::CommandLine.run(OptionParser.parse([], @err, @out))
       end
 
       it "should heckle when options have heckle_runner" do
-        behaviour = Class.new(::Spec::DSL::Example).describe("behaviour") do
+        behaviour = Class.new(::Spec::Example::ExampleGroup).describe("behaviour") do
           it "no error" do
           end
         end
         options = ::Spec::Runner::Options.new(@err, @out)
         ::Spec::Runner::Options.should_receive(:new).with(@err, @out).and_return(options)
-        options.add_behaviour behaviour
+        options.add_example_group behaviour
 
         heckle_runner = mock("heckle_runner")
         heckle_runner.should_receive(:heckle_with)
         $rspec_mocks.__send__(:mocks).delete(heckle_runner)
 
         options.heckle_runner = heckle_runner
-        options.add_behaviour(behaviour)
+        options.add_example_group(behaviour)
 
         Spec::Runner::CommandLine.run(OptionParser.parse([], @err, @out))
         heckle_runner.rspec_verify
@@ -81,8 +82,8 @@ module Spec
         ::Spec::Runner::Options.should_receive(:new).with(@err, @out).and_return(options)
         options.reverse = true
 
-        b1 = Class.new(Spec::DSL::Example)
-        b2 = Class.new(Spec::DSL::Example)
+        b1 = Class.new(Spec::Example::ExampleGroup)
+        b2 = Class.new(Spec::Example::ExampleGroup)
 
         b1_suite = b1.suite
         b1.should_receive(:suite).and_return(b1_suite)
@@ -92,22 +93,22 @@ module Spec
         b2_suite.should_receive(:run).ordered
         b1_suite.should_receive(:run).ordered
 
-        options.add_behaviour(b1)
-        options.add_behaviour(b2)
+        options.add_example_group(b1)
+        options.add_example_group(b2)
 
         Spec::Runner::CommandLine.run(OptionParser.parse([], @err, @out))
       end
 
       it "should pass its Description to the reporter" do
-        behaviour = Class.new(::Spec::DSL::Example).describe("behaviour") do
+        behaviour = Class.new(::Spec::Example::ExampleGroup).describe("behaviour") do
           it "should" do
           end
         end
 
         options = ::Spec::Runner::Options.new(@err, @out)
         ::Spec::Runner::Options.should_receive(:new).with(@err, @out).and_return(options)
-        options.reporter.should_receive(:add_behaviour).with(an_instance_of(Spec::DSL::BehaviourDescription))
-        options.add_behaviour(behaviour)
+        options.reporter.should_receive(:add_example_group).with(an_instance_of(Spec::Example::ExampleGroupDescription))
+        options.add_example_group(behaviour)
         Spec::Runner::CommandLine.run(OptionParser.parse([], @err, @out))
       end
 
@@ -118,7 +119,7 @@ module Spec
         options.examples << "behaviour should"
         should_has_run = false
         should_not_has_run = false
-        behaviour = Class.new(::Spec::DSL::Example).describe("behaviour") do
+        behaviour = Class.new(::Spec::Example::ExampleGroup).describe("behaviour") do
           it "should" do
             should_has_run = true
           end
@@ -127,9 +128,9 @@ module Spec
           end
         end
 
-        options.reporter.should_receive(:add_behaviour).with(an_instance_of(Spec::DSL::BehaviourDescription))
+        options.reporter.should_receive(:add_example_group).with(an_instance_of(Spec::Example::ExampleGroupDescription))
 
-        options.add_behaviour behaviour
+        options.add_example_group behaviour
         Spec::Runner::CommandLine.run(OptionParser.parse([], @err, @out))
 
         should_has_run.should be_true

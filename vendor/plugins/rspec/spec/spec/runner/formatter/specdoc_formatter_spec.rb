@@ -6,9 +6,11 @@ module Spec
       describe "SpecdocFormatter" do
         before(:each) do
           @io = StringIO.new
-          @options = Options.new(StringIO.new, @io)
-          @formatter = @options.create_formatter(SpecdocFormatter)
-          @behaviour = Class.new(::Spec::DSL::Example).describe("My Behaviour")
+          @options = mock('options')
+          @options.stub!(:dry_run).and_return(false)
+          @options.stub!(:colour).and_return(false)
+          @formatter = SpecdocFormatter.new(@options, @io)
+          @behaviour = Class.new(::Spec::Example::ExampleGroup).describe("Some Examples")
         end
 
         it "should produce standard summary without pending when pending has a 0 count" do
@@ -22,13 +24,26 @@ module Spec
         end
 
         it "should push context name" do
-          @formatter.add_behaviour(Spec::DSL::BehaviourDescription.new("context"))
+          @formatter.add_example_group(Spec::Example::ExampleGroupDescription.new("context"))
           @io.string.should eql("\ncontext\n")
         end
 
-        it "should push failing spec name and failure number" do
-          @formatter.example_failed(@behaviour.create_example_definition("spec"), 98, Reporter::Failure.new("c s", RuntimeError.new))
+        it "when having an error, should push failing spec name and failure number" do
+          @formatter.example_failed(
+            @behaviour.it("spec"),
+            98,
+            Reporter::Failure.new("c s", RuntimeError.new)
+          )
           @io.string.should eql("- spec (ERROR - 98)\n")
+        end
+
+        it "when having an expectation failure, should push failing spec name and failure number" do
+          @formatter.example_failed(
+            @behaviour.it("spec"),
+            98,
+            Reporter::Failure.new("c s", Spec::Expectations::ExpectationNotMetError.new)
+          )
+          @io.string.should eql("- spec (FAILED - 98)\n")
         end
 
         it "should push nothing on start" do
@@ -42,7 +57,7 @@ module Spec
         end
 
         it "should push passing spec name" do
-          @formatter.example_passed(@behaviour.create_example_definition("spec"))
+          @formatter.example_passed(@behaviour.it("spec"))
           @io.string.should eql("- spec\n")
         end
 
@@ -58,6 +73,11 @@ module Spec
           @io.string.should =~ /Pending\:\nbehaviour example \(reason\)\n/
         end
 
+        it "should not produce summary on dry run" do
+          @options.should_receive(:dry_run).and_return(true)
+          @formatter.dump_summary(3, 2, 1, 0)
+          @io.string.should eql("")
+        end
       end
     end
   end

@@ -2,21 +2,26 @@ module Spec
   module Story
     class StepMother
       def initialize
-        @steps = Hash.new do |hsh,type|
-          hsh[type] = Hash.new do |hsh,name|
-            SimpleStep.new(name) do
-              raise Spec::DSL::ExamplePendingError.new("Unimplemented step: #{name}")
-            end
-          end
-        end
+        @steps = StepGroup.new
       end
       
-      def store(type, name, step)
-        @steps[type][name] = step
+      def use(new_step_group)
+        @steps << new_step_group
+      end
+      
+      def store(type, step)
+        @steps.add(type, step)
       end
       
       def find(type, name)
-        @steps[type][name]
+        if @steps.find(type, name).nil?
+          @steps.add(type,
+          Step.new(name) do
+            raise Spec::Example::ExamplePendingError.new("Unimplemented step: #{name}")
+          end
+          )
+        end
+        @steps.find(type, name)
       end
       
       def clear
@@ -26,6 +31,7 @@ module Spec
       def empty?
         @steps.empty?
       end
+      
     end
   end
 end

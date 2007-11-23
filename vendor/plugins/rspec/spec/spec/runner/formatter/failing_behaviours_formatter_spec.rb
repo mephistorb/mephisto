@@ -6,18 +6,18 @@ module Spec
       describe "FailingBehavioursFormatter" do
         before(:each) do
           @io = StringIO.new
-          @options = Options.new(StringIO.new, @io)
-          @formatter = @options.create_formatter(FailingBehavioursFormatter)
+          options = mock('options')
+          @formatter = FailingBehavioursFormatter.new(options, @io)
         end
         
         def description(s)
-          Spec::DSL::BehaviourDescription.new(s)
+          Spec::Example::ExampleGroupDescription.new(s)
         end
 
         it "should add example name for each failure" do
-          @formatter.add_behaviour(description("b 1"))
+          @formatter.add_example_group(description("b 1"))
           @formatter.example_failed("e 1", nil, Reporter::Failure.new(nil, RuntimeError.new))
-          @formatter.add_behaviour(description("b 2"))
+          @formatter.add_example_group(description("b 2"))
           @formatter.example_failed("e 2", nil, Reporter::Failure.new(nil, RuntimeError.new))
           @formatter.example_failed("e 3", nil, Reporter::Failure.new(nil, RuntimeError.new))
           @io.string.should eql(<<-EOF
@@ -28,7 +28,7 @@ EOF
         end
 
         it "should remove druby url, which is used by Spec::Distributed" do
-          @formatter.add_behaviour("something something (druby://99.99.99.99:99)")
+          @formatter.add_example_group("something something (druby://99.99.99.99:99)")
           @formatter.example_failed("e 1", nil, Reporter::Failure.new(nil, RuntimeError.new))
           @io.string.should eql(<<-EOF
 something something

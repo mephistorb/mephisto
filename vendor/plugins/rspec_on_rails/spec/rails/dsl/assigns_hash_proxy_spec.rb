@@ -5,7 +5,7 @@ describe "An AssignsHashProxy" do
     @object = Object.new
     @assigns = Hash.new
     @object.stub!(:assigns).and_return(@assigns)
-    @proxy = Spec::Rails::DSL::AssignsHashProxy.new(@object)
+    @proxy = Spec::Rails::Example::AssignsHashProxy.new(@object)
   end
 
   it "has [] accessor" do
@@ -14,7 +14,7 @@ describe "An AssignsHashProxy" do
     @proxy['foo'].should == 'bar'
   end
 
-  it "checks for string key before symbol key" do
+  it "works for symbol key" do
     @assigns[:foo] = 2
     @proxy[:foo].should == 2
   end

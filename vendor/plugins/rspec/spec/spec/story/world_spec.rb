@@ -251,34 +251,38 @@ module Spec
         $instances.should == [ world1.__id__, world2.__id__, world2.__id__ ]
       end
       
-      def ensure_world_propagates_error(expected_error, &block)
+      def ensure_world_collects_error(expected_error, &block)
         # given
         world = World.create
-        $error = nil
+        # $error = nil
         
         # when
-        error = exception_from do
-          world.instance_eval(&block)
-        end
+        world.start_collecting_errors
+        world.instance_eval(&block)
         
         # then
-        error.should be_kind_of(expected_error)
+        world.should have(1).errors
+        world.errors[0].should be_kind_of(expected_error)
       end
       
-      it 'should propagate a failure from a Given, When or Then step' do
-        ensure_world_propagates_error RuntimeError do
+      it 'should collect a failure from a Given step' do
+        ensure_world_collects_error RuntimeError do
           Given 'a given' do
             raise RuntimeError, "oops"
           end
         end
-        
-        ensure_world_propagates_error RuntimeError do
+      end
+      
+      it 'should collect a failure from a When step' do
+        ensure_world_collects_error RuntimeError do
           When 'an event' do
             raise RuntimeError, "oops"
           end
         end
-        
-        ensure_world_propagates_error RuntimeError do
+      end
+      
+      it 'should collect a failure from a Then step' do
+        ensure_world_collects_error RuntimeError do
           Then 'an outcome' do
             raise RuntimeError, "oops"
           end
@@ -294,13 +298,13 @@ module Spec
         World.add_listener(mock_listener2)
         
         # expect
-        mock_listener1.should_receive(:found_step).with(:given, 'a context')
-        mock_listener1.should_receive(:found_step).with(:when, 'an event')
-        mock_listener1.should_receive(:found_step).with(:then, 'an outcome')
+        mock_listener1.should_receive(:step_succeeded).with(:given, 'a context')
+        mock_listener1.should_receive(:step_succeeded).with(:when, 'an event')
+        mock_listener1.should_receive(:step_succeeded).with(:then, 'an outcome')
         
-        mock_listener2.should_receive(:found_step).with(:given, 'a context')
-        mock_listener2.should_receive(:found_step).with(:when, 'an event')
-        mock_listener2.should_receive(:found_step).with(:then, 'an outcome')
+        mock_listener2.should_receive(:step_succeeded).with(:given, 'a context')
+        mock_listener2.should_receive(:step_succeeded).with(:when, 'an event')
+        mock_listener2.should_receive(:step_succeeded).with(:then, 'an outcome')
         
         # when
         world.instance_eval do
@@ -322,7 +326,7 @@ module Spec
         world = World.create
         
         # expect
-        mock_listener.should_receive(:found_step).with(:given, 'a context')
+        mock_listener.should_receive(:step_succeeded).with(:given, 'a context')
         
         # when
         world.instance_eval do
@@ -356,10 +360,10 @@ module Spec
         World.add_listener(listener)        
         
         # expect
-        listener.should_receive(:found_step).with(:'given scenario', 'a scenario')
-        listener.should_receive(:found_step).never.with(:given, 'given')
-        listener.should_receive(:found_step).never.with(:when, 'event')
-        listener.should_receive(:found_step).never.with(:then, 'outcome')
+        listener.should_receive(:found_scenario).with(:'given scenario', 'a scenario')
+        listener.should_receive(:step_succeeded).never.with(:given, 'given')
+        listener.should_receive(:step_succeeded).never.with(:when, 'event')
+        listener.should_receive(:step_succeeded).never.with(:then, 'outcome')
         
         # when
         world.GivenScenario 'a scenario'
@@ -368,6 +372,7 @@ module Spec
         # TODO verify_all
         $scenario_ran.should be_true
       end
+      
       it 'should interpret GivenScenario... And... as multiple givens' do
         # given
         world = World.create
@@ -400,6 +405,14 @@ module Spec
         world.instance_eval do
           'hello'.should match(/^hello$/)
         end
+      end
+      
+      it "should use assigned matchers" do
+        world = World.create
+        
+        World.should_receive(:use).with(steps = Object.new)
+        
+        World.use(steps)
       end
     end
   end

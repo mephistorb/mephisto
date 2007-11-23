@@ -41,16 +41,37 @@ module Spec
     def pass
       Pass.new
     end
+    
+    class CorrectlyOrderedMockExpectation
+      def initialize(&event)
+        @event = event
+      end
+      
+      def expect(&expectations)
+        expectations.call
+        @event.call
+      end
+    end
+    
+    def during(&block)
+      CorrectlyOrderedMockExpectation.new(&block) 
+    end
   end
 end
 
 class NonStandardError < Exception; end
 
 module Custom
-  class BehaviourRunner
+  class ExampleGroupRunner
     attr_reader :options, :arg
     def initialize(options, arg)
       @options, @arg = options, arg
+    end
+
+    def load_files(files)
+    end
+
+    def run
     end
   end  
 end

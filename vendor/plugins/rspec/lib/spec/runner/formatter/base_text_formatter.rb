@@ -98,7 +98,7 @@ module Spec
         def dry_run?
           @options.dry_run ? true : false
         end
-      
+        
         def backtrace_line(line)
           line.sub(/\A([^:]+:\d+)$/, '\\1:')
         end

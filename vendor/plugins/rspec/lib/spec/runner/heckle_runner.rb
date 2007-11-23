@@ -60,13 +60,13 @@ module Spec
       def initialize(klass_name, method_name, rspec_options)
         super(klass_name, method_name)
         @rspec_options = rspec_options
-        @rspec_options.load_paths
       end
 
       def tests_pass?
-        failure_count = @rspec_options.run_examples
-        failure_count == 0
+        success = @rspec_options.run_examples
+        success
       end
+
     end
   end
 end

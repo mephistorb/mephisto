@@ -6,8 +6,10 @@ module Spec
       describe ProgressBarFormatter do
         before(:each) do
           @io = StringIO.new
-          @options = Options.new(StringIO.new, @io)
-          @formatter = @options.create_formatter(ProgressBarFormatter)
+          @options = mock('options')
+          @options.stub!(:dry_run).and_return(false)
+          @options.stub!(:colour).and_return(false)
+          @formatter = ProgressBarFormatter.new(@options, @io)
         end
 
         it "should produce line break on start dump" do
@@ -33,29 +35,29 @@ Finished in 3 seconds
 
         it "should push green dot for passing spec" do
           @io.should_receive(:tty?).and_return(true)
-          @options.colour = true
+          @options.should_receive(:colour).and_return(true)
           @formatter.example_passed("spec")
           @io.string.should == "\e[32m.\e[0m"
         end
 
         it "should push red F for failure spec" do
           @io.should_receive(:tty?).and_return(true)
-          @options.colour = true
+          @options.should_receive(:colour).and_return(true)
           @formatter.example_failed("spec", 98, Reporter::Failure.new("c s", Spec::Expectations::ExpectationNotMetError.new))
           @io.string.should eql("\e[31mF\e[0m")
         end
 
         it "should push magenta F for error spec" do
           @io.should_receive(:tty?).and_return(true)
-          @options.colour = true
+          @options.should_receive(:colour).and_return(true)
           @formatter.example_failed("spec", 98, Reporter::Failure.new("c s", RuntimeError.new))
           @io.string.should eql("\e[35mF\e[0m")
         end
 
         it "should push blue F for fixed pending spec" do
           @io.should_receive(:tty?).and_return(true)
-          @options.colour = true
-          @formatter.example_failed("spec", 98, Reporter::Failure.new("c s", Spec::DSL::PendingFixedError.new))
+          @options.should_receive(:colour).and_return(true)
+          @formatter.example_failed("spec", 98, Reporter::Failure.new("c s", Spec::Example::PendingExampleFixedError.new))
           @io.string.should eql("\e[34mF\e[0m")
         end
 
@@ -90,9 +92,9 @@ EOE
       describe "ProgressBarFormatter outputting to custom out" do
         before(:each) do
           @out = mock("out")
-          @options = Options.new(StringIO.new, @out)
+          @options = mock('options')
           @out.stub!(:puts)
-          @formatter = @options.create_formatter(ProgressBarFormatter)
+          @formatter = ProgressBarFormatter.new(@options, @out)
           @formatter.class.send :public, :output_to_tty?
         end
 

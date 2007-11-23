@@ -4,12 +4,8 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/plugins/rspec/lib' # For
 require 'rubygems'
 require 'drb/drb'
 require 'rbconfig'
+require 'spec'
 require 'optparse'
-specmate = ENV['HOME'] + "/Library/Application\ Support/TextMate/Bundles/RSpec.tmbundle/Support/lib"
-if File.directory?(specmate)
-  $LOAD_PATH.unshift(specmate) 
-  require 'spec/mate/text_mate_formatter'
-end
 
 # This is based on Florian Weber's TDDMate
 module Spec
@@ -61,7 +57,7 @@ def restart_test_server
   ruby         = File::join(config['bindir'], config['ruby_install_name']) + config['EXEEXT']
   command_line = [ruby, $0, ARGV].flatten.join(' ')
   exec(command_line)
-end  
+end
 
 def daemonize(pid_file = nil)
   return yield if $DEBUG

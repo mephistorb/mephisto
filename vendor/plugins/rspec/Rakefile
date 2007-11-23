@@ -4,6 +4,7 @@ require 'rake/gempackagetask'
 require 'rake/contrib/rubyforgepublisher'
 require 'rake/clean'
 require 'rake/rdoctask'
+require 'rake/testtask'
 require 'spec/version'
 dir = File.dirname(__FILE__)
 $LOAD_PATH.unshift(File.expand_path("#{dir}/../pre_commit/lib"))
@@ -11,7 +12,6 @@ require "pre_commit"
 
 # Some of the tasks are in separate files since they are also part of the website documentation
 load File.dirname(__FILE__) + '/rake_tasks/examples.rake'
-load File.dirname(__FILE__) + '/rake_tasks/examples_rdoc.rake'
 load File.dirname(__FILE__) + '/rake_tasks/examples_with_rcov.rake'
 load File.dirname(__FILE__) + '/rake_tasks/failing_examples_with_html.rake'
 load File.dirname(__FILE__) + '/rake_tasks/verify_rcov.rake'
@@ -24,10 +24,12 @@ PKG_FILES = FileList[
   'lib/**/*.rb', 
   'spec/**/*.rb', 
   'examples/**/*',
-  'plugins/**/*'
+  'plugins/**/*',
+  'stories/**/*'
 ]
 
 task :default => [:verify_rcov]
+task :verify_rcov => [:spec, :stories]
 
 desc "Run all specs"
 Spec::Rake::SpecTask.new do |t|
@@ -35,7 +37,16 @@ Spec::Rake::SpecTask.new do |t|
   t.spec_opts = ['--options', 'spec.opts']
   t.rcov = true
   t.rcov_dir = '../doc/output/coverage'
-  t.rcov_opts = ['--exclude', 'spec\/spec,bin\/spec,examples,\/var\/lib\/gems']
+  t.rcov_opts = ['--exclude', 'spec\/spec,bin\/spec,examples,\/var\/lib\/gems,\/Library\/Ruby,\.autotest']
+end
+
+desc "Run all stories"
+task :stories do
+  html = 'story_server/prototype/rspec_stories.html'
+  ruby "stories/all.rb --colour --format plain --format html:#{html}"
+  unless IO.read(html) =~ /<span class="param">/m
+    raise 'highlighted parameters are broken in story HTML'
+  end
 end
 
 desc "Run all specs and store html output in doc/output/report.html"
@@ -58,11 +69,8 @@ desc 'Generate RDoc'
 rd = Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = '../doc/output/rdoc'
   rdoc.options << '--title' << 'RSpec' << '--line-numbers' << '--inline-source' << '--main' << 'README'
-  rdoc.rdoc_files.include('README', 'CHANGES', 'MIT-LICENSE', 'EXAMPLES.rd', 'UPGRADE', 'lib/**/*.rb')
+  rdoc.rdoc_files.include('README', 'CHANGES', 'MIT-LICENSE', 'UPGRADE', 'lib/**/*.rb')
 end
-
-desc "Generate EXAMPLES.rb"
-task(:rdoc) {core.rdoc}
 
 spec = Gem::Specification.new do |s|
   s.name = PKG_NAME

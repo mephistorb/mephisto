@@ -3,8 +3,8 @@ require File.dirname(__FILE__) + '/../../spec_helper.rb'
 module Spec
   module Runner
     
-    module ReporterSpecHelper
-      def setup
+    ReporterSpecHelper = describe "reporter spec helpers", :shared => true do
+      before(:each) do
         @io = StringIO.new
         @options = Options.new(StringIO.new, @io)
         @backtrace_tweaker = stub("backtrace tweaker", :tweak_backtrace => nil)
@@ -19,34 +19,37 @@ module Spec
       end
       
       def description(s)
-        Spec::DSL::BehaviourDescription.new(s)
+        Spec::Example::ExampleGroupDescription.new(s)
       end
     end
     
     describe Reporter do
       include ReporterSpecHelper
-      before(:each) {setup}
+      
+      it "should assign itself as the reporter to options" do
+        @options.reporter.should equal(@reporter)
+      end
       
       it "should tell formatter when behaviour is added" do
-        @formatter.should_receive(:add_behaviour).with(description("behaviour"))
-        @reporter.add_behaviour(description("behaviour"))
+        @formatter.should_receive(:add_example_group).with(description("behaviour"))
+        @reporter.add_example_group(description("behaviour"))
       end
 
       it "should handle multiple behaviours with same name" do
-        @formatter.should_receive(:add_behaviour).exactly(3).times
+        @formatter.should_receive(:add_example_group).exactly(3).times
         @formatter.should_receive(:example_started).exactly(3).times
         @formatter.should_receive(:example_passed).exactly(3).times
         @formatter.should_receive(:start_dump)
         @formatter.should_receive(:dump_pending)
         @formatter.should_receive(:close).with(no_args)
         @formatter.should_receive(:dump_summary).with(anything(), 3, 0, 0)
-        @reporter.add_behaviour(description("behaviour"))
+        @reporter.add_example_group(description("behaviour"))
         @reporter.example_started("spec 1")
         @reporter.example_finished("spec 1")
-        @reporter.add_behaviour(description("behaviour"))
+        @reporter.add_example_group(description("behaviour"))
         @reporter.example_started("spec 2")
         @reporter.example_finished("spec 2")
-        @reporter.add_behaviour(description("behaviour"))
+        @reporter.add_example_group(description("behaviour"))
         @reporter.example_started("spec 3")
         @reporter.example_finished("spec 3")
         @reporter.dump
@@ -54,7 +57,7 @@ module Spec
 
       it "should handle multiple examples with the same name" do
         error=RuntimeError.new
-        @formatter.should_receive(:add_behaviour).exactly(2).times
+        @formatter.should_receive(:add_example_group).exactly(2).times
         @formatter.should_receive(:example_passed).with("example").exactly(2).times
         @formatter.should_receive(:example_failed).with("example", 1, failure)
         @formatter.should_receive(:example_failed).with("example", 2, failure)
@@ -64,10 +67,10 @@ module Spec
         @formatter.should_receive(:close).with(no_args)
         @formatter.should_receive(:dump_summary).with(anything(), 4, 2, 0)
         @backtrace_tweaker.should_receive(:tweak_backtrace).twice
-        @reporter.add_behaviour(description("behaviour"))
+        @reporter.add_example_group(description("behaviour"))
         @reporter.example_finished("example")
         @reporter.example_finished("example", error)
-        @reporter.add_behaviour(description("behaviour"))
+        @reporter.add_example_group(description("behaviour"))
         @reporter.example_finished("example")
         @reporter.example_finished("example", error)
         @reporter.dump
@@ -97,7 +100,6 @@ module Spec
     
     describe Reporter, "reporting one passing example" do
       include ReporterSpecHelper
-      before(:each) {setup}
 
       it "should tell formatter example passed" do
         @formatter.should_receive(:example_passed)
@@ -123,7 +125,6 @@ module Spec
 
     describe Reporter, "reporting one failing example" do
       include ReporterSpecHelper
-      before(:each) {setup}
 
       it "should tell formatter that example failed" do
         @formatter.should_receive(:example_failed)
@@ -137,53 +138,28 @@ module Spec
       end
 
       it "should account for failing example in stats" do
-        @formatter.should_receive(:add_behaviour)
+        @formatter.should_receive(:add_example_group)
         @formatter.should_receive(:example_failed).with("example", 1, failure)
         @formatter.should_receive(:start_dump)
         @formatter.should_receive(:dump_pending)
         @formatter.should_receive(:dump_failure).with(1, anything())
         @formatter.should_receive(:dump_summary).with(anything(), 1, 1, 0)
         @formatter.should_receive(:close).with(no_args)
-        @reporter.add_behaviour(description("behaviour"))
+        @reporter.add_example_group(description("behaviour"))
         @reporter.example_finished("example", RuntimeError.new)
         @reporter.dump
       end
       
     end
     
-    describe Reporter, "reporting one pending example (Not Yet Implemented)" do
-      include ReporterSpecHelper
-      before(:each) {setup}
-
-      it "should tell formatter example is pending" do
-        @formatter.should_receive(:example_pending).with(description("behaviour"), "example", "Not Yet Implemented")
-        @formatter.should_receive(:add_behaviour).with(description("behaviour"))
-        @reporter.add_behaviour(description('behaviour'))
-        @reporter.example_finished("example", nil, nil, true)
-      end
-
-      it "should account for pending example in stats" do
-        @formatter.should_receive(:example_pending).with(description("behaviour"), "example", "Not Yet Implemented")
-        @formatter.should_receive(:start_dump)
-        @formatter.should_receive(:dump_pending)
-        @formatter.should_receive(:dump_summary).with(anything(), 1, 0, 1)
-        @formatter.should_receive(:add_behaviour).with(description("behaviour"))
-        @formatter.should_receive(:close).with(no_args)
-        @reporter.add_behaviour(description('behaviour'))
-        @reporter.example_finished("example", nil, nil, true)
-        @reporter.dump
-      end
-    end
-
     describe Reporter, "reporting one pending example (ExamplePendingError)" do
       include ReporterSpecHelper
-      before(:each) {setup}
 
       it "should tell formatter example is pending" do
         @formatter.should_receive(:example_pending).with(description("behaviour"), "example", "reason")
-        @formatter.should_receive(:add_behaviour).with(description("behaviour"))
-        @reporter.add_behaviour(description('behaviour'))
-        @reporter.example_finished("example", Spec::DSL::ExamplePendingError.new("reason"), nil, false)
+        @formatter.should_receive(:add_example_group).with(description("behaviour"))
+        @reporter.add_example_group(description('behaviour'))
+        @reporter.example_finished("example", Spec::Example::ExamplePendingError.new("reason"), nil, false)
       end
 
       it "should account for pending example in stats" do
@@ -192,24 +168,23 @@ module Spec
         @formatter.should_receive(:dump_pending)
         @formatter.should_receive(:dump_summary).with(anything(), 1, 0, 1)
         @formatter.should_receive(:close).with(no_args)
-        @formatter.should_receive(:add_behaviour).with(description("behaviour"))
-        @reporter.add_behaviour(description('behaviour'))
-        @reporter.example_finished("example", Spec::DSL::ExamplePendingError.new("reason"), nil, false)
+        @formatter.should_receive(:add_example_group).with(description("behaviour"))
+        @reporter.add_example_group(description('behaviour'))
+        @reporter.example_finished("example", Spec::Example::ExamplePendingError.new("reason"), nil, false)
         @reporter.dump
       end
     end
 
-    describe Reporter, "reporting one pending example (PendingFixedError)" do
+    describe Reporter, "reporting one pending example (PendingExampleFixedError)" do
       include ReporterSpecHelper
-      before(:each) {setup}
 
       it "should tell formatter pending example is fixed" do
         @formatter.should_receive(:example_failed) do |name, counter, failure|
           failure.header.should == "'behaviour example' FIXED"
         end
-        @formatter.should_receive(:add_behaviour).with(description("behaviour"))
-        @reporter.add_behaviour(description('behaviour'))
-        @reporter.example_finished("example", Spec::DSL::PendingFixedError.new("reason"), nil, false)
+        @formatter.should_receive(:add_example_group).with(description("behaviour"))
+        @reporter.add_example_group(description('behaviour'))
+        @reporter.example_finished("example", Spec::Example::PendingExampleFixedError.new("reason"), nil, false)
       end
     end
   end

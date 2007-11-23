@@ -140,7 +140,7 @@ describe "A view that includes a partial using :collection and :spacer_template"
     response.should have_tag('hr#spacer')
   end
 
-  it "should render the partial w/ spacer_tamplate" do
+  it "should render the partial" do
     template.expect_render(:partial => 'partial',
                :collection => ['Alice', 'Bob'],
                :spacer_template => 'spacer')
@@ -228,18 +228,5 @@ describe "An instantiated ViewExampleController", :behaviour_type => :view do
   
   it "should return the path of the real controller that it replaces" do
     @controller.controller_path.should == 'view_spec/foo'
-  end
-end
-
-module Spec
-  module Rails
-    module DSL
-      describe ViewExample do
-        it "should tell you its behaviour_type is :view" do
-          behaviour = Class.new(ViewExample).describe("")
-          behaviour.behaviour_type.should == :view
-        end
-      end
-    end
   end
 end

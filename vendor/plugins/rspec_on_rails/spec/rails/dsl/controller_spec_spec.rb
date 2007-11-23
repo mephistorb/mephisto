@@ -135,13 +135,17 @@ require 'controller_spec_controller'
     end
   end
   
-  describe "Given a controller spec running in #{mode} mode", :behaviour_type => :controller do
-    integrate_views if mode == 'integration'
-    it "a spec in a context without controller_name set should fail with a useful warning",
-      :should_raise => [
-        Spec::Expectations::ExpectationNotMetError,
-        /You have to declare the controller name in controller specs/
-      ] do
+  describe "Given a controller spec running in #{mode} mode" do
+    example_group = describe "A controller spec"
+    # , :behaviour_type => :controller do
+    # integrate_views if mode == 'integration'
+    it "a spec in a context without controller_name set should fail with a useful warning" do
+      pending("need a new way to deal with examples that should_raise")
+    # ,
+    #   :should_raise => [
+    #     Spec::Expectations::ExpectationNotMetError,
+    #     /You have to declare the controller name in controller specs/
+    #   ] do
     end
   end
   
@@ -149,18 +153,5 @@ end
 
 describe ControllerSpecController, :behaviour_type => :controller do
   it "should not require naming the controller if describe is passed a type" do
-  end
-end
-
-module Spec
-  module Rails
-    module DSL
-      describe ControllerExample do
-        it "should tell you its behaviour_type is :controller" do
-          behaviour = Class.new(ControllerExample).describe("")
-          behaviour.behaviour_type.should == :controller
-        end
-      end
-    end
   end
 end

@@ -1,35 +1,33 @@
 module Spec
   module Extensions
     module Main
-      # Creates and registers an instance of a Spec::DSL::Example (or a subclass).
-      # The instantiated behaviour class depends on the directory of the file
+      # Creates and returns a class that includes the ExampleGroupMethods
+      # module. The ExampleGroup sub-class depends on the directory of the file
       # calling this method. For example, Spec::Rails will use different
-      # classes for specs living in <tt>spec/models</tt>, <tt>spec/helpers</tt>, 
-      # <tt>spec/views</tt> and <tt>spec/controllers</tt>.
+      # classes for specs living in <tt>spec/models</tt>,
+      # <tt>spec/helpers</tt>, <tt>spec/views</tt> and
+      # <tt>spec/controllers</tt>.
       #
-      # It is also possible to override autodiscovery of the behaviour class 
+      # It is also possible to override autodiscovery of the behaviour class
       # with an options Hash as the last argument:
       #
       #   describe "name", :behaviour_type => :something_special do ...
       #
-      # The reason for using different behaviour classes is to have
-      # different matcher methods available from within the <tt>describe</tt>
-      # block.
+      # The reason for using different behaviour classes is to have different
+      # matcher methods available from within the <tt>describe</tt> block.
       #
-      # See Spec::DSL::ExampleFactory#add_example_class for details about 
-      # how to register special Spec::DSL::Example implementations.
+      # See Spec::Example::ExampleFactory#register for details about how to
+      # register special implementations.
       #
       def describe(*args, &block)
         raise ArgumentError if args.empty?
         raise ArgumentError unless block
         args << {} unless Hash === args.last
         args.last[:spec_path] = caller(0)[1]
-        behaviour = Spec::DSL::BehaviourFactory.create(*args, &block)
-        behaviour.register
-        behaviour
+        Spec::Example::ExampleGroupFactory.create_example_group(*args, &block)
       end
       alias :context :describe
-      
+
     private
     
       def rspec_options
