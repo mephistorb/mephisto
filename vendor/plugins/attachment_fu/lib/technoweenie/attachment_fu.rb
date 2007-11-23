@@ -2,7 +2,7 @@ module Technoweenie # :nodoc:
   module AttachmentFu # :nodoc:
     @@default_processors = %w(ImageScience Rmagick MiniMagick)
     @@tempfile_path      = File.join(RAILS_ROOT, 'tmp', 'attachment_fu')
-    @@content_types      = ['image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png']
+    @@content_types      = ['image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png', 'image/jpg']
     mattr_reader :content_types, :tempfile_path, :default_processors
     mattr_writer :tempfile_path
 
@@ -44,23 +44,32 @@ module Technoweenie # :nodoc:
         options[:thumbnails]       ||= {}
         options[:thumbnail_class]  ||= self
         options[:s3_access]        ||= :public_read
+        options[:content_type] = [options[:content_type]].flatten.collect! { |t| t == :image ? Technoweenie::AttachmentFu.content_types : t }.flatten unless options[:content_type].nil?
+        
+        unless options[:thumbnails].is_a?(Hash)
+          raise ArgumentError, ":thumbnails option should be a hash: e.g. :thumbnails => { :foo => '50x50' }"
+        end
+        
+        # doing these shenanigans so that #attachment_options is available to processors and backends
+        class_inheritable_accessor :attachment_options
+        self.attachment_options = options
 
         # only need to define these once on a class
-        unless included_modules.include? InstanceMethods
-          class_inheritable_accessor :attachment_options
+        unless included_modules.include?(InstanceMethods)
           attr_accessor :thumbnail_resize_options
 
-          options[:storage]     ||= (options[:file_system_path] || options[:path_prefix]) ? :file_system : :db_file
-          options[:path_prefix] ||= options[:file_system_path]
-          if options[:path_prefix].nil?
-            options[:path_prefix] = options[:storage] == :s3 ? table_name : File.join("public", table_name)
+          attachment_options[:storage]     ||= (attachment_options[:file_system_path] || attachment_options[:path_prefix]) ? :file_system : :db_file
+          attachment_options[:path_prefix] ||= attachment_options[:file_system_path]
+          if attachment_options[:path_prefix].nil?
+            attachment_options[:path_prefix] = attachment_options[:storage] == :s3 ? table_name : File.join("public", table_name)
           end
-          options[:path_prefix]   = options[:path_prefix][1..-1] if options[:path_prefix].first == '/'
+          attachment_options[:path_prefix]   = attachment_options[:path_prefix][1..-1] if options[:path_prefix].first == '/'
 
           with_options :foreign_key => 'parent_id' do |m|
-            m.has_many   :thumbnails, :dependent => :destroy, :class_name => options[:thumbnail_class].to_s
+            m.has_many   :thumbnails, :class_name => attachment_options[:thumbnail_class].to_s
             m.belongs_to :parent, :class_name => base_class.to_s
           end
+          before_destroy :destroy_thumbnails
 
           before_validation :set_size_from_temp_path
           after_save :after_process_attachment
@@ -68,7 +77,7 @@ module Technoweenie # :nodoc:
           extend  ClassMethods
           include InstanceMethods
           include Technoweenie::AttachmentFu::Backends.const_get("#{options[:storage].to_s.classify}Backend")
-          case options[:processor]
+          case attachment_options[:processor]
             when :none
             when nil
               processors = Technoweenie::AttachmentFu.default_processors.dup
@@ -79,13 +88,14 @@ module Technoweenie # :nodoc:
                 retry
               end
             else
-              include Technoweenie::AttachmentFu::Processors.const_get("#{options[:processor].to_s.classify}Processor")
+              begin
+                include Technoweenie::AttachmentFu::Processors.const_get("#{options[:processor].to_s.classify}Processor")
+              rescue LoadError, MissingSourceFile
+                puts "Problems loading #{options[:processor]}Processor: #{$!}"
+              end
           end
           after_validation :process_attachment
         end
-        
-        options[:content_type] = [options[:content_type]].flatten.collect { |t| t == :image ? Technoweenie::AttachmentFu.content_types : t }.flatten unless options[:content_type].nil?
-        self.attachment_options = options
       end
     end
 
@@ -158,6 +168,7 @@ module Technoweenie # :nodoc:
       # Writes the given data to a new tempfile, returning the closed tempfile.
       def write_to_temp_file(data, temp_base_name)
         returning Tempfile.new(temp_base_name, Technoweenie::AttachmentFu.tempfile_path) do |tmp|
+          tmp.binmode
           tmp.write data
           tmp.close
         end
@@ -172,7 +183,7 @@ module Technoweenie # :nodoc:
       
       # Returns true/false if an attachment is thumbnailable.  A thumbnailable attachment has an image content type and the parent_id attribute.
       def thumbnailable?
-        image? && respond_to?(:parent_id)
+        image? && respond_to?(:parent_id) && parent_id.nil?
       end
 
       # Returns the class used to create new thumbnails for this attachment.
@@ -247,7 +258,7 @@ module Technoweenie # :nodoc:
           file_data.rewind
           self.temp_data = file_data.read
         else
-          self.temp_path    = file_data.path
+          self.temp_path = file_data.path
         end
       end
 
@@ -260,9 +271,9 @@ module Technoweenie # :nodoc:
         p.respond_to?(:path) ? p.path : p.to_s
       end
       
-      # Gets an array of the currently used temp paths.
+      # Gets an array of the currently used temp paths.  Defaults to a copy of #full_filename.
       def temp_paths
-        @temp_paths ||= []
+        @temp_paths ||= (new_record? || !File.exist?(full_filename)) ? [] : [copy_to_temp_file(full_filename)]
       end
       
       # Adds a new temp_path to the array.  This should take a string or a Tempfile.  This class makes no 
@@ -383,6 +394,11 @@ module Technoweenie # :nodoc:
           end
 
           return result
+        end
+        
+        # Removes the thumbnails for the attachment, if it has any
+        def destroy_thumbnails
+          self.thumbnails.each { |thumbnail| thumbnail.destroy } if thumbnailable?
         end
     end
   end

@@ -34,6 +34,10 @@ module Technoweenie # :nodoc:
       #     access_key_id: <your key>
       #     secret_access_key: <your key>
       #
+      # You can change the location of the config path by passing a full path to the :s3_config_path option.
+      #
+      #   has_attachment :storage => :s3, :s3_config_path => (RAILS_ROOT + '/config/s3.yml')
+      #
       # === Required configuration parameters
       #
       # * <tt>:access_key_id</tt> - The access key id for your S3 account. Provided by Amazon.
@@ -128,9 +132,10 @@ module Technoweenie # :nodoc:
           end
 
           begin
-            @@s3_config = YAML.load_file(RAILS_ROOT + '/config/amazon_s3.yml')[ENV['RAILS_ENV']].symbolize_keys
-          rescue
-            raise ConfigFileNotFoundError.new('File RAILS_ROOT/config/amazon_s3.yml not found')
+            @@s3_config_path = base.attachment_options[:s3_config_path] || (RAILS_ROOT + '/config/amazon_s3.yml')
+            @@s3_config = YAML.load_file(@@s3_config_path)[ENV['RAILS_ENV']].symbolize_keys
+          #rescue
+          #  raise ConfigFileNotFoundError.new('File %s not found' % @@s3_config_path)
           end
 
           @@bucket_name = s3_config[:bucket_name]
@@ -288,7 +293,7 @@ module Technoweenie # :nodoc:
             if save_attachment?
               S3Object.store(
                 full_filename,
-                temp_data,
+                (temp_path ? File.open(temp_path) : temp_data),
                 bucket_name,
                 :content_type => content_type,
                 :access => attachment_options[:s3_access]

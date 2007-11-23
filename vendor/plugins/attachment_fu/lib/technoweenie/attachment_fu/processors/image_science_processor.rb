@@ -18,12 +18,17 @@ module Technoweenie # :nodoc:
         protected
           def process_attachment_with_processing
             return unless process_attachment_without_processing && image?
-            with_image { |img| resize_image_or_thumbnail! img }
+            with_image do |img|
+              self.width  = img.width  if respond_to?(:width)
+              self.height = img.height if respond_to?(:height)
+              resize_image_or_thumbnail! img
+            end
           end
 
           # Performs the actual resizing operation for a thumbnail
           def resize_image(img, size)
             # create a dummy temp file to write to
+            filename.sub! /gif$/, 'png'
             self.temp_path = write_to_temp_file(filename)
             grab_dimensions = lambda do |img|
               self.width  = img.width  if respond_to?(:width)
