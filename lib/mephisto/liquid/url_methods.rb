@@ -12,8 +12,10 @@ module Mephisto
 
       def absolute_url(*path)
         return "#{relative_url_root}/" if path.empty?
+        is_absolute = path.first.to_s[/(^\/)/]
         path.collect! { |p| p.to_s.gsub /(^\/)|(\/$)/, '' }
-        path.empty? ? "#{relative_url_root}/" : path.unshift(relative_url_root).join('/')
+        path.unshift(is_absolute ? '' : relative_url_root)
+        path * '/'
       end
     end
   end

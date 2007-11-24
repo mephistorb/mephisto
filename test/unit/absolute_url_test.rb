@@ -22,7 +22,7 @@ context "Default Url" do
   end
   
   specify "should join path ending with a slash" do
-    assert_equal '/foo/bar/baz', absolute_url('/foo/bar/baz/')
+    assert_equal '/foo/bar/baz', absolute_url('foo/bar/baz/')
   end
 end
 
@@ -49,10 +49,10 @@ context "Custom Relative Url" do
   end
   
   specify "should join absolute path" do
-    assert_equal '/blog/foo/bar/baz.html', absolute_url('/foo/bar/baz.html')
+    assert_equal '/foo/bar/baz.html', absolute_url('/foo/bar/baz.html')
   end
   
   specify "should join path ending with a slash" do
-    assert_equal '/blog/foo/bar/baz', absolute_url('/foo/bar/baz/')
+    assert_equal '/blog/foo/bar/baz', absolute_url('foo/bar/baz/')
   end
 end
