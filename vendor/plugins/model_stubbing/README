@@ -65,9 +65,7 @@ a different approach.  Oh, and apparently this is an implementation of the Objec
 TODO
 ====
 
-* Finish implementing test/unit support.  Main issue is it doesn't
-  insert the model stubs into the database since there's no equivalent
-  to before(:all) in rspec
+* Support other mocking frameworks besides rspec and mocha?
 
 * Support Sequel, DataMapper, etc?  I use AR, but I'm willing to abstract
   some of that out in case someone wants to support another ORM.

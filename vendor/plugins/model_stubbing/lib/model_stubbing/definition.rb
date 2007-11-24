@@ -78,8 +78,18 @@ module ModelStubbing
           def current_time
             self.class.definition.current_time
           end
+          
+          def setup_definition_for_test_run
+            if !self.class.definition_inserted && self.class.definition.insert?
+              ActiveRecord::Base.transaction do
+                self.class.definition.models.values.each(&:insert)
+              end
+              self.class.definition_inserted = true
+            end
+            ModelStubbing.stub_current_time_with(current_time) if current_time
+          end
         end
-        (class << klass ; self ; end).send :attr_accessor, :definition
+        (class << klass ; self ; end).send :attr_accessor, :definition, :definition_inserted
         klass.definition = self
       end
       klass.class_eval models.values.collect { |model| model.stub_method_definition }.join("\n")

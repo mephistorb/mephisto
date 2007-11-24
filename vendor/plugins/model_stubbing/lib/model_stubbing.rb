@@ -60,15 +60,8 @@ protected
   # Included into the current rspec example when #define_models is called.
   module RspecExtension
     def self.included(base)
-      base.prepend_before :all do
-        if self.class.definition.insert?
-          ActiveRecord::Base.transaction do
-            self.class.definition.models.values.each(&:insert)
-          end
-        end
-      end
       base.prepend_before :each do
-        ModelStubbing.stub_current_time_with(current_time) if current_time
+        setup_definition_for_test_run
       end
     end
   end
@@ -76,15 +69,8 @@ protected
   # Included into the current test/spec example when #define_models is called.
   module TestSpecExtension
     def self.included(base)
-      base.before :all do
-        if self.class.definition.insert?
-          ActiveRecord::Base.transaction do
-            self.class.definition.models.values.each(&:insert)
-          end
-        end
-      end
       base.before :each do
-        ModelStubbing.stub_current_time_with(current_time) if current_time
+        setup_definition_for_test_run
       end
     end
   end
@@ -99,7 +85,7 @@ protected
     end
     
     def setup_with_model_stubbing
-      ModelStubbing.stub_current_time_with(current_time) if current_time
+      setup_definition_for_test_run
     end
   end
 end
