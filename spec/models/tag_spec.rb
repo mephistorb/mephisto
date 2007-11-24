@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-ModelStubbing.define_models :tags do
+ModelStubbing.define_models :tags, :copy => false do
   model Tag do
     [:ruby, :rails, :mongrel, :plugin].each do |t|
       stub t, :name => t.to_s
