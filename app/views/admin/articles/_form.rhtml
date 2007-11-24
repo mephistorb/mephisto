@@ -9,7 +9,7 @@
     <dd id="x-body" style="<%= @style %>"><%= form.text_area :excerpt, :rows => '8', :class => 'fat'  %></dd>
     <dt><label for="article_body">Write your article</label> <span class="hint">(<%= link_to_function 'Add an excerpt', %(['x-lbl', 'x-body'].each(Element.toggle)) %>)</span></dt>
     <dd><%= form.text_area :body, :class => 'fat', :rows => 25  %></dd>
-    <dt><label for="article_tag">Tags</label> <span class="hint">Enter one or more tags separated by a comma.</span></dt>
+    <dt><label for="article_tag">Tags</label> <span class="hint">Enter one or more tags separated by a comma or a space (for example, <em>"Web Dev" Tutorials</em> or <em>Web Dev, Tutorials</em>).</span></dt>
     <dd><%= form.text_field :tag %></dd>
   </dl>
 </div>

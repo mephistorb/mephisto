@@ -6,7 +6,7 @@
 
   <%= error_messages_for :asset %>
   <dl class="group">
-    <dt><label for="asset_tag">Tags</label> <span class="hint">Enter one or more tags separated by a comma.</span></dt>
+    <dt><label for="asset_tag">Tags</label> <span class="hint">Enter one or more tags separated by a comma or a space (for example, <em>"Web Dev" Tutorials</em> or <em>Web Dev, Tutorials</em>).</span></dt>
     <dd><%= f.text_field :tag %></dd>
     <dt><label for="asset_uploaded_data">Select a file</label></dt>
     <dd><%= f.file_field :uploaded_data %></dd>
