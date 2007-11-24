@@ -1,5 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+# DEPRECATED, see spec/models/membership_spec.rb
+
 class MembershipTest < Test::Unit::TestCase
   fixtures :memberships, :users, :sites
 

@@ -1,5 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
+# DEPRECATED, see spec/filters/absolute_url_spec.rb
+
 context "Default Url" do
   include Mephisto::Liquid::UrlMethods
   
