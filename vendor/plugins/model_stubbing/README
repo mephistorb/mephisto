@@ -1,0 +1,73 @@
+model_stubbing
+==============
+
+Creates in-memory versions of models for testing.  This attempts to solve a
+few problems with ActiveRecord Fixtures:
+
+Speed - There's no hit to the database and no cleanup between tests.
+Flexibility - You can define a global set of stubs, or define custom ones
+  for specific tests/specs
+
+A lot of these ideas were taken from various approaches to fixtures and mocking
+that I've seen:
+
+fixture scenarios (http://errtheblog.com/post/7708)
+unit_record (http://www.dcmanges.com/blog/rails-unit-record-test-without-the-database)
+Rspec and #mock_model
+
+Exemplar (http://www.bofh.org.uk/articles/2007/08/05/doing-the-fixture-thing)
+I actually saw Exemplar after I wrote the initial version, but they do seem similar.
+
+I honestly don't know if this is a better way or anything, I'm just experimenting with
+a different approach.  Oh, and apparently this is an implementation of the ObjectMother 
+(http://www.martinfowler.com/bliki/ObjectMother.html) pattern?
+
+  # test/unit example
+  # test/unit support not fully implemented yet
+  require 'model_stubbing/test_case'
+
+  class FooTest < Test::Unit::TestCase
+    define_models do
+      time 2007, 6, 1
+    
+      model User do
+        stub :name => 'bob', :admin => false
+        stub :admin, :admin => true # inherits from default fixture
+      end
+    
+      model Post do
+        # uses admin user fixture above
+        stub :title => 'initial', :user => all_stubs(:admin_user), 
+          :published_at => current_time + 5.days
+      end
+    end
+    
+    def test_foo
+      @user   = users(:default) # default user stub
+      @admin  = users(:admin)
+      @custom = users(:default, :age => 25) # custom attributes, 
+                                            #but not equal to @user any more
+                                            
+      @post   = posts(:default)
+      @post.user # equal to @admin above
+      
+      current_time # stubbed to be 6/1/2007 using mocha or rspec
+    end
+  end
+
+  # rspec example
+  require 'model_stubbing/spec'
+
+  describe Foo do
+    ...
+  end
+
+TODO
+====
+
+* Finish implementing test/unit support.  Main issue is it doesn't
+  insert the model stubs into the database since there's no equivalent
+  to before(:all) in rspec
+
+* Support Sequel, DataMapper, etc?  I use AR, but I'm willing to abstract
+  some of that out in case someone wants to support another ORM.
