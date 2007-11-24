@@ -45,14 +45,15 @@ context "Site" do
   end
 
   specify "should generate search url" do
-    assert_equal '/search?q=abc',        sites(:first).search_url('abc')
-    assert_equal '/search?q=abc&page=2', sites(:first).search_url('abc', 2)
+    assert_equal '/search?q=abc',            sites(:first).search_url('abc')
+    assert_equal '/search?q=abc&amp;page=2', sites(:first).search_url('abc', 2)
   end
   
   specify "should generate tag url" do
-    assert_equal '/tags',         sites(:first).tag_url
-    assert_equal '/tags/foo',     sites(:first).tag_url('foo')
-    assert_equal '/tags/foo/bar', sites(:first).tag_url('foo', 'bar')
+    assert_equal '/tags',           sites(:first).tag_url
+    assert_equal '/tags/foo',       sites(:first).tag_url('foo')
+    assert_equal '/tags/foo/bar',   sites(:first).tag_url('foo', 'bar')
+    assert_equal '/tags/foo%20bar', sites(:first).tag_url('foo bar')
   end
 
   specify "should order sections in site" do

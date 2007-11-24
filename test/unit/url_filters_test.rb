@@ -89,9 +89,10 @@ context "Url Filters" do
   end
 
   specify "should generate tag urls" do
-    assert_equal "/tags",         tag_url
-    assert_equal "/tags/foo",     tag_url('foo')
-    assert_equal "/tags/foo/bar", tag_url('foo', 'bar')
+    assert_equal "/tags",           tag_url
+    assert_equal "/tags/foo",       tag_url('foo')
+    assert_equal "/tags/foo/bar",   tag_url('foo', 'bar')
+    assert_equal '/tags/foo%20bar', tag_url('foo bar')
   end
   
   specify "should generate tag links" do
@@ -99,8 +100,8 @@ context "Url Filters" do
   end
   
   specify "should generate search urls" do
-    assert_equal '/search?q=abc',        search_url('abc')
-    assert_equal '/search?q=abc&page=2', search_url('abc', 2)
+    assert_equal '/search?q=abc',            search_url('abc')
+    assert_equal '/search?q=abc&amp;page=2', search_url('abc', 2)
   end
   
   specify "should generate atom auto discovery tag" do

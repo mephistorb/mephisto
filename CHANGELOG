@@ -1,5 +1,11 @@
 * SVN *
 
+* encode search/tag urls properly [rob-twf]
+
+* update article forms to explain new tag syntax (comma and space delimited tags) [xavier, rick]
+
+* start converting tests to rspec
+
 * tweak mephisto_init to support the new ActionController::Dispatcher class.  [Rob Anderton]
 
 * Don't generate an article event for unversioned changes. [Marcus Brito]

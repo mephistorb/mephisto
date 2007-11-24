@@ -1,3 +1,5 @@
+require 'uri'
+
 class Site < ActiveRecord::Base
   @@default_assigns = {}
   @@theme_path      = Pathname.new(RAILS_ROOT) + 'themes'
@@ -170,11 +172,11 @@ class Site < ActiveRecord::Base
   end
 
   def search_url(query, page = nil)
-    "/#{search_path}?q=#{CGI::escapeHTML(query)}#{%(&page=#{CGI::escapeHTML(page.to_s)}) unless page.blank?}"
+    "/#{search_path}?q=#{CGI::escapeHTML(query)}#{%(&amp;page=#{CGI::escapeHTML(page.to_s)}) unless page.blank?}"
   end
 
   def tag_url(*tags)
-    ['', tag_path, *tags] * '/'
+    ['', tag_path, *tags.collect { |t| URI::escape(t.to_s) }] * '/' 
   end
 
   def accept_comments?
