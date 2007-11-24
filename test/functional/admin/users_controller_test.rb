@@ -117,7 +117,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
   def test_should_not_permit_promoting_self_to_admin_in_update
     login_as :arthur, :hostess
     assert !users(:arthur).admin, "we mean to test with a non-admin user"
-    assert_raises(ActiveRecord::ProtectedAttributeAssignmentError) { post :update, :id => users(:arthur).id, :user => { :admin => 'true' } }
+    post :update, :id => users(:arthur).id, :user => { :admin => 'true' }
     users(:arthur).reload
     assert !users(:arthur).admin, "user.admin shouldn't change"
     assert_response 0
@@ -126,7 +126,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
   def test_should_not_permit_changing_own_created_at_in_update
     login_as :arthur, :hostess
     prev_time = users(:arthur).created_at
-    assert_raises(ActiveRecord::ProtectedAttributeAssignmentError) { post :update, :id => users(:arthur).id, :user => { :created_at => prev_time - 1.year } }
+    post :update, :id => users(:arthur).id, :user => { :created_at => prev_time - 1.year }
     users(:arthur).reload
     assert_equal prev_time, users(:arthur).created_at, "user.created_at shouldn't change"
     assert_response 0
@@ -138,7 +138,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     prev_article_ids = user.article_ids
     assert prev_article_ids.size > 2, "Test needs more than 2 articles. Pick another user?"
     #but now we're going to try to own only the first 2 of them...
-    assert_raises(ActiveRecord::ProtectedAttributeAssignmentError) { post :update, :id => user.id, :user => { :article_ids => prev_article_ids[0..1] }}
+    post :update, :id => user.id, :user => { :article_ids => prev_article_ids[0..1] }
     user.reload
     assert_equal prev_article_ids, user.article_ids, "user.article_ids[] shouldn't change"
     assert_response 0
