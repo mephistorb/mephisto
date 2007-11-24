@@ -4,20 +4,28 @@ module UrlFilters
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::AssetTagHelper
 
-  def link_to_article(article, text = nil)
-    content_tag :a, text || h(article['title']), :href => article['url']
+  def link_to_article(article, *args)
+    options = link_args_to_options(args)
+    text = options.delete(:text) || h(article['title'])
+    content_tag :a, text, { :href => article['url'], :title => text }.merge(options)
   end
   
-  def link_to_page(page, section = nil, text = nil)
-    content_tag :a, text || h(page['title']), page_anchor_options(page, section)
+  def link_to_page(page, section = nil, *args)
+    options = link_args_to_options(args)
+    text = options.delete(:text) || h(page['title'])
+    content_tag :a, text, page_anchor_options(page, section, { :title => text }.merge(options))
   end
 
-  def link_to_comments(article, text = nil)
-    content_tag :a, text || pluralize(article['comments_count'], 'comment'), :href => article['url']
+  def link_to_comments(article, *args)
+    options = link_args_to_options(args)
+    text = options.delete(:text) || pluralize(article['comments_count'], 'comment')
+    content_tag :a, text, { :href => article['url'] + '#comments', :title => text }.merge(options)
   end
   
-  def link_to_section(section, text = nil)
-    content_tag :a, text || h(section['name']), section_anchor_options(section)
+  def link_to_section(section, *args)
+    options = link_args_to_options(args)
+    text = options.delete(:text) || h(section['name'])
+    content_tag :a, text, section_anchor_options(section, { :title => text }.merge(options))
   end
 
   def img_tag(img, options = {})
@@ -25,11 +33,11 @@ module UrlFilters
   end
   
   # Special link that checks for current section.  If it exists and it's a paged section, use link_to_page instead.
-  def link_to_search_result(article, text = nil)
+  def link_to_search_result(article, *args)
     if current_page_section && current_page_section[:is_paged]
-      link_to_page(article, current_page_section, text)
+      link_to_page(article, current_page_section, *args)
     else
-      link_to_article(article, text)
+      link_to_article(article, *args)
     end
   end
   
@@ -63,12 +71,16 @@ module UrlFilters
     image_tag url, :class => 'gravatar', :size => "#{size}x#{size}", :alt => comment['author']
   end
 
-  def link_to_tag(tag)
-    content_tag :a, h(tag), :href => tag_url(tag), :rel => 'tag'
+  def link_to_tag(tag, *args)
+    options = link_args_to_options(args)
+    text = options.delete(:text) || h(tag)
+    content_tag :a, text, { :href => tag_url(tag), :rel => 'tag', :title => text }.merge(options)
   end
 
-  def link_to_month(section, date = nil, format = 'my')
-    content_tag :a, format_date(date, format), :href => monthly_url(section, date)
+  def link_to_month(section, date = nil, format = 'my', *args)
+    options = link_args_to_options(args)
+    text = options.delete(:text) || h(format_date(date, format))
+    content_tag :a, text, { :href => monthly_url(section, date), :title => text }.merge(options)
   end
 
   def monthly_url(section, date = nil)
@@ -128,15 +140,23 @@ module UrlFilters
 
   private
     # marks a page as class=selected
-    def page_anchor_options(page, section = nil)
-      options = {:href => page_url(page, section)}
-      current_page_article == page ? options.update(:class => 'selected') : options
+    def page_anchor_options(page, section = nil, options = {})
+      options.update(:href => page_url(page, section))
+      options[:class].nil? ? options.update(:class => 'selected') : options[:class] += ' selected' if current_page_article == page
+      options
     end
     
     # marks a section as class=selected
-    def section_anchor_options(section)
-      options = {:href => section['url'], :title => section['title']}
-      (current_page_section && (current_page_section.url == section.url)) ? options.update(:class => 'selected') : options
+    def section_anchor_options(section, options = {})
+      options.update(:href => section['url'])
+      options[:class].nil? ? options.update(:class => 'selected') : options[:class] += ' selected' if current_page_section && (current_page_section.url == section.url)
+      options
+    end
+    
+    def link_args_to_options(args)
+      options = {}
+      [:text, :title, :id, :class, :rel].zip(args) {|key, value| options[key] = h(value) unless value.blank?}
+      options
     end
     
     def current_page_section

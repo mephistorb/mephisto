@@ -28,7 +28,7 @@ context "Url Filters" do
   end
 
   specify "should generate monthly link" do
-    assert_equal "<a href=\"/archives/2006/1\">January 2006</a>", link_to_month(sections(:home).to_liquid, '2006-1')
+    assert_equal "<a href=\"/archives/2006/1\" title=\"January 2006\">January 2006</a>", link_to_month(sections(:home).to_liquid, '2006-1')
   end
 
   specify "should generate paged url" do
@@ -52,10 +52,12 @@ context "Url Filters" do
     other_section = link_to_section(sections(:home).to_liquid)
     home_section  = link_to_section(sections(:about).to_liquid)
     
-    assert_match    %r(href="/"),         other_section
-    assert_match    %r(href="/about"),    home_section
-    assert_match    %r(class="selected"), home_section
-    assert_no_match %r(class="selected"), other_section
+    assert_match    %r(href="/"),                         other_section
+    assert_match    %r(href="/about"),                    home_section
+    assert_match    %r(class="selected"),                 home_section
+    assert_no_match %r(class="selected"),                 other_section
+    assert_match    %r(title="#{sections(:home).name}"),  other_section
+    assert_match    %r(title="#{sections(:about).name}"), home_section
   end
 
   specify "should generate paged url for home section" do
@@ -96,7 +98,7 @@ context "Url Filters" do
   end
   
   specify "should generate tag links" do
-    assert_equal "<a href=\"/tags/foo\" rel=\"tag\">foo</a>", link_to_tag('foo')
+    assert_equal "<a href=\"/tags/foo\" rel=\"tag\" title=\"foo\">foo</a>", link_to_tag('foo')
   end
   
   specify "should generate search urls" do
@@ -152,7 +154,7 @@ context "Url Filters" do
     assert_match /href="\/feed\/about\/atom.xml"/, content
     assert_match /title="About Articles"/, content
   end
-  
+	  
   specify "should html encode anchor text" do
     unencoded = 'Tom & Jerry'
     contents(:welcome).title = unencoded
@@ -179,6 +181,124 @@ context "Url Filters" do
     @article2.context = @context
     assert_match /href="\/about"/, link_to_search_result(@article)
     assert_match /href="\/about\/another-welcome-to-mephisto"/, link_to_search_result(@article2)
+  end
+end
+
+context "Link_to Url Filters" do
+  fixtures :sites, :sections, :contents
+  include CoreFilters, UrlFilters
+
+  def setup
+    @context = mock_context 'site' => sites(:first).to_liquid
+    @section = sections(:about).to_liquid
+    @article = contents(:welcome).to_liquid
+    @paged_article = contents(:about).to_liquid
+    @article.context = @paged_article.context = @context
+  end
+
+  specify "should generate links with custom text" do
+    pattern = %r(^<a href="[^"]+" (?:rel="tag" )?title="Custom text">Custom text</a>$)
+    args = 'Custom text'
+    assert_match pattern, link_to_article(@article, args)
+    assert_match pattern, link_to_page(@article, @section, args)
+    assert_match pattern, link_to_section(@section, args)
+    assert_match pattern, link_to_comments(@article, args)
+    assert_match pattern, link_to_tag('foo', args)
+    assert_match pattern, link_to_month(@section, '2006-1', 'my', args)
+    assert_match pattern, link_to_search_result(@article, args)
+    @context['section'] = @section
+    assert_match pattern, link_to_search_result(@paged_article, args)
+  end
+
+  specify "should generate links with custom title attribute" do
+    pattern = %r(^<a href="[^"]+" (?:rel="tag" )?title="Custom title">)
+    args = [nil, 'Custom title']
+    assert_match pattern, link_to_article(@article, *args)
+    assert_match pattern, link_to_page(@article, @section, *args)
+    assert_match pattern, link_to_section(@section, *args)
+    assert_match pattern, link_to_comments(@article, *args)
+    assert_match pattern, link_to_tag('foo', *args)
+    assert_match pattern, link_to_month(@section, '2006-1', 'my', *args)
+    assert_match pattern, link_to_search_result(@article, *args)
+    @context['section'] = @section
+    assert_match pattern, link_to_search_result(@paged_article, *args)
+  end
+
+  specify "should generate links with custom id attribute" do
+    pattern = %r(^<a href="[^"]+" id="custom-id" (?:rel="tag" )?title="[^"]+">)
+    args = [nil, nil, 'custom-id']
+    assert_match pattern, link_to_article(@article, *args)
+    assert_match pattern, link_to_page(@article, @section, *args)
+    assert_match pattern, link_to_section(@section, *args)
+    assert_match pattern, link_to_comments(@article, *args)
+    assert_match pattern, link_to_tag('foo', *args)
+    assert_match pattern, link_to_month(@section, '2006-1', 'my', *args)
+    assert_match pattern, link_to_search_result(@article, *args)
+    @context['section'] = @section
+    assert_match pattern, link_to_search_result(@paged_article, *args)
+  end
+
+  specify "should generate links with custom class attribute" do
+    pattern = %r(^<a class="custom-class" href="[^"]+" (?:rel="tag" )?title="[^"]+">)
+    args = [nil, nil, nil, 'custom-class']
+    assert_match pattern, link_to_article(@article, *args)
+    assert_match pattern, link_to_page(@article, @section, *args)
+    assert_match pattern, link_to_section(@section, *args)
+    assert_match pattern, link_to_comments(@article, *args)
+    assert_match pattern, link_to_tag('foo', *args)
+    assert_match pattern, link_to_month(@section, '2006-1', 'my', *args)
+    assert_match pattern, link_to_search_result(@article, *args)
+    @context['section'] = @section
+    assert_match pattern, link_to_search_result(@paged_article, *args)
+  end
+
+  specify "should generate links with custom rel attribute" do
+    pattern = %r(^<a href="[^"]+" rel="custom-rel" title="[^"]+">)
+    args = [nil, nil, nil, nil, 'custom-rel']
+    assert_match pattern, link_to_article(@article, *args)
+    assert_match pattern, link_to_page(@article, @section, *args)
+    assert_match pattern, link_to_section(@section, *args)
+    assert_match pattern, link_to_comments(@article, *args)
+    assert_match pattern, link_to_tag('foo', *args)
+    assert_match pattern, link_to_month(@section, '2006-1', 'my', *args)
+    assert_match pattern, link_to_search_result(@article, *args)
+    @context['section'] = @section
+    assert_match pattern, link_to_search_result(@paged_article, *args)
+  end
+  
+  specify "should html encode custom attributes" do
+    pattern = %r(^<a class="custom&amp;class" href="[^"]+" id="custom&amp;id" rel="custom&amp;rel" title="Custom &amp; title">Custom &amp; text</a>$)
+    args = ['Custom & text', 'Custom & title', 'custom&id', 'custom&class', 'custom&rel']
+    assert_match pattern, link_to_article(@article, *args)
+    assert_match pattern, link_to_page(@article, @section, *args)
+    assert_match pattern, link_to_section(@section, *args)
+    assert_match pattern, link_to_comments(@article, *args)
+    assert_match pattern, link_to_tag('foo', *args)
+    assert_match pattern, link_to_month(@section, '2006-1', 'my', *args)
+    assert_match pattern, link_to_search_result(@article, *args)
+    @context['section'] = @section
+    assert_match pattern, link_to_search_result(@paged_article, *args)
+  end
+
+  specify "should generate page links with selected class appended to custom class attribute" do
+    pattern = %r(class="custom-class selected")
+    args    = [nil, nil, nil, 'custom-class']
+
+    @context['section'] = @section
+    @context['article'] = @paged_article
+
+    assert_match    pattern, link_to_page(@paged_article, @section, *args)
+    assert_no_match pattern, link_to_page(@article, @section, *args)
+   end
+
+  specify "should generate section links with selected class appended to custom class attribute" do
+    pattern = %r(class="custom-class selected")
+    args    = [nil, nil, nil, 'custom-class']
+
+    @context['section'] = @section
+
+    assert_match    pattern, link_to_section(@section, *args)
+    assert_no_match pattern, link_to_section(sections(:home).to_liquid, *args)
   end
 end
 

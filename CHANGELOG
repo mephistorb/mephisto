@@ -1,5 +1,10 @@
 * SVN *
 
+* allow the various link_to filters to accept multiple args to specify more html attributes [rob-twf]
+
+  # use this order: :text, :title, :id, :class, :rel
+	link_to_article article, "click here", "this article", "article-1", "articles", "whatever-rel-means"
+
 * encode search/tag urls properly [rob-twf]
 
 * update article forms to explain new tag syntax (comma and space delimited tags) [xavier, rick]
