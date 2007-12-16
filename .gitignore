@@ -1,0 +1,4 @@
+.rake_tasks
+config/database.yml
+log
+tmp

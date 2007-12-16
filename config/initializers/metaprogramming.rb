@@ -1,23 +1,4 @@
-# monkey patches galore!
-
 Object::RAILS_PATH = Pathname.new(File.expand_path(RAILS_ROOT))
-
-Inflector.inflections do |inflect|
-  #inflect.plural /^(ox)$/i, '\1en'
-  #inflect.singular /^(ox)en/i, '\1'
-  #inflect.irregular 'person', 'people'
-  inflect.uncountable %w( audio )
-end
-
-# Time.now.to_ordinalized_s :long
-# => "February 28th, 2006 21:10"
-module ActiveSupport::CoreExtensions::Time::Conversions
-  def to_ordinalized_s(format = :default)
-    format = ActiveSupport::CoreExtensions::Time::Conversions::DATE_FORMATS[format] 
-    return to_default_s if format.nil?
-    strftime(format.gsub(/%d/, '_%d_')).gsub(/_(\d+)_/) { |s| s.to_i.ordinalize }
-  end
-end
 
 # need to make pathname safe for windows!
 Pathname.class_eval do
@@ -92,5 +73,8 @@ ActiveRecord::Base.class_eval do
   expiring_attr_reader :referenced_cache_key, '"[#{[id, self.class.name] * ":"}]"'
 end
 
-Liquid::For.send :include, Mephisto::Liquid::ForWithSorting
-Dependencies.autoloaded_constants.delete "Mephisto"
+class Object
+  def tap
+    yield self; self;
+  end
+end
