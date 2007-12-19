@@ -3,7 +3,7 @@ module PermalinkFu
   class << self
     attr_accessor :translation_to
     attr_accessor :translation_from
-    
+
     def escape(str)
       s = Iconv.iconv(translation_to, translation_from, str).to_s
       s.gsub!(/\W+/, ' ') # all non-word chars to spaces
@@ -13,7 +13,7 @@ module PermalinkFu
       s
     end
   end
-  
+
   # Specifies the given field(s) as a permalink, meaning it is passed through PermalinkFu.escape and set to the permalink_field.  This
   # is done
   #
@@ -35,5 +35,5 @@ module PermalinkFu
   end
 end
 
-PermalinkFu.translation_to   = 'ascii//ignore//translit'
+PermalinkFu.translation_to   = 'ascii//translit'
 PermalinkFu.translation_from = 'utf-8'
