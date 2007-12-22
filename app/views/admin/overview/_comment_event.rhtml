@@ -15,9 +15,9 @@
   <% if event.comment.approved? -%>
       <%= link_to_remote 'Unapprove', :url => { :controller => 'admin/articles', :action => 'unapprove',       :id => event.article_id, :comment => event.comment_id } %> | 
     <% else -%>
-      <%= link_to_remote 'Approve',   :url => { :controller => 'admin/articles', :action => 'approve',         :id => @article, :comment => event.comment_id } %> | 
+      <%= link_to_remote 'Approve',   :url => { :controller => 'admin/articles', :action => 'approve',         :id => event.article_id, :comment => event.comment_id } %> | 
     <% end -%>
-      <%= link_to_remote 'Delete',    :url => { :controller => 'admin/articles', :action => 'destroy_comment', :id => @article, :comment => event.comment_id } %>
+      <%= link_to_remote 'Delete',    :url => { :controller => 'admin/articles', :action => 'destroy_comment', :id => event.article_id, :comment => event.comment_id } %>
   <% end %>
   </div>
 </li>
