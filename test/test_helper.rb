@@ -377,3 +377,20 @@ class XmlLoginProxy < BaseLoginProxy
       @controller.assert_response 401
     end
 end
+
+
+module Mephisto
+  module Plugins
+    class PluginWhammyJammy < Mephisto::Plugin
+      option :foo, 'one'
+      option :bar, 2
+      option :baz, [3]
+    end
+    
+    class FooBar < Mephisto::Plugin
+    end
+    
+    class NonPlugin
+    end
+  end
+end
