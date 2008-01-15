@@ -10,6 +10,7 @@
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+Object::RAILS_PATH = Pathname.new(File.expand_path(RAILS_ROOT))
 
 # requires vendor-loaded redcloth
 require 'RedCloth-3.0.4/lib/redcloth' unless Object.const_defined?(:RedCloth)
