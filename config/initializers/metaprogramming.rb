@@ -1,5 +1,3 @@
-Object::RAILS_PATH = Pathname.new(File.expand_path(RAILS_ROOT))
-
 # need to make pathname safe for windows!
 Pathname.class_eval do
   def read(*args)
