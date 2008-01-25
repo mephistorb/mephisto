@@ -1,3 +1,4 @@
+Object::RAILS_PATH = Pathname.new(File.expand_path(RAILS_ROOT))
 module Mephisto
   @@liquid_filters = [CoreFilters, DropFilters, UrlFilters]
   @@liquid_tags    = {:textile => Mephisto::Liquid::Textile, :commentform => Mephisto::Liquid::CommentForm, :head => Mephisto::Liquid::Head}
