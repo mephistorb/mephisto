@@ -1,38 +1,97 @@
 require 'test/unit'
 require File.join(File.dirname(__FILE__), '../lib/permalink_fu')
 
-class MockModel
-  extend PermalinkFu
+class BaseModel
+  include PermalinkFu
+  attr_accessor :id
   attr_accessor :title
-  attr_accessor :permalink
-  
-  def self.before_validation(&block)
-    @@validation = block
+  attr_accessor :extra
+  attr_reader   :permalink
+  attr_accessor :foo
+
+  class << self
+    attr_accessor :validation
   end
   
+  def self.generated_methods
+    @generated_methods ||= []
+  end
+  
+  def self.primary_key
+    :id
+  end
+  
+  def self.logger
+    nil
+  end
+  
+  # ripped from AR
+  def self.evaluate_attribute_method(attr_name, method_definition, method_name=attr_name)
+
+    unless method_name.to_s == primary_key.to_s
+      generated_methods << method_name
+    end
+
+    begin
+      class_eval(method_definition, __FILE__, __LINE__)
+    rescue SyntaxError => err
+      generated_methods.delete(attr_name)
+      if logger
+        logger.warn "Exception occurred during reader method compilation."
+        logger.warn "Maybe #{attr_name} is not a valid Ruby identifier?"
+        logger.warn "#{err.message}"
+      end
+    end
+  end
+
+  def self.exists?(*args)
+    false
+  end
+
+  def self.before_validation(method)
+    self.validation = method
+  end
+
   def validate
-    @@validation.call self
+    send self.class.validation
     permalink
   end
   
+  def new_record?
+    @id.nil?
+  end
+  
+  def write_attribute(key, value)
+    instance_variable_set "@#{key}", value
+  end
+end
+
+class MockModel < BaseModel
+  def self.exists?(conditions)
+    if conditions[1] == 'foo'   || conditions[1] == 'bar' || 
+      (conditions[1] == 'bar-2' && conditions[2] != 2)
+      true
+    else
+      false
+    end
+  end
+
   has_permalink :title
 end
 
-class MockModelExtra
-  extend PermalinkFu
-  attr_accessor :title
-  attr_accessor :extra
-  attr_accessor :permalink
-
-  def self.before_validation(&block)
-    @@validation = block
+class ScopedModel < BaseModel
+  def self.exists?(conditions)
+    if conditions[1] == 'foo' && conditions[2] != 5
+      true
+    else
+      false
+    end
   end
 
-  def validate
-    @@validation.call self
-    permalink
-  end
+  has_permalink :title, :scope => :foo
+end
 
+class MockModelExtra < BaseModel
   has_permalink [:title, :extra]
 end
 
@@ -40,7 +99,8 @@ class PermalinkFuTest < Test::Unit::TestCase
   @@samples = {
     'This IS a Tripped out title!!.!1  (well/ not really)' => 'this-is-a-tripped-out-title-1-well-not-really',
     '////// meph1sto r0x ! \\\\\\' => 'meph1sto-r0x',
-    'āčēģīķļņū' => 'acegiklnu'
+    'āčēģīķļņū' => 'acegiklnu',
+    '中文測試 chinese text' => 'chinese-text'
   }
 
   @@extra = { 'some-)()()-ExtRa!/// .data==?>    to \/\/test' => 'some-extra-data-to-test' }
@@ -67,5 +127,36 @@ class PermalinkFuTest < Test::Unit::TestCase
         assert_equal "#{to}-#{to_extra}", @m.validate
       end
     end
+  end
+  
+  def test_should_create_unique_permalink
+    @m = MockModel.new
+    @m.permalink = 'foo'
+    @m.validate
+    assert_equal 'foo-2', @m.permalink
+    
+    @m.permalink = 'bar'
+    @m.validate
+    assert_equal 'bar-3', @m.permalink
+  end
+  
+  def test_should_not_check_itself_for_unique_permalink
+    @m = MockModel.new
+    @m.id = 2
+    @m.permalink = 'bar-2'
+    @m.validate
+    assert_equal 'bar-2', @m.permalink
+  end
+  
+  def test_should_create_unique_scoped_permalink
+    @m = ScopedModel.new
+    @m.permalink = 'foo'
+    @m.validate
+    assert_equal 'foo-2', @m.permalink
+
+    @m.foo = 5
+    @m.permalink = 'foo'
+    @m.validate
+    assert_equal 'foo', @m.permalink
   end
 end
