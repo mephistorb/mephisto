@@ -1,10 +1,16 @@
 module Mephisto
   module Liquid
     class CommentForm < ::Liquid::Block
-      cattr_accessor :article
+      def self.article
+        Thread.current[:comment_form_article]
+      end
+      
+      def self.article=(value)
+        Thread.current[:comment_form_article] = value
+      end
     
       def render(context)
-        return '' unless article.accept_comments?
+        return '' unless self.class.article.accept_comments?
         result = []
         context.stack do
           if context['message'].blank? 

@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   include Mephisto::CachingMethods
-  cattr_accessor :site_count
+  cattr_accessor :site_count # what is this for?  PDI removing
   before_filter  :set_cache_root
   helper_method  :site
   attr_reader    :site
