@@ -8,6 +8,10 @@ require 'xmlrpc_patch'
 
 ActiveRecord::Base.observers = [:article_observer, :comment_observer]
 
+# temporarily moved to vendor/plugins/aaa/init.rb to make sure
+# it's loaded before all other plugins
+# Object::RAILS_PATH = Pathname.new(File.expand_path(RAILS_ROOT))
+
 class ActionController::Dispatcher
   def self.register_liquid_tags
     Mephisto.liquid_filters.each { |mod| Liquid::Template.register_filter mod }
