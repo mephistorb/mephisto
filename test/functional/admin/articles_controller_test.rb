@@ -162,7 +162,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_show_available_years_for_old_article
     contents(:welcome).update_attribute(:published_at, Time.utc(2003,1,1))
     get :edit, :id => contents(:welcome).id
-    (2003..Time.now.utc.year).to_a.each do |year|
+    (2003..2007).to_a.each do |year|
       assert_select "select[name='article[published_at(1i)]'] option[value='#{year}']"
     end
   end

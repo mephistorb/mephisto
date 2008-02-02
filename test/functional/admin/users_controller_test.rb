@@ -120,7 +120,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     post :update, :id => users(:arthur).id, :user => { :admin => 'true' }
     users(:arthur).reload
     assert !users(:arthur).admin, "user.admin shouldn't change"
-    assert_response 0
+    assert_response :success
   end
 
   def test_should_not_permit_changing_own_created_at_in_update
@@ -129,7 +129,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     post :update, :id => users(:arthur).id, :user => { :created_at => prev_time - 1.year }
     users(:arthur).reload
     assert_equal prev_time, users(:arthur).created_at, "user.created_at shouldn't change"
-    assert_response 0
+    assert_response :success
   end
 
   def test_should_not_permit_changing_owned_articles_in_update
@@ -141,7 +141,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     post :update, :id => user.id, :user => { :article_ids => prev_article_ids[0..1] }
     user.reload
     assert_equal prev_article_ids, user.article_ids, "user.article_ids[] shouldn't change"
-    assert_response 0
+    assert_response :success
   end
 
   def test_should_show_deleted_users

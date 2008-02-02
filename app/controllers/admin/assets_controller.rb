@@ -51,7 +51,7 @@ class Admin::AssetsController < Admin::BaseController
   def latest
     @assets = site.assets.find(:all, :order => 'created_at desc', :limit => 6)
     render :update do |page|
-      page['latest-assets'].replace_html :partial => 'widget', :collection => @assets
+      page['latest-assets'].replace_html :partial => 'widget', :collection => @assets, :locals => { :prefix => 'latest' }
     end
   end
   
@@ -59,7 +59,7 @@ class Admin::AssetsController < Admin::BaseController
     search_assets 6
     render :update do |page|
       page['spinner'].hide
-        return page['search-assets'].replace_html(:partial => 'widget', :collection => @assets) if @assets.any?
+        return page['search-assets'].replace_html(:partial => 'widget', :collection => @assets, :locals => { :prefix => 'search' }) if @assets.any?
         page['search-assets'].replace_html %(Couldn't find any matching assets.)
     end
   end
