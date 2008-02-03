@@ -37,3 +37,4 @@ Inflector.inflections do |inflect|
 end
 
 Dependencies.autoloaded_constants.delete "Mephisto"
+Dependencies.autoloaded_constants.delete "Mephisto::Plugin"
