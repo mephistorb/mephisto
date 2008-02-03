@@ -1,5 +1,7 @@
 * SVN *
 
+* Update Wordpress converter to support Wordpress 2.3 [Aubrey]
+
 * refactor so that admin/comments is more restful, allow inline comment editing in the admin.  [court3nay]
 
 * convert to cookie sessions
