@@ -31,8 +31,8 @@
   <tbody id="articles">
 <% @sites.each do |site| -%>
     <tr>
-      <td><%= link_to(site.title, {:action => 'show', :id => site}) %></td>
-      <td><%=h site.host %></td>
+      <td><%= link_to(h(site.host), {:action => 'show', :id => site}) %></td>
+      <td><%=h site.title %></td>
     </tr>
 <% end -%>
   </tbody>
