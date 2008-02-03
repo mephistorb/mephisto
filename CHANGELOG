@@ -1,5 +1,7 @@
 * SVN *
 
+* Fix admin/users issue where site admins could disable mephisto admins
+
 * Fix nil.accept_comments? bug in CommentForm block.
 
 * allow the various link_to filters to accept multiple args to specify more html attributes [rob-twf]
