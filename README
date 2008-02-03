@@ -5,7 +5,7 @@ See public/install.html for setup instructions.
 = Timezones
 
 You MUST export the environment variable TZ=UTC, or else the article dates
-and times will be fubar.
+and times will be invalid.
 
 This would not be needed if rails used UTC for everything, but
 unfortunately it doesn't... eg: action_view/helpers/date_helper.rb uses
