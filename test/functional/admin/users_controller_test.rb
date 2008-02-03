@@ -5,7 +5,7 @@ require 'admin/users_controller'
 class Admin::UsersController; def rescue_action(e) raise e end; end
 
 class Admin::UsersControllerTest < Test::Unit::TestCase
-  fixtures :users, :sites, :memberships
+  fixtures :users, :sites, :memberships, :contents
   def setup
     @controller = Admin::UsersController.new
     @request    = ActionController::TestRequest.new
@@ -167,11 +167,36 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     end
   end
 
-  def test_should_disable_site_admin
+  def test_should_toggle_site_admin_as_admin
     login_as :quentin
     xhr :post, :admin, :id => users(:arthur).id
     assert_response :success
     assert !sites(:first).user(users(:arthur).id).site_admin?
+    assert_match /Flash\.notice/, @response.body
+  end
+
+  def test_should_toggle_site_admin_as_site_admin
+    login_as :arthur
+    assert !sites(:first).user(users(:ben).id).site_admin?
+    xhr :post, :admin, :id => users(:ben).id
+    assert_response :success
+    assert sites(:first).user(users(:ben).id).site_admin?
+    assert_match /Flash\.notice/, @response.body
+  end
+
+  def test_should_not_toggle_site_admin_for_admin
+    login_as :arthur
+    xhr :post, :admin, :id => users(:quentin).id
+    assert_response :success
+    assert_match /Flash\.errors/, @response.body
+  end
+
+  def test_should_not_toggle_site_admin_for_self
+    login_as :arthur
+    xhr :post, :admin, :id => users(:arthur).id
+    assert_response :success
+    assert sites(:first).user(users(:arthur).id).site_admin?
+    assert_match /Flash\.errors/, @response.body
   end
 
   def test_should_enable_site_admin
@@ -186,12 +211,35 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     login_as :quentin
     assert_no_difference User, :count_with_deleted do
       assert_difference User, :count, -1 do
-        xhr :post, :destroy, :id => users(:quentin).id
+        xhr :post, :destroy, :id => users(:arthur).id
         assert_response :success
+        assert_match /Flash\.notice/, @response.body
       end
     end
     
-    assert_equal users(:quentin), User.find_with_deleted(users(:quentin).id)
+    assert_equal users(:arthur), User.find_with_deleted(users(:arthur).id)
+  end
+
+  def test_should_not_disable_admin
+    login_as :arthur
+    assert_no_difference User, :count_with_deleted do
+      assert_no_difference User, :count do
+        xhr :post, :destroy, :id => users(:quentin).id
+        assert_response :success
+        assert_match /Flash\.errors/, @response.body
+      end
+    end
+  end
+  
+  def test_should_not_disable_self
+    login_as :arthur
+    assert_no_difference User, :count_with_deleted do
+      assert_no_difference User, :count do
+        xhr :post, :destroy, :id => users(:arthur).id
+        assert_response :success
+        assert_match /Flash\.errors/, @response.body
+      end
+    end
   end
 
   def test_should_enable_user

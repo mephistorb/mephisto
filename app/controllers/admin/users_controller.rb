@@ -34,19 +34,20 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def destroy
-    @user.deleted_at = Time.now.utc
-    @user.save!
+    if @user == current_user then return @error = "Cannot delete yourself." end
+    if @user.admin?          then return @error = "Cannot delete a Mephisto administrator." end
+    @allowed = @user.update_attribute :deleted_at, Time.now.utc
   end
 
   def enable
-    @user.deleted_at = nil
-    @user.save!
+    @allowed = @user.update_attribute :deleted_at, nil
   end
   
   def admin
+    if @user == current_user then return @error = "Cannot toggle admin permissions for yourself." end
+    if @user.admin?          then return @error = "Cannot toggle admin permissions for a Mephisto administrator." end
     @membership = Membership.find_or_initialize_by_site_id_and_user_id(site.id, @user.id)
-    @membership.admin = !@membership.admin?
-    @membership.save!
+    @allowed    = @membership.update_attribute :admin, !@membership.admin?
   end
   
   protected

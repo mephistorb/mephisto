@@ -2,11 +2,11 @@
     <%= avatar_for user %>
     <h3><%= link_to user.login, :action => 'show', :id => user %></h3>
     <%= user.email %>
-  <% unless user == current_user -%>
+  <% unless user.admin? || user == current_user -%>
     <p>
       <%= check_box_tag user.dom_id(:user_toggle), user.id,  user.deleted_at.nil?, :onclick => "UserForm.toggle(this);" %>
       <strong><label for="<%= user.dom_id(:user_toggle) %>">Allow this user to login</label></strong>
-    <% if !user.admin? && admin? -%> |
+    <% if admin? -%> |
       <%= check_box_tag user.dom_id(:user_toggle_admin), user.id,  user.site_admin?, :onclick => "UserForm.toggleAdmin(this);" %>
       <strong><label for="<%= user.dom_id(:user_toggle_admin) %>">Site admin?</label></strong>
     <% end -%>
