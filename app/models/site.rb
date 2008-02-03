@@ -26,7 +26,7 @@ class Site < ActiveRecord::Base
     @@template_handlers.keys
   end
 
-  has_many  :sections, :order => "position" do
+  has_many  :sections, :order => "position", :dependent => :destroy do
     def home
       find_by_path ''
     end
@@ -41,7 +41,7 @@ class Site < ActiveRecord::Base
     end
   end
 
-  has_many  :articles do
+  has_many  :articles, :dependent => :destroy do
     def find_by_permalink(options)
       conditions = 
         returning ["(contents.published_at IS NOT NULL AND contents.published_at <= ?)", Time.now.utc] do |cond|
@@ -63,13 +63,13 @@ class Site < ActiveRecord::Base
     end
   end
   
-  has_many  :comments, :order => 'comments.created_at desc'
+  has_many  :comments, :order => 'comments.created_at desc', :dependent => :delete_all
   
-  has_many  :events
+  has_many  :events, :dependent => :destroy
   
-  has_many  :cached_pages
+  has_many  :cached_pages, :dependent => :destroy
   
-  has_many  :assets, :order => 'created_at desc', :conditions => 'parent_id is null'
+  has_many  :assets, :order => 'created_at desc', :conditions => 'parent_id is null', :dependent => :destroy
 
   has_many :memberships, :dependent => :destroy
   has_many :members, :through => :memberships, :source => :user
@@ -82,12 +82,22 @@ class Site < ActiveRecord::Base
   validates_format_of     :host, :with => Format::DOMAIN
   validates_uniqueness_of :host
   validate :check_permalink_style
-  after_create { |s| s.sections.create(:name => 'Home') }
+  
+  before_create :setup_site_theme_directories
+  after_create { |site| site.sections.create(:name => 'Home') }
+  before_destroy :flush_cache_and_remove_site_directories    
 
   with_options :order => 'contents.created_at DESC', :class_name => 'Comment' do |comment|
     comment.has_many :comments,            :conditions => ['contents.approved = ?', true]
     comment.has_many :unapproved_comments, :conditions => ['contents.approved = ? or contents.approved is null', false]
     comment.has_many :all_comments
+  end
+  
+  def self.search_by_host_or_title(search_string)
+    conditions = search_string.blank? ? nil : ["host LIKE ? OR title LIKE ?"] + ["%#{search_string}%"] * 2
+    with_scope( :find => { :conditions => conditions } ) do
+      yield
+    end
   end
 
   def users(options = {})
@@ -295,6 +305,34 @@ class Site < ActiveRecord::Base
           end
         end
       find_preferred_template(:layout, layout_template)
+    end
+
+    private
+    
+    def setup_site_theme_directories
+      begin
+        theme_path = "#{RAILS_ROOT}/themes/site-#{self.id}/simpla"
+        FileUtils.mkdir_p("#{RAILS_ROOT}/themes/site-#{self.id}")
+        FileUtils.cp_r("#{RAILS_ROOT}/themes/default", theme_path)
+        Dir[File.join(theme_path, '**/.svn')].each do |dir|
+          FileUtils.rm_rf dir
+        end
+      rescue
+        logger.error "ERROR: removing directories for site #{self.host}, check file permissions."
+        errors.add_to_base "Unable to create theme directories."
+        false
+      end
+    end
+
+    def flush_cache_and_remove_site_directories
+      begin
+        CachedPage.expire_pages self, self.cached_pages
+        FileUtils.rm_rf("#{RAILS_ROOT}/themes/site-#{self.id}")
+        FileUtils.rm_rf("#{RAILS_ROOT}/public/cache/#{self.host}")
+      rescue
+        logger.error "ERROR: removing directories for site #{self.host}, check file permissions."
+        false
+      end
     end
 
 end

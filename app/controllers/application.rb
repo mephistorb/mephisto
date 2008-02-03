@@ -15,11 +15,16 @@ class ApplicationController < ActionController::Base
   
   protected
     helper_method :admin?
+    helper_method :global_admin?
     
     def admin?
       logged_in? && (current_user.admin? || current_user.site_admin?)
     end
   
+    def global_admin?
+      logged_in? && current_user.admin?
+    end
+      
     # so not the best place for this...
     def asset_image_args_for(asset, thumbnail = :tiny, options = {})
       thumb_size = Array.new(2).fill(Asset.attachment_options[:thumbnails][thumbnail].to_i).join('x')

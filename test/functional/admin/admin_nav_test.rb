@@ -11,7 +11,7 @@ class Admin::AdminNavTest < Test::Unit::TestCase
     @controller = Admin::AssetsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
-    login_as :quentin
+    login_as :arthur
     get :new
   end
   
@@ -60,6 +60,42 @@ class Admin::MemberNavTest < Test::Unit::TestCase
   def test_should_show_user_nav
     assert_select "#header #sec-nav a" do |anchors|
       assert_equal %w(Website Account Logout), anchors.collect { |a| a.children.first.content }
+    end
+  end
+end
+  
+class Admin::GlobalAdminNavTest < Test::Unit::TestCase
+  fixtures :sites, :users, :memberships
+
+  def setup
+    @old        = Site.multi_sites_enabled
+    @controller = Admin::AssetsController.new
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+    Site.multi_sites_enabled = true
+    login_as :quentin
+    get :new
+  end
+  
+  def teardown
+    Site.multi_sites_enabled = @old
+  end
+
+  def test_should_show_primary_nav
+    assert_select "#header #nav a" do |anchors|
+      assert_equal %w(Overview Articles Assets), anchors[0..2].collect { |a| a.children.first.content }
+    end
+  end
+
+  def test_should_show_secondary_nav
+    assert_select "#header #nav #nav-r a" do |anchors|
+      assert_equal %w(Sections Design Users Plugins), anchors.collect { |a| a.children.first.content }
+    end
+  end
+
+  def test_should_show_user_nav
+    assert_select "#header #sec-nav a" do |anchors|
+      assert_equal %w(Website Settings Sites Account Logout), anchors.collect { |a| a.children.first.content }
     end
   end
 end

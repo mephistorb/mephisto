@@ -18,7 +18,11 @@
       <% if admin? -%>
         <li><%= link_to 'Settings', :controller => 'settings' %></li>
       <% end -%>
+			<% if Site.multi_sites_enabled && global_admin? %>
+				<li><%= link_to 'Sites', :controller => '/admin/sites' %></li>
+			<% end %>
         <li><%= link_to 'Account', :controller => 'users', :action => 'show', :id => current_user %></li>
+
         <li><%= link_to 'Logout', :controller => '/account', :action => 'logout' %></li>
       </ul>
 

@@ -1,0 +1,14 @@
+<h2><%=h @site.host %></h2>
+
+<h3><%=h @site.title %> <small>(<%= mail_to @site.email %>)</small></h3>
+
+<% form_tag :action => 'destroy', :id => @site do -%>
+  <p class="btns"><%= submit_tag 'Delete' %> or <%= link_to "go back", :action => "index" %></p>
+<% end -%>
+<h2><%=h @site.host %></h2>
+
+<h3><%=h @site.title %> <small>(<%= mail_to @site.email %>)</small></h3>
+
+<% form_tag :action => 'destroy', :id => @site do -%>
+  <p class="btns"><%= submit_tag 'Delete' %> or <%= link_to "go back", :action => "index" %></p>
+<% end -%>
