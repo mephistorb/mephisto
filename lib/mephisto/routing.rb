@@ -14,7 +14,11 @@ module Mephisto
         m.js     'javascripts/:path.:ext', :dir => 'javascripts'
         m.images 'images/:path.:ext',      :dir => 'images'
       end
-      
+
+      map.resources :articles, :path_prefix => 'admin', :controller => 'admin/articles' do |r|
+        r.resources :comments, :controller => 'admin/comments', :member => { :unapprove => :post, :approve => :post, :edit => :get }
+      end
+
       map.overview 'admin/overview.xml', :controller => 'admin/overview', :action => 'feed'
       map.admin    'admin', :controller => 'admin/overview', :action => 'index'
       map.resources :assets, :path_prefix => '/admin', :controller => 'admin/assets', :member => { :add_bucket => :post },
@@ -22,7 +26,9 @@ module Mephisto
       
       map.connect 'xmlrpc', :controller => 'backend', :action => 'xmlrpc' 
       
+
       map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/, :id => /[^\/]*/
+
 
       yield if block_given?
       Mephisto::Plugin.custom_routes.each do |path, options|

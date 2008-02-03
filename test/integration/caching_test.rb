@@ -238,7 +238,7 @@ class CachingTest < ActionController::IntegrationTest
     end
 
     assert_expires_pages overview_path, contents(:welcome).full_permalink do
-      writer.post "admin/articles/destroy_comment/#{contents(:welcome).id}", :comment => contents(:welcome_comment).id
+      writer.delete "admin/articles/#{contents(:welcome).id}/comments/#{contents(:welcome_comment).id}"
     end
   end
 
@@ -256,7 +256,7 @@ class CachingTest < ActionController::IntegrationTest
 
     assert_expires_pages overview_path do
       contents(:welcome_comment).update_attribute :approved, false
-      writer.post "admin/articles/destroy_comment/#{contents(:welcome).id}", :comment => contents(:welcome_comment).id
+      writer.delete "admin/articles/#{contents(:welcome).id}/comments/#{contents(:welcome_comment).id}"
     end
 
     assert_cached contents(:welcome).full_permalink

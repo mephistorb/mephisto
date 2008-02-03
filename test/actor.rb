@@ -51,23 +51,23 @@ module Mephisto
       end
 
       def revise(article, contents)
-        post "/admin/articles/update/#{article.id}", to_article_params(article, contents.is_a?(Hash) ? contents : {:body => contents})
-        assert_redirected_to "/admin/articles/edit/#{assigns(:article).id}"
+        put "/admin/articles/#{article.id}", to_article_params(article, contents.is_a?(Hash) ? contents : {:body => contents})
+        assert_redirected_to "/admin/articles/#{assigns(:article).id}/edit"
       end
 
       def remove_article(article)
-        post "/admin/articles/destroy/#{article.id}"
+        delete "/admin/articles/#{article.id}"
         assert_equal 200, status, "Removing article #{article.id}"
       end
 
       def create(params)
-        post '/admin/articles/create', to_article_params(params)
-        assert_redirected_to "/admin/articles/edit/#{assigns(:article).id}"
+        post '/admin/articles', to_article_params(params)
+        assert_redirected_to "/admin/articles/#{assigns(:article).id}/edit"
       end
 
       private
         def manage_comment(action, comment)
-          post "/admin/articles/#{action}/#{comment.article_id}", :comment => comment.id
+          post "/admin/articles/#{comment.article_id}/comments/#{comment.id}/#{action}", :comment => comment.id
         end
 
         def to_article_params(*args)

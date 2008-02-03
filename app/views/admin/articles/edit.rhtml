@@ -1,23 +1,24 @@
 <%= render :partial => "page_nav" %>
 
 <% fields_for :article, @version do |f| -%>
-<% content_for :sidebar do %>
-  <%= render :partial => 'shared_options', :locals => { :form => f } %>
-<% end %>
+  <% content_for :sidebar do %>
+    <%= render :partial => 'shared_options', :locals => { :form => f } %>
+  <% end %>
 <% end %>
 
 <%= error_messages_for :article %>
 
 <% content_for :form do -%>
-  <%= form_tag({:action => 'update', :id => @article}, {:id => 'article-form', :multipart => true}) %>
+  <%= form_tag({:action => 'update', :id => @article}, {:id => 'article-form', :multipart => true, :method => :put}) %>
 <% end -%>
 
 <% fields_for :article, @version do |f| -%>
-<%= render :partial => 'form', :object => f %>
-<p class="btns">
-  <%= submit_tag 'Apply Changes' %>
-  <%= submit_tag 'Save without Revision' %>
-  <%= link_to "cancel", :controller => "articles" %></p>
+  <%= render :partial => 'form', :object => f %>
+  <p class="btns">
+    <%= submit_tag 'Apply Changes' %>
+    <%= submit_tag 'Save without Revision' %>
+    <%= link_to "cancel", :controller => "articles" %>
+  </p>
 <% end -%>
 
 

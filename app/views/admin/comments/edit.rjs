@@ -1,0 +1,2 @@
+  page.insert_html :after, "comment-#{@comment.id}", :partial => 'edit_comment', :locals => { :comment => @comment }
+  page.hide "comment-#{@comment.id}"

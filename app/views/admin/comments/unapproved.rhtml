@@ -1,0 +1,20 @@
+<% content_for :action_nav do %>
+<!-- begin action nav -->
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
+    <li><%= link_to_remote 'Delete these comments', :confirm => "Are you sure you wish to delete all of these comments?",
+        :url  => { :controller => 'articles', :action => 'destroy_comment' }, 
+        :with => "ArticleForm.getAvailableComments().toQueryString('comment')"
+      %></li>
+  </ul>
+</div>
+<!-- /end action nav -->
+<% end %>
+
+<h3><%= pluralize(@comments.size, 'Unapproved Comment') %></h3>
+
+<ul class="pagelist commentlist">
+  <% @comments.reverse.each_with_index do |comment, i| -%>
+    <%= render :partial => 'comment', :object => comment %>
+  <% end -%>
+</ul>

@@ -394,3 +394,9 @@ module Mephisto
     end
   end
 end
+
+begin
+  require 'ruby-debug'
+  Debugger.start
+rescue LoadError
+end

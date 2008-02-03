@@ -125,7 +125,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_show_default_checked_sections
     get :new
     assert_response :success
-    assert_tag    'form',  :attributes => { :action => '/admin/articles/create' }
+    assert_tag    'form',  :attributes => { :action => '/admin/articles', :method => 'post' }
     assert_tag    'input', :attributes => { :id => "article_section_ids_#{sections(:home).id.to_s}" }
     assert_no_tag 'input', :attributes => { :id => "article_section_ids_#{sections(:about).id.to_s}", :checked => 'checked' }
   end
@@ -182,7 +182,9 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_edit_form_should_have_correct_post_action
     get :edit, :id => contents(:welcome).id
     assert_response :success
-    assert_tag :tag => 'form', :attributes => { :action => "/admin/articles/update/#{contents(:welcome).id}" }    
+    assert_tag :tag => 'form', :attributes => { :action => "/admin/articles/#{contents(:welcome).id}" } do
+      assert_tag :tag => 'input', :attributes => { :name => "_method", :value => "put" }
+    end
   end
 
   def test_should_update_article_with_correct_time

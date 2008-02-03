@@ -3,7 +3,6 @@ class Admin::ArticlesController < Admin::BaseController
   with_options :only => [:create, :update, :destroy, :upload] do |c|
     c.before_filter :set_default_section_ids
     c.cache_sweeper :article_sweeper, :assigned_section_sweeper
-    cache_sweeper   :comment_sweeper, :only => [:approve, :unapprove, :destroy_comment]
   end
 
   before_filter :convert_times_to_utc, :only => [:create, :update, :upload]
@@ -69,32 +68,7 @@ class Admin::ArticlesController < Admin::BaseController
   end
 
   def comments
-    @comments = 
-      case params[:filter]
-        when 'approved'   then :comments
-        when 'unapproved' then :unapproved_comments
-        else                   :all_comments
-      end
-    @comments = @article.send @comments
-    @articles = @site.unapproved_comments.count :all, :group => :article, :order => '1 desc'
-  end
-
-  # xhr baby
-  # needs some restful lovin'
-  def approve
-    @comment = @article.unapproved_comments.approve(params[:comment])
-    @comment.mark_as_ham(site, request)
-  end
-
-  def unapprove
-    @comment = @article.comments.unapprove(params[:comment])
-    @comment.mark_as_spam(site, request)
-    render :action => 'approve'
-  end
-  
-  def destroy_comment
-    @comments = site.all_comments.find :all, :conditions => ['id in (?)', [params[:comment]].flatten] rescue []
-    Comment.transaction { @comments.each(&:destroy) } if @comments.any?
+    redirect_to article_comments_path(@article)
   end
 
   def upload

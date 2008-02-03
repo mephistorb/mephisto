@@ -81,7 +81,7 @@
     <h3>Comments awaiting your approval</h3>
     <ul class="slist">
     <% @comments.each do |article, count| -%>
-      <li><%= link_to "<strong>(#{count})</strong> #{h(article.title)}", :controller => 'articles', :action => 'comments', :id => article.id, :filter => :unapproved %></li>
+      <li><%= link_to "<strong>(#{count})</strong> #{h(article.title)}", article_comments_path(article), :filter => :unapproved %></li>
     <% end -%>
     </ul>
   </div>

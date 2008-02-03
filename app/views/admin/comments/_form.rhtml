@@ -1,0 +1,16 @@
+  <p>
+    <label for="author">Name (required)</label>
+    <%= form.text_field :author %>
+  </p>
+  <p>
+    <label for="email">Mail (will not be published</label>
+    <%= form.text_field :author_email %>
+  </p>
+  <p>
+    <label for="url">Website</label>
+    <%= form.text_field :author_url %>
+  </p>
+  <p>
+    <%= form.text_area :body, { :rows => '10' } %>
+  </p>
+

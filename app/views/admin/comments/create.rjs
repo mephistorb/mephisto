@@ -1,0 +1,6 @@
+  if @comment.new_record?
+    page.replace_html 'new-comment-form', :partial => 'new_comment'
+  else
+    page['new-comment-form'].reset
+    page.insert_html :top, 'comment-list', :partial => 'comment', :object => @comment
+  end

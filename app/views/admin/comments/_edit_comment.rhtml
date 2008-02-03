@@ -1,0 +1,9 @@
+<li id="edit-comment-<%= comment.id %>">
+  <%= error_messages_for :comment %>
+  <% remote_form_for :comment, :url => article_comment_path(@article, comment), :html => { :method => :put, :onsubmit => "$('comment-#{comment.id}-spinner').show()" } do |form| %>
+    <%= render :partial => 'form', :object => form %>
+    <%= submit_tag "Update" %>
+    <span style="display:none;" id="comment-<%= comment.id %>-spinner"><img src="/images/mephisto/spinner.gif" /> Saving..</span>
+    <%= link_to_function "Cancel", "$('comment-#{comment.id}').show(); $('edit-comment-#{comment.id}').remove()" %>
+  <% end # form %>
+</li>
