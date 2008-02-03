@@ -323,7 +323,7 @@ var ArticleForm = {
 
   getRevision: function() {
     var rev = $F(this)
-    var url = Mephisto.root + '/admin/articles/' + location.href.match(/\/edit\/([0-9]+)/)[1] + "/edit";
+    var url = Mephisto.root + '/admin/articles/' + location.href.match(/\/([0-9]+)\/edit/)[1] + "/edit";
 		if(rev != '0') url += "?version=" + rev;
     location.href = url;
   }
