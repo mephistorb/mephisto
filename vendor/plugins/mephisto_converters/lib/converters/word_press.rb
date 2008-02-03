@@ -1,8 +1,9 @@
 require 'converters/word_press/post'
 require 'converters/word_press/comment'
-require 'converters/word_press/category'
-require 'converters/word_press/post_category'
 require 'converters/word_press/user'
+require 'converters/word_press/term'
+require 'converters/word_press/term_relationship'
+require 'converters/word_press/term_taxonomy'
 class WordPressConverter < BaseConverter
   def self.convert(options = {})
     converter = new(options)
@@ -83,16 +84,20 @@ class WordPressConverter < BaseConverter
   end
   
   def tagging_from_sections(wp_article)
-    tags = wp_article.categories.inject([]) do |memo, cat|
-      memo << cat.category_nicename
-    end
-    tags.join(',')
+    wp_article.tags.join(',')
   end
 
   def find_or_create_sections(wp_article)
     home_section = sections['']
     wp_article.categories.inject([home_section.id]) do |memo, cat|
-      memo << (sections[::Section.permalink_for(cat.cat_name)] || site.sections.create(:name => cat.cat_name)).id
+      existing = Section.find_by_name(cat)
+      if (existing)
+        memo << existing.id
+      else
+        new = site.sections.create(:name => cat)
+        new.save!
+        memo << new.id
+      end
     end
   end
 end
