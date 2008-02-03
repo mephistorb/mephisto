@@ -24,11 +24,10 @@ module Mephisto
       map.resources :assets, :path_prefix => '/admin', :controller => 'admin/assets', :member => { :add_bucket => :post },
         :collection => { :latest => :post, :search => :post, :upload => :post, :clear_bucket => :post }
       
-      map.connect 'xmlrpc', :controller => 'backend', :action => 'xmlrpc' 
+      # Where oh where is my xmlrpc code?
+      # map.connect 'xmlrpc', :controller => 'backend', :action => 'xmlrpc' 
       
-
       map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/, :id => /[^\/]*/
-
 
       yield if block_given?
       Mephisto::Plugin.custom_routes.each do |path, options|
