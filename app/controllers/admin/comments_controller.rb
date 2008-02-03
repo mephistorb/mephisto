@@ -4,9 +4,14 @@ class Admin::CommentsController < Admin::BaseController
 
 private
 
-  before_filter :find_site_article, :except => [ :close ]
+  before_filter :find_site_article, :except => [ :close, :index, :destroy ]
+  before_filter :find_optional_site_article, :only => [:index, :destroy]
   def find_site_article
     @article = site.articles.find params[:article_id]
+  end
+  
+  def find_optional_site_article
+    @article = site.articles.find params[:article_id] unless params[:article_id].blank?
   end
 
   cache_sweeper :comment_sweeper, :only => [:approve, :unapprove, :destroy, :create]
@@ -14,15 +19,15 @@ private
 public
 
   def index
-    @comments = if params[:article_id]
-      @comment  = Comment.new
-      @articles = site.unapproved_comments.count :all, :group => :article, :order => '1 desc'
-      @article.send case params[:filter]
+    @comment  = Comment.new
+    @articles = site.unapproved_comments.count :all, :group => :article, :order => '1 desc'
+    params[:filter] = 'unapproved' if @article.nil?
+    @comments = 
+      (@article || @site).send case params[:filter]
         when 'approved'   then :comments
         when 'unapproved' then :unapproved_comments
         else                   :all_comments
       end
-    end
   end
   
   def unapproved

@@ -1,9 +1,17 @@
 <%= render :partial => "admin/articles/page_nav" %>
 
-<h3 style="border-bottom:1px solid #ccc;padding:5px">Comments on <%= link_to @article.title, edit_article_path(@article), :style => 'border:none' %> <span class="right"><%= @article.published? ? link_to(image_tag('/images/mephisto/icons/24-zoom-in.png', :style => 'vertical-align: middle'), @site.permalink_for(@article), :style => 'border:none;') : '&nbsp;' %></span></h3>
+<h3 style="border-bottom:1px solid #ccc;padding:5px">
+<% if @article -%>
+Comments on <%= link_to @article.title, edit_article_path(@article), :style => 'border:none' %> <span class="right"><%= @article.published? ? link_to(image_tag('/images/mephisto/icons/24-zoom-in.png', :style => 'vertical-align: middle'), @site.permalink_for(@article), :style => 'border:none;') : '&nbsp;' %></span>
+<% else -%>
+Comments for all articles
+<% end -%>
+</h3>
 
+<% if @article -%>
   <%= link_to_function "New comment", "$('new-comment-form').toggle()" %>
   <div id="new-comment-form" style="display:none"><%= render :partial => "new_comment" %></div>
+<% end -%>
 
 <ul class="pagelist commentlist" id="comment-list">
   <% if @comments.any? %>
@@ -38,8 +46,8 @@
     <h3>Comments awaiting your approval</h3>
     <ul class="slist">
     <% @articles.each do |article, count| -%>
-    <% if article.title != @article.title -%>
-      <li><%= link_to "<strong>(#{count})</strong> #{h(article.title)}", :controller => 'articles', :action => 'comments', :id => article.id, :filter => :unapproved %></li>
+    <% if @article.nil? || article.title != @article.title -%>
+      <li><%= link_to "<strong>(#{count})</strong> #{h(article.title)}", :controller => 'comments', :action => 'index', :article_id => article.id, :filter => :unapproved %></li>
     <% end -%>
     <% end -%>
     </ul>

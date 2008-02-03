@@ -2,17 +2,14 @@
 <% content_for :action_nav do %>
 <div id="page-nav">
   <ul id="act-nav" class="clear">
-    <% if controller.action_name == 'comments' && @comments.any? -%>
+    <% if controller.controller_name == 'comments' && controller.action_name == 'index' && @comments.size > 0 -%>
       <li><%= link_to_remote "Delete these #{@filter != 'all' ? @filter : ''} comments", :confirm => "Are you sure you wish to delete all #{@filter != 'all' ? @filter : ''} comments?",
-          :url => { :action => 'destroy_comment', :id => @article }, :with => "ArticleForm.getAvailableComments().toQueryString('comment')"
+          :url => { :controller => 'comments', :action => 'destroy', :id => @article }, :with => "ArticleForm.getAvailableComments().toQueryString('comment')"
         %></li>
     <% end -%>
-  <% if (admin? || @article.user_id == current_user.id) && controller.action_name != 'comments' -%>
-    <li><%= link_to_remote 'Delete this article', :url => {:action => 'destroy', :id => @article}, :confirm => 'Are you sure you want to delete this article?' %></li>
-  <% unless @article.comment_age == -1 -%>
+  <% if @article && (admin? || @article.user_id == current_user.id) && @article.comment_age != -1 -%>
     <li id="close-article-comments"><%= link_to_remote 'Close comments for this article', 
       :url => { :controller => 'admin/comments', :action => 'close', :id => @article } %></li>
-  <% end -%>
   <% end -%>
   <% if controller.action_name == 'edit' -%>
     <li><%= link_to('Preview', {:action => 'show', :id => @article}, {:target => '_blank'}) %></li>
@@ -21,12 +18,15 @@
       <a class="trigger" id="cog" href="#">&nbsp;</a>
       <div id="optgroup" style="display: none">
         <ul id="options">
-        <% unless @article.new_record? -%>
+        <% unless @article.nil? || @article.new_record? -%>
           <li><%= link_to 'Edit this article', :controller => 'articles', :action => 'edit', :id => @article, :version => nil %></li>
         <% end -%>
-        <% if @article.comments.any? && controller.action_name != 'comments' -%>
-          <li><%= link_to "View comments", :controller => 'articles', :action => 'comments', :id => @article %></li>
+        <% if @article && @article.comments.size > 0 && !(controller.controller_name == 'comments' && controller.action_name == 'index') -%>
+          <li><%= link_to "View comments", :controller => 'comments', :action => 'index', :article_id => @article %></li>
         <% end %>
+				<% if @article && (admin? || @article.user_id == current_user.id) -%>
+					<li><%= link_to_remote 'Delete this article', article_path(@article), :method => :delete, :confirm => 'Are you sure you want to delete this article?' %></li>
+				<% end -%>
         </ul>
       </div>
     </li>
@@ -38,7 +38,7 @@
     <li><a href="#">&nbsp;</a></li>
   </ul>
   <ul id="attributes">
-    <% unless controller.action_name == 'comments' %>
+    <% if @article && controller.controller_name == 'articles' && controller.action_name == 'edit' %>
     <li><label for="search">Revision:</label></li>
     <li>
       <select name="filter" id="revisionnum">
@@ -47,7 +47,7 @@
       </select>
     </li>
     <% end %>
-    <% if controller.action_name == 'comments' -%>
+    <% if controller.controller_name == 'comments' && controller.action_name == 'index' -%>
     <li><label for="comments_view">Show comments:</label></li>
     <li>
       <select id="comments-view">

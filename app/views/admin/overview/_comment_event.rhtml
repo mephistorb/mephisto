@@ -11,14 +11,14 @@
     &mdash; <%=h event.author %>
   </span>
  
-  <% if event.comment %>
+  <% if event.comment -%>
   <% if event.comment.approved? -%>
-      <%= link_to_remote 'Unapprove', :url => { :controller => 'admin/articles', :action => 'unapprove',       :id => event.article_id, :comment => event.comment_id } %> | 
+      <%= link_to_remote 'Unapprove', :url => unapprove_article_comment_path(event.article_id, event.coment_id) %> | 
     <% else -%>
-      <%= link_to_remote 'Approve',   :url => { :controller => 'admin/articles', :action => 'approve',         :id => event.article_id, :comment => event.comment_id } %> | 
+      <%= link_to_remote 'Approve',   :url => approve_article_comment_path(event.article_id, event.coment_id) %> | 
     <% end -%>
-      <%= link_to_remote 'Delete',    :url => { :controller => 'admin/articles', :action => 'destroy_comment', :id => event.article_id, :comment => event.comment_id } %>
-  <% end %>
+      <%= link_to_remote 'Delete',    :url => article_comment_path(event.article_id, event.coment_id), :method => :delete %>
+  <% end -%>
   </div>
 </li>
 <% end -%>

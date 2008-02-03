@@ -5,7 +5,7 @@
     <% if article.comments.size == 0 %>
       none
     <% else %>
-      <%= link_to article.comments.size.to_s.rjust(2, '0'), { :controller => 'admin/comments', :action => 'comments', :id => article } %>
+      <%= link_to article.comments.size.to_s.rjust(2, '0'), article_comments_path(article) %>
     <% end %>
   </td>
   <td><span class="date"><%= published_at_for article %></span></td>

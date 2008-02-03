@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   attr_reader    :site
 
   auto_include!
+
   def self.inherited(klass)
     super
     klass.auto_include!

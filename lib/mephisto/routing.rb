@@ -15,6 +15,9 @@ module Mephisto
         m.images 'images/:path.:ext',      :dir => 'images'
       end
 
+      map.moderate 'admin/articles/comments',       :controller => 'admin/comments', :action => 'index'
+      map.purge    'admin/articles/comments/purge', :controller => 'admin/comments', :action => 'destroy'
+
       map.resources :articles, :path_prefix => 'admin', :controller => 'admin/articles' do |r|
         r.resources :comments, :controller => 'admin/comments', :member => { :unapprove => :post, :approve => :post, :edit => :get }
       end
