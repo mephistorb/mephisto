@@ -1,5 +1,7 @@
 * SVN *
 
+* Fix issue where duplicate permalinks are allowed
+
 * Fix admin/users issue where site admins could disable mephisto admins
 
 * Fix nil.accept_comments? bug in CommentForm block.
