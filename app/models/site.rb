@@ -83,7 +83,7 @@ class Site < ActiveRecord::Base
   validates_uniqueness_of :host
   validate :check_permalink_style
   
-  before_create :setup_site_theme_directories
+  after_create :setup_site_theme_directories
   after_create { |site| site.sections.create(:name => 'Home') }
   before_destroy :flush_cache_and_remove_site_directories    
 
