@@ -1,14 +1,33 @@
-<h2><%=h @site.host %></h2>
+<% content_for :action_nav do -%>
+<!-- begin action nav -->
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
+    <li><%= link_to "Sites", :action => "index" %></li>
+  </ul>
+</div>
+<!-- /end action nav -->
+<% end %>
 
-<h3><%=h @site.title %> <small>(<%= mail_to @site.email %>)</small></h3>
-
-<% form_tag :action => 'destroy', :id => @site do -%>
-  <p class="btns"><%= submit_tag 'Delete' %> or <%= link_to "go back", :action => "index" %></p>
+<% form_for :site, :url => { :action => "update", :id => @site } do |f| -%>
+<%= f.error_messages %>
+<div id="general" class="setgroup">
+  <h3><%=h @site.title %> <small>(<%= mail_to @site.email %>)</small></h3>
+  <dl class="setform">
+		<dt><label for="site_host">Host</label></dt>
+		<dd><%= f.text_field :host %></dd>
+    <dt><label>Theme Path</label></dt>
+    <dd><%=h @site.theme_path %></dd>
+		<dt>
+			See and update the <%= link_to 'other site settings.', :controller => 'settings', :action => 'index', :host => @site.host %>
+		</dt>
+  </dl>
+	<p class="btns">
+		<%= f.submit :Save %> or
+		<%= link_to 'Delete', {:action => 'destroy', :id => @site}, :confirm => "Are you sure you wish to delete this site?", :method => :post %>
+	</p>
+</div>
 <% end -%>
-<h2><%=h @site.host %></h2>
-
-<h3><%=h @site.title %> <small>(<%= mail_to @site.email %>)</small></h3>
 
 <% form_tag :action => 'destroy', :id => @site do -%>
-  <p class="btns"><%= submit_tag 'Delete' %> or <%= link_to "go back", :action => "index" %></p>
+  <p class="btns"><%= submit_tag 'Delete' %>
 <% end -%>

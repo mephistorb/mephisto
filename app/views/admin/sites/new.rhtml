@@ -1,3 +1,13 @@
+<% content_for :action_nav do -%>
+<!-- begin action nav -->
+<div id="page-nav">
+  <ul id="act-nav" class="clear">
+    <li><%= link_to "Sites", :action => "index" %></li>
+  </ul>
+</div>
+<!-- /end action nav -->
+<% end %>
+
 <div id="general" class="setgroup">
 	<%= error_messages_for :site %>
   <% form_for :site, :url => {:action => 'create'} do |f| %>
@@ -14,25 +24,6 @@
     </dt>
     <dd><%= f.text_field :email %></dd>
   </dl>
+	<p class="btns"><%= submit_tag 'Create new site' %></p>
+	<% end %>
 </div>
-<p class="btns"><%= submit_tag 'Create new site' %></p>
-<% end %>
-<div id="general" class="setgroup">
-	<%= error_messages_for :site %>
-  <% form_for :site, :url => {:action => 'create'} do |f| %>
-  <dl class="setform">
-    <dt><label for="site_host">Host</label></dt>
-    <dd><%= f.text_field :host %></dd>
-    <dt><label for="site_title">Website title</label></dt>
-    <dd><%= f.text_field :title %></dd>
-    <dt><label for="site_subtitle">Website subtitle</label></dt>
-    <dd><%= f.text_field :subtitle %></dd>
-    <dt>
-      <label for="site_email">Administrator email</label>
-      <span class="hint">Shown in emails sent from your site</span>
-    </dt>
-    <dd><%= f.text_field :email %></dd>
-  </dl>
-</div>
-<p class="btns"><%= submit_tag 'Create new site' %></p>
-<% end %>

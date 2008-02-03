@@ -27,21 +27,16 @@ class Admin::SitesController < Admin::BaseController
       render :action => "new"
     end
   end
-
-  # Not sure about having an edit / update, maybe allow the change of a host name?
-  # def edit
-  #   @site = Site.find(params[:id])
-  # end
-  # 
-  # def update
-  #   @site = Site.find(params[:id])
-  #   if @site.update_attributes(params[:site])
-  #     flash[:notice] = "Site #{@site.host} was successfully updated."
-  #     redirect_to :action => 'index'
-  #   else
-  #     render :action => "edit"
-  #   end
-  # end
+ 
+  def update
+    @site = Site.find(params[:id])
+    if @site.update_attributes(params[:site])
+      flash[:notice] = "Site #{@site.host} was successfully updated."
+      redirect_to :action => 'show', :id => @site
+    else
+      render :action => 'show'
+    end
+  end
 
   def destroy
     @site = Site.find(params[:id])

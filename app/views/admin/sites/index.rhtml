@@ -19,12 +19,11 @@
 </div>
 <% end %>
 
-<% if @sites.any? %>
+<% if @sites.size > 0 %>
 <!-- begin article list -->
 <table id="article-list" cellspacing="0" cellpadding="0">
   <thead>
     <tr>
-	  <th scope="col">Site id</th>
       <th scope="col">Host</th>
       <th scope="col">Title</th>
     </tr>
@@ -32,59 +31,8 @@
   <tbody id="articles">
 <% @sites.each do |site| -%>
     <tr>
-	  <td><%=h site.id %></td>
-      <td><%= link_to(site.host, {:action => 'show', :id => site}) %></td>
-      <td><%=h site.title %></td>
-    </tr>
-<% end -%>
-  </tbody>
-</table>
-<!-- /end article list -->
-
-
-<!-- begin pagination -->
-<% if @sites.page_count > 1 -%>
-  <%= will_paginate @sites, :id => 'pagination' %>
-<% end -%>
-<!-- /end pagination -->
-<% end %>
-<% content_for :action_nav do -%>
-<!-- begin action nav -->
-<div id="page-nav">
-  <ul id="act-nav" class="clear">
-    <li><%= link_to "New", :action => "new" %></li>
-  </ul>
-</div>
-<!-- /end action nav -->
-<div id="filter" class="manual">
-  <ul class="clear">
-    <li><a href="#">&nbsp;</a></li>
-  </ul>
-  <% form_tag({:action => 'index'}, :method => 'get') do -%>
-  <ul id="attributes">
-    <li><label>Search: <%= text_field_tag :search_string, params[:search_string] %></label></li>
-    <li><input type="submit" value="Go" /></li>
-  </ul>
-  <% end -%>
-</div>
-<% end %>
-
-<% if @sites.any? %>
-<!-- begin article list -->
-<table id="article-list" cellspacing="0" cellpadding="0">
-  <thead>
-    <tr>
-	  <th scope="col">Site id</th>
-      <th scope="col">Host</th>
-      <th scope="col">Title</th>
-    </tr>
-  </thead>
-  <tbody id="articles">
-<% @sites.each do |site| -%>
-    <tr>
-	  <td><%=h site.id %></td>
-      <td><%=h site.host %></td>
       <td><%= link_to(site.title, {:action => 'show', :id => site}) %></td>
+      <td><%=h site.host %></td>
     </tr>
 <% end -%>
   </tbody>
