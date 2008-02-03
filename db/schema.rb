@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 74) do
+ActiveRecord::Schema.define(:version => 75) do
 
   create_table "assets", :force => true do |t|
     t.string   "content_type"
@@ -160,14 +160,6 @@ ActiveRecord::Schema.define(:version => 74) do
     t.string  "archive_template"
     t.integer "position",            :default => 1
   end
-
-  create_table "sessions", :force => true do |t|
-    t.string   "session_id"
-    t.text     "data"
-    t.datetime "updated_at"
-  end
-
-  add_index "sessions", ["session_id"], :name => "sessions_session_id_index"
 
   create_table "sites", :force => true do |t|
     t.string  "title"
