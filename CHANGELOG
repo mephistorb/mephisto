@@ -4,7 +4,7 @@
 
 * refactor so that admin/comments is more restful, allow inline comment editing in the admin.  [court3nay]
 
-* convert to cookie sessions
+* convert to cookie sessions.
 
 * Fix some failing test issues and git => svn sync errors. [Aubrey, octopod]
 
