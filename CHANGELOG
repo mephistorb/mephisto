@@ -18,7 +18,7 @@
 
 * Fix nil.accept_comments? bug in CommentForm block.
 
-* allow the various link_to filters to accept multiple args to specify more html attributes [rob-twf]
+* allow the various link_to filters to accept multiple args to specify more html attributes. [rob-twf]
 
   # use this order: :text, :title, :id, :class, :rel
 	link_to_article article, "click here", "this article", "article-1", "articles", "whatever-rel-means"
