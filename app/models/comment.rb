@@ -12,8 +12,18 @@ class Comment < Content
   before_destroy :decrement_counter_cache
   belongs_to :article
   has_one :event, :dependent => :destroy
-  attr_accessible :article, :article_id, :user_id, :user, :excerpt, :body, :author, :author_url, :author_email, :author_ip, :updater_id, :updater, :comment_age, :user_agent, :referrer
+  before_create  :check_if_previewing
 
+  attr_accessible :article, :article_id, :user_id, :user, :excerpt, :body, :author, :author_url, :author_email, :author_ip, :updater_id, :updater, :comment_age, :user_agent, :referrer, :preview
+  attr_accessor :preview
+  class Previewing < StandardError; end
+
+  # If the view sends the "preview" accessor, we raise this
+  # error so the controller can simply rescue 
+  def check_if_previewing
+    raise Comment::Previewing if preview
+  end
+  
   def self.find_all_by_section(section, options = {})
     find :all, options.update(:conditions => ['contents.approved = ? and assigned_sections.section_id = ?', true, section.id], 
       :select => 'contents.*', :joins => 'INNER JOIN assigned_sections ON assigned_sections.article_id = contents.article_id', 
@@ -80,7 +90,7 @@ class Comment < Content
     end
 
     def check_comment_expiration
-      raise Article::CommentNotAllowed unless article.accept_comments?
+      raise Article::CommentNotAllowed, "#{article.status} does not allow comments" unless article.accept_comments?
     end
 
     def update_counter_cache

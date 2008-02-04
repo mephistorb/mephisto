@@ -62,6 +62,7 @@ class Admin::ArticlesController < Admin::BaseController
 
   def destroy
     @article.destroy
+    flash[:notice] = "The article: #{@article.title.inspect} was deleted."
     render :update do |page|
       page.redirect_to :action => 'index'
     end

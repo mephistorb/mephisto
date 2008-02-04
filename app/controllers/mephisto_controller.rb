@@ -55,6 +55,8 @@ class MephistoController < ApplicationController
       show_article_with 'errors' => @comment.errors.full_messages, 'submitted' => params[:comment]
     rescue Article::CommentNotAllowed
       show_article_with 'errors' => ["Commenting has been disabled on this article"]
+    rescue Comment::Previewing
+      show_article_with 'errors' => ["Previewing your comment"], 'submitted' => params[:comment]
     end
     
     def dispatch_comment

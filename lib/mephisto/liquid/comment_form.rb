@@ -9,6 +9,8 @@ module Mephisto
         Thread.current[:comment_form_article] = value
       end
     
+      # Provides the required input, error, and form fields
+      # TODO: make this more accessible to users (let them mess it up, rather than forcing a structure on them)
       def render(context)
         return '' unless self.class.article.accept_comments?
         result = []

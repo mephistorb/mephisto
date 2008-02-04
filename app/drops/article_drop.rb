@@ -19,7 +19,7 @@ class ArticleDrop < BaseDrop
   end
 
   def comments
-    @comments ||= liquify(*@source.comments.reject(&:new_record?))
+    @comments ||= liquify(*@source.comments) # .reject(&:new_record?) <-- show new comments as they're built as a preview
   end
   
   def sections

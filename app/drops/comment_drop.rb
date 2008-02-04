@@ -19,6 +19,10 @@ class CommentDrop < BaseDrop
     @url ||= absolute_url(@source.site.permalink_for(@source))
   end
 
+  def new_record
+    @source.new_record?
+  end
+
   def author_link
     @source.author_url.blank? ? "<span>#{@source.author}</span>" : %Q{<a href="#{author_url}">#{@source.author}</a>}
   end
