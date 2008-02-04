@@ -18,6 +18,13 @@ class ApplicationControllerTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
   end
+  
+  def test_should_raise_404_if_no_site
+    Site.delete_all
+    host! 'test.hosts'
+    get :test_host
+    assert_response :missing
+  end
 
   def test_should_find_site_by_host
     host! 'test.host'
