@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
+  require_dependency 'application/errors'
+
   include Mephisto::CachingMethods
-  cattr_accessor :site_count # what is this for?  PDI removing
   before_filter  :set_cache_root
   helper_method  :site
   attr_reader    :site
@@ -64,17 +65,9 @@ class ApplicationController < ActionController::Base
       render :text => site.call_render(@section, template_type, assigns, self), :status => status
     end
 
-    def show_error(message = 'An error occurred.', status = :internal_server_error)
-      render_liquid_template_for(:error, 'message' => message, :status => status)
-    end
-
-    def show_404
-      show_error 'Page Not Found', :not_found
-    end
-
     def set_cache_root
       host = request.domain(request.subdomains.size + (request.subdomains.first == 'www' ? 0 : 1))
-      @site ||= Site.find_by_host(host) || Site.find(:first, :order => 'id')
+      @site ||= Site.find_by_host(host) || Site.find(:first, :order => 'id') || raise(ActiveRecord::RecordNotFound, "You need to create your first site!")
       self.class.page_cache_directory = site.page_cache_directory.to_s
     end
 
@@ -84,15 +77,5 @@ class ApplicationController < ActionController::Base
       yield
       ENV['TZ'] = old_tz
     end
-    
-    def rescue_action_in_public(exception)
-      logger.debug "#{exception.class.name}: #{exception.to_s}"
-      exception.backtrace.each { |t| logger.debug " > #{t}" }
-      case exception
-        when ActiveRecord::RecordNotFound, ::ActionController::UnknownController, ::ActionController::UnknownAction
-          render :file => File.join(RAILS_ROOT, 'public/404.html'), :status => :not_found
-        else
-          render :file => File.join(RAILS_ROOT, 'public/500.html'), :status => :internal_server_error
-      end
-    end
+
 end
