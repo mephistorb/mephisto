@@ -36,7 +36,7 @@
 </div>
 <% end %>
 
-<% if @articles.any? %>
+<% if @articles.size > 0 -%>
 
 <% content_tag :p, :class => 'total' do %>
   Total: <%= content_tag :strong, @articles.total_entries %> articles.
