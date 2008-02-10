@@ -37,7 +37,7 @@
 
 * unit test fixes for those not using mysql or psql. [Mislav]
 
-* add comment moderation links to the overview [court3nay]
+* add comment moderation links to the overview. [court3nay]
 
 * convert tests to use test/spec instead of simply bdd [Chris McGrath]
 
