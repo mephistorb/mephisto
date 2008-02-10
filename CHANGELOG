@@ -49,7 +49,7 @@
 
 * Fix controllers so include_into works with them.
 
-* Change plugin class/module to Mephisto::Plugin and Mephisto::Plugins.  Sorry for the breakage (still technically experimental!)
+* Change plugin class/module to Mephisto::Plugin and Mephisto::Plugins.  Sorry for the breakage (still technically experimental!).
 
 * Fix admin overview date timezone.  [Ben Wyrosdick]
 
