@@ -2,9 +2,9 @@
 
 * Experimental comment preview. [court3nay]
 
-* Add multi-site admin interface [Vincent, j2m]
+* Add multi-site admin interface. [Vincent, j2m]
 
-* Update Wordpress converter to support Wordpress 2.3+ [Aubrey]
+* Update Wordpress converter to support Wordpress 2.3+. [Aubrey]
 
 * refactor so that admin/comments is more restful, allow inline comment editing in the admin.  [court3nay]
 
@@ -23,23 +23,23 @@
   # use this order: :text, :title, :id, :class, :rel
 	link_to_article article, "click here", "this article", "article-1", "articles", "whatever-rel-means"
 
-* encode search/tag urls properly [rob-twf]
+* encode search/tag urls properly. [rob-twf]
 
 * update article forms to explain new tag syntax (comma and space delimited tags) [xavier, rick]
 
-* start converting tests to rspec
+* start converting tests to rspec.
 
 * tweak mephisto_init to support the new ActionController::Dispatcher class.  [Rob Anderton]
 
 * Don't generate an article event for unversioned changes. [Marcus Brito]
 
-* Switch to will_paginate plugin [Mislav]
+* Switch to will_paginate plugin. [Mislav]
 
-* unit test fixes for those not using mysql or psql [Mislav]
+* unit test fixes for those not using mysql or psql. [Mislav]
 
-* add comment moderation links to the overview [court3nay]
+* add comment moderation links to the overview. [court3nay]
 
-* convert tests to use test/spec instead of simply bdd [Chris McGrath]
+* convert tests to use test/spec instead of simply bdd. [Chris McGrath]
 
 * move xmlrpc stuff to plugin.  rails doesn't include AWS anymore.  May need some simple autodetection so the plugin just prints a warning if AWS isn't found.
 
@@ -49,7 +49,7 @@
 
 * Fix controllers so include_into works with them.
 
-* Change plugin class/module to Mephisto::Plugin and Mephisto::Plugins.  Sorry for the breakage (still technically experimental!)
+* Change plugin class/module to Mephisto::Plugin and Mephisto::Plugins.  Sorry for the breakage (still technically experimental!).
 
 * Fix admin overview date timezone.  [Ben Wyrosdick]
 
