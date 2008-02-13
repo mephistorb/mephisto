@@ -38,7 +38,7 @@
     <li><a href="#">&nbsp;</a></li>
   </ul>
   <ul id="attributes">
-    <% if @article && controller.controller_name == 'articles' && controller.action_name == 'edit' %>
+    <% if @article && controller.controller_name == 'articles' && controller.action_name == 'edit' -%>
     <li><label for="search">Revision:</label></li>
     <li>
       <select name="filter" id="revisionnum">
@@ -46,7 +46,7 @@
         <%= options_from_collection_for_select @article.versions.reverse, :version, :version, params[:version].to_i %>
       </select>
     </li>
-    <% end %>
+    <% end -%>
     <% if controller.controller_name == 'comments' && controller.action_name == 'index' -%>
     <li><label for="comments_view">Show comments:</label></li>
     <li>
@@ -54,7 +54,7 @@
         <%= options_for_select ['All', 'Unapproved', 'Approved'], params[:filter].to_s.humanize %>
       </select>
     </li>
-    <% end %>
+    <% end -%>
   </ul>
 </div>
-<% end unless @article.new_record? && @article.comments.empty? -%>
+<% end unless @article && @article.new_record? && @article.comments.size == 0 -%>
