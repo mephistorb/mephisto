@@ -1,0 +1,1 @@
+map.connect 'something', :controller => 'somethings', :action => 'index'

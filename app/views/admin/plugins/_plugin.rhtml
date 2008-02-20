@@ -1,10 +1,10 @@
 <tr class="published" >
   <td class="published">
 	<% if plugin.configurable? -%>
-		<%= link_to plugin.path, :action => 'show', :id => plugin.path %>
+		<%= link_to plugin.mephisto_name, :action => 'show', :id => plugin.name %>
 	<% else -%>
-		<%=h plugin.path %>
+		<%=h plugin.mephisto_name %>
 	<% end -%>
 </td>
-  <td  class="published"><%= plugin.configurable? ? link_to(image_tag('/images/mephisto/icons/8-em-check.png', :style => 'vertical-align: middle'), :action => "show", :id => plugin.path) : '&nbsp;' %></span> </td>
+  <td  class="published"><%= plugin.configurable? ? link_to(image_tag('/images/mephisto/icons/8-em-check.png', :style => 'vertical-align: middle'), :action => "show", :id => plugin.name) : '&nbsp;' %></span> </td>
  </tr>

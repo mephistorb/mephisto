@@ -12,6 +12,8 @@ ActiveRecord::Base.observers = [:article_observer, :comment_observer]
 # it's loaded before all other plugins
 # Object::RAILS_PATH = Pathname.new(File.expand_path(RAILS_ROOT))
 
+require 'mephisto'
+
 class ActionController::Dispatcher
   def self.register_liquid_tags
     Mephisto.liquid_filters.each { |mod| Liquid::Template.register_filter mod }
@@ -35,6 +37,8 @@ Inflector.inflections do |inflect|
   #inflect.irregular 'person', 'people'
   inflect.uncountable %w( audio )
 end
+
+Engines::Plugin::Config.set_table_name 'mephisto_plugins'
 
 Dependencies.autoloaded_constants.delete "Mephisto"
 Dependencies.autoloaded_constants.delete "Mephisto::Plugin"

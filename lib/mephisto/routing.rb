@@ -33,9 +33,8 @@ module Mephisto
       map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/, :id => /[^\/]*/
 
       yield if block_given?
-      Mephisto::Plugin.custom_routes.each do |path, options|
-        map.connect path, options
-      end
+      
+      map_from_plugins(map)
       
       map.dispatch '*path', :controller => 'mephisto', :action => 'dispatch'
       map.home '', :controller => 'mephisto', :action => 'dispatch'
@@ -43,6 +42,10 @@ module Mephisto
     
     class << self
       expiring_attr_reader :redirections,  '{}'
+    end
+    
+    def self.map_from_plugins(map)      
+      Engines.plugins.each { |plugin| map.from_plugin(plugin.name) }
     end
     
     def self.deny(*paths)
