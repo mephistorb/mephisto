@@ -7,7 +7,7 @@ context "Site" do
   end
 
   specify "should return the Mephisto::SpamDetectionEngine::Defensio engine when the spam_detection_engine column has value 'defensio'" do
-    assert_kind_of Mephisto::SpamDetectionEngine::Defensio, Site.new(:spam_detection_engine => "defensio").spam_engine
+    assert_kind_of Mephisto::SpamDetectionEngine::Defensio, Site.new(:spam_detection_engine => "Mephisto::SpamDetectionEngine::Defensio").spam_engine
   end
 
   specify "should serialize spam_engine_options" do

@@ -98,7 +98,7 @@ class Site < ActiveRecord::Base
   def spam_engine
     klass_name = read_attribute(:spam_detection_engine)
     return Mephisto::SpamDetectionEngine::Null.new(self) if klass_name.blank?
-    Mephisto::SpamDetectionEngine.const_get(klass_name.classify).new(self)
+    klass_name.constantize.new(self)
   end
 
   # Compatibility shim until the Akismet engine is moved outside.
