@@ -93,6 +93,8 @@ class Site < ActiveRecord::Base
     comment.has_many :all_comments
   end
   
+  serialize :spam_engine_options, Hash
+
   def self.search_by_host_or_title(search_string)
     conditions = search_string.blank? ? nil : ["host LIKE ? OR title LIKE ?"] + ["%#{search_string}%"] * 2
     with_scope( :find => { :conditions => conditions } ) do

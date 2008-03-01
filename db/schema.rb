@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 76) do
+ActiveRecord::Schema.define(:version => 77) do
 
   create_table "assets", :force => true do |t|
     t.string   "content_type"
@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(:version => 76) do
     t.string  "tag_layout"
     t.string  "current_theme_path"
     t.string  "spam_detection_engine"
+    t.text    "spam_engine_options"
   end
 
   add_index "sites", ["host"], :name => "index_sites_on_host"
