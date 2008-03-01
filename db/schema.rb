@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 75) do
+ActiveRecord::Schema.define(:version => 76) do
 
   create_table "assets", :force => true do |t|
     t.string   "content_type"
@@ -110,8 +110,8 @@ ActiveRecord::Schema.define(:version => 75) do
     t.integer  "assets_count",                  :default => 0
   end
 
-  add_index "contents", ["published_at"], :name => "idx_articles_published"
   add_index "contents", ["article_id", "approved", "type"], :name => "idx_comments"
+  add_index "contents", ["published_at"], :name => "idx_articles_published"
 
   create_table "events", :force => true do |t|
     t.string   "mode"
@@ -166,9 +166,9 @@ ActiveRecord::Schema.define(:version => 75) do
     t.string  "subtitle"
     t.string  "email"
     t.text    "ping_urls"
-    t.integer "articles_per_page",                 :default => 15
+    t.integer "articles_per_page",                    :default => 15
     t.string  "host"
-    t.string  "akismet_key",        :limit => 100
+    t.string  "akismet_key",           :limit => 100
     t.string  "akismet_url"
     t.boolean "approve_comments"
     t.integer "comment_age"
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(:version => 75) do
     t.string  "tag_path"
     t.string  "tag_layout"
     t.string  "current_theme_path"
+    t.string  "spam_detection_engine"
   end
 
   add_index "sites", ["host"], :name => "index_sites_on_host"
