@@ -5,3 +5,4 @@ log
 tmp
 themes/*
 db/*.sqlite*
+*.swp
