@@ -1,0 +1,2 @@
+class SubclassResponsibilityError < RuntimeError
+end
