@@ -24,7 +24,7 @@ module Mephisto
 
       protected
       def akismet
-        @akismet ||= Akismet.new(options[:akismet_key], options[:akismet_url])
+        @akismet ||= ::Akismet.new(options[:akismet_key], options[:akismet_url])
       end
 
       def mark_comment(comment_type, site, request)
@@ -44,7 +44,7 @@ module Mephisto
       end
 
       def check_valid!
-        raise Mephisto::SpamDetectionEngine::EngineNotConfigured unless self.valid?
+        raise Mephisto::SpamDetectionEngine::NotConfigured unless self.valid?
       end
     end
   end
