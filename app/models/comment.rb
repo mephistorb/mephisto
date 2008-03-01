@@ -60,24 +60,22 @@ class Comment < Content
   end
 
   def check_approval(site, request)
-    self.approved = site.approve_comments?
-    if valid_comment_system?(site)
-      akismet = Akismet.new(site.akismet_key, site.akismet_url)
-      self.approved = !akismet.comment_check(comment_spam_options(site, request))
-      logger.info "Checking Akismet (#{site.akismet_key}) for new comment on Article #{article_id}.  #{approved? ? 'Approved' : 'Blocked'}"
-      logger.warn "Odd Akismet Response: #{akismet.last_response.inspect}" unless Akismet.normal_responses.include?(akismet.last_response)
-    end
+    self.approved = site.approve_comments? || spam_engine(site).ham?(self, request)
   end
 
   def mark_as_spam(site, request)
-    mark_comment :spam, site, request
+    spam_engine(site).mark_as_spam(self, request)
   end
   
   def mark_as_ham(site, request)
-    mark_comment :ham, site, request
+    spam_engine(site).mark_as_ham(self, request)
   end
 
   protected
+    def spam_engine(site)
+      site.spam_engine
+    end
+
     def sanitize_attributes
       [:author, :author_url, :author_email, :author_ip, :user_agent, :referrer].each do |a|
         self.send("#{a}=", CGI::escapeHTML(self.send(a).to_s))
@@ -100,27 +98,5 @@ class Comment < Content
     
     def decrement_counter_cache
       Article.decrement_counter 'comments_count', article_id if approved?
-    end
-    
-    def valid_comment_system?(site)
-      [:akismet_key, :akismet_url].all? { |attr| !site.send(attr).blank? }
-    end
-    
-    def comment_spam_options(site, request)
-      {:user_ip              => author_ip, 
-       :user_agent           => user_agent, 
-       :referrer             => referrer,
-       :permalink            => "http://#{request.host_with_port}#{site.permalink_for(self)}", 
-       :comment_author       => author, 
-       :comment_author_email => author_email, 
-       :comment_author_url   => author_url, 
-       :comment_content      => body}
-    end
-    
-    def mark_comment(comment_type, site, request)
-      if valid_comment_system?(site)
-        response = Akismet.new(site.akismet_key, site.akismet_url).send("submit_#{comment_type}", comment_spam_options(site, request))
-        logger.info "Calling Akismet (#{site.akismet_key}) for #{comment_type} comment on Article #{article_id}.  #{response}"
-      end
     end
 end
