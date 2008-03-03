@@ -2,7 +2,7 @@ module Mephisto
   module SpamDetectionEngines
     class DefensioEngine < Mephisto::SpamDetectionEngine::Base
       def valid?
-        [:defensio_url, :defensio_key].all? {|key| options.has_key?(key)}
+        [:defensio_url, :defensio_key].all? {|key| !options[key].blank?}
       end
 
       def valid_key?
