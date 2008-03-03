@@ -101,6 +101,9 @@ class Site < ActiveRecord::Base
   end
   
   serialize :spam_engine_options, Hash
+  def spam_engine_options
+    read_attribute(:spam_engine_options) || Hash.new
+  end
 
   def spam_engine
     klass_name = read_attribute(:spam_detection_engine)
