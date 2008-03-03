@@ -43,7 +43,9 @@ class Admin::ArticlesController < Admin::BaseController
     @article = current_user.articles.create params[:article].merge(:updater => current_user, :site => site)
     
     @article.save!
+    @article.notify_spam_engine(@article.permalink_url(site, request.host_with_port))
     flash[:notice] = "Your article was saved"
+
     redirect_to :action => 'edit', :id => @article.id
   rescue ActiveRecord::RecordInvalid
     load_sections

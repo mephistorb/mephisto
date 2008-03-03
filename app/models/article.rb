@@ -96,6 +96,10 @@ class Article < Content
     end
   end
 
+  def notify_spam_engine(permalink_url)
+    self.site.spam_engine.announce_article(permalink_url, self)
+  end
+
   # AX
   def full_permalink
     published? && ['', published_at.year, published_at.month, published_at.day, permalink] * '/'

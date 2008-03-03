@@ -31,6 +31,11 @@ module Mephisto
         false
       end
 
+      # Announces a new article was created.
+      def announce_article(permalink_url, article)
+        raise SubclassResponsibilityError
+      end
+
       # Determines if a single comment is either ham or spam.
       def ham?(permalink_url, comment)
         raise SubclassResponsibilityError

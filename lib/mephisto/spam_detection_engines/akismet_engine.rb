@@ -9,6 +9,10 @@ module Mephisto
         end
       end
 
+      # Akismet doesn't care about real articles.
+      def announce_article(permalink_url, article)
+      end
+
       def ham?(permalink_url, comment)
         check_valid!
         !akismet.comment_check(comment_spam_options(permalink_url, comment))

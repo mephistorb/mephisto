@@ -17,6 +17,16 @@ module Mephisto
         self.validate_key.success?
       end
 
+      def announce_article(permalink_url, article)
+        response = defensio.announce_article(
+          :article_author => article.updater.login,
+          :article_author_email => article.updater.email,
+          :article_title => article.title,
+          :article_content => article.body,
+          :permalink => permalink_url
+        )
+      end
+
       def ham?(permalink_url, comment)
         response = defensio.audit_comment(
           # Required parameters
