@@ -26,6 +26,12 @@ class Site < ActiveRecord::Base
     @@template_handlers.keys
   end
 
+  @@spam_detection_engines = []
+  def self.register_spam_detection_engine(name, klass)
+    @@spam_detection_engines<< [name, klass.name]
+  end
+  cattr_reader :spam_detection_engines
+
   has_many  :sections, :order => "position", :dependent => :destroy do
     def home
       find_by_path ''

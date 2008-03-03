@@ -44,17 +44,21 @@
 
 <div id="spam" class="setgroup">
   <h3>Spam prevention</h3>
-  <p>At the moment Mephisto uses <%= link_to 'Akismet', 'http://akismet.com' %> to automatically handle spam.  If you leave out the Akismet settings, you can moderate new comments from the Overview.</p>
   <dl class="setform">
-    <dt><label>Akismet API Key</label></dt> 
-    <dd><%= f.text_field :akismet_key %></dd>
-    <dt><label>Blog url</label></dt> 
-    <dd><%= f.text_field :akismet_url %></dd>
     <dt><label for="site_comment_age">Comments</label></dt>
     <dd><%= f.select :comment_age, comment_expiration_options %></dd>
     <dt>
       <label><%= f.check_box 'approve_comments' %> Approve and publish all comments automatically.</label>
     </dt>
+    <dt><label for="site_spam_detection_engine">Spam Detection Engine</label></dt>
+    <dd><%= f.select :spam_detection_engine, Site.spam_detection_engines %></dd>
+  </dl>
+  <p>At the moment Mephisto uses <%= link_to 'Akismet', 'http://akismet.com' %> to automatically handle spam.  If you leave out the Akismet settings, you can moderate new comments from the Overview.</p>
+  <dl class="setform">
+    <dt><label>Akismet API Key</label></dt> 
+    <dd><%#= f.text_field :akismet_key %></dd>
+    <dt><label>Blog url</label></dt> 
+    <dd><%#= f.text_field :akismet_url %></dd>
   </dl>
 </div>
 

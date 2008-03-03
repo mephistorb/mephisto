@@ -1,6 +1,8 @@
 module Mephisto
   module SpamDetectionEngines
     class AkismetEngine < Mephisto::SpamDetectionEngine::Base
+      Site.register_spam_detection_engine "Akismet", self
+
       def ham?(permalink_url, comment)
         check_valid!
         !akismet.comment_check(comment_spam_options(permalink_url, comment))

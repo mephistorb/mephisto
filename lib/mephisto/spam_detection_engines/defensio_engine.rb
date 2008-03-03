@@ -1,6 +1,8 @@
 module Mephisto
   module SpamDetectionEngines
     class DefensioEngine < Mephisto::SpamDetectionEngine::Base
+      Site.register_spam_detection_engine "Defensio", self
+
       def valid?
         [:defensio_url, :defensio_key].all? {|key| !options[key].blank?}
       end

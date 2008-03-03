@@ -1,6 +1,8 @@
 module Mephisto
   module SpamDetectionEngines
     class NullEngine < Mephisto::SpamDetectionEngine::Base
+      Site.register_spam_detection_engine "None", self
+
       def ham?(permalink_url, comment)
         true
       end
