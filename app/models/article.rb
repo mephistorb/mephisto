@@ -29,6 +29,8 @@ class Article < Content
     end
   end
 
+  self.non_versioned_columns << "spam_engine_data"
+
   has_many :assigned_sections, :dependent => :destroy
   has_many :sections, :through => :assigned_sections, :order => 'sections.name'
 
