@@ -42,6 +42,11 @@ module Mephisto
         raise SubclassResponsibilityError
       end
 
+      # Returns a series of HTML classes that should be added to the comment's blockquote.
+      def classes(comment)
+        ""
+      end
+
       # Announces a new article was created.
       def announce_article(permalink_url, article)
         raise SubclassResponsibilityError

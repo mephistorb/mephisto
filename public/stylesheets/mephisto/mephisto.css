@@ -1836,4 +1836,7 @@ ul.nobull li label {
 .orange { background-color: #f63;}
 .red { background-color: #f33;}
 
-
+.spam0 { background: transparent; }
+.spam30 { background: #ffedcc; }
+.spam75 { background: #ffc354; }
+.spam100 { background: #ffa500; }

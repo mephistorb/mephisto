@@ -19,7 +19,7 @@ Comments for all articles
   <li class="event-comment<%= " shade" if (i % 2 > 0) %>" id="comment-<%= comment.id %>">
     <a name="comment-<%= comment.id %>"></a> 
     <% unless comment.body.blank? -%>
-    <blockquote><p>"<%= strip_tags(comment.body) %>"</p></blockquote>
+    <blockquote class="<%= comment.spam_engine_classes %>"><p>"<%= strip_tags(comment.body) %>"</p></blockquote>
     <% end -%>
     <span class="meta">
       <cite>&mdash; <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %> said <%=  time_ago_in_words comment.created_at %> ago</cite>

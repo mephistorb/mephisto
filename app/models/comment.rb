@@ -71,6 +71,10 @@ class Comment < Content
     spam_engine(site).mark_as_ham(article.permalink_url(site, request), self)
   end
 
+  def spam_engine_classes
+    spam_engine(self.site).classes(self)
+  end
+
   protected
     def spam_engine(site)
       site.spam_engine

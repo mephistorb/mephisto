@@ -31,6 +31,19 @@ module Mephisto
         )
       end
 
+      def classes(comment)
+        case (comment.spam_engine_data[:spaminess] || 0) * 100
+        when 0
+          "spam0"
+        when 0...30
+          "spam30"
+        when 30...75
+          "spam75"
+        else
+          "spam100"
+        end
+      end
+
       def ham?(permalink_url, comment)
         response = defensio.audit_comment(
           # Required parameters
