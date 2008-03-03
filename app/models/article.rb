@@ -99,6 +99,10 @@ class Article < Content
     published? && ['', published_at.year, published_at.month, published_at.day, permalink] * '/'
   end
 
+  def permalink_url(site, host_with_port)
+    "http://#{host_with_port}#{site.permalink_for(self)}"
+  end
+
   def has_section?(section)
     return @new_sections.include?(section.id.to_s) if !@new_sections.blank?
     (new_record? && section.home?) || sections.include?(section)
