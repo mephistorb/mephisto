@@ -92,13 +92,6 @@ module Mephisto
           Template.new(File.read(full_path))
         end
       end
-
-      # Returns spam engine statistics about it's performance.
-      # This is in Base because not all engines return performance statistics.
-      # This default implementation returns an empty Hash, to show no statistics.
-      def statistics
-        Hash.new
-      end
     end
   end
 end
