@@ -3,6 +3,12 @@ module Mephisto
     class DefensioEngine < Mephisto::SpamDetectionEngine::Base
       Site.register_spam_detection_engine "Defensio", self
 
+      class << self
+        def settings_template(site)
+          load_template(File.join(File.dirname(__FILE__), "defensio_settings.html.erb")).render(:site => site, :options => site.spam_engine_options)
+        end
+      end
+
       def valid?
         [:defensio_url, :defensio_key].all? {|key| !options[key].blank?}
       end

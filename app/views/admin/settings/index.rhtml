@@ -53,13 +53,15 @@
     <dt><label for="site_spam_detection_engine">Spam Detection Engine</label></dt>
     <dd><%= f.select :spam_detection_engine, Site.spam_detection_engines %></dd>
   </dl>
-  <p>At the moment Mephisto uses <%= link_to 'Akismet', 'http://akismet.com' %> to automatically handle spam.  If you leave out the Akismet settings, you can moderate new comments from the Overview.</p>
-  <dl class="setform">
-    <dt><label>Akismet API Key</label></dt> 
-    <dd><%#= f.text_field :akismet_key %></dd>
-    <dt><label>Blog url</label></dt> 
-    <dd><%#= f.text_field :akismet_url %></dd>
-  </dl>
+  <div id="spam_detection_engines">
+    <%- Site.spam_detection_engines.map(&:last).each do |klass_name| -%>
+      <% content_tag(:div, :id => File.basename(klass_name.underscore)) do %>
+        <dl class="setform">
+          <%= klass_name.constantize.settings_template(@site) %>
+        </dl>
+      <% end %>
+    <%- end -%>
+  </div>
 </div>
 
 <div id="publish" class="setgroup">

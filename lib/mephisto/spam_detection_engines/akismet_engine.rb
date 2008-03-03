@@ -3,6 +3,12 @@ module Mephisto
     class AkismetEngine < Mephisto::SpamDetectionEngine::Base
       Site.register_spam_detection_engine "Akismet", self
 
+      class << self
+        def settings_template(site)
+          load_template(File.join(File.dirname(__FILE__), "akismet_settings.html.erb")).render(:site => site, :options => site.spam_engine_options)
+        end
+      end
+
       def ham?(permalink_url, comment)
         check_valid!
         !akismet.comment_check(comment_spam_options(permalink_url, comment))

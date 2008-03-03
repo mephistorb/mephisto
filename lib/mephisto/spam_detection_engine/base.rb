@@ -1,5 +1,23 @@
 module Mephisto
   module SpamDetectionEngine
+    class Template
+      include ActionView::Helpers::TagHelper
+      include ActionView::Helpers::FormHelper
+      include ActionView::Helpers::FormTagHelper
+
+      def initialize(template_text)
+        @template_text = ERB.new(template_text)
+      end
+
+      def render(context)
+        context.each_pair do |key, value|
+          instance_variable_set("@#{key}", value)
+        end
+
+        @template_text.result(binding)
+      end
+    end
+
     class Base
       attr_reader :site, :options, :logger
 
@@ -35,6 +53,18 @@ module Mephisto
 
       # Returns an Array of error messages explaining why this spam engine is in an invalid state.
       def errors
+      end
+
+      class << self
+        # Returns a fully rendered HTML template from which the engine can extract options.
+        def settings_template(site)
+          ""
+        end
+
+        # Loads the named file as an ERB template.  Returns a Template.
+        def load_template(full_path)
+          Template.new(File.read(full_path))
+        end
       end
 
       # Returns spam engine statistics about it's performance.
