@@ -215,8 +215,10 @@ module Defensio
       end
     
       def call(action, response_class, params={})
-        RAILS_DEFAULT_LOGGER.debug "[DEFENSIO] #{action} #{params.inspect}"
-        response_class.new post(convert_name(action), convert_params(@default_params.merge(params)))
+        RAILS_DEFAULT_LOGGER.debug {"[DEFENSIO] #{action} #{params.inspect}"} if RAILS_DEFAULT_LOGGER
+        returning(response_class.new(post(convert_name(action), convert_params(@default_params.merge(params))))) do |response|
+          RAILS_DEFAULT_LOGGER.debug {"[DEFENSIO] #{action} #{response.raw}"} if RAILS_DEFAULT_LOGGER
+        end
       end
     
       def post(action, params={})
