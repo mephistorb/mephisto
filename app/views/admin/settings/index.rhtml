@@ -55,11 +55,7 @@
   </dl>
   <div id="spam_detection_engines">
     <%- Site.spam_detection_engines.map(&:last).each do |klass_name| -%>
-      <% content_tag(:div, :id => File.basename(klass_name.underscore)) do %>
-        <dl class="setform">
-          <%= klass_name.constantize.settings_template(@site) %>
-        </dl>
-      <% end %>
+      <%= spam_engine_settings_for(klass_name) %>
     <%- end -%>
   </div>
 </div>
