@@ -53,7 +53,7 @@
     <dt><label for="site_spam_detection_engine">Spam Detection Engine</label></dt>
     <dd><%= f.select :spam_detection_engine, Site.spam_detection_engines %></dd>
   </dl>
-  <div id="spam_detection_engines">
+  <div id="spam_detection_engine_settings">
     <%- Site.spam_detection_engines.map(&:last).each do |klass_name| -%>
       <%= spam_engine_settings_for(klass_name) %>
     <%- end -%>

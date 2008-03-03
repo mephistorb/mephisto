@@ -6,6 +6,6 @@ module Admin::SettingsHelper
       style = "display:none"
     end
 
-    content_tag(:div, klass_name.constantize.settings_template(@site), :id => File.basename(klass_name.underscore), :style => style)
+    content_tag(:div, klass_name.constantize.settings_template(@site), :id => klass_name.split("::").last + "Settings", :class => "settings", :style => style)
   end
 end

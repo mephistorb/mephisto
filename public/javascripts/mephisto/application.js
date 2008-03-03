@@ -609,6 +609,14 @@ Event.addBehavior({
     var pieces = img.src.split('/');
     new Dialog.Rjs();
     new Ajax.Request(Mephisto.root + '/admin/themes/show/' + pieces[pieces.length-1]);
+  },
+
+  '#site_spam_detection_engine:change': function() {
+    var entry = this.options[this.selectedIndex];
+    var id = entry.value.split("::").last() + "Settings";
+    var panel = $(id);
+    $$("#spam_detection_engine_settings .settings").each(Element.hide);
+    panel.show();
   }
   
   //'.theme': function() {
