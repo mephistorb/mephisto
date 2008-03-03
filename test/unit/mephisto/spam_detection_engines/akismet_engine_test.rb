@@ -10,7 +10,6 @@ context "A properly configured Mephisto::SpamDetectionEngines::AkismetEngine" do
     @request = stub("request", :host_with_port => "")
     @comment = Comment.new
     @akismet = stub("akismet", :comment_check => false)
-    @site.stub!(:permalink_for).and_return("")
   end
 
   specify "should be #valid?" do
@@ -19,7 +18,7 @@ context "A properly configured Mephisto::SpamDetectionEngines::AkismetEngine" do
 
   specify "should instantiate an Akismet when calling #ham?" do
     Akismet.should_receive(:new).and_return(@akismet)
-    @engine.ham?(@request, @comment)
+    @engine.ham?("http://permalink.url/", @comment)
   end
 end
   

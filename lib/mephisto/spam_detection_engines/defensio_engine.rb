@@ -9,7 +9,7 @@ module Mephisto
         defensio.validate_key.success?
       end
 
-      def ham?(request, comment)
+      def ham?(permalink_url, comment)
         response = defensio.audit_comment(
           # Required parameters
           :user_ip => comment.author_ip,
@@ -21,7 +21,7 @@ module Mephisto
           :comment_content => comment.body,
           :comment_author_email => comment.author_email,
           :comment_author_url => comment.author_url,
-          :permalink => "http://#{request.host_with_port}#{site.permalink_for(comment)}", 
+          :permalink => permalink_url,
           :referrer => comment.referrer,
           :user_logged_in => false,
           :trusted_user => false
@@ -31,12 +31,12 @@ module Mephisto
         !response.spam
       end
 
-      def mark_as_ham(request, comment)
-        defensio.report_false_positives(:signatures => comment.spam_engine_data[:signature])
+      def mark_as_ham(permalink_url, comment)
+        defensio.report_false_positives(:signatures => [comment.spam_engine_data[:signature]])
       end
 
-      def mark_as_spam(request, comment)
-        defensio.report_false_negatives(:signatures => comment.spam_engine_data[:signature])
+      def mark_as_spam(permalink_url, comment)
+        defensio.report_false_negatives(:signatures => [comment.spam_engine_data[:signature]])
       end
 
       # The Defensio service supports statistics.
@@ -46,7 +46,7 @@ module Mephisto
       protected
       def defensio
         begin
-        @defensio ||= Defensio::Client.new(:owner_url => options[:defensio_url], :api_key => options[:defensio_key])
+          @defensio ||= Defensio::Client.new(:owner_url => options[:defensio_url], :api_key => options[:defensio_key])
         rescue Defensio::InvalidAPIKey
           logger.warn { $! }
           logger.warn { $!.backtrace.join("\n") }

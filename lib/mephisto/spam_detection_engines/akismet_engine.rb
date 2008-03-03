@@ -1,17 +1,19 @@
 module Mephisto
   module SpamDetectionEngines
     class AkismetEngine < Mephisto::SpamDetectionEngine::Base
-      def ham?(request, comment)
+      def ham?(permalink_url, comment)
         check_valid!
-        !akismet.comment_check(comment_spam_options(request, comment))
+        !akismet.comment_check(comment_spam_options(permalink_url, comment))
       end
 
-      def mark_as_ham(comment, request)
-        mark_comment(:ham, comment, request)
+      def mark_as_ham(permalink_url, comment)
+        check_valid!
+        akismet.submit_ham(comment_spam_options(permalink_url, comment))
       end
 
-      def mark_as_spam(comment, request)
-        mark_comment(:spam, comment, request)
+      def mark_as_spam(permalink_url, comment)
+        check_valid!
+        akismet.submit_spam(comment_spam_options(permalink_url, comment))
       end
 
       def valid?
@@ -27,16 +29,11 @@ module Mephisto
         @akismet ||= ::Akismet.new(options[:akismet_key], options[:akismet_url])
       end
 
-      def mark_comment(comment_type, site, request)
-        check_valid!
-        response = akismet.send("submit_#{comment_type}", comment_spam_options(site, request))
-      end
-
-      def comment_spam_options(request, comment)
+      def comment_spam_options(permalink_url, comment)
         { :user_ip              => comment.author_ip, 
           :user_agent           => comment.user_agent, 
           :referrer             => comment.referrer,
-          :permalink            => "http://#{request.host_with_port}#{site.permalink_for(comment)}", 
+          :permalink            => permalink_url, 
           :comment_author       => comment.author, 
           :comment_author_email => comment.author_email, 
           :comment_author_url   => comment.author_url, 

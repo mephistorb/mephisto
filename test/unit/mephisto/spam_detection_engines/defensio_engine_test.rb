@@ -71,9 +71,21 @@ context "A Mephisto::SpamDetectionEngines::DefensioEngine" do
     @site.save(false)
     assert !@site.spam_engine.valid?
   end
+
+  specify "should not be #valid? when the defensio key is blank" do
+    @site.spam_engine_options[:defensio_key] = ""
+    @site.save(false)
+    assert !@site.spam_engine.valid?
+  end
   
   specify "should not be #valid? when the defensio url is missing from the options" do
     @site.spam_engine_options.delete(:defensio_url)
+    @site.save(false)
+    assert !@site.spam_engine.valid?
+  end
+
+  specify "should not be #valid? when the defensio url is blank" do
+    @site.spam_engine_options[:defensio_url] = ""
     @site.save(false)
     assert !@site.spam_engine.valid?
   end

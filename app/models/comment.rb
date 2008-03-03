@@ -60,15 +60,15 @@ class Comment < Content
   end
 
   def check_approval(site, request)
-    self.approved = site.approve_comments? || spam_engine(site).ham?(self, request)
+    self.approved = site.approve_comments? || spam_engine(site).ham?(article.permalink_url(site, request), self)
   end
 
   def mark_as_spam(site, request)
-    spam_engine(site).mark_as_spam(self, request)
+    spam_engine(site).mark_as_spam(article.permalink_url(site, request), self)
   end
   
   def mark_as_ham(site, request)
-    spam_engine(site).mark_as_ham(self, request)
+    spam_engine(site).mark_as_ham(article.permalink_url(site, request), self)
   end
 
   protected
