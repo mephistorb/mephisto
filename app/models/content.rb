@@ -3,4 +3,6 @@ class Content < ActiveRecord::Base
   belongs_to :user, :with_deleted => true
   belongs_to :site
   [:year, :month, :day].each { |m| delegate m, :to => :published_at }
+
+  serialize :spam_engine_data, Hash
 end
