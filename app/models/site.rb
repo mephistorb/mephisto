@@ -102,26 +102,6 @@ class Site < ActiveRecord::Base
     klass_name.constantize.new(self)
   end
 
-  # Compatibility shim until the Akismet engine is moved outside.
-  def akismet_url #:nodoc:
-    self.spam_engine_options[:akismet_url]
-  end
-
-  # Compatibility shim until the Akismet engine is moved outside.
-  def akismet_url=(value) #:nodoc:
-    self.spam_engine_options[:akismet_url] = value
-  end
-
-  # Compatibility shim until the Akismet engine is moved outside.
-  def akismet_key #:nodoc:
-    self.spam_engine_options[:akismet_key]
-  end
-
-  # Compatibility shim until the Akismet engine is moved outside.
-  def akismet_key=(value) #:nodoc:
-    self.spam_engine_options[:akismet_key] = value
-  end
-
   def self.search_by_host_or_title(search_string)
     conditions = search_string.blank? ? nil : ["host LIKE ? OR title LIKE ?"] + ["%#{search_string}%"] * 2
     with_scope( :find => { :conditions => conditions } ) do
