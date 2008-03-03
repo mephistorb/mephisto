@@ -108,7 +108,7 @@ class Site < ActiveRecord::Base
 
   def spam_engine
     klass_name = read_attribute(:spam_detection_engine)
-    return Mephisto::SpamDetectionEngine::Null.new(self) if klass_name.blank?
+    return Mephisto::SpamDetectionEngine::NullEngine.new(self) if klass_name.blank?
     klass_name.constantize.new(self)
   end
 
