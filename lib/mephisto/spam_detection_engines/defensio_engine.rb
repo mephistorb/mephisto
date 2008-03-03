@@ -6,18 +6,37 @@ module Mephisto
       end
 
       def valid_key?
+        defensio.validate_key.success?
       end
 
       def ham?(request, comment)
-        defensio
+        response = defensio.audit_comment(
+          # Required parameters
+          :user_ip => comment.author_ip,
+          :article_date => comment.article.published_at.strftime("%Y/%m/%d"),
+          :comment_author => comment.author,
+          :comment_type => "comment",
+
+          # Optional parameters
+          :comment_content => comment.body,
+          :comment_author_email => comment.author_email,
+          :comment_author_url => comment.author_url,
+          :permalink => "http://#{request.host_with_port}#{site.permalink_for(comment)}", 
+          :referrer => comment.referrer,
+          :user_logged_in => false,
+          :trusted_user => false
+        )
+
+        comment.update_attribute(:spam_engine_data, {:signature => response.signature, :spaminess => response.spaminess.to_f})
+        !response.spam
       end
 
       def mark_as_ham(request, comment)
-        defensio.mark_as_ham(comment)
+        defensio.report_false_positives(:signatures => comment.spam_engine_data[:signature])
       end
 
       def mark_as_spam(request, comment)
-        defensio.mark_as_spam(comment)
+        defensio.report_false_negatives(:signatures => comment.spam_engine_data[:signature])
       end
 
       # The Defensio service supports statistics.
