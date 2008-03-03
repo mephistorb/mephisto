@@ -15,6 +15,7 @@
 
 
 <% form_for :site, :url => { :action => "update" } do |f| %>
+<%= error_messages_for :site %>
 <div id="general" class="setgroup">
   <h3>General site settings</h3>
   <dl class="setform">
