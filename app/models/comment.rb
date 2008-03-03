@@ -14,7 +14,7 @@ class Comment < Content
   has_one :event, :dependent => :destroy
   before_create  :check_if_previewing
 
-  serialize :spam_engine_data
+  serialize :spam_engine_data, Hash
 
   attr_accessible :article, :article_id, :user_id, :user, :excerpt, :body, :author, :author_url, :author_email, :author_ip, :updater_id, :updater, :comment_age, :user_agent, :referrer, :preview
   attr_accessor :preview
