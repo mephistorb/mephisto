@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 79) do
+ActiveRecord::Schema.define(:version => 80) do
 
   create_table "assets", :force => true do |t|
     t.string   "content_type"
@@ -93,25 +93,26 @@ ActiveRecord::Schema.define(:version => 79) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "published_at"
-    t.string   "type",           :limit => 20
-    t.string   "author",         :limit => 100
+    t.string   "type",             :limit => 20
+    t.string   "author",           :limit => 100
     t.string   "author_url"
     t.string   "author_email"
-    t.string   "author_ip",      :limit => 100
-    t.integer  "comments_count",                :default => 0
+    t.string   "author_ip",        :limit => 100
+    t.integer  "comments_count",                  :default => 0
     t.integer  "updater_id"
     t.integer  "version"
     t.integer  "site_id"
-    t.boolean  "approved",                      :default => false
-    t.integer  "comment_age",                   :default => 0
+    t.boolean  "approved",                        :default => false
+    t.integer  "comment_age",                     :default => 0
     t.string   "filter"
     t.string   "user_agent"
     t.string   "referrer"
-    t.integer  "assets_count",                  :default => 0
+    t.integer  "assets_count",                    :default => 0
+    t.text     "spam_engine_data"
   end
 
-  add_index "contents", ["article_id", "approved", "type"], :name => "idx_comments"
   add_index "contents", ["published_at"], :name => "idx_articles_published"
+  add_index "contents", ["article_id", "approved", "type"], :name => "idx_comments"
 
   create_table "events", :force => true do |t|
     t.string   "mode"
