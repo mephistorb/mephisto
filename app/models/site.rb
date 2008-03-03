@@ -82,6 +82,7 @@ class Site < ActiveRecord::Base
   validates_format_of     :host, :with => Format::DOMAIN
   validates_uniqueness_of :host
   validate :check_permalink_style
+  validate :spam_engine_is_valid?
   
   after_create :setup_site_theme_directories
   after_create { |site| site.sections.create(:name => 'Home') }
@@ -265,6 +266,16 @@ class Site < ActiveRecord::Base
   end
 
   protected
+    # A validation filter.
+    def spam_engine_is_valid?
+      return if self.spam_engine.valid_key?
+      if errors = self.spam_engine.errors then
+        errors.each do |error|
+          self.errors.add_to_base(error)
+        end
+      end
+    end
+
     def cached_log_message_for(log_message, pages)
       pages.inject([log_message, "Expiring #{pages.size} page(s)"]) { |msg, p| msg << " - #{p.url}" }.join("\n")
     end

@@ -33,6 +33,10 @@ module Mephisto
         raise SubclassResponsibilityError
       end
 
+      # Returns an Array of error messages explaining why this spam engine is in an invalid state.
+      def errors
+      end
+
       # Returns spam engine statistics about it's performance.
       # This is in Base because not all engines return performance statistics.
       # This default implementation returns an empty Hash, to show no statistics.

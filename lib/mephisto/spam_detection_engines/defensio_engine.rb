@@ -6,7 +6,7 @@ module Mephisto
       end
 
       def valid_key?
-        defensio.validate_key.success?
+        self.validate_key.success?
       end
 
       def ham?(permalink_url, comment)
@@ -43,6 +43,18 @@ module Mephisto
       def statistics
       end
 
+      def errors
+        returning([]) do |es|
+          es << "The Defensio key is missing" if options[:defensio_key].blank?
+          es << "The Defensio url is missing" if options[:defensio_url].blank?
+
+          unless self.valid_key?
+            message = self.validate_key.message
+            es << "The Defensio API says your key is invalid#{%Q(: #{message}) unless message.blank?}"
+          end
+        end
+      end
+
       protected
       def defensio
         begin
@@ -52,6 +64,10 @@ module Mephisto
           logger.warn { $!.backtrace.join("\n") }
           raise Mephisto::SpamDetectionEngine::NotConfigured
         end
+      end
+
+      def validate_key
+        @response ||= defensio.validate_key
       end
     end
   end

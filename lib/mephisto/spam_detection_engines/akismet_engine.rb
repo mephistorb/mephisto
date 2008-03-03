@@ -21,7 +21,15 @@ module Mephisto
       end
 
       def valid_key?
+        return false unless self.valid?
         false
+      end
+
+      def errors
+        returning([]) do |es|
+          es << "The Akismet key is missing" if options[:akismet_key].blank?
+          es << "The Akismet url is missing" if options[:akismet_url].blank?
+        end
       end
 
       protected
