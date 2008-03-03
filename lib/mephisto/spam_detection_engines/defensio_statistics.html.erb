@@ -2,12 +2,10 @@
   spam = @statistics.spam.to_i
   ham = @statistics.ham.to_i
   accuracy = @statistics.accuracy.to_f * 100.0
-  accuracy = 96.8
   mapped_accuracy = ((accuracy - 95) * 5.0)
   spam_pct = spam / (spam + ham) * 100.0
   ham_pct = 100.0 - spam_pct
   false_positives, false_negatives = @statistics.false_positives.to_i, @statistics.false_negatives.to_i
-  false_positives, false_negatives = 13, 21
   false_positives_pct = false_positives.to_f / (false_positives + false_negatives) * 100.0
   false_negatives_pct = 100.0 - false_positives_pct
   stats_chd = sprintf("t:%.1f,%.1f", spam_pct, ham_pct)
