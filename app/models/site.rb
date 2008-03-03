@@ -93,6 +93,7 @@ class Site < ActiveRecord::Base
   after_create :setup_site_theme_directories
   after_create { |site| site.sections.create(:name => 'Home') }
   before_destroy :flush_cache_and_remove_site_directories    
+  before_save :clear_approve_comment_if_spam_engine_not_null
 
   with_options :order => 'contents.created_at DESC', :class_name => 'Comment' do |comment|
     comment.has_many :comments,            :conditions => ['contents.approved = ?', true]
@@ -255,6 +256,15 @@ class Site < ActiveRecord::Base
   end
 
   protected
+    # If we aren't using the null engine, comments must not be approved automatically.
+    def clear_approve_comment_if_spam_engine_not_null
+      if self.spam_engine.null?
+        # NOP, leave as-is
+      else
+        self.approve_comments = false 
+      end
+    end
+
     # A validation filter.
     def spam_engine_is_valid?
       return if self.spam_engine.valid_key?

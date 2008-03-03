@@ -26,6 +26,11 @@ module Mephisto
         @logger = site.logger
       end
 
+      # Is this the null engine ?
+      def null?
+        false
+      end
+
       # Determines if a single comment is either ham or spam.
       def ham?(permalink_url, comment)
         raise SubclassResponsibilityError

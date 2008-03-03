@@ -49,9 +49,6 @@
   <dl class="setform">
     <dt><label for="site_comment_age">Comments</label></dt>
     <dd><%= f.select :comment_age, comment_expiration_options %></dd>
-    <dt>
-      <label><%= f.check_box 'approve_comments' %> Approve and publish all comments automatically.</label>
-    </dt>
     <dt><label for="site_spam_detection_engine">Spam Detection Engine</label></dt>
     <dd><%= f.select :spam_detection_engine, Site.spam_detection_engines %></dd>
   </dl>

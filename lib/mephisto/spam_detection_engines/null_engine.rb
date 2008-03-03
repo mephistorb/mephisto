@@ -3,6 +3,16 @@ module Mephisto
     class NullEngine < Mephisto::SpamDetectionEngine::Base
       Site.register_spam_detection_engine "None", self
 
+      class << self
+        def settings_template(site)
+          load_template(File.join(File.dirname(__FILE__), "null_settings.html.erb")).render(:site => site, :options => site.spam_engine_options)
+        end
+      end
+
+      def null?
+        true
+      end
+
       def ham?(permalink_url, comment)
         true
       end
