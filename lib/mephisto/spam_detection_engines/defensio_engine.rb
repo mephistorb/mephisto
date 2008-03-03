@@ -61,6 +61,10 @@ module Mephisto
         defensio.report_false_negatives(:signatures => [comment.spam_engine_data[:signature]])
       end
 
+      def sort_block
+        lambda {|c| 1.0 - (c.spam_engine_data[:spaminess] || 0)}
+      end
+
       def errors
         returning([]) do |es|
           es << "The Defensio key is missing" if options[:defensio_key].blank?

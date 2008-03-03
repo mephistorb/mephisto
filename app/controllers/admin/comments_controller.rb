@@ -28,6 +28,7 @@ public
         when 'unapproved' then :unapproved_comments
         else                   :all_comments
       end
+    @comments = @comments.sort_by(&@site.spam_engine.sort_block)
   end
   
   def unapproved

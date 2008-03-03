@@ -31,6 +31,11 @@ module Mephisto
         false
       end
 
+      # The default sort order is the original order.
+      def sort_block
+        lambda {|c| 0}
+      end
+
       # Returns a fully formed HTML fragment that renders statistics on this
       # engine's performance.
       def statistics_template
