@@ -1,8 +1,7 @@
 module Mephisto
-  module SpamDetectionEngine
-    class Null < Mephisto::SpamDetectionEngine::Base
+  module SpamDetectionEngines
+    class DefensioEngine < Mephisto::SpamDetectionEngine::Base
       def ham?(request, comment)
-        true
       end
 
       def mark_as_ham(comment)
@@ -11,12 +10,8 @@ module Mephisto
       def mark_as_spam(comment)
       end
 
-      def valid?
-        true
-      end
-
-      def valid_key?
-        true
+      # The Defensio service supports statistics.
+      def statistics
       end
     end
   end

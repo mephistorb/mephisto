@@ -1,6 +1,6 @@
 module Mephisto
-  module SpamDetectionEngine
-    class Akismet < Mephisto::SpamDetectionEngine::Base
+  module SpamDetectionEngines
+    class AkismetEngine < Mephisto::SpamDetectionEngine::Base
       def ham?(request, comment)
         check_valid!
         !akismet.comment_check(comment_spam_options(request, comment))

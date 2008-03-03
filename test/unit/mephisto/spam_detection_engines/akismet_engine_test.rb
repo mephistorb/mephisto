@@ -1,8 +1,8 @@
 require File.dirname(__FILE__) + "/../../../test_helper"
 
-context "A properly configured Mephisto::SpamDetectionEngine::Akismet" do
+context "A properly configured Mephisto::SpamDetectionEngines::AkismetEngine" do
   before do
-    @site = Site.new(:spam_detection_engine => "Mephisto::SpamDetectionEngine::Akismet")
+    @site = Site.new(:spam_detection_engine => "Mephisto::SpamDetectionEngines::AkismetEngine")
     @site.spam_engine_options = {:akismet_url => "http://my.blog.com/", :akismet_key => "alongkey"}
     @site.save(false)
     @engine = @site.spam_engine
@@ -23,9 +23,9 @@ context "A properly configured Mephisto::SpamDetectionEngine::Akismet" do
   end
 end
   
-context "An Mephisto::SpamDetectionEngine::Akismet" do
+context "An Mephisto::SpamDetectionEngines::AkismetEngine" do
   before do
-    @site = Site.new(:spam_detection_engine => "Mephisto::SpamDetectionEngine::Akismet")
+    @site = Site.new(:spam_detection_engine => "Mephisto::SpamDetectionEngines::AkismetEngine")
     @site.spam_engine_options = {}
     @site.save(false)
     @engine = @site.spam_engine
@@ -44,9 +44,9 @@ context "An Mephisto::SpamDetectionEngine::Akismet" do
   end
 end
 
-context "A Mephisto::SpamDetectionEngine::Akismet instantiated from a Site with a missing :akismet_key" do
+context "A Mephisto::SpamDetectionEngines::AkismetEngine instantiated from a Site with a missing :akismet_key" do
   before do
-    @site = Site.new(:spam_detection_engine => "Mephisto::SpamDetectionEngine::Akismet")
+    @site = Site.new(:spam_detection_engine => "Mephisto::SpamDetectionEngines::AkismetEngine")
     @site.spam_engine_options = {:akismet_url => "http://my.blog.com/"}
     @site.save(false)
     @engine = @site.spam_engine

@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + "/../../../test_helper"
-context "Mephisto::SpamDetectionEngine::Null" do
+context "Mephisto::SpamDetectionEngines::NullEngine" do
   before do
     @site = Site.new
     @site.save(false)
-    @engine = Mephisto::SpamDetectionEngine::Null.new(@site)
+    @engine = Mephisto::SpamDetectionEngines::NullEngine.new(@site)
   end
 
   specify "should always be valid" do
