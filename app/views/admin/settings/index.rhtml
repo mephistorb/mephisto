@@ -4,6 +4,7 @@
   <ul id="act-nav" class="clear">
     <li><%= link_to "General", '#general' %></li>
     <li><%= link_to "Spam Prevention", '#spam' %></li>
+    <li><%= link_to "Spam Statistics", '#spam-statistics' %></li>
     <li><%= link_to "Comments", '#spam' %></li>
     <li><%= link_to "Publishing", '#publish' %></li>
     <% if ActionController::Base.perform_caching -%>
@@ -57,6 +58,12 @@
       <%= spam_engine_settings_for(klass_name) %>
     <%- end -%>
   </div>
+</div>
+
+<div id="spam-statistics" class="setgroup">
+  <h3>Spam Statistics</h3>
+
+  <%= @site.spam_engine.statistics_template %>
 </div>
 
 <div id="publish" class="setgroup">

@@ -13,6 +13,10 @@ module Mephisto
         true
       end
 
+      def statistics_template
+        ""
+      end
+
       def announce_article(permalink_url, article)
       end
 

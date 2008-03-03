@@ -9,6 +9,10 @@ module Mephisto
         end
       end
 
+      def statistics_template
+        "<p>The Akismet API does not extract statistics about it's performance.</p>"
+      end
+
       # Akismet doesn't care about real articles.
       def announce_article(permalink_url, article)
       end

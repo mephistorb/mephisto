@@ -31,6 +31,12 @@ module Mephisto
         false
       end
 
+      # Returns a fully formed HTML fragment that renders statistics on this
+      # engine's performance.
+      def statistics_template
+        raise SubclassResponsibilityError
+      end
+
       # Announces a new article was created.
       def announce_article(permalink_url, article)
         raise SubclassResponsibilityError

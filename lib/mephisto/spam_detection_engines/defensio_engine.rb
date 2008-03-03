@@ -17,6 +17,10 @@ module Mephisto
         self.validate_key.success?
       end
 
+      def statistics_template
+        self.class.load_template(File.join(File.dirname(__FILE__), "defensio_statistics.html.erb")).render(:site => site, :options => site.spam_engine_options, :statistics => defensio.get_stats)
+      end
+
       def announce_article(permalink_url, article)
         response = defensio.announce_article(
           :article_author => article.updater.login,
@@ -55,10 +59,6 @@ module Mephisto
 
       def mark_as_spam(permalink_url, comment)
         defensio.report_false_negatives(:signatures => [comment.spam_engine_data[:signature]])
-      end
-
-      # The Defensio service supports statistics.
-      def statistics
       end
 
       def errors
