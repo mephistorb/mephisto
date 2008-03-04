@@ -258,10 +258,12 @@ class Site < ActiveRecord::Base
   protected
     # If we aren't using the null engine, comments must not be approved automatically.
     def clear_approve_comment_if_spam_engine_not_null
-      if self.spam_engine.null?
-        # NOP, leave as-is
-      else
-        self.approve_comments = false 
+      returning true do
+        if self.spam_engine.null?
+          # NOP, leave as-is
+        else
+          self.approve_comments = false 
+        end
       end
     end
 
