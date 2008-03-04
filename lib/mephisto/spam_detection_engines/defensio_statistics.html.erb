@@ -1,15 +1,17 @@
 <%
   spam = @statistics.spam.to_i
   ham = @statistics.ham.to_i
+  spam_pct = spam.to_f / (spam + ham) * 100.0
+  ham_pct = 100.0 - spam_pct
+  stats_chd = sprintf("t:%.1f,%.1f", spam_pct, ham_pct)
+
   accuracy = @statistics.accuracy.to_f * 100.0
   mapped_accuracy = ((accuracy - 95) * 5.0)
-  spam_pct = spam / (spam + ham) * 100.0
-  ham_pct = 100.0 - spam_pct
+  accuracy_chd = sprintf("t:%.1f|%.1f", mapped_accuracy, 100.0)
+
   false_positives, false_negatives = @statistics.false_positives.to_i, @statistics.false_negatives.to_i
   false_positives_pct = false_positives.to_f / (false_positives + false_negatives) * 100.0
   false_negatives_pct = 100.0 - false_positives_pct
-  stats_chd = sprintf("t:%.1f,%.1f", spam_pct, ham_pct)
-  accuracy_chd = sprintf("t:%.1f|%.1f", mapped_accuracy, 100.0)
   retraining_chd = sprintf("t:%.1f,%.1f", false_positives_pct, false_negatives_pct)
 %>
 <style type="text/css">
