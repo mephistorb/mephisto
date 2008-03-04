@@ -33,6 +33,7 @@ module Mephisto
       end
 
       def classes(comment)
+        return "" if comment.spam_engine_data.blank?
         case (comment.spam_engine_data[:spaminess] || 0) * 100
         when 0
           "spam0"
@@ -78,7 +79,7 @@ module Mephisto
       end
 
       def sort_block
-        lambda {|c| 1.0 - (c.spam_engine_data[:spaminess] || 0)}
+        lambda {|c| 1.0 - (c.spam_engine_data.blank? ? 0 : (c.spam_engine_data[:spaminess] || 0))}
       end
 
       def errors
