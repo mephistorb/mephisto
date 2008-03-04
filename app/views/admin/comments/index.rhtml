@@ -25,13 +25,13 @@ Comments for all articles
       <span class="spam-info"><%= comment.spam_engine_info %></span>
       <cite>&mdash; <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %> said <%=  time_ago_in_words comment.created_at %> ago</cite>
     
-    <%= link_to_remote 'Edit', :url => edit_article_comment_path(@article, comment), :method => :get %> |
+    <%= link_to_remote 'Edit', :url => edit_article_comment_path(comment.article, comment), :method => :get %> |
     <% if comment.approved? -%>
-      <%= link_to_remote 'Unapprove', :url => unapprove_article_comment_path(@article, comment) %> | 
+      <%= link_to_remote 'Unapprove', :url => unapprove_article_comment_path(comment.article, comment) %> | 
     <% else -%>
-      <%= link_to_remote 'Approve',   :url => approve_article_comment_path(@article, comment) %> | 
+      <%= link_to_remote 'Approve',   :url => approve_article_comment_path(comment.article, comment) %> | 
     <% end -%>
-      <%= link_to_remote 'Delete',    :url => article_comment_path(@article, comment), :method => :delete %>
+    <%= link_to_remote 'Delete',    :url => article_comment_path(comment.article, comment), :method => :delete %>
     </span>
   </li>
   <% end -%>
