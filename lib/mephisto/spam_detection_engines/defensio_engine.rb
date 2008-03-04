@@ -18,7 +18,8 @@ module Mephisto
       end
 
       def statistics_template
-        self.class.load_template(File.join(File.dirname(__FILE__), "defensio_statistics.html.erb")).render(:site => site, :options => site.spam_engine_options, :statistics => defensio.get_stats)
+        return self.class.load_template(File.join(File.dirname(__FILE__), "defensio_statistics.html.erb")).render(:site => site, :options => site.spam_engine_options, :statistics => defensio.get_stats) if valid_key?
+        return ""
       end
 
       def announce_article(permalink_url, article)
