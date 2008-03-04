@@ -34,7 +34,7 @@
     <div class="graph" id="falses">
       <h4>False Positives: <%= false_positives %>, False Negatives: <%= false_negatives %></h4>
       <p>
-      <img src="http://chart.apis.google.com/chart?cht=bvg&chs=200x200&chbh=90&chl=False+Positives|False+Negatives&chd=t:13,21" width="200" height="200" alt="False Positives: <%= false_positives %>, False Negatives: <%= false_negatives %>"/>
+      <img src="http://chart.apis.google.com/chart?cht=bvg&chs=200x200&chbh=90&chl=False+Positives|False+Negatives&chd=<%= retraining_chd %>" width="200" height="200" alt="False Positives: <%= false_positives %>, False Negatives: <%= false_negatives %>"/>
       </p>
     </div>
   </dd>
