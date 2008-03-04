@@ -85,7 +85,7 @@ class Asset < ActiveRecord::Base
 
   protected
     def rename_unique_filename
-      if (@old_filename || new_record?) && errors.empty? && site_id && filename
+      if ((@old_filename && !@old_filename.eql?(full_filename)) || new_record?) && errors.empty? && site_id && filename
         i      = 1
         pieces = filename.split('.')
         ext    = pieces.size == 1 ? nil : pieces.pop

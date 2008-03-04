@@ -44,6 +44,13 @@ class AssetTest < Test::Unit::TestCase
     assert_file_exists File.join(ASSET_PATH, now.year.to_s, now.month.to_s, now.day.to_s, "logo_1.png")
   end
 
+  def test_should_not_rename_file_on_update
+    asset = process_upload
+    old_filename = asset.filename
+    asset.update_attributes({ :filename => 'logo.png' })
+    assert_equal old_filename, asset.filename
+  end
+
   def test_should_upload_file_in_multi_sites_mode
     Site.multi_sites_enabled = true
     process_upload
