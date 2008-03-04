@@ -267,11 +267,15 @@ class Site < ActiveRecord::Base
 
     # A validation filter.
     def spam_engine_is_valid?
+      logger.debug {"==> self.spam_engine.valid_key? #{self.spam_engine.valid_key?}"}
       return if self.spam_engine.valid_key?
       if errors = self.spam_engine.errors then
         errors.each do |error|
           self.errors.add_to_base(error)
         end
+      else
+        logger.debug {"==> No errors were logged, add something minimal"}
+        self.errors.add_to_base("Failed to validate the spam engine's key")
       end
     end
 
