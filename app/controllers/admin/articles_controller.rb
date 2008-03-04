@@ -106,7 +106,12 @@ class Admin::ArticlesController < Admin::BaseController
 
   protected
     def load_sections
-      @assets = site.assets.find(:all, :limit => 6)
+      @assets = site.assets.find(:all, :limit => 15)
+      @bucket_assets = []
+      session[:bucket].each do |id, values|
+        (@bucket_assets ||= []) << site.assets.find(id)
+      end unless session[:bucket].blank? 
+      
       @sections = site.sections.find(:all)
       home = @sections.find &:home?
       @sections.delete  home

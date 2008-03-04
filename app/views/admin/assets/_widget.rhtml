@@ -15,3 +15,4 @@
   <a href="#"><%= image_tag('mephisto/icons/8-em-plus.png', :size => '16x16', :id => widget.dom_id("attach-#{prefix}-widget"), 
         :style => 'display:none', :class => 'attach-widget') %></a>
 </li>
+<% if widget_counter.remainder(4).zero? && widget_counter > 0 %><br /><% end %>
