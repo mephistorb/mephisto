@@ -15,8 +15,8 @@ Comments for all articles
 
 <ul class="pagelist commentlist" id="comment-list">
   <% if @comments.any? %>
-  <% @comments.reverse.each_with_index do |comment, i| -%>
-  <li class="event-comment<%= " shade" if (i % 2 > 0) %>" id="comment-<%= comment.id %>">
+  <% @comments.reverse.each do |comment| -%>
+  <li class="event-comment<%= cycle("", " shade") %>" id="comment-<%= comment.id %>">
     <a name="comment-<%= comment.id %>"></a> 
     <% unless comment.body.blank? -%>
     <blockquote><p>"<%= strip_tags(comment.body) %>"</p></blockquote>
