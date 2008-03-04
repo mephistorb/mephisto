@@ -68,12 +68,12 @@ module Mephisto
       end
 
       def mark_as_ham(permalink_url, comment)
-        return if comment.spam_engine_data[:signature].blank?
+        return if comment.spam_engine_data.blank? || comment.spam_engine_data[:signature].blank?
         defensio.report_false_positives(:signatures => [comment.spam_engine_data[:signature]])
       end
 
       def mark_as_spam(permalink_url, comment)
-        return if comment.spam_engine_data[:signature].blank?
+        return if comment.spam_engine_data.blank? || comment.spam_engine_data[:signature].blank?
         defensio.report_false_negatives(:signatures => [comment.spam_engine_data[:signature]])
       end
 
