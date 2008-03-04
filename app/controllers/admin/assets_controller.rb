@@ -73,11 +73,11 @@ class Admin::AssetsController < Admin::BaseController
 
   # rjs
   def add_bucket
-    if (session[:bucket] ||= {}).key?(@asset.public_filename)
+    if (session[:bucket] ||= {}).key?(@asset.id)
       render :nothing => true and return
     end
     args = asset_image_args_for(@asset, :tiny, :title => "#{@asset.title} \n #{@asset.tags.join(', ')}")
-    session[:bucket][@asset.public_filename] = args
+    session[:bucket][@asset.id] = args
   end
 
   def clear_bucket

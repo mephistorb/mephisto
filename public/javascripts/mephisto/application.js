@@ -297,7 +297,7 @@ var ArticleForm = {
   },
 
   attachAsset: function(assetId) {
-    var articleId = location.href.match(/\/(edit|upload)\/([0-9]+)/)[2];
+    var articleId = location.href.match(/\/([0-9]+)\/(edit|upload)/)[1];
     var attached  = $('attached-widget-' + assetId);
     if(attached) return;
     new Ajax.Request('/admin/articles/attach/' + articleId + '/' + assetId);
@@ -305,7 +305,7 @@ var ArticleForm = {
   },
 
   labelAsset: function(assetId) {
-    var articleId = location.href.match(/\/(edit|upload)\/([0-9]+)/)[2];
+    var articleId = location.href.match(/\/([0-9]+)\/(edit|upload)/)[1];
     var attached  = $('attached-widget-' + assetId);
     var label     = $('attached-widget-version-' + assetId);
     new Ajax.Request('/admin/articles/label/' + articleId + '/' + assetId + '?label=' + escape(label.value));
@@ -313,7 +313,7 @@ var ArticleForm = {
   },
 
   detachAsset: function(assetId) {
-    var articleId = location.href.match(/\/(edit|upload)\/([0-9]+)/)[2];
+    var articleId = location.href.match(/\/([0-9]+)\/(edit|upload)/)[1];
     var attached  = $('attached-widget-' + assetId);
     if(!attached) return;
     new Ajax.Request('/admin/articles/detach/' + articleId + '/' + assetId);
