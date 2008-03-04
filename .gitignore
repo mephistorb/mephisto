@@ -6,3 +6,4 @@ tmp
 themes/*
 db/*.sqlite*
 *.swp
+public/assets
