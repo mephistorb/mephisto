@@ -67,6 +67,12 @@ module Mephisto
         raise SubclassResponsibilityError
       end
 
+      # Returns information about the comment, to be shown right next
+      # to the comment's author.
+      def info(comment)
+        ""
+      end
+
       # Determines if the configuration is valid or not.
       def valid?
         raise SubclassResponsibilityError

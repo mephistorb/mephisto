@@ -32,6 +32,14 @@ module Mephisto
         )
       end
 
+      def info(comment)
+        return "" if comment.spam_engine_data.blank?
+        signature = comment.spam_engine_data[:signature] || ""
+        spaminess = comment.spam_engine_data[:spaminess] || 0
+        spaminess *= 100
+        "Spaminess: %.1f%%, Signature: %s" % [spaminess, signature]
+      end
+
       def classes(comment)
         return "" if comment.spam_engine_data.blank?
         case (comment.spam_engine_data[:spaminess] || 0) * 100
