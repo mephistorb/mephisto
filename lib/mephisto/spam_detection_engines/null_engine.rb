@@ -20,7 +20,7 @@ module Mephisto
       def announce_article(permalink_url, article)
       end
 
-      def ham?(permalink_url, comment)
+      def ham?(permalink_url, comment, options={})
         true
       end
 

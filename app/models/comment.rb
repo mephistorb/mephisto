@@ -59,8 +59,9 @@ class Comment < Content
     "[#{article_id}:Article]"
   end
 
-  def check_approval(site, request)
-    self.approved = site.approve_comments? || spam_engine(site).ham?(article.permalink_url(site, request), self)
+  def check_approval(site, request, options={})
+    options.reverse_merge!(:authenticated => false)
+    self.approved = site.approve_comments? || spam_engine(site).ham?(article.permalink_url(site, request), self, :authenticated => options[:authenticated])
   end
 
   def mark_as_spam(site, request)

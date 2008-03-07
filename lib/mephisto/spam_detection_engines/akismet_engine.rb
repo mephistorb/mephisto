@@ -17,7 +17,7 @@ module Mephisto
       def announce_article(permalink_url, article)
       end
 
-      def ham?(permalink_url, comment)
+      def ham?(permalink_url, comment, options={})
         check_valid!
         !akismet.comment_check(comment_spam_options(permalink_url, comment))
       end

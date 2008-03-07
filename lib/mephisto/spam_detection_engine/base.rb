@@ -53,7 +53,7 @@ module Mephisto
       end
 
       # Determines if a single comment is either ham or spam.
-      def ham?(permalink_url, comment)
+      def ham?(permalink_url, comment, options={})
         raise SubclassResponsibilityError
       end
 

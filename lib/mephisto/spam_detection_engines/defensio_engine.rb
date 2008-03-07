@@ -54,7 +54,7 @@ module Mephisto
         end
       end
 
-      def ham?(permalink_url, comment)
+      def ham?(permalink_url, comment, options={})
         response = defensio.audit_comment(
           # Required parameters
           :user_ip => comment.author_ip,
@@ -68,8 +68,8 @@ module Mephisto
           :comment_author_url => comment.author_url,
           :permalink => permalink_url,
           :referrer => comment.referrer,
-          :user_logged_in => false,
-          :trusted_user => false
+          :user_logged_in => options[:authenticated],
+          :trusted_user => options[:authenticated]
         )
 
         comment.update_attribute(:spam_engine_data, {:signature => response.signature, :spaminess => response.spaminess.to_f})
