@@ -14,16 +14,43 @@ module Mephisto
       end
 
       def valid_key?
-        self.validate_key.success?
+        self.validate_key
+      end
+
+      class Stats
+        def initialize(response)
+          @response = response
+        end
+
+        def spam
+          @response[:spam]
+        end
+
+        def ham
+          @response[:ham]
+        end
+
+        def accuracy
+          @response[:accuracy]
+        end
+
+        def false_negatives
+          @response[:"false-negatives"]
+        end
+
+        def false_positives
+          @response[:"false-positives"]
+        end
       end
 
       def statistics_template
-        return self.class.load_template(File.join(File.dirname(__FILE__), "defensio_statistics.html.erb")).render(:site => site, :options => site.spam_engine_options, :statistics => defensio.get_stats) if valid_key?
+        stats = Stats.new(defensio.stats)
+        return self.class.load_template(File.join(File.dirname(__FILE__), "defensio_statistics.html.erb")).render(:site => site, :options => site.spam_engine_options, :statistics => stats) if valid_key?
         return ""
       end
 
       def announce_article(permalink_url, article)
-        response = defensio.announce_article(
+        response = defensio.check_article(
           :article_author => article.updater.login,
           :article_author_email => article.updater.email,
           :article_title => article.title,
@@ -55,7 +82,7 @@ module Mephisto
       end
 
       def ham?(permalink_url, comment, options={})
-        response = defensio.audit_comment(
+        response = defensio.check_comment(
           # Required parameters
           :user_ip => comment.author_ip,
           :article_date => comment.article.published_at.strftime("%Y/%m/%d"),
@@ -72,18 +99,18 @@ module Mephisto
           :trusted_user => options[:authenticated]
         )
 
-        comment.update_attribute(:spam_engine_data, {:signature => response.signature, :spaminess => response.spaminess.to_f})
-        !response.spam
+        comment.update_attribute(:spam_engine_data, {:signature => response["signature"], :spaminess => response["spaminess"].to_f})
+        !response["spam"]
       end
 
       def mark_as_ham(permalink_url, comment)
         return if comment.spam_engine_data.blank? || comment.spam_engine_data[:signature].blank?
-        defensio.report_false_positives(:signatures => [comment.spam_engine_data[:signature]])
+        defensio.mark_as_ham(:signatures => [comment.spam_engine_data[:signature]])
       end
 
       def mark_as_spam(permalink_url, comment)
         return if comment.spam_engine_data.blank? || comment.spam_engine_data[:signature].blank?
-        defensio.report_false_negatives(:signatures => [comment.spam_engine_data[:signature]])
+        defensio.mark_as_spam(:signatures => [comment.spam_engine_data[:signature]])
       end
 
       def sort_block
@@ -96,25 +123,18 @@ module Mephisto
           es << "The Defensio url is missing" if options[:defensio_url].blank?
 
           unless self.valid_key?
-            message = self.validate_key.message
-            es << "The Defensio API says your key is invalid#{%Q(: #{message}) unless message.blank?}"
+            es << "The Defensio API says your key is invalid"
           end
         end
       end
 
       protected
       def defensio
-        begin
-          @defensio ||= Defensio::Client.new(:owner_url => options[:defensio_url], :api_key => options[:defensio_key])
-        rescue Defensio::InvalidAPIKey
-          logger.warn { $! }
-          logger.warn { $!.backtrace.join("\n") }
-          raise Mephisto::SpamDetectionEngine::NotConfigured
-        end
+        @defensio ||= Viking.connect("defensio", :api_key => options[:defensio_key], :blog => options[:defensio_url])
       end
 
       def validate_key
-        @response ||= defensio.validate_key
+        @verified ||= defensio.verified?
       end
     end
   end

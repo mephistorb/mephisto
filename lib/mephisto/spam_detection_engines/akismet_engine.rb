@@ -50,7 +50,7 @@ module Mephisto
 
       protected
       def akismet
-        @akismet ||= ::Akismet.new(options[:akismet_key], options[:akismet_url])
+        @akismet ||= Viking.connect("akismet", :api_key => options[:akismet_key], :blog => options[:akismet_url])
       end
 
       def comment_spam_options(permalink_url, comment)
