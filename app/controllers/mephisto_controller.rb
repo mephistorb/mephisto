@@ -47,7 +47,7 @@ class MephistoController < ApplicationController
       end
 
       @comment = @article.comments.build(params[:comment].merge(:user_id => session[:user], :author_ip => request.remote_ip, :user_agent => request.user_agent, :referrer => request.referer))
-      @comment.check_approval(site, request, :authenticated => admin?) if @comment.valid?
+      @comment.check_approval(site, request, :authenticated => logged_in?) if @comment.valid?
       @comment.save!
       redirect_to dispatch_path(:path => (site.permalink_for(@article)[1..-1].split('/') << 'comments' << @comment.id.to_s), :anchor => @comment.dom_id)
     rescue ActiveRecord::RecordInvalid
