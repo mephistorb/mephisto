@@ -1,9 +1,7 @@
 class Admin::BaseController < ApplicationController
   class_inheritable_reader :member_actions
   write_inheritable_attribute :member_actions, []
-  include AuthenticatedSystem
   before_filter { |c| UserMailer.default_url_options[:host] = c.request.host_with_port }
-  before_filter :login_from_cookie
   before_filter :login_required, :except => :feed
 
   protected

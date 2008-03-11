@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
   require_dependency 'application/errors'
+  include AuthenticatedSystem
+  before_filter :login_from_cookie
 
   include Mephisto::CachingMethods
   before_filter  :set_cache_root
