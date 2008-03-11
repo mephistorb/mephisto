@@ -74,7 +74,7 @@ class Admin::AssetsControllerPermissionsTest < Test::Unit::TestCase
     assert_response :success
     assert_match /Flash\.notice/, @response.body
     assert_equal 1, session[:bucket].size
-    assert_kind_of Array, session[:bucket][assets(:gif).public_filename]
+    assert_kind_of Array, session[:bucket][assets(:gif).id]
   end
 
   def test_should_clear_bucket
