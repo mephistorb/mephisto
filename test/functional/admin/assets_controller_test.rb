@@ -138,16 +138,16 @@ class Admin::AssetsControllerTest < Test::Unit::TestCase
     assert_response :success
     assert_match /Flash\.notice/, @response.body
     assert_equal 1, session[:bucket].size
-    assert_kind_of Array, session[:bucket][assets(:gif).public_filename]
+    assert_kind_of Array, session[:bucket][assets(:gif).id]
   end
 
   def test_should_not_add_duplicate_asset_to_bucket
-    @request.session[:bucket] = {assets(:gif).public_filename => []}
+    @request.session[:bucket] = {assets(:gif).id => []}
     xhr :post, :add_bucket, :id => assets(:gif).id
     assert_response :success
     assert_equal ' ', @response.body
     assert_equal 1, session[:bucket].size
-    assert_kind_of Array, session[:bucket][assets(:gif).public_filename]
+    assert_kind_of Array, session[:bucket][assets(:gif).id]
   end
 
   def test_should_clear_bucket

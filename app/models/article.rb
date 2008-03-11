@@ -223,7 +223,7 @@ class Article < Content
     end
     
     def add_podcast_xml(builder)
-      if asset = assets.find(:first, :conditions => ['label = ?', 'podcast'], :select => 'assets.*, assigned_assets.label')
+      if asset = assets.find(:first, :conditions => ['label = ?', 'podcast'], :select => 'assets.*')
         builder.link :rel => :enclosure, :type => asset.content_type, :length => asset.size, :href => asset.public_filename
       end
     end
