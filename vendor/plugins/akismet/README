@@ -1,6 +1,0 @@
-Author:: David Czarnecki
-Copyright:: Copyright (c) 2005 - David Czarnecki
-License:: BSD
-
-Extracted to a Rails plugin by François Beausoleil <francois@teksol.info>,
-while refactoring Mephisto to have multiple spam detection engine backends.
