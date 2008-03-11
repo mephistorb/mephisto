@@ -1,4 +1,4 @@
-# this is for standard library loading and configurationg.  All the hardcore monkey patching is in the mephisto plugin.
+# this is for standard library loading and configuration.  All the hardcore monkey patching is in the mephisto plugin.
 require 'tzinfo'
 require 'zip/zipfilesystem'
 require 'action_controller/dispatcher'
