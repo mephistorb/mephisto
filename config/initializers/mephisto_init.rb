@@ -38,3 +38,5 @@ end
 
 Dependencies.autoloaded_constants.delete "Mephisto"
 Dependencies.autoloaded_constants.delete "Mephisto::Plugin"
+
+Viking.logger = RAILS_DEFAULT_LOGGER
