@@ -168,8 +168,6 @@ ActiveRecord::Schema.define(:version => 75) do
     t.text    "ping_urls"
     t.integer "articles_per_page",                 :default => 15
     t.string  "host"
-    t.string  "akismet_key",        :limit => 100
-    t.string  "akismet_url"
     t.boolean "approve_comments"
     t.integer "comment_age"
     t.string  "timezone"
@@ -179,6 +177,8 @@ ActiveRecord::Schema.define(:version => 75) do
     t.string  "tag_path"
     t.string  "tag_layout"
     t.string  "current_theme_path"
+    t.string  "akismet_key",        :limit => 100
+    t.string  "akismet_url"
   end
 
   add_index "sites", ["host"], :name => "index_sites_on_host"

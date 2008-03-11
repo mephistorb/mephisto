@@ -111,11 +111,11 @@ class ArticleTest < Test::Unit::TestCase
 
   def test_comment_expiration_date
     a = create_fake_article
-    assert_equal 5.days.from_now.utc.to_i, a.comments_expired_at.to_i
+    assert_equal((a.published_at + 10.days), a.comments_expired_at)
   end
 
   def test_comment_expiry
-    a = create_fake_article(5.days.from_now)
+    a = create_fake_article(5.days.from_now.utc)
     assert !a.accept_comments?
     a.published_at = 5.days.ago.utc
     assert  a.accept_comments?
@@ -174,7 +174,7 @@ class ArticleTest < Test::Unit::TestCase
       Article.create options.reverse_merge(:user_id => 1, :site_id => 1, :title => 'foo')
     end
     
-    def create_fake_article(time = 5.days.ago)
+    def create_fake_article(time = 5.days.ago.utc)
       returning Article.new(:comment_age => 10, :published_at => time.utc) do |a|
         def a.new_record?() false ; end
       end
