@@ -1,12 +1,14 @@
 class ApplicationController < ActionController::Base
   require_dependency 'application/errors'
-  include AuthenticatedSystem
-  before_filter :login_from_cookie
 
   include Mephisto::CachingMethods
   before_filter  :set_cache_root
   helper_method  :site
   attr_reader    :site
+
+  # This needs to come after #set_cache_root, or else @site won't be set properly
+  include AuthenticatedSystem
+  before_filter :login_from_cookie
 
   auto_include!
 
