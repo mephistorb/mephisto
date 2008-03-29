@@ -10,6 +10,8 @@
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
+require File.join(File.dirname(__FILE__), '../lib/mephisto/plugin')
 
 # requires vendor-loaded redcloth
 require 'RedCloth-3.0.4/lib/redcloth' unless Object.const_defined?(:RedCloth)
