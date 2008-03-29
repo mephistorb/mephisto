@@ -30,11 +30,11 @@ module Mephisto
       # Where oh where is my xmlrpc code?
       # map.connect 'xmlrpc', :controller => 'backend', :action => 'xmlrpc' 
       
+      map_from_plugins(map)
+      
       map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/, :id => /[^\/]*/
 
       yield if block_given?
-      
-      map_from_plugins(map)
       
       map.dispatch '*path', :controller => 'mephisto', :action => 'dispatch'
       map.home '', :controller => 'mephisto', :action => 'dispatch'
