@@ -47,3 +47,12 @@ end
 
 Engines::Plugin.send :include, Mephisto::Plugin
 
+module Engines
+  class Plugin < Rails::Plugin
+    protected
+      # override engine default list for Mephisto plugins
+      def default_code_paths
+        %w(app/controllers app/helpers app/models app/drops components lib)
+      end
+  end
+end
