@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class SectionDropTest < Test::Unit::TestCase
-  fixtures :sites, :sections, :contents
+  fixtures :sites, :sections, :contents, :assigned_sections
 
   def test_equality
     section = sections(:home).to_liquid

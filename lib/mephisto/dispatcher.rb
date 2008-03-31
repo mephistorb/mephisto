@@ -112,8 +112,8 @@ module Mephisto
       old_published          = article.published_at
       article.published_at ||= Time.now.utc
       article.article_id   ||= article.id
-      permalink_style.split('/').inject [''] do |s, piece|
-        s << ((name = variable_format?(piece)) && PERMALINK_OPTIONS.keys.include?(name.to_sym) ? variable_value_for(article, name) : piece)
+      '/' + permalink_style.split('/').collect! do |piece|
+        (name = variable_format?(piece)) && PERMALINK_OPTIONS.keys.include?(name.to_sym) ? variable_value_for(article, name) : piece
       end.join('/')
     ensure
       article.published_at = old_published
