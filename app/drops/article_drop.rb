@@ -43,7 +43,7 @@ class ArticleDrop < BaseDrop
   end
 
   def url
-    @url ||= absolute_url(@site.permalink_for(@source))
+    @url ||= absolute_url(@site.permalink_for(@source)[1..-1])
   end
 
   def comments_feed_url
