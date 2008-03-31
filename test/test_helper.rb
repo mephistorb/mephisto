@@ -379,21 +379,21 @@ class XmlLoginProxy < BaseLoginProxy
 end
 
 
-module Mephisto
-  module Plugins
-    class PluginWhammyJammy < Mephisto::Plugin
-      option :foo, 'one'
-      option :bar, 2
-      option :baz, [3]
-    end
-    
-    class FooBar < Mephisto::Plugin
-    end
-    
-    class NonPlugin
-    end
-  end
-end
+#module Mephisto
+#  module Plugins
+#    class PluginWhammyJammy < Mephisto::Plugin
+#      option :foo, 'one'
+#      option :bar, 2
+#      option :baz, [3]
+#    end
+#    
+#    class FooBar < Mephisto::Plugin
+#    end
+#    
+#    class NonPlugin
+#    end
+#  end
+#end
 
 begin
   require 'ruby-debug'
