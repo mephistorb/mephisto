@@ -5,7 +5,7 @@
 # Site.cache_sweeper_tracing = true
 
 # Enable if you want to host multiple sites on this app
-# Site.multi_sites_enabled = true
+Site.multi_sites_enabled = true
 
 # shouldn't need to set the host, it's set automatically
 UserMailer.default_url_options[:host] = 'localhost:3000'
