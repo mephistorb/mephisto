@@ -26,7 +26,7 @@ class Admin::ArticlesController < Admin::BaseController
     Mephisto::Liquid::CommentForm.article = @article
     @article  = @article.to_liquid(:mode => :single)
     
-    render :text => site.call_render(site.sections.home, :single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => site.to_liquid)
+    render :text => site.call_render(site.sections.home, :single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => site.to_liquid, 'admin?' => true)
   end
 
   def new
