@@ -6,6 +6,8 @@
 
   <%= error_messages_for :asset %>
   <dl class="group">
+    <dt><label for="asset_title">Title</label> <span class="hint">If you don't enter a title, we will use the filename instead.</span></dt>
+    <dd><%= f.text_field :title %></dd>
     <dt><label for="asset_tag">Tags</label> <span class="hint">Enter one or more tags separated by a comma or a space (for example, <em>"Web Dev" Tutorials</em> or <em>Web Dev, Tutorials</em>).</span></dt>
     <dd><%= f.text_field :tag %></dd>
     <dt><label for="asset_uploaded_data">Select a file</label></dt>
