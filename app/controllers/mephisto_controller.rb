@@ -54,14 +54,17 @@ class MephistoController < ApplicationController
     rescue ActiveRecord::RecordInvalid
       show_article_with 'errors' => @comment.errors.full_messages, 'submitted' => params[:comment]
     rescue Article::CommentNotAllowed
-      show_article_with 'errors' => ["Commenting has been disabled on this article"]
+      commenting_disabled = site.call_render(nil, :__commenting_disabled, {}, nil, :layout => false) rescue "Commenting has been disabled on this article"
+      show_article_with 'errors' => [commenting_disabled]
     rescue Comment::Previewing
-      show_article_with 'errors' => ["Previewing your comment"], 'submitted' => params[:comment]
+      previewing_comment = site.call_render(nil, :__previewing_comment, {}, nil, :layout => false) rescue "Previewing your comment"
+      show_article_with 'errors' => [previewing_comment], 'submitted' => params[:comment]
     end
     
     def dispatch_comment
       @skip_caching = true
-      show_article_with 'message' => 'Thanks for the comment!'
+      message = site.call_render(nil, :__thanks_for_comment, {}, nil, :layout => false) rescue "Thanks for the comment!"
+      show_article_with 'message' => message
     end
 
     def dispatch_archives
