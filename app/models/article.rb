@@ -5,7 +5,7 @@ class Article < Content
 
   before_validation { |record| record.set_default_filter! }
   after_validation :convert_to_utc
-  has_permalink :title
+  has_permalink :title, :scope => :site_id
   after_save    :save_assigned_sections
   after_update  :reset_comment_attributes
 
