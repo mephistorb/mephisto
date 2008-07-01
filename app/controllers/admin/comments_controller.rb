@@ -1,6 +1,7 @@
 class Admin::CommentsController < Admin::BaseController
 
   member_actions.push(*%w(index unapproved create edit update approve unapprove destroy close ))
+  before_filter :protect_action, :only => [:approve, :unapprove]
 
 private
 

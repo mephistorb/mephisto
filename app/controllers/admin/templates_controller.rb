@@ -23,6 +23,10 @@ class Admin::TemplatesController < Admin::DesignController
   end
 
   def remove
+    if request.get?
+      redirect_to :action => 'edit' 
+      return
+    end
     @tmpl = @theme.templates[params[:filename]]
     render :update do |page|
       if !@tmpl.file?

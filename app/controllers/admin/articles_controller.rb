@@ -9,6 +9,7 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :check_for_new_draft,  :only => [:create, :update, :upload]
   
   before_filter :find_site_article, :only => [:edit, :update, :comments, :approve, :unapprove, :destroy, :attach, :detach]
+  before_filter :protect_action, :only => [:approve, :unapprove, :attach, :detach]
   before_filter :login_required, :except => :upload
   before_filter :load_sections, :only => [:new, :edit]
 
