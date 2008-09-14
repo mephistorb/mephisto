@@ -8,7 +8,7 @@ class Admin::ResourcesController < Admin::DesignController
   verify :method => :post, :params => :resource, :only => :upload,
          :add_flash   => { :error => 'Resource required' },
          :redirect_to => { :controller => 'design', :action => 'index' }
-  
+
   def index
     redirect_to :controller => 'design'
   end
@@ -26,6 +26,10 @@ class Admin::ResourcesController < Admin::DesignController
   end
 
   def upload
+    if request.get?
+      redirect_to :controller => 'design', :action => 'index'
+      return
+    end
     if params[:resource] && Asset.image?(params[:resource].content_type.strip) && (1..1.megabyte).include?(params[:resource].size)
       @resource = @theme.resources.write File.basename(params[:resource].original_filename), params[:resource].read
       flash[:notice] = "'#{@resource.basename}' was uploaded successfully."
@@ -36,6 +40,10 @@ class Admin::ResourcesController < Admin::DesignController
   end
   
   def remove
+    if request.get?
+      redirect_to :action => 'edit' 
+      return
+    end
     @resource = @theme.resources[params[:filename]]
     render :update do |page|
       @resource.unlink if @resource.file?

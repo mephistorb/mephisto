@@ -193,13 +193,19 @@ class Site < ActiveRecord::Base
     comment_age.to_i > -1
   end
 
-  def call_render(section, template_type, assigns = {}, controller = nil)
+  def call_render(section, template_type, assigns = {}, controller = nil, options = {})
     assigns.update('site' => to_liquid(section), 'mode' => template_type)
     assigns.update(default_assigns) unless default_assigns.empty?
+    options.reverse_merge!(:layout => true)
     template = set_content_template(section, template_type)
-    layout = set_layout_template(section, template_type)
     handler = @@template_handlers[theme.extension] || @@template_handlers[".liquid"]
-    handler.new(self).render(section, layout, template, assigns, controller)
+    
+    if options[:layout]
+      layout = set_layout_template(section, template_type)
+      handler.new(self).render(section, layout, template, assigns, controller)
+    else
+      handler.new(self).parse_inner_template(template, assigns, controller)
+    end
   end
   
   def to_liquid(current_section = nil)

@@ -3,6 +3,7 @@ class Admin::OverviewController < Admin::BaseController
   session :off, :only => :feed
   before_filter :basic_auth_required, :only => :feed
   caches_page :feed
+  before_filter :protect_action, :only => :delete
   
   helper Admin::ArticlesHelper
   

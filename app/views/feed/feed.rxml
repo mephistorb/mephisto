@@ -1,6 +1,6 @@
 xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
 
-xml.feed "xml:lang" => "en-US", "xmlns" => 'http://www.w3.org/2005/Atom' do
+xml.feed "xml:lang" => "#{site.lang || 'en-US'}", "xmlns" => 'http://www.w3.org/2005/Atom' do
   xml.title       "#{site.title || 'Mephisto'} - #{@section ? @section.name : 'All'}#{' Comments' if @comments && @articles.nil?}"
   xml.id          "tag:#{request.host},#{Time.now.utc.year}:mephisto#{"/#{@section.path}" if @section}#{ '/comments' if @comments && @articles.nil?}"
   xml.generator   "Mephisto #{Mephisto::Version::TITLE}", :uri => "http://mephistoblog.com", :version => "#{Mephisto::Version::STRING}"

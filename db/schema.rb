@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 75) do
+ActiveRecord::Schema.define(:version => 76) do
 
   create_table "assets", :force => true do |t|
     t.string   "content_type"
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(:version => 75) do
     t.string  "current_theme_path"
     t.string  "akismet_key",        :limit => 100
     t.string  "akismet_url"
+    t.string  "lang",               :default => "en-US", :null => false
   end
 
   add_index "sites", ["host"], :name => "index_sites_on_host"

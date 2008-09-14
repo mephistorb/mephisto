@@ -9,6 +9,7 @@ class Admin::ArticlesController < Admin::BaseController
   before_filter :check_for_new_draft,  :only => [:create, :update, :upload]
   
   before_filter :find_site_article, :only => [:edit, :update, :comments, :approve, :unapprove, :destroy, :attach, :detach]
+  before_filter :protect_action, :only => [:approve, :unapprove, :attach, :detach]
   before_filter :login_required, :except => :upload
   before_filter :load_sections, :only => [:new, :edit]
 
@@ -26,7 +27,7 @@ class Admin::ArticlesController < Admin::BaseController
     Mephisto::Liquid::CommentForm.article = @article
     @article  = @article.to_liquid(:mode => :single)
     
-    render :text => site.call_render(site.sections.home, :single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => site.to_liquid)
+    render :text => site.call_render(site.sections.home, :single, 'articles' => [@article], 'article' => @article, 'comments' => @comments, 'site' => site.to_liquid, 'admin?' => true)
   end
 
   def new

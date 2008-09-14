@@ -1,5 +1,6 @@
 class Admin::CachedPagesController < Admin::BaseController
   before_filter { |c| raise ActionController::UnknownController unless c.class.perform_caching }
+  before_filter :protect_action, :only => :clear
 
   def index
     CachedPage.with_current_scope do
