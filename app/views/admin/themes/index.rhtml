@@ -5,7 +5,7 @@
 <% content_for :action_nav do -%>
   <div id="page-nav">
     <ul id="act-nav" class="clear">
-      <li><%= link_to "Import new theme", :controller => 'themes', :action => 'import' %></li>
+      <li><%= link_to "Import new theme", {:controller => 'themes', :action => 'import'}, :method => :post  %></li>
     </ul>
   </div>
 <% end -%>
