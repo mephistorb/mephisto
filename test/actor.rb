@@ -44,6 +44,13 @@ module Mephisto
         post "/admin/resources/update", :filename => resource.basename.to_s, :data => data
         assert_equal 200, status, "Updating resource #{resource.basename}"
       end
+
+      def remove_resource(resource)
+        post "/admin/resources/remove", :filename => resource.basename.to_s
+        assert_equal 200, status, "Removing resource #{resource.basename}"
+      end
+
+      # TODO upload_resource
       
       def update_template(template, data)
         post "/admin/templates/update", :filename => template.basename.to_s, :data => data

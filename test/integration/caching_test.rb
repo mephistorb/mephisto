@@ -343,7 +343,7 @@ class CachingTest < ActionController::IntegrationTest
     assert_cached feed_url_for(:home)
   end
 
-  def test_should_expire_resource
+  def test_should_expire_resource_when_updating_resource
     visitor = visit
     assert_caches_page '/images/rails-logo.png' do
       visitor.read '/images/rails-logo.png'
@@ -355,6 +355,21 @@ class CachingTest < ActionController::IntegrationTest
       end
     end
   end
+
+  def test_should_expire_resource_when_removing_resource
+    visitor = visit
+    assert_caches_page '/images/rails-logo.png' do
+      visitor.read '/images/rails-logo.png'
+    end
+    
+    assert_expires_page 'images/rails-logo.png' do
+      login_as :quentin do |writer|
+        writer.remove_resource sites(:first).resources['rails-logo.png']
+      end
+    end
+  end
+
+  # TODO test_should_expire_resource_when_uploading_resource
 
   def test_should_not_cache_searches
     visitor = visit
