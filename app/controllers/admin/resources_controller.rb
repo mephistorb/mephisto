@@ -19,7 +19,7 @@ class Admin::ResourcesController < Admin::DesignController
 
   def update
     @theme.resources.write params[:filename], params[:data]
-    self.class.expire_page('/' << @theme.resources[params[:filename]].relative_path_from(site.attachment_path).to_s) if current_theme?
+    expire_resource(params[:filename])
     render :update do |page|
       page.call 'Flash.notice', 'Resource updated successfully'
     end
@@ -32,6 +32,7 @@ class Admin::ResourcesController < Admin::DesignController
     end
     if params[:resource] && Asset.image?(params[:resource].content_type.strip) && (1..1.megabyte).include?(params[:resource].size)
       @resource = @theme.resources.write File.basename(params[:resource].original_filename), params[:resource].read
+      expire_resource(@resource.basename)
       flash[:notice] = "'#{@resource.basename}' was uploaded successfully."
     else
       flash[:error]  = "A bad or nonexistant image was uploaded."
@@ -45,9 +46,18 @@ class Admin::ResourcesController < Admin::DesignController
       return
     end
     @resource = @theme.resources[params[:filename]]
+    expire_resource(@resource.basename)
     render :update do |page|
       @resource.unlink if @resource.file?
       page.visual_effect :fade, params[:context], :duration => 0.3
+    end
+  end
+
+  protected
+
+  def expire_resource(filename)
+    if current_theme?
+      self.class.expire_page('/' << @theme.resources[filename].relative_path_from(site.attachment_path).to_s)
     end
   end
 end
