@@ -110,8 +110,8 @@ ActiveRecord::Schema.define(:version => 76) do
     t.integer  "assets_count",                  :default => 0
   end
 
-  add_index "contents", ["published_at"], :name => "idx_articles_published"
   add_index "contents", ["article_id", "approved", "type"], :name => "idx_comments"
+  add_index "contents", ["published_at"], :name => "idx_articles_published"
 
   create_table "events", :force => true do |t|
     t.string   "mode"
@@ -179,7 +179,7 @@ ActiveRecord::Schema.define(:version => 76) do
     t.string  "current_theme_path"
     t.string  "akismet_key",        :limit => 100
     t.string  "akismet_url"
-    t.string  "lang",               :default => "en-US", :null => false
+    t.string  "lang",                              :default => "en-US", :null => false
   end
 
   add_index "sites", ["host"], :name => "index_sites_on_host"
