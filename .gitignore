@@ -1,6 +1,9 @@
 .rake_tasks
 config/database.yml
 config/deploy.rb
-log
+db/*.sqlite3
+log/*.log
+public/plugin_assets
 tmp
 themes/*
+*~
