@@ -42,7 +42,7 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
   
   def test_should_require_template_filename_on_update
     login_as :quentin
-    get :update
+    post :update
     assert_redirected_to :action => 'index'
     assert flash[:error]
   end
@@ -50,8 +50,10 @@ class Admin::TemplatesControllerTest < Test::Unit::TestCase
   def test_should_require_post_on_update
     login_as :quentin
     get :update, :filename => 'layout.liquid'
-    assert_redirected_to :action => 'edit'
-    assert flash[:error]
+    # We used to redirect to 'edit' and set flash[:error] here, but this
+    # error-checking is now handled by Admin::BaseController
+    # #protect_action, which doesn't bother to set a flash.
+    assert_redirected_to :action => 'index'
   end
   
   def test_should_require_posted_template

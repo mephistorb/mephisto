@@ -41,7 +41,7 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
   
   def test_should_require_resource_id_on_update
     login_as :quentin
-    get :update
+    post :update
     assert_redirected_to :action => 'index'
     assert flash[:error]
   end
@@ -49,8 +49,7 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
   def test_should_require_posted_resource
     login_as :quentin
     get :update, :filename => 'style.css', :data => 'foo'
-    assert_redirected_to :action => 'edit'
-    assert flash[:error]
+    assert_redirected_to :action => 'index'
   end
   
   def test_should_require_posted_resource_on_update
