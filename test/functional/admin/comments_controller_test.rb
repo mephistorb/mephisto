@@ -64,12 +64,12 @@ class Admin::CommentsControllerTest < Test::Unit::TestCase
   
   def test_should_approve_comment
     contents(:welcome_comment).update_attribute(:approved, false)
-    xhr :get, :approve, :article_id => '1', :id => '3'
+    xhr :post, :approve, :article_id => '1', :id => '3'
     assert_response :success
   end
 
   def test_should_unapprove_comment
-    xhr :get, :unapprove, :article_id => '1', :id => '3'
+    xhr :post, :unapprove, :article_id => '1', :id => '3'
     assert_response :success
     assert_template 'approve'
   end

@@ -2,7 +2,7 @@ class Admin::ThemesController < Admin::BaseController
   @@theme_export_path   = RAILS_PATH + 'tmp/export'
   @@theme_content_types = %w(application/zip multipart/x-zip application/x-zip-compressed)
   cattr_accessor :theme_export_path, :theme_content_types
-  before_filter :protect_action, :only => [:export, :change_to, :rollback, :import]
+  before_filter :protect_action, :only => [:export, :change_to, :rollback]
   before_filter :find_theme, :only => [:preview_for, :export, :change_to, :show, :destroy]
 
   def preview_for
