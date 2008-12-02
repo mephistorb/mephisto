@@ -51,7 +51,7 @@ class Admin::OverviewControllerTest < Test::Unit::TestCase
   def test_should_sort_future_items_in_todays_events
     today = Time.now.utc
     assert events(:future).update_attribute(  :created_at, today + 2.days)
-    assert events(:site_map).update_attribute(:created_at, today - 5.minutes)
+    assert events(:site_map).update_attribute(:created_at, today)
     assert events(:about).update_attribute(   :created_at, today - 1.day)
     get :index
     assert assigns(:todays_events).include?(events(:future)),    "#{assigns(:todays_events).collect(&:id).inspect}"
