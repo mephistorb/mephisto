@@ -85,7 +85,7 @@ module ModelStubbing
     end
     
     def purge
-      model_class.connection.execute "TRUNCATE TABLE #{connection.quote_column_name model_class.table_name}"
+      model_class.connection.delete "DELETE FROM #{connection.quote_column_name model_class.table_name}"
     end
     
     def connection
