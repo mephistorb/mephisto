@@ -5,6 +5,7 @@ require 'action_controller/dispatcher'
 require 'coderay'
 require 'ruby_pants'
 require 'xmlrpc_patch'
+require 'base64'
 
 ActiveRecord::Base.observers = [:article_observer, :comment_observer]
 
