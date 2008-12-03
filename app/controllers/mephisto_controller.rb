@@ -55,6 +55,7 @@ class MephistoController < ApplicationController
       show_article_with 'errors' => @comment.errors.full_messages, 'submitted' => params[:comment]
     rescue Article::CommentNotAllowed
       commenting_disabled = site.call_render(nil, :__commenting_disabled, {}, nil, :layout => false) rescue "Commenting has been disabled on this article"
+      @article.reload
       show_article_with 'errors' => [commenting_disabled]
     rescue Comment::Previewing
       previewing_comment = site.call_render(nil, :__previewing_comment, {}, nil, :layout => false) rescue "Previewing your comment"
