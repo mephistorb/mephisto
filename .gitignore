@@ -3,6 +3,7 @@ config/database.yml
 config/deploy.rb
 db/*.sqlite3
 log/*.log
+public/assets
 public/plugin_assets
 tmp
 themes/*
