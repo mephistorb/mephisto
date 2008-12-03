@@ -59,8 +59,11 @@ class Admin::AssetsController < Admin::BaseController
     search_assets 6
     render :update do |page|
       page['spinner'].hide
-        return page['search-assets'].replace_html(:partial => 'widget', :collection => @assets, :locals => { :prefix => 'search' }) if @assets.any?
-        page['search-assets'].replace_html %(Couldn't find any matching assets.)
+      if @assets.any?
+        page['search-assets'].replace_html(:partial => 'widget', :collection => @assets, :locals => { :prefix => 'search' })
+      else
+        page['search-assets'].replace_html "Couldn't find any matching assets."
+      end
     end
   end
 
