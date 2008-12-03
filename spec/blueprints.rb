@@ -1,0 +1,64 @@
+require 'faker'
+
+Sham.title { Faker::Lorem.sentence }
+Sham.host  { Faker::Internet.domain_name }
+Sham.name  { Faker::Name.name }
+Sham.login { Faker::Internet.user_name }
+Sham.email { Faker::Internet.email }
+Sham.url   { "http://#{Faker::Internet.domain_name}/" }
+Sham.body  { Faker::Lorem.paragraphs }
+Sham.tag   { Faker::Lorem.words(1) }
+
+Site.blueprint do
+  title              { Sham.title }
+  host               { Sham.host }
+  filter             { 'textile_filter' }
+  approve_comments   { false }
+  comment_age        { 30 }
+  timezone           { "America/New_York" }
+  articles_per_page  { 15 }
+  permalink_style    { ":year/:month/:day/:permalink" }
+  tag_path           { 'tags' }
+  search_path        { 'search' }
+  current_theme_path { 'current' }
+end
+
+User.blueprint do
+  login            { Sham.login }
+  email            { Sham.email }
+  filter           { 'textile_filter' }
+  token            { 'quentintoken' }
+  admin            { false }
+  salt             { '7e3041ebc2fc05a40c60028e2c4901a81035d3cd' }
+  crypted_password { '00742970dc9e6319f8019fd54864d3ea740f04b1' }
+end
+
+Membership.blueprint do
+  site
+  user
+  admin { false }
+end
+
+Article.blueprint do
+  site
+  user
+  title        { Sham.title }
+  body         { Sham.body }
+  filter       { "textile_filter" }
+  created_at   { Time.now - 3.days }
+  published_at { Time.now - 2.days }
+  comment_age  { 0 }
+end
+
+Comment.blueprint do
+  article
+  author       { Sham.name }
+  author_email { Sham.email }
+  author_url   { Sham.url }
+  author_ip    { "127.0.0.1" }
+  body         { Sham.body }
+end
+
+Tag.blueprint do
+  name         { Sham.tag }
+end

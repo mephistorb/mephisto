@@ -1,39 +1,56 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Membership do
-  define_models do
-    model Site do
-      stub :cupcake, :title => "Cupcake", :host => 'cupcake.com'
-    end
-    
-    model User do
-      stub :non_admin, :login => 'arthur', :admin => false
-      stub :deleted,   :login => "aaron",  :admin => false, :deleted_at => current_time - 5.minutes
-    end
-    
-    model Membership do
-      stub :admin_on_default,   :site => all_stubs(:site),         :user => all_stubs(:user),           :admin => true
-      stub :admin_on_cupcake,   :site => all_stubs(:cupcake_site), :user => all_stubs(:user),           :admin => true
-      stub :user_on_default,    :site => all_stubs(:site),         :user => all_stubs(:non_admin_user), :admin => false
-      stub :deleted_on_default, :site => all_stubs(:site),         :user => all_stubs(:deleted_user),   :admin => false
-    end
+
+  before :each do
+    # Take away the admin bits from any existing users in our database so
+    # that they won't show up as server-wide admins on sites where they
+    # don't even have a membership.
+    User.update_all(['admin = ?', false])
+
+    @default_site = Site.make(:title => "Default Site")
+    @cupcake_site = Site.make(:title => "Cupcake Site")
+
+    @default_user = User.make(:login => 'default_user', :admin => true)
+    @non_admin    = User.make(:login => 'non_admin',    :admin => false)
+    @deleted_user = User.make(:login => 'deleted_user', :admin => false)
+    @deleted_user.deleted_at = Time.now - 5.minutes
+    @deleted_user.save!
+
+    Membership.make(:site => @default_site, :user => @default_user,
+                    :admin => true)
+    Membership.make(:site => @cupcake_site, :user => @default_user,
+                    :admin => false)
+    Membership.make(:site => @default_site, :user => @non_admin,
+                    :admin => false)
+    Membership.make(:site => @default_site, :user => @deleted_user,
+                    :admin => false)
   end
   
   it "finds user sites" do
-    users(:default).sites.sort_by { |s| s.title }.should == [sites(:cupcake), sites(:default)]
+    @default_user.sites.sort_by { |s| s.title }.should ==
+      [@cupcake_site, @default_site]
   end
   
   it "finds site members" do
-    sites(:default).members.sort_by { |u| u.login }.should == [users(:non_admin), users(:default)]
-    User.find_all_by_site(sites(:default)).sort_by { |u| u.login }.should == [users(:non_admin), users(:default)]
+    @default_site.members.sort_by { |u| u.login }.should ==
+      [@default_user, @non_admin]
+    User.find_all_by_site(@default_site).sort_by { |u| u.login }.should ==
+      [@default_user, @non_admin]
   end
 
   it "finds site admins" do
-    sites(:default).admins.should == [users(:default)]
+    @default_site.admins.should == [@default_user]
   end
   
+  it "considers global admins to be site admins" do
+    @cupcake_site.admins.should == [@default_user]
+  end
+
   it "finds all users with deleted" do
-    sites(:default).users_with_deleted.sort_by { |u| u.login }.should == [users(:deleted), users(:non_admin), users(:default)]
-    User.find_all_by_site_with_deleted(sites(:default)).sort_by { |u| u.login }.should == [users(:deleted), users(:non_admin), users(:default)]
+    @default_site.users_with_deleted.sort_by { |u| u.login }.should ==
+      [@default_user, @deleted_user, @non_admin]
+    User.find_all_by_site_with_deleted(@default_site).sort_by { |u| u.login }.should ==
+      [@default_user, @deleted_user, @non_admin]
   end
 end
