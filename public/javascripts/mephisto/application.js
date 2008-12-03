@@ -152,12 +152,12 @@ var TinyTab = Class.create();
 TinyTab.callbacks ={
   'latest-files': function() {
     if($('latest-assets').childNodes.length == 0)
-      new Ajax.Request(Mephisto.root + '/admin/assets;latest');
+      new Ajax.Request(Mephisto.root + '/admin/assets/latest');
   },
   'search-files': function(q) {
     if(!q) return;
     $('spinner').show();
-    new Ajax.Request(Mephisto.root + '/admin/assets;search', {parameters: 'q=' + escape(q)});
+    new Ajax.Request(Mephisto.root + '/admin/assets/search', {parameters: 'q=' + escape(q)});
   }
 };
 
