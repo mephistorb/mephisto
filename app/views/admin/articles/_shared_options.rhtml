@@ -39,6 +39,15 @@
       <input class="searchbox" type="text" size="30" name="q" id="search-files-q" />
       <input type="button" value="Search" onclick="TinyTab.callbacks['search-files']($F('search-files-q'))" />
       <ul id="search-assets" class="asset-list"></ul>
+      <% javascript_tag do -%>
+        // Don't save the entire article when the user presses enter.
+        Event.observe('search-files-q', 'keypress', function (event) {
+          if (event.keyCode == Event.KEY_RETURN) {
+            Event.stop(event);
+            TinyTab.callbacks['search-files']($F('search-files-q'))
+          }
+        });
+      <% end -%>
     </div>
     <div class="tabpanel" id="upload-files" style="display:none;">
       <p>
