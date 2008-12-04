@@ -110,8 +110,8 @@ ActiveRecord::Schema.define(:version => 76) do
     t.integer  "assets_count",                  :default => 0
   end
 
-  add_index "contents", ["article_id", "approved", "type"], :name => "idx_comments"
   add_index "contents", ["published_at"], :name => "idx_articles_published"
+  add_index "contents", ["article_id", "approved", "type"], :name => "idx_comments"
 
   create_table "events", :force => true do |t|
     t.string   "mode"
