@@ -23,7 +23,7 @@ In addition to the regular set of plugin-supported files (lib, init.rb, tasks, g
 Include these files in an <tt>app</tt> directory just like you would in a normal Rails application. If you need to override a method, view or partial, create the corresponding file in your main <tt>app</tt> directory and it will be used instead.
 
 * Controllers & Helpers: See Engines::RailsExtensions::Dependencies for more information.
-* Views: See Engines::RailsExtensions::Templates for more information.
+* Views: now handled almost entirely by ActionView itself (see Engines::Plugin#add_plugin_view_paths for more information)
 
 === Models
 
@@ -61,3 +61,23 @@ The engines plugin enhances and adds to the suite of default rake tasks for work
   rake -T
   
 to see the set of rake tasks available.
+
+= Testing the engines plugin itself
+
+Because of the way the engines plugin modifies Rails, the simplest way to consistently test it against multiple versions is by generating a test harness application - a full Rails application that includes tests to verify the engines plugin behaviour in a real, running environment.
+
+Run the tests like this:
+
+  $ cd engines
+  $ rake test
+  
+This will generate a test_app directory within the engines plugin (using the default 'rails' command), import tests and code into that application and then run the test suite.
+
+If you wish to test against a specific version of Rails, run the tests with the RAILS environment variable set to the local directory containing your Rails checkout
+
+  $ rake test RAILS=/Users/james/Code/rails_edge_checkout
+  
+Alternatively, you can clone the latest version of Rails ('edge rails') from github like so:
+
+  $ rake test RAILS=edge
+  

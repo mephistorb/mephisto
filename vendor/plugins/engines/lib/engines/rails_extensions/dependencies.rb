@@ -102,7 +102,7 @@ module Engines::RailsExtensions::Dependencies
       # if we recognise this type
       # (this regexp splits out the module/filename from any instances of app/#{type}, so that
       #  modules are still respected.)
-      if file_name =~ /^(.*app\/#{file_type}s\/)?(.*_#{file_type})(\.rb)?$/
+      if file_name =~ /^(.*app\/#{file_type}s\/)+(.*_#{file_type})(\.rb)?$/
         base_name = $2
         # ... go through the plugins from first started to last, so that
         # code with a high precedence (started later) will override lower precedence
@@ -140,6 +140,6 @@ module Engines::RailsExtensions::Dependencies
   end  
 end
 
-module ::Dependencies #:nodoc:
+module ActiveSupport::Dependencies #:nodoc:
   include Engines::RailsExtensions::Dependencies
 end
