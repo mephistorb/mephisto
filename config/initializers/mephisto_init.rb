@@ -32,7 +32,7 @@ end
 
 ActionController::Dispatcher.register_liquid_tags
 
-Inflector.inflections do |inflect|
+ActiveSupport::Inflector.inflections do |inflect|
   #inflect.plural /^(ox)$/i, '\1en'
   #inflect.singular /^(ox)en/i, '\1'
   #inflect.irregular 'person', 'people'
@@ -41,5 +41,6 @@ end
 
 Engines::Plugin::Config.set_table_name 'mephisto_plugins'
 
-Dependencies.autoloaded_constants.delete "Mephisto"
-Dependencies.autoloaded_constants.delete "Mephisto::Plugin"
+# This code is very suspicious.  What it it trying to do?
+ActiveSupport::Dependencies.autoloaded_constants.delete "Mephisto"
+ActiveSupport::Dependencies.autoloaded_constants.delete "Mephisto::Plugin"

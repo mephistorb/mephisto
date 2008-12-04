@@ -50,7 +50,7 @@ module WillPaginate
         end
       end
 
-      def respond_to? method
+      def respond_to? method, include_private=false
         case method.to_sym
         when :paginate, :paginate_by_sql
           true
