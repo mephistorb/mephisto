@@ -377,10 +377,13 @@ class MephistoControllerTest < Test::Unit::TestCase
   end
 
   def test_should_show_monthly_entries
-    date = Time.now.utc - 4.days
-    dispatch "archives/#{date.year}/#{date.month}"
+    # Move an article into a month by itself.
+    article = contents(:another)
+    article.published_at = '1994-04-15'.to_time
+    article.save!
+    dispatch "archives/1994/04"
     assert_dispatch_action :archives
-    assert_models_equal [contents(:welcome), contents(:another)], assigns(:articles)
+    assert_models_equal [article], assigns(:articles)
   end
   
   def test_should_show_articles_by_tag
