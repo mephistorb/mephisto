@@ -22,6 +22,9 @@ module Mephisto
         r.resources :comments, :controller => 'admin/comments', :member => { :unapprove => :post, :approve => :post, :edit => :get, :preview => :post }
       end
 
+      # Called from the asset upload sidebar's JavaScript.
+      map.connect 'admin/articles/upload/:id', :controller => 'admin/articles', :action => 'upload'
+
       map.overview 'admin/overview.xml', :controller => 'admin/overview', :action => 'feed'
       map.admin    'admin', :controller => 'admin/overview', :action => 'index'
       map.resources :assets, :path_prefix => '/admin', :controller => 'admin/assets', :member => { :add_bucket => :post },
