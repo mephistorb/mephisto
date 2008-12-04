@@ -28,12 +28,6 @@ Time.class_eval do
   end
 end
 
-Fixtures.class_eval do
-  def self.delete_existing_fixtures_for(connection, table_name)
-    connection.delete  "DELETE FROM #{table_name}", 'Fixture Delete'
-  end
-end
-
 THEME_ROOT = RAILS_PATH + 'tmp/themes' unless Object.const_defined?(:THEME_ROOT)
 THEME_FILES = [
   'about.yml',

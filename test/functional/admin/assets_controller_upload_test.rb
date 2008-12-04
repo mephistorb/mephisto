@@ -13,7 +13,7 @@ class Admin::AssetsControllerUploadTest < Test::Unit::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     login_as :quentin
-    Fixtures.delete_existing_fixtures_for(Asset.connection, :assets)
+    Asset.delete_all
   end
 
   def test_should_sort_assets
