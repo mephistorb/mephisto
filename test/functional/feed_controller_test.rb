@@ -119,14 +119,14 @@ context "Home Section Feed" do
 
   specify "show absolute urls with custom relative url root" do
     begin
-      old_root = ActionController::AbstractRequest.relative_url_root
-      ActionController::AbstractRequest.relative_url_root = '/weblog'
+      old_root = ActionController::Base.relative_url_root
+      ActionController::Base.relative_url_root = '/weblog'
       get :feed, :sections => []
       assert_select 'feed entry link' do
         assert_select '[href=?]', /^http\:\/\/test\.host\/weblog\/\d{4}\/.*$/
       end
     ensure
-      ActionController::AbstractRequest.relative_url_root = old_root
+      ActionController::Base.relative_url_root = old_root
     end
   end
 

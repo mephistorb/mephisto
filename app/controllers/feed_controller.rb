@@ -16,6 +16,8 @@ class FeedController < ApplicationController
       else
         article_feed_for_section
     end
+  rescue ActiveRecord::RecordNotFound
+    render :file => "public/404.html", :status => 404
   end
 
   protected
