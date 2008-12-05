@@ -5,7 +5,7 @@
   <dl>
     <dt><label for="article_title">Title</label></dt>
     <dd><%= form.text_field :title, :class => 'big'  %></dd>
-    <dt id="x-lbl" style="<%= @style %>"><%= form.label_for :excerpt %> <span class="hint">(<%= link_to_function 'Hide', %(['x-lbl', 'x-body'].each(Element.toggle)) %>)</span></dt>
+    <dt id="x-lbl" style="<%= @style %>"><%= form.label :excerpt %> <span class="hint">(<%= link_to_function 'Hide', %(['x-lbl', 'x-body'].each(Element.toggle)) %>)</span></dt>
     <dd id="x-body" style="<%= @style %>"><%= form.text_area :excerpt, :rows => '8', :class => 'fat'  %></dd>
     <dt><label for="article_body">Write your article</label> <span class="hint">(<%= link_to_function 'Add an excerpt', %(['x-lbl', 'x-body'].each(Element.toggle)) %>)</span></dt>
     <dd><%= form.text_area :body, :class => 'fat', :rows => 25  %></dd>
