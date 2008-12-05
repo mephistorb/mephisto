@@ -14,8 +14,7 @@ describe Membership do
     @default_user = User.make(:login => 'default_user', :admin => true)
     @non_admin    = User.make(:login => 'non_admin',    :admin => false)
     @deleted_user = User.make(:login => 'deleted_user', :admin => false)
-    @deleted_user.deleted_at = Time.now - 5.minutes
-    @deleted_user.save!
+    @deleted_user.destroy
 
     Membership.make(:site => @default_site, :user => @default_user,
                     :admin => true)
