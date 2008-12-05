@@ -1,8 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-include Mephisto::Liquid::UrlMethods
-
 describe Mephisto::Liquid::UrlMethods, "#absolute_url" do
+  include Mephisto::Liquid::UrlMethods
+
   it "has root absolute url" do
     absolute_url.should == '/'
   end
@@ -27,6 +27,8 @@ describe Mephisto::Liquid::UrlMethods, "#absolute_url" do
 end
 
 describe Mephisto::Liquid::UrlMethods, "#absolute_url (with custom url root)" do
+  include Mephisto::Liquid::UrlMethods
+
   class << self
     attr_accessor :relative_url_root
   end
