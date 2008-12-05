@@ -1,5 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+include Mephisto::Liquid::UrlMethods
+
 describe Mephisto::Liquid::UrlMethods, "#absolute_url" do
   it "has root absolute url" do
     absolute_url.should == '/'
