@@ -3,7 +3,7 @@ module Mephisto
     module UrlMethods
       def self.relative_url_root
         class << self ; attr_reader :relative_url_root ; end
-        @relative_url_root = ActionController::AbstractRequest.relative_url_root || ''
+        @relative_url_root = ActionController::Base.relative_url_root || ''
       end
       
       def relative_url_root
