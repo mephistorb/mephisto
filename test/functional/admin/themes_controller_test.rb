@@ -24,7 +24,7 @@ context "Admin Themes Controller" do
   specify "should not allow site member" do
     login_as :arthur, :hostess
     get :index
-    assert_redirected_to :controller => 'account', :action => 'login'
+    assert_redirected_to :controller => '/account', :action => 'login'
   end
   
   specify "should show import form" do
