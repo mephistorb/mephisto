@@ -1,4 +1,3 @@
-require 'spec/runner/formatter'
 require 'spec/runner/options'
 require 'spec/runner/option_parser'
 require 'spec/runner/example_group_runner'
@@ -6,17 +5,16 @@ require 'spec/runner/command_line'
 require 'spec/runner/drb_command_line'
 require 'spec/runner/backtrace_tweaker'
 require 'spec/runner/reporter'
-require 'spec/runner/extensions/object'
 require 'spec/runner/spec_parser'
 require 'spec/runner/class_and_arguments_parser'
 
 module Spec
-  # == Behaviours and Examples
+  # == ExampleGroups and Examples
   # 
-  # Rather than expressing examples in classes, RSpec uses a custom domain specific language to 
-  # describe Behaviours and Examples of those behaviours.
+  # Rather than expressing examples in classes, RSpec uses a custom DSLL (DSL light) to 
+  # describe groups of examples.
   # 
-  # A Example is the equivalent of a fixture in xUnit-speak. It is a metaphor for the context
+  # A ExampleGroup is the equivalent of a fixture in xUnit-speak. It is a metaphor for the context
   # in which you will run your executable example - a set of known objects in a known starting state.
   # We begin be describing
   # 
@@ -125,11 +123,11 @@ module Spec
   #     end
   #   end
   # 
-  # == Shared behaviour
+  # == Shared Example Groups
   # 
-  # You can define a shared behaviour, that may be used on other behaviours
+  # You can define a shared Example Group, that may be used on other groups
   #
-  #  describe "All Editions", :shared => true do
+  #  share_examples_for "All Editions" do
   #    it "all editions behaviour" ...
   #  end
   #
@@ -141,10 +139,10 @@ module Spec
   #    end
   #  end
   #
-  # You can also assign the shared behaviour to a module and include that
+  # You can also assign the shared group to a module and include that
   #
-  #  AllEditions = describe "All Editions", :shared => true do
-  #    it "all editions behaviour" ...
+  #  share_as :AllEditions do
+  #    it "should do all editions stuff" ...
   #  end
   #
   #  describe SmallEdition do
@@ -166,25 +164,48 @@ module Spec
   #    end
   #  end
   module Runner
-    class << self
-      def configuration # :nodoc:
-        @configuration ||= Spec::Example::Configuration.new
-      end
-      
-      # Use this to configure various configurable aspects of
-      # RSpec:
-      #
-      #   Spec::Runner.configure do |configuration|
-      #     # Configure RSpec here
-      #   end
-      #
-      # The yielded <tt>configuration</tt> object is a
-      # Spec::Example::Configuration instance. See its RDoc
-      # for details about what you can do with it.
-      #
-      def configure
-        yield configuration
+    def self.configuration # :nodoc:
+      @configuration ||= Spec::Example::Configuration.new
+    end
+
+    # Use this to configure various configurable aspects of
+    # RSpec:
+    #
+    #   Spec::Runner.configure do |configuration|
+    #     # Configure RSpec here
+    #   end
+    #
+    # The yielded <tt>configuration</tt> object is a
+    # Spec::Example::Configuration instance. See its RDoc
+    # for details about what you can do with it.
+    #
+    def self.configure
+      yield configuration
+    end
+    
+    def self.register_at_exit_hook # :nodoc:
+      unless @already_registered_at_exit_hook
+        at_exit do
+          unless $! || Spec.run? || Spec::Example::ExampleGroupFactory.registered_or_ancestor_of_registered?(options.example_groups)
+            success = Spec.run
+            exit success if Spec.exit?
+          end
+        end
+        @already_registered_at_exit_hook = true
       end
     end
+
+    def self.options # :nodoc:
+      @options ||= begin
+        parser = ::Spec::Runner::OptionParser.new($stderr, $stdout)
+        parser.order!(ARGV)
+        parser.options
+      end
+    end
+    
+    def self.use options
+      @options = options
+    end
+
   end
 end

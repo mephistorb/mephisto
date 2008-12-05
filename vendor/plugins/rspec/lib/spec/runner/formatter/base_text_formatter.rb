@@ -1,3 +1,5 @@
+require 'spec/runner/formatter/base_formatter'
+
 module Spec
   module Runner
     module Formatter
@@ -5,27 +7,23 @@ module Spec
       # non-text based ones too - just ignore the +output+ constructor
       # argument.
       class BaseTextFormatter < BaseFormatter
+        attr_reader :output, :pending_examples
         # Creates a new instance that will write to +where+. If +where+ is a
         # String, output will be written to the File with that name, otherwise
         # +where+ is exected to be an IO (or an object that responds to #puts and #write).
         def initialize(options, where)
           super
           if where.is_a?(String)
+            FileUtils.mkdir_p(File.dirname(where))
             @output = File.open(where, 'w')
-          elsif where == STDOUT
-            @output = Kernel
-            def @output.flush
-              STDOUT.flush
-            end
           else
             @output = where
           end
-          @snippet_extractor = SnippetExtractor.new
           @pending_examples = []
         end
         
-        def example_pending(behaviour_name, example_name, message)
-          @pending_examples << ["#{behaviour_name} #{example_name}", message]
+        def example_pending(example, message, pending_caller)
+          @pending_examples << [example.full_description, message, pending_caller]
         end
         
         def dump_failure(counter, failure)
@@ -72,14 +70,15 @@ module Spec
             @output.puts
             @output.puts "Pending:"
             @pending_examples.each do |pending_example|
-              @output.puts "#{pending_example[0]} (#{pending_example[1]})" 
+              @output.puts "\n#{pending_example[0]} (#{pending_example[1]})"
+              @output.puts "#{pending_example[2]}\n"
             end
           end
           @output.flush
         end
         
         def close
-          if IO === @output
+          if IO === @output && @output != $stdout
             @output.close 
           end
         end
@@ -110,7 +109,7 @@ module Spec
 
         def output_to_tty?
           begin
-            @output == Kernel || @output.tty?
+            @output.tty? || ENV.has_key?("AUTOTEST")
           rescue NoMethodError
             false
           end

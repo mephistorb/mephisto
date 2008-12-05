@@ -2,12 +2,16 @@ module Spec
   module Story
     module Runner
       class StoryRunner
-        class << self
-          attr_accessor :current_story_runner
-          
-          def scenario_from_current_story(scenario_name)
-            current_story_runner.scenario_from_current_story(scenario_name)
-          end
+        def self.current_story_runner
+          @current_story_runner
+        end
+
+        def self.current_story_runner=(current_story_runner)
+          @current_story_runner = current_story_runner
+        end
+
+        def self.scenario_from_current_story(scenario_name)
+          current_story_runner.scenario_from_current_story(scenario_name)
         end
         
         attr_accessor :stories, :scenarios, :current_story
@@ -36,6 +40,7 @@ module Spec
         def run_stories
           return if @stories.empty?
           @listeners.each { |l| l.run_started(scenarios.size) }
+          success = true
           @stories.each do |story|
             story.assign_steps_to(World)
             @current_story = story
@@ -45,13 +50,15 @@ module Spec
               type = story[:type] || Object
               args = story[:args] || []
               world = @world_creator.create(type, *args)
-              @scenario_runner.run(scenario, world)
+              success = success & @scenario_runner.run(scenario, world)
             end
             @listeners.each { |l| l.story_ended(story.title, story.narrative) }
+            World.step_mother.clear
           end
-          unique_steps = World.step_names.uniq.sort
+          unique_steps = (World.step_names.collect {|n| Regexp === n ? n.source : n.to_s}).uniq.sort
           @listeners.each { |l| l.collected_steps(unique_steps) }
           @listeners.each { |l| l.run_ended }
+          return success
         end
         
         def add_listener(listener)

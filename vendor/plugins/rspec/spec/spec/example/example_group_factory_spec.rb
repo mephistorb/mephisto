@@ -1,144 +1,185 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 module Spec
   module Example
-    describe ExampleGroupFactory, "with :foobar registered as custom type" do
-
-      before do
-        @behaviour = Class.new(ExampleGroup)
-        ExampleGroupFactory.register(:foobar, @behaviour)
-      end
-
-      after do
-        ExampleGroupFactory.reset
-      end
-
-      it "should #get the default behaviour type when passed nil" do
-        ExampleGroupFactory.get(nil).should == ExampleGroup
-      end
-
-      it "should #get custom type for :foobar" do
-        ExampleGroupFactory.get(:foobar).should == @behaviour
-      end
-
-      it "should #get the actual type when that is passed in" do
-        ExampleGroupFactory.get(@behaviour).should == @behaviour
-      end
-
-      it "should #get nil for unregistered non-nil values" do
-        ExampleGroupFactory.get(:does_not_exist).should be_nil
-      end
-
-      it "should raise error for #get! with unknown key" do
-        proc do
-          ExampleGroupFactory.get!(:does_not_exist)
-        end.should raise_error
-      end
-    end    
-
-    describe ExampleGroupFactory, "#create_example_group" do
-      it "should create a uniquely named class" do
-        behaviour = Spec::Example::ExampleGroupFactory.create_example_group("behaviour") {}
-        behaviour.name.should =~ /Spec::Example::ExampleGroup::Subclass_\d+/
-      end
-
-      it "should create a Spec::Example::Example subclass by default" do
-        behaviour = Spec::Example::ExampleGroupFactory.create_example_group("behaviour") {}
-        behaviour.superclass.should == Spec::Example::ExampleGroup
-      end
-
-      it "should create a Spec::Example::Example when :type => :default" do
-        behaviour = Spec::Example::ExampleGroupFactory.create_example_group(
-          "behaviour", :type => :default
-        ) {}
-        behaviour.superclass.should == Spec::Example::ExampleGroup
-      end
-
-      it "should create a Spec::Example::Example when :behaviour_type => :default" do
-        behaviour = Spec::Example::ExampleGroupFactory.create_example_group(
-          "behaviour", :behaviour_type => :default
-        ) {}
-        behaviour.superclass.should == Spec::Example::ExampleGroup
-      end
-
-      it "should create specified type when :type => :something_other_than_default" do
-        klass = Class.new(ExampleGroup) do
-          def initialize(*args, &block); end
+    describe ExampleGroupFactory do
+      describe "#get" do
+        attr_reader :example_group
+        before(:each) do
+          @example_group_class = Class.new(ExampleGroup)
+          ExampleGroupFactory.register(:registered_type, @example_group_class)
         end
-        Spec::Example::ExampleGroupFactory.register(:something_other_than_default, klass)
-        behaviour = Spec::Example::ExampleGroupFactory.create_example_group(
-          "behaviour", :type => :something_other_than_default
-        ) {}
-        behaviour.superclass.should == klass
+
+        after(:each) do
+          ExampleGroupFactory.reset
+        end
+
+        it "should return the default ExampleGroup type for nil" do
+          ExampleGroupFactory.get(nil).should == ExampleGroup
+        end
+
+        it "should return the default ExampleGroup for an unregistered non-nil value" do
+          ExampleGroupFactory.get(:does_not_exist).should == ExampleGroup
+        end
+
+        it "should return custom type if registered" do
+          ExampleGroupFactory.get(:registered_type).should == @example_group_class
+        end
+
+        it "should return the actual type when that is what is submitted" do
+          ExampleGroupFactory.get(@example_group_class).should == @example_group_class
+        end
+
+        it "should get the custom type after setting the default" do
+          @alternate_example_group_class = Class.new(ExampleGroup)
+          ExampleGroupFactory.default(@alternate_example_group_class)
+          ExampleGroupFactory.get(:registered_type).should == @example_group_class
+        end
       end
 
-      it "should create specified type when :behaviour_type => :something_other_than_default" do
-        klass = Class.new(ExampleGroup) do
-          def initialize(*args, &block); end
+      describe "#create_example_group" do
+        attr_reader :parent_example_group
+        before do
+          @parent_example_group = Class.new(ExampleGroup) do
+            def initialize(*args, &block)
+              ;
+            end
+          end
         end
-        Spec::Example::ExampleGroupFactory.register(:something_other_than_default, klass)
-        behaviour = Spec::Example::ExampleGroupFactory.create_example_group(
-          "behaviour", :behaviour_type => :something_other_than_default
-        ) {}
-        behaviour.superclass.should == klass
+
+        it "should create a uniquely named class" do
+          example_group = Spec::Example::ExampleGroupFactory.create_example_group("example_group") {}
+          example_group.name.should =~ /Spec::Example::ExampleGroup::Subclass_\d+/
+        end
+
+        it "should create a Spec::Example::Example subclass by default" do
+          example_group = Spec::Example::ExampleGroupFactory.create_example_group("example_group") {}
+          example_group.superclass.should == Spec::Example::ExampleGroup
+        end
+
+        it "should raise when no description is given" do
+          lambda {
+            Spec::Example::ExampleGroupFactory.create_example_group do; end
+          }.should raise_error(ArgumentError)
+        end
+        
+        it "should raise when no block is given" do
+          lambda { Spec::Example::ExampleGroupFactory.create_example_group "foo" }.should raise_error(ArgumentError)
+        end
+
+        it "should run registered ExampleGroups" do
+          example_group = Spec::Example::ExampleGroupFactory.create_example_group "The ExampleGroup" do end
+          Spec::Runner.options.example_groups.should include(example_group)
+        end
+
+        it "should not run unregistered ExampleGroups" do
+          example_group = Spec::Example::ExampleGroupFactory.create_example_group "The ExampleGroup" do unregister; end
+          Spec::Runner.options.example_groups.should_not include(example_group)
+        end
+
+        describe "with :type => :default" do
+          it "should create a Spec::Example::ExampleGroup" do
+            example_group = Spec::Example::ExampleGroupFactory.create_example_group(
+            "example_group", :type => :default
+            ) {}
+            example_group.superclass.should == Spec::Example::ExampleGroup
+          end
+        end
+
+        describe "with :type => :something_other_than_default" do
+          it "should create the specified type" do
+            Spec::Example::ExampleGroupFactory.register(:something_other_than_default, parent_example_group)
+            non_default_example_group = Spec::Example::ExampleGroupFactory.create_example_group(
+              "example_group", :type => :something_other_than_default
+            ) {}
+            non_default_example_group.superclass.should == parent_example_group
+          end
+        end
+
+        it "should create a type indicated by :spec_path" do
+          Spec::Example::ExampleGroupFactory.register(:something_other_than_default, parent_example_group)
+          custom_example_group = Spec::Example::ExampleGroupFactory.create_example_group(
+            "example_group", :spec_path => "./spec/something_other_than_default/some_spec.rb"
+          ) {}
+          custom_example_group.superclass.should == parent_example_group
+        end
+
+        it "should create a type indicated by :spec_path (with spec_path generated by caller on windows)" do
+          Spec::Example::ExampleGroupFactory.register(:something_other_than_default, parent_example_group)
+          custom_example_group = Spec::Example::ExampleGroupFactory.create_example_group(
+            "example_group",
+            :spec_path => "./spec\\something_other_than_default\\some_spec.rb"
+          ) {}
+          custom_example_group.superclass.should == parent_example_group
+        end
+
+        describe "with :shared => true" do
+          def shared_example_group
+            @shared_example_group ||= Spec::Example::ExampleGroupFactory.create_example_group(
+              "name", :spec_path => '/blah/spec/models/blah.rb', :type => :controller, :shared => true
+            ) {}
+          end
+
+          it "should create and register a Spec::Example::SharedExampleGroup" do
+            shared_example_group.should be_an_instance_of(Spec::Example::SharedExampleGroup)
+            SharedExampleGroup.should include(shared_example_group)
+          end
+        end
+
+        it "should favor the :type over the :spec_path" do
+          Spec::Example::ExampleGroupFactory.register(:something_other_than_default, parent_example_group)
+          custom_example_group = Spec::Example::ExampleGroupFactory.create_example_group(
+            "name", :spec_path => '/blah/spec/models/blah.rb', :type => :something_other_than_default
+          ) {}
+          custom_example_group.superclass.should == parent_example_group
+        end
+
+        it "should register ExampleGroup by default" do
+          example_group = Spec::Example::ExampleGroupFactory.create_example_group("The ExampleGroup") do
+          end
+          Spec::Runner.options.example_groups.should include(example_group)
+        end
+
+        it "should enable unregistering of ExampleGroups" do
+          example_group = Spec::Example::ExampleGroupFactory.create_example_group("The ExampleGroup") do
+            unregister
+          end
+          Spec::Runner.options.example_groups.should_not include(example_group)
+        end
+        
+        
+        after(:each) do
+          Spec::Example::ExampleGroupFactory.reset
+        end
       end
       
-      it "should create a type indicated by :spec_path" do
-        klass = Class.new(ExampleGroup) do
-          def initialize(*args, &block); end
+      describe "#registered_or_ancestor_of_registered?" do
+        before(:each) do
+          @unregistered_parent = Class.new(ExampleGroup)
+          @registered_child = Class.new(@unregistered_parent)
+          @unregistered_grandchild = Class.new(@registered_child)
+          Spec::Example::ExampleGroupFactory.register :registered_child, @registered_child
         end
-        Spec::Example::ExampleGroupFactory.register(:something_other_than_default, klass)
-        behaviour = Spec::Example::ExampleGroupFactory.create_example_group(
-          "behaviour", :spec_path => "./spec/something_other_than_default/some_spec.rb"
-        ) {}
-        behaviour.superclass.should == klass
-      end
-      
-      it "should create a type indicated by :spec_path (with spec_path generated by caller on windows)" do
-        klass = Class.new(ExampleGroup) do
-          def initialize(*args, &block); end
+        
+        it "should return true for empty list" do
+          Spec::Example::ExampleGroupFactory.registered_or_ancestor_of_registered?([]).should be_true
         end
-        Spec::Example::ExampleGroupFactory.register(:something_other_than_default, klass)
-        behaviour = Spec::Example::ExampleGroupFactory.create_example_group(
-          "behaviour", :spec_path => "./spec\\something_other_than_default\\some_spec.rb"
-        ) {}
-        behaviour.superclass.should == klass
-      end
-      
-      it "should create and register a Spec::Example::Example if :shared => true" do
-        shared_example_group = Spec::Example::ExampleGroupFactory.create_example_group(
-          "name", :spec_path => '/blah/spec/models/blah.rb', :behaviour_type => :controller, :shared => true
-        ) {}
-        shared_example_group.should be_an_instance_of(Spec::Example::SharedExampleGroup)
-        SharedExampleGroup.shared_example_groups.should include(shared_example_group)
-      end
+        
+        it "should return true for a registered example group class" do
+          Spec::Example::ExampleGroupFactory.registered_or_ancestor_of_registered?([@registered_child]).should be_true
+        end
 
-      it "should favor the :behaviour_type over the :spec_path" do
-        klass = Class.new(ExampleGroup) do
-          def initialize(*args, &block); end
+        it "should return true for an ancestor of a registered example_group_classes" do
+          Spec::Example::ExampleGroupFactory.registered_or_ancestor_of_registered?([@unregistered_parent]).should be_true
         end
-        Spec::Example::ExampleGroupFactory.register(:something_other_than_default, klass)
-        behaviour = Spec::Example::ExampleGroupFactory.create_example_group(
-          "name", :spec_path => '/blah/spec/models/blah.rb', :behaviour_type => :something_other_than_default
-        ) {}
-        behaviour.superclass.should == klass
-      end
 
-      it "should register ExampleGroup by default" do
-        example_group = Spec::Example::ExampleGroupFactory.create_example_group("The ExampleGroup") do
+        it "should return false for a subclass of a registered example_group_class" do
+          Spec::Example::ExampleGroupFactory.registered_or_ancestor_of_registered?([@unregistered_grandchild]).should be_false
         end
-        rspec_options.example_groups.should include(example_group)
-      end
 
-      it "should enable unregistering of ExampleGroups" do
-        example_group = Spec::Example::ExampleGroupFactory.create_example_group("The ExampleGroup") do
-          unregister
+        after(:each) do
+          Spec::Example::ExampleGroupFactory.reset
         end
-        rspec_options.example_groups.should_not include(example_group)
-      end
-      
-      after(:each) do
-        Spec::Example::ExampleGroupFactory.reset
       end
     end
   end

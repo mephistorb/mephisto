@@ -1,3 +1,5 @@
+require 'spec/runner/formatter/progress_bar_formatter'
+
 module Spec
   module Runner
     module Formatter
@@ -5,15 +7,11 @@ module Spec
         
         def initialize(options, where)
           super
-          @examples = []
+          @example_times = []
         end
         
         def start(count)
           @output.puts "Profiling enabled."
-        end
-        
-        def add_example_group(example)
-          @behaviour = example
         end
         
         def example_started(example)
@@ -22,22 +20,30 @@ module Spec
         
         def example_passed(example)
           super
-          @examples << [@behaviour, example, Time.now - @time]
+          @example_times << [
+            example_group.description,
+            example.description,
+            Time.now - @time
+          ]
         end
         
         def start_dump
           super
           @output.puts "\n\nTop 10 slowest examples:\n"
           
-          @examples = @examples.sort_by do |b, e, t|
-            t
+          @example_times = @example_times.sort_by do |description, example, time|
+            time
           end.reverse
           
-          @examples[0..9].each do |e|
-            @output.print red(sprintf("%.7f", e[2]))
-            @output.puts " #{e[0]} #{e[1]}"
+          @example_times[0..9].each do |description, example, time|
+            @output.print red(sprintf("%.7f", time))
+            @output.puts " #{description} #{example}"
           end
           @output.flush
+        end
+        
+        def method_missing(sym, *args)
+          # ignore
         end
       end
     end

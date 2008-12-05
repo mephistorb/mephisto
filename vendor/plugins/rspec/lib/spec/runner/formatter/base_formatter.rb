@@ -3,6 +3,7 @@ module Spec
     module Formatter
       # Baseclass for formatters that implements all required methods as no-ops. 
       class BaseFormatter
+        attr_accessor :example_group, :options, :where
         def initialize(options, where)
           @options = options
           @where = where
@@ -17,12 +18,12 @@ module Spec
         def start(example_count)
         end
 
-        # This method is invoked at the beginning of the execution of each behaviour.
-        # +name+ is the name of the behaviour and +first+ is true if it is the
-        # first behaviour - otherwise it's false.
+        # This method is invoked at the beginning of the execution of each example_group.
+        # +example_group+ is the example_group.
         #
         # The next method to be invoked after this is #example_failed or #example_finished
-        def add_example_group(name)
+        def add_example_group(example_group)
+          @example_group = example_group
         end
 
         # This method is invoked when an +example+ starts.
@@ -42,10 +43,11 @@ module Spec
         
         # This method is invoked when an example is not yet implemented (i.e. has not
         # been provided a block), or when an ExamplePendingError is raised.
-        # +name+ is the name of the example.
         # +message+ is the message from the ExamplePendingError, if it exists, or the
         # default value of "Not Yet Implemented"
-        def example_pending(behaviour_name, example_name, message)
+        # +pending_caller+ is the file and line number of the spec which
+        # has called the pending method
+        def example_pending(example, message, pending_caller)
         end
 
         # This method is invoked after all of the examples have executed. The next method

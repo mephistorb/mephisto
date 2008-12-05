@@ -7,9 +7,10 @@ module Spec
         @names_not_responded_to = []
       end
       
-      def matches?(target)
+      def matches?(given)
+        @given = given
         @names.each do |name|
-          unless target.respond_to?(name)
+          unless given.respond_to?(name)
             @names_not_responded_to << name
           end
         end
@@ -17,15 +18,16 @@ module Spec
       end
       
       def failure_message
-        "expected target to respond to #{@names_not_responded_to.collect {|name| name.inspect }.join(', ')}"
+        "expected #{@given.inspect} to respond to #{@names_not_responded_to.collect {|name| name.inspect }.join(', ')}"
       end
       
       def negative_failure_message
-        "expected target not to respond to #{@names.collect {|name| name.inspect }.join(', ')}"
+        "expected #{@given.inspect} not to respond to #{@names.collect {|name| name.inspect }.join(', ')}"
       end
       
       def description
-        "respond to ##{@names.to_s}"
+        # Ruby 1.9 returns the same thing for array.to_s as array.inspect, so just use array.inspect here
+        "respond to #{@names.inspect}"
       end
     end
     

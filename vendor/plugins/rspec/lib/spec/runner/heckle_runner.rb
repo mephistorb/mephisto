@@ -13,7 +13,7 @@ module Spec
         @heckle_class = heckle_class
       end
       
-      # Runs all the behaviours held by +rspec_options+ once for each of the
+      # Runs all the example groups held by +rspec_options+ once for each of the
       # methods in the matched classes.
       def heckle_with
         if @filter =~ /(.*)[#\.](.*)/
@@ -25,7 +25,7 @@ module Spec
       
       def heckle_method(class_name, method_name)
         verify_constant(class_name)
-        heckle = @heckle_class.new(class_name, method_name, rspec_options)
+        heckle = @heckle_class.new(class_name, method_name, Spec::Runner.options)
         heckle.validate
       end
       
@@ -39,7 +39,7 @@ module Spec
         
         classes.each do |klass|
           klass.instance_methods(false).each do |method_name|
-            heckle = @heckle_class.new(klass.name, method_name, rspec_options)
+            heckle = @heckle_class.new(klass.name, method_name, Spec::Runner.options)
             heckle.validate
           end
         end

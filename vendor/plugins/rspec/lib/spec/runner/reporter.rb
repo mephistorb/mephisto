@@ -1,7 +1,7 @@
 module Spec
   module Runner
     class Reporter
-      attr_reader :options
+      attr_reader :options, :example_groups
       
       def initialize(options)
         @options = options
@@ -9,26 +9,38 @@ module Spec
         clear
       end
       
-      def add_example_group(name)
-        formatters.each{|f| f.add_example_group(name)}
-        @example_group_names << name
+      def add_example_group(example_group)
+        formatters.each do |f|
+          f.add_example_group(example_group)
+        end
+        example_groups << example_group
       end
       
       def example_started(example)
         formatters.each{|f| f.example_started(example)}
       end
       
-      def example_finished(example, error=nil, failure_location=nil, pending=false)
+      def example_finished(example, error=nil)
         @examples << example
         
         if error.nil?
           example_passed(example)
         elsif Spec::Example::ExamplePendingError === error
-          example_pending(@example_group_names.last, example, error.message)
+          example_pending(example, error.pending_caller, error.message)
         else
-          example_failed(example, error, failure_location)
+          example_failed(example, error)
         end
       end
+
+      def failure(example, error)
+        backtrace_tweaker.tweak_backtrace(error)
+        failure = Failure.new(example, error)
+        @failures << failure
+        formatters.each do |f|
+          f.example_failed(example, @failures.length, failure)
+        end
+      end
+      alias_method :example_failed, :failure
 
       def start(number_of_examples)
         clear
@@ -63,7 +75,7 @@ module Spec
       end
   
       def clear
-        @example_group_names = []
+        @example_groups = []
         @failures = []
         @pending_count = 0
         @examples = []
@@ -78,6 +90,7 @@ module Spec
           index + 1
         end
       end
+
       def dump_pending
         formatters.each{|f| f.dump_pending}
       end
@@ -87,38 +100,52 @@ module Spec
         return "0.0"
       end
       
-      def example_passed(name)
-        formatters.each{|f| f.example_passed(name)}
+      def example_passed(example)
+        formatters.each{|f| f.example_passed(example)}
       end
 
-      def example_failed(name, error, failure_location)
-        backtrace_tweaker.tweak_backtrace(error, failure_location)
-        example_name = "#{@example_group_names.last} #{name}"
-        failure = Failure.new(example_name, error)
-        @failures << failure
-        formatters.each{|f| f.example_failed(name, @failures.length, failure)}
+      EXAMPLE_PENDING_DEPRECATION_WARNING = <<-WARNING
+        DEPRECATION NOTICE: RSpec's formatters have changed example_pending
+        to accept three arguments instead of just two. Please see the rdoc
+        for Spec::Runner::Formatter::BaseFormatter#example_pending
+        for more information.
+          
+        Please update any custom formatters to accept the third argument
+        to example_pending. Support for example_pending with two arguments
+        and this warning message will be removed after the RSpec 1.1.5 release.
+      WARNING
+      
+      def example_pending(example, pending_caller, message="Not Yet Implemented")
+        @pending_count += 1
+        formatters.each do |formatter|
+          if formatter_uses_deprecated_example_pending_method?(formatter)
+            Kernel.warn EXAMPLE_PENDING_DEPRECATION_WARNING
+            formatter.example_pending(example, message)
+          else
+            formatter.example_pending(example, message, pending_caller)
+          end
+        end
       end
       
-      def example_pending(behaviour_name, example_name, message="Not Yet Implemented")
-        @pending_count += 1
-        formatters.each{|f| f.example_pending(behaviour_name, example_name, message)}
+      def formatter_uses_deprecated_example_pending_method?(formatter)
+        formatter.method(:example_pending).arity == 2
       end
       
       class Failure
-        attr_reader :exception
+        attr_reader :example, :exception
         
-        def initialize(example_name, exception)
-          @example_name = example_name
+        def initialize(example, exception)
+          @example = example
           @exception = exception
         end
 
         def header
           if expectation_not_met?
-            "'#{@example_name}' FAILED"
+            "'#{example_name}' FAILED"
           elsif pending_fixed?
-            "'#{@example_name}' FIXED"
+            "'#{example_name}' FIXED"
           else
-            "#{@exception.class.name} in '#{@example_name}'"
+            "#{@exception.class.name} in '#{example_name}'"
           end
         end
         
@@ -130,6 +157,10 @@ module Spec
           @exception.is_a?(Spec::Expectations::ExpectationNotMetError)
         end
 
+        protected
+        def example_name
+          @example.full_description
+        end
       end
     end
   end

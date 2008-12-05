@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../../../spec_helper.rb'
+require 'spec/runner/formatter/progress_bar_formatter'
 
 module Spec
   module Runner
@@ -23,7 +24,12 @@ module Spec
         end
         
         it "should produce standard summary" do
-          @formatter.example_pending("behaviour", "example", "message")  
+          example_group = ExampleGroup.describe("example_group") do
+            specify "example" do
+            end
+          end
+          example = example_group.examples.first
+          @formatter.example_pending(example, "message", "#{__FILE__}:#{__LINE__}")
           @io.rewind
           @formatter.dump_summary(3, 2, 1, 1)
           @io.string.should eql(%Q|
@@ -82,10 +88,23 @@ EOE
 EOE
         end
         
-        it "should dump pending" do
-          @formatter.example_pending("behaviour", "example", "message")
+        it "should dump pending with file and line number" do
+          example_group = ExampleGroup.describe("example_group") do
+            specify "example" do
+            end
+          end
+          example = example_group.examples.first
+          file = __FILE__
+          line = __LINE__ + 1
+          @formatter.example_pending(example, "message", "#{__FILE__}:#{__LINE__}")
           @formatter.dump_pending
-          @io.string.should =~ /Pending\:\nbehaviour example \(message\)\n/
+          @io.string.should ==(<<-HERE)
+*
+Pending:
+
+example_group example (message)
+#{file}:#{line}
+HERE
         end
       end
       
@@ -95,16 +114,30 @@ EOE
           @options = mock('options')
           @out.stub!(:puts)
           @formatter = ProgressBarFormatter.new(@options, @out)
-          @formatter.class.send :public, :output_to_tty?
+          @formatter.class.__send__ :public, :output_to_tty?
         end
 
         after(:each) do
-          @formatter.class.send :protected, :output_to_tty?
+          @formatter.class.__send__ :protected, :output_to_tty?
         end
 
         it "should not throw NoMethodError on output_to_tty?" do
           @out.should_receive(:tty?).and_raise(NoMethodError)
           @formatter.output_to_tty?.should be_false
+        end
+      end
+
+      describe ProgressBarFormatter, "dry run" do
+        before(:each) do
+          @io = StringIO.new
+          options = mock('options')
+          options.stub!(:dry_run).and_return(true)
+          @formatter = ProgressBarFormatter.new(options, @io)
+        end
+      
+        it "should not produce summary on dry run" do
+          @formatter.dump_summary(3, 2, 1, 0)
+          @io.string.should eql("")
         end
       end
     end

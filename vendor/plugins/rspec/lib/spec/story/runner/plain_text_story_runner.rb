@@ -26,10 +26,10 @@ module Spec
           @story_file = path
         end
         
-        def run
+        def run(story_runner=Spec::Story::Runner.story_runner)
           raise "You must set a path to the file with the story. See the RDoc." if @story_file.nil?
-          mediator = Spec::Story::Runner::StoryMediator.new steps, Spec::Story::Runner.story_runner, @options
-          parser = Spec::Story::Runner::StoryParser.new mediator
+          mediator = Spec::Story::Runner::StoryMediator.new(steps, story_runner, @options)
+          parser = Spec::Story::Runner::StoryParser.new(mediator)
 
           story_text = File.read(@story_file)          
           parser.parse(story_text.split("\n"))

@@ -26,14 +26,15 @@ module Spec
         def process_line(line)
           line.strip!
           case line
-          when /^Story: /           : @state.story(line)
-          when /^Scenario: /        : @state.scenario(line)
-          when /^Given:? /          : @state.given(line)
-          when /^GivenScenario:? /  : @state.given_scenario(line)
-          when /^When:? /           : @state.event(line)
-          when /^Then:? /           : @state.outcome(line)
-          when /^And:? /            : @state.one_more_of_the_same(line)
-          else                        @state.other(line)
+          when /^#/                 then @state.comment(line)
+          when /^Story: /           then @state.story(line)
+          when /^Scenario: /        then @state.scenario(line)
+          when /^Given:? /          then @state.given(line)
+          when /^GivenScenario:? /  then @state.given_scenario(line)
+          when /^When:? /           then @state.event(line)
+          when /^Then:? /           then @state.outcome(line)
+          when /^And:? /            then @state.one_more_of_the_same(line)
+          else                           @state.other(line)
           end
         end
 
@@ -71,6 +72,10 @@ module Spec
         
         def create_then(name)
           @story_mediator.create_then(name)
+        end
+        
+        def add_to_last(line)
+          @story_mediator.add_to_last("\n#{line}")
         end
 
         def transition_to(key)
@@ -136,6 +141,9 @@ module Spec
           def other(line)
             # no-op - supports header text before the first story in a file
           end
+          
+          def comment(line)
+          end
         end
         
         class StartingState < State
@@ -199,6 +207,10 @@ module Spec
           def given(line)
             @parser.create_given(remove_tag_from(:given, line))
           end
+          
+          def other(line)
+            @parser.add_to_last(line)
+          end
         end
         
         class WhenState < State
@@ -209,6 +221,10 @@ module Spec
           def event(line)
             @parser.create_when(remove_tag_from(:when ,line))
           end
+
+          def other(line)
+            @parser.add_to_last(line)
+          end
         end
 
         class ThenState < State
@@ -218,6 +234,10 @@ module Spec
 
           def outcome(line)
             @parser.create_then(remove_tag_from(:then ,line))
+          end
+
+          def other(line)
+            @parser.add_to_last(line)
           end
         end
 

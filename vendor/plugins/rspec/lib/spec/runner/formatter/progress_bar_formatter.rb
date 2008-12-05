@@ -1,10 +1,9 @@
+require 'spec/runner/formatter/base_text_formatter'
+
 module Spec
   module Runner
     module Formatter
       class ProgressBarFormatter < BaseTextFormatter
-        def add_example_group(name)
-        end
-      
         def example_failed(example, counter, failure)
           @output.print colourise('F', failure)
           @output.flush
@@ -15,15 +14,19 @@ module Spec
           @output.flush
         end
       
-        def example_pending(behaviour_name, example_name, message)
+        def example_pending(example, message, pending_caller)
           super
-          @output.print yellow('P')
+          @output.print yellow('*')
           @output.flush
         end
         
         def start_dump
           @output.puts
           @output.flush
+        end
+        
+        def method_missing(sym, *args)
+          # ignore
         end
       end
     end

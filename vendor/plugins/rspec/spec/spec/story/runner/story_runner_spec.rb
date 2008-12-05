@@ -14,11 +14,11 @@ module Spec
           stories = story_runner.stories
           
           # then
-          ensure_that stories.size, is(2)
-          ensure_that stories[0].title, is('title1')
-          ensure_that stories[0].narrative, is('narrative1')
-          ensure_that stories[1].title, is('title2')
-          ensure_that stories[1].narrative, is('narrative2')
+          story_runner.should have(2).stories
+          stories.first.title.should == 'title1'
+          stories.first.narrative.should == 'narrative1'
+          stories.last.title.should == 'title2'
+          stories.last.narrative.should == 'narrative2'
         end
         
         it 'should gather all the scenarios in the stories' do
@@ -36,10 +36,10 @@ module Spec
           scenarios = story_runner.scenarios
           
           # then
-          ensure_that scenarios.size, is(3)
-          ensure_that scenarios[0].name, is('scenario1')
-          ensure_that scenarios[1].name, is('scenario2')
-          ensure_that scenarios[2].name, is('scenario3')
+          story_runner.should have(3).scenarios
+          scenarios[0].name.should == 'scenario1'
+          scenarios[1].name.should == 'scenario2'
+          scenarios[2].name.should == 'scenario3'
         end
         
         # captures worlds passed into a ScenarioRunner
@@ -64,8 +64,46 @@ module Spec
           
           # then
           worlds = scenario_world_catcher.worlds
-          ensure_that worlds.size, is(2)
+          scenario_world_catcher.should have(2).worlds
           worlds[0].should_not == worlds[1]
+        end
+        
+        it "should return false if the scenario runner returns false ever" do
+          #given
+          stub_scenario_runner = stub_everything
+          story_runner = StoryRunner.new(stub_scenario_runner)
+          story_runner.Story 'story', 'narrative' do
+            Scenario 'scenario1' do end
+            Scenario 'scenario2' do end
+          end
+          
+          # expect
+          stub_scenario_runner.should_receive(:run).once.and_return(false,true)
+          
+          # when
+          success = story_runner.run_stories
+          
+          #then
+          success.should == false
+        end
+        
+        it "should return true if the scenario runner returns true for all scenarios" do
+          #given
+          stub_scenario_runner = stub_everything
+          story_runner = StoryRunner.new(stub_scenario_runner)
+          story_runner.Story 'story', 'narrative' do
+            Scenario 'scenario1' do end
+            Scenario 'scenario2' do end
+          end
+          
+          # expect
+          stub_scenario_runner.should_receive(:run).once.and_return(true,true)
+          
+          # when
+          success = story_runner.run_stories
+          
+          #then
+          success.should == true
         end
         
         it 'should use the provided world creator to create worlds' do
@@ -85,7 +123,6 @@ module Spec
           story_runner.run_stories
           
           # then
-          # TODO verify_all
         end
         
         it 'should notify listeners of the scenario count when the run starts' do
@@ -112,7 +149,6 @@ module Spec
           story_runner.run_stories
           
           # then
-          # TODO verify_all
         end
         
         it 'should notify listeners when a story starts' do
@@ -141,7 +177,6 @@ module Spec
           story_runner.run_stories
           
           # then
-          # TODO verify_all
         end
         
         it 'should notify listeners when the run ends' do
@@ -163,7 +198,6 @@ module Spec
           story_runner.run_stories
           
           # then
-          # TODO verify_all
         end
         
         it 'should run a story in an instance of a specified class' do
@@ -201,13 +235,13 @@ module Spec
         it 'should find a scenario in the current story by name' do
           # given
           story_runner = StoryRunner.new(ScenarioRunner.new)
-          $scenario = nil
+          scenario = nil
           
           story_runner.Story 'title', 'narrative' do
             Scenario 'first scenario' do
             end
             Scenario 'second scenario' do
-              $scenario = StoryRunner.scenario_from_current_story 'first scenario'
+              scenario = StoryRunner.scenario_from_current_story 'first scenario'
             end
           end
           
@@ -215,7 +249,44 @@ module Spec
           story_runner.run_stories
           
           # then
-          $scenario.name.should == 'first scenario'
+          scenario.name.should == 'first scenario'
+        end
+        
+        it "should clean the steps between stories" do
+          #given
+          story_runner = StoryRunner.new(ScenarioRunner.new)
+          result = mock 'result'
+          
+          step1 = Step.new('step') do
+            result.one
+          end
+          steps1 = StepGroup.new
+          steps1.add :when, step1
+          
+          story_runner.Story 'title', 'narrative', :steps_for => steps1 do
+            Scenario 'first scenario' do
+              When 'step'
+            end
+          end
+          
+          step2 = Step.new('step') do
+            result.two
+          end
+          steps2 = StepGroup.new
+          steps2.add :when, step2
+          
+          story_runner.Story 'title2', 'narrative', :steps_for => steps2 do
+            Scenario 'second scenario' do
+              When 'step'
+            end
+          end
+          
+          #then
+          result.should_receive(:one)
+          result.should_receive(:two)
+          
+          #when
+          story_runner.run_stories
         end
       end
     end
