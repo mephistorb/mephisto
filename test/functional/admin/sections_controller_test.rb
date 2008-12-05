@@ -14,6 +14,13 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
     login_as :quentin
   end
 
+  def test_should_recognise_all_member_routes
+    %w(destroy update order).each do |action|
+      assert_routing "admin/sections/#{action}/1",
+        :controller => "admin/sections", :action => action, :id => 1
+    end
+  end
+
   def test_should_list_sections
     get :index
     assert_equal sites(:first), assigns(:site)
