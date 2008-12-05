@@ -14,6 +14,12 @@ describe Membership do
     @default_user = User.make(:login => 'default_user', :admin => true)
     @non_admin    = User.make(:login => 'non_admin',    :admin => false)
     @deleted_user = User.make(:login => 'deleted_user', :admin => false)
+
+    # TODO - We're using destroy here to set deleted_at.  This is
+    # apparently part of a rather iffy system for allowing users to
+    # be disabled and renabled via acts_as_paranoid's invisible
+    # hiding of deleted users.  As Rick suggests, we should rip this
+    # out and replace it with named scopes.
     @deleted_user.destroy
 
     Membership.make(:site => @default_site, :user => @default_user,
