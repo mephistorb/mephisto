@@ -54,6 +54,17 @@ class ApplicationController < ActionController::Base
       helper_method meth
     end
 
+    # Some of our unit tests want us to return a 404 page when certain
+    # kinds of errors occur.  This used to be automatic, but for now, let's
+    # do it manually.  Is this necessary, or just an artifact?
+    def render_404 message=nil
+      if message
+        render :text => message, :status => 404
+      else
+        render :file => "public/404.html", :status => 404
+      end
+    end
+
     def render_liquid_template_for(template_type, assigns = {})
       headers["Content-Type"] ||= 'text/html; charset=utf-8'
       if assigns['articles'] && assigns['article'].nil?
@@ -67,8 +78,12 @@ class ApplicationController < ActionController::Base
 
     def set_cache_root
       host = request.domain(request.subdomains.size + (request.subdomains.first == 'www' ? 0 : 1))
-      @site ||= Site.find_by_host(host) || Site.find(:first, :order => 'id') || raise(ActiveRecord::RecordNotFound, "You need to create your first site!")
-      self.class.page_cache_directory = site.page_cache_directory.to_s
+      @site ||= Site.find_by_host(host) || Site.find(:first, :order => 'id')
+      if @site
+        self.class.page_cache_directory = site.page_cache_directory.to_s
+      else
+        render_404 "You need to create your first site!"
+      end
     end
 
     def with_site_timezone
