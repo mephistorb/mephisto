@@ -21,7 +21,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
   def test_should_restrict_site_member
     login_as :arthur, :hostess
     get :index
-    assert_redirected_to :controller => 'account', :action => 'login'
+    assert_redirected_to :controller => '/account', :action => 'login'
   end
 
   def test_should_allow_site_member_to_view_profile
@@ -163,7 +163,7 @@ class Admin::UsersControllerTest < Test::Unit::TestCase
     login_as :arthur, :hostess
     assert_no_difference User, :count do
       xhr :post, :destroy, :id => users(:arthur).id
-      assert_redirected_to :controller => 'account', :action => 'login'
+      assert_redirected_to :controller => '/account', :action => 'login'
     end
   end
 
