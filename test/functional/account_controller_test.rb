@@ -13,11 +13,11 @@ context "Account Controller Login" do
     @response   = ActionController::TestResponse.new
   end
 
-  specify "should recognise login route" do
-    params = { :controller => "account", :action => "login" }
-    path = "account/login"
-    assert_routing path, params
-    assert_recognizes params, path
+  specify "should have routes for all actions" do
+    %w(login logout forget activate).each do |action|
+      assert_routing("account/#{action}",
+                     :controller => "account", :action => action)
+    end
   end
 
   specify "should login as mephisto admin" do
