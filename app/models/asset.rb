@@ -46,8 +46,16 @@ class Asset < ActiveRecord::Base
 
   belongs_to :site
   has_many :assigned_assets, :order => 'position', :dependent => :destroy
+
   has_attachment :storage => :file_system, :thumbnails => { :thumb => '120>', :tiny => '50>' }, :max_size => 30.megabytes, 
     :processor => (Object.const_defined?(:ASSET_IMAGE_PROCESSOR) ? ASSET_IMAGE_PROCESSOR : nil)
+
+  # When we call has_attachment, it protects all attribute on this class
+  # except :uploaded_data against mass assignment.  Rick says this is to
+  # make us think through our security policy.  Historically, Mephisto has
+  # made at least the following set of attributes accessible.
+  attr_accessible :filename, :content_type, :size, :tag
+  
   before_validation_on_create :set_site_from_parent
   validates_presence_of :site_id
   validates_as_attachment
