@@ -6,7 +6,7 @@
     <title><%= site.title %>: Admin <%= controller.controller_name %></title>
     <%= stylesheet_link_tag 'mephisto/mephisto' %>
     <%= javascript_include_tag 'mephisto/prototype', 'mephisto/effects', 'mephisto/dragdrop', 'mephisto/lowpro', 'mephisto/application' %>
-    <script type="text/javascript">Mephisto.root = '<%= ActionController::AbstractRequest.relative_url_root %>';</script>
+    <script type="text/javascript">Mephisto.root = '<%= relative_url_root %>';</script>
     <%= yield :head %>
   </head>
   <body>

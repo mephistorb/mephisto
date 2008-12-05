@@ -41,6 +41,14 @@ module ApplicationHelper
        :class => 'aicon', :title => 'Delete resource'
   end
 
+  # TODO - Some of the callers of this function could probably be fixed to
+  # call something better.  Normally, adding the relative_url_root to a
+  # path or URL is the responsibility of url_for.  But since we do some of
+  # our own routing, it may not be that simple for us in all cases.
+  def relative_url_root
+    ActionController::Base.relative_url_root
+  end
+
   if RAILS_ENV == 'development'
     def gravatar_url_for(user, size = 80)
       'mephisto/avatar.gif'
@@ -48,7 +56,7 @@ module ApplicationHelper
   else
     def gravatar_url_for(user, size = 80)
       return 'mephisto/avatar.gif' unless user && user.email
-      "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(user.email)}&default=http://#{request.host_with_port}#{ActionController::AbstractRequest.relative_url_root}/images/mephisto/avatar.gif"
+      "http://www.gravatar.com/avatar.php?size=#{size}&gravatar_id=#{Digest::MD5.hexdigest(user.email)}&default=http://#{request.host_with_port}#{relative_url_root}/images/mephisto/avatar.gif"
     end
   end
 
