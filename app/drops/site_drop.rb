@@ -38,12 +38,12 @@ class SiteDrop < BaseDrop
   end
 
   def find_child_sections(path)
-    path << '/' unless path.empty?
+    path +=  '/' unless path.empty?
     sections.select { |s| s['path'] != path && s['path'] =~ %r(^#{Regexp.escape path}[^/]+$) }
   end
   
   def find_descendant_sections(path)
-    path << '/' unless path.empty?
+    path += '/' unless path.empty?
     sections.select { |s| s['path'] != path && s['path'] =~ %r(^#{Regexp.escape path}) }
   end
   
