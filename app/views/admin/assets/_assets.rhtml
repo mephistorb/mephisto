@@ -16,7 +16,7 @@
     <tr>
       <% assets_line.each do |asset| %>
        <td>
-         <%= render :partial => 'asset', :object => asset if asset %>
+         <%= render :partial => 'asset', :object => asset, :locals => { :size => :tiny } if asset %>
         </td>
        <% end %>
     </tr>

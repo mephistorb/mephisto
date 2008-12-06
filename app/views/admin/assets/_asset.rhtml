@@ -6,6 +6,6 @@
            <% end -%>
            <li class="fbucket"><%= link_to_remote('Add to bucket', {:url => add_bucket_asset_path(asset)}, { :title => 'Add to bucket' }) %></li>
          </ul>
-         <%= link_to(asset_image_for(asset, size || :tiny), asset.public_filename, :target => '_blank') %>
+         <%= link_to(asset_image_for(asset, size), asset.public_filename, :target => '_blank') %>
          <%= "<h4>#{h truncate(asset.title, :length => 20)}</h4>" if !asset.image? %>
          
