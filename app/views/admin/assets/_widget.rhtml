@@ -1,3 +1,5 @@
+<% # TODO HACK => widget_counter is not set when inserting this partial with attach.rjs %>
+<% widget_counter ||= 0 %>
 <li id="<%= widget.dom_id("#{prefix}-widget") %>" class="widget<%= ' selected-widget' if @article && @article.assets.include?(widget) %>">
 <% if prefix == 'attached' -%>
   <div>
