@@ -24,7 +24,7 @@
 		<span class="filedto">Filed in {{ article | linked_section_list }}</span>
 	</div>
 	{% unless mode == 'single' %}
-	  {% if article.accept_comments %}<a href="{{ article.url }}#comments" class="commentslink">{{ article.comments_count | pluralize: 'comments' }}  &#187;</a>{% endif %}
+	  {% if article.accept_comments %}<a href="{{ article.url }}#comments" class="commentslink">{{ article.comments_count | pluralize: 'comment' }}  &#187;</a>{% endif %}
 	{% endunless %}
 	</div>
 	
