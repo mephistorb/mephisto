@@ -55,6 +55,10 @@ class Asset < ActiveRecord::Base
   # make us think through our security policy.  Historically, Mephisto has
   # made at least the following set of attributes accessible.
   attr_accessible :title, :filename, :content_type, :size, :tag
+
+  # TODO - This is even more dubious than the other accessible attrs, but
+  # it's how Mephisto has historically worked.
+  attr_accessible :user_id
   
   before_validation_on_create :set_site_from_parent
   validates_presence_of :site_id
