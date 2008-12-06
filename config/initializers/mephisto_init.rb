@@ -39,7 +39,3 @@ ActiveSupport::Inflector.inflections do |inflect|
 end
 
 Engines::Plugin::Config.set_table_name 'mephisto_plugins'
-
-# This code is very suspicious.  What it it trying to do?
-ActiveSupport::Dependencies.autoloaded_constants.delete "Mephisto"
-ActiveSupport::Dependencies.autoloaded_constants.delete "Mephisto::Plugin"
