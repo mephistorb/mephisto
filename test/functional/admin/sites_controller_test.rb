@@ -20,7 +20,7 @@ class Admin::SitesControllerTest < Test::Unit::TestCase
   def test_should_restrict_admin_of_sites
     login_as :arthur
     get :index
-    assert_redirected_to :controller => 'account', :action => 'login'
+    assert_redirected_to :controller => '/account', :action => 'login'
   end
 
   def test_should_allow_admin_to_view_site
