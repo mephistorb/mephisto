@@ -36,6 +36,7 @@ module Mephisto
       map_from_plugins(map)
       
       map.connect 'account/:action', :controller => 'account'
+      map.connect 'admin/sections/:action/:id', :controller => 'admin/sections'
       
       map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/, :id => /[^\/]*/
 

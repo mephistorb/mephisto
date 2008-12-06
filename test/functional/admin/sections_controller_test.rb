@@ -17,7 +17,7 @@ class Admin::SectionsControllerTest < Test::Unit::TestCase
   def test_should_recognise_all_member_routes
     %w(destroy update order).each do |action|
       assert_routing "admin/sections/#{action}/1",
-        :controller => "admin/sections", :action => action, :id => 1
+        :controller => "admin/sections", :action => action, :id => "1"
     end
   end
 
