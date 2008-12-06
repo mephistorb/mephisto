@@ -16,7 +16,7 @@ class Admin::ArticlesControllerTest < Test::Unit::TestCase
   def test_should_require_login
     login_as nil
     get :index
-    assert_redirected_to :controller => 'account', :action => 'login'
+    assert_redirected_to :controller => '/account', :action => 'login'
   end
 
   def test_should_accept_cookie_login

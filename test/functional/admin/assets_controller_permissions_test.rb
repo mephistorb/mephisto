@@ -55,7 +55,7 @@ class Admin::AssetsControllerPermissionsTest < Test::Unit::TestCase
   def test_should_not_delete_other_users_assets
     assert_no_difference Asset, :count do
       delete :destroy, :id => assets(:swf).id
-      assert_redirected_to :controller => 'account', :action => 'login'
+      assert_redirected_to :controller => '/account', :action => 'login'
     end
   end
 

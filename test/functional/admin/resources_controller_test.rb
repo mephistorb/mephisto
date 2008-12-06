@@ -21,7 +21,7 @@ class Admin::ResourcesControllerTest < Test::Unit::TestCase
   def test_should_not_allow_site_member
     login_as :arthur, :hostess
     get :edit, :filename => 'home.liquid'
-    assert_redirected_to :controller => 'account', :action => 'login'
+    assert_redirected_to :controller => '/account', :action => 'login'
   end
 
   def test_should_show_edit_resource_form

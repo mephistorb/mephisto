@@ -22,7 +22,7 @@ class Admin::DesignControllerTest < Test::Unit::TestCase
   def test_should_not_allow_site_member
     login_as :arthur, :hostess
     get :index
-    assert_redirected_to :controller => 'account', :action => 'login'
+    assert_redirected_to :controller => '/account', :action => 'login'
   end
 
   def test_should_show_all_templates
