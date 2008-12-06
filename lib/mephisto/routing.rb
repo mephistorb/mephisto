@@ -40,7 +40,8 @@ module Mephisto
       map.connect 'admin/sections/:action/:id', :controller => 'admin/sections'
       map.connect 'admin/resources/:action', :controller => 'admin/resources'
       map.connect 'admin/templates/:action', :controller => 'admin/templates'
-      
+      map.connect 'admin/design/:action', :controller => 'admin/design'
+
       map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/, :id => /[^\/]*/
 
       yield if block_given?
