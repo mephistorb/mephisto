@@ -1,0 +1,13 @@
+This is a list of issues that we need to fix before making a Mephisto
+release based on Rails 2.2.
+
+  Why must we run 'rake db:bootstrap:copy_default_theme' after unit tests?
+  After posting a comment, we get redirected to :permalink/comments/:id
+  We need to review our TODO comments
+
+aotearoa: create a new article
+aotearoa: hit "save article"
+aotearoa: instead of being redirected to the article you just created here "http://localhost:3000/admin/articles/2/edit"
+aotearoa: you are redirected to this page:
+aotearoa: <html><body>You are being <a href="http://localhost:3000/admin/articles/2/edit">redirected</a>.</body></html>
+
