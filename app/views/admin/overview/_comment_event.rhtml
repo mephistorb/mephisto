@@ -5,7 +5,7 @@
   
     <span class="event-time"><%= event_time_for event, later %></span>
     <% unless event.body.blank? -%>
-    <blockquote><p>&quot;<%= truncate strip_tags(event.body), 100 %>&quot;</p></blockquote>
+    <blockquote><p>&quot;<%= truncate strip_tags(event.body), :length => 100 %>&quot;</p></blockquote>
     <% end -%>
     <span class="meta">&mdash; <%=h event.author %></span>
  

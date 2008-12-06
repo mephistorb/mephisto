@@ -4,7 +4,7 @@ if @allowed
   page << 'function foo() {'
   page[@user.dom_id].remove
   page[:disabled_users].show
-  page.insert_html :bottom, :disabled_users, :partial => 'user'
+  page.insert_html :bottom, :disabled_users, :partial => 'user', :object => @user
   page << '}'
   page[@user.dom_id].visual_effect :drop_out, :afterFinish => ActiveSupport::JSON::Variable.new("foo")
 else
