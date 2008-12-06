@@ -1,0 +1,112 @@
+--- !ruby/object:Gem::Specification 
+name: rubyzip
+version: !ruby/object:Gem::Version 
+  version: 0.9.1
+platform: ruby
+authors: 
+- Thomas Sondergaard
+autorequire: 
+bindir: bin
+cert_chain: 
+date: 2006-07-29 00:00:00 -04:00
+default_executable: 
+dependencies: []
+
+description: 
+email: thomas(at)sondergaard.cc
+executables: []
+
+extensions: []
+
+extra_rdoc_files: []
+
+files: 
+- README
+- NEWS
+- TODO
+- ChangeLog
+- install.rb
+- Rakefile
+- samples/example.rb
+- samples/example_filesystem.rb
+- samples/gtkRubyzip.rb
+- samples/qtzip.rb
+- samples/write_simple.rb
+- samples/zipfind.rb
+- test/alltests.rb
+- test/gentestfiles.rb
+- test/ioextrastest.rb
+- test/stdrubyexttest.rb
+- test/zipfilesystemtest.rb
+- test/ziprequiretest.rb
+- test/ziptest.rb
+- test/data/file1.txt
+- test/data/file1.txt.deflatedData
+- test/data/file2.txt
+- test/data/notzippedruby.rb
+- test/data/rubycode.zip
+- test/data/rubycode2.zip
+- test/data/testDirectory.bin
+- test/data/zipWithDirs.zip
+- lib/download_quizzes.rb
+- lib/zip/ioextras.rb
+- lib/zip/stdrubyext.rb
+- lib/zip/tempfile_bugfixed.rb
+- lib/zip/zip.rb
+- lib/zip/zipfilesystem.rb
+- lib/zip/ziprequire.rb
+- lib/quiz1/t/solutions/Bill Guindon/solitaire.rb
+- lib/quiz1/t/solutions/Carlos/solitaire.rb
+- lib/quiz1/t/solutions/Dennis Ranke/solitaire.rb
+- lib/quiz1/t/solutions/Florian Gross/solitaire.rb
+- lib/quiz1/t/solutions/Glen M. Lewis/solitaire.rb
+- lib/quiz1/t/solutions/James Edward Gray II/solitaire.rb
+- lib/quiz1/t/solutions/Jamis Buck/bin/main.rb
+- lib/quiz1/t/solutions/Jamis Buck/lib/cipher.rb
+- lib/quiz1/t/solutions/Jamis Buck/lib/cli.rb
+- lib/quiz1/t/solutions/Jamis Buck/test/tc_deck.rb
+- lib/quiz1/t/solutions/Jamis Buck/test/tc_key-stream.rb
+- lib/quiz1/t/solutions/Jamis Buck/test/tc_keying-algorithms.rb
+- lib/quiz1/t/solutions/Jamis Buck/test/tc_solitaire-cipher.rb
+- lib/quiz1/t/solutions/Jamis Buck/test/tc_unkeyed-algorithm.rb
+- lib/quiz1/t/solutions/Jamis Buck/test/tests.rb
+- lib/quiz1/t/solutions/Jim Menard/solitaire_cypher.rb
+- lib/quiz1/t/solutions/Jim Menard/test.rb
+- lib/quiz1/t/solutions/Moses Hohman/cipher.rb
+- lib/quiz1/t/solutions/Moses Hohman/deck.rb
+- lib/quiz1/t/solutions/Moses Hohman/solitaire.rb
+- lib/quiz1/t/solutions/Moses Hohman/test_cipher.rb
+- lib/quiz1/t/solutions/Moses Hohman/test_deck.rb
+- lib/quiz1/t/solutions/Moses Hohman/test_util.rb
+- lib/quiz1/t/solutions/Moses Hohman/testsuite.rb
+- lib/quiz1/t/solutions/Moses Hohman/util.rb
+- lib/quiz1/t/solutions/Niklas Frykholm/solitaire.rb
+- lib/quiz1/t/solutions/Thomas Leitner/solitaire.rb
+has_rdoc: false
+homepage: http://rubyzip.sourceforge.net/
+post_install_message: 
+rdoc_options: []
+
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">"
+    - !ruby/object:Gem::Version 
+      version: 0.0.0
+  version: 
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+requirements: []
+
+rubyforge_project: 
+rubygems_version: 1.3.1
+signing_key: 
+specification_version: 1
+summary: rubyzip is a ruby module for reading and writing zip files
+test_files: []
+

@@ -3,4 +3,6 @@ release based on Rails 2.2.
 
   Drop TZInfo completely--see app/models/site.rb (fix docs, too)
   Handle inactive users with named scopes, not acts_as_versioned
+  SECURITY: Don't ship :session_key in environment.rb!
+  Try to upgrade to gem version of coderay
   We need to review our TODO comments
