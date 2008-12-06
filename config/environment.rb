@@ -54,6 +54,7 @@ Rails::Initializer.run do |config|
   config.gem 'rubyzip', :lib => 'zip/zipfilesystem'
   config.gem 'liquid'
   config.gem 'will_paginate'
+  config.gem 'mocha'
 end
 
 # Don't update this file, make custom tweaks in config/initializers/custom.rb, 
