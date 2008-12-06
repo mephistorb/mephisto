@@ -21,8 +21,8 @@ class ActionController::Dispatcher
     Mephisto.liquid_tags.each { |name, klass| Liquid::Template.register_tag name, klass }
   end
   
-  def cleanup_application_with_plugins(force = false)
-    returning cleanup_application_without_plugins(force) do
+  def cleanup_application_with_plugins
+    returning cleanup_application_without_plugins do
       self.class.register_liquid_tags
     end
   end
