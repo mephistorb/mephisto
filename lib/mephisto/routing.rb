@@ -35,8 +35,11 @@ module Mephisto
       
       map_from_plugins(map)
       
+      # TODO - revisit these explicit routes and figure out why the last map.connect is not generating the correct routes
       map.connect 'account/:action', :controller => 'account'
       map.connect 'admin/sections/:action/:id', :controller => 'admin/sections'
+      map.connect 'admin/resources/:action', :controller => 'admin/resources'
+      map.connect 'admin/templates/:action', :controller => 'admin/templates'
       
       map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/, :id => /[^\/]*/
 
