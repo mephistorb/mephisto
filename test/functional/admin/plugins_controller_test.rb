@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../../test_helper'
-require 'admin/plugins_controller'
 
 # Temporarily disabled--see the comment on PluginWhammyJammy in
 # test_helper.rb for an explanation.

@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../../test_helper'
-require 'admin/overview_controller'
 
 # Re-raise errors caught by the controller.
 class Admin::OverviewController; def rescue_action(e) raise e end; end

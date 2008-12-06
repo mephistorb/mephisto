@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../../test_helper'
-require 'admin/sites_controller'
 
 # Re-raise errors caught by the controller.
 class Admin::SitesController; def rescue_action(e) raise e end; end

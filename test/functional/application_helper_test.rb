@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require 'application_helper'
 require 'digest/md5'
 
 ApplicationHelperTestController = Class.new ApplicationController do

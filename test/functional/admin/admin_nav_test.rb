@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../../test_helper'
-require 'admin/assets_controller'
 
 # Use assets controller because #new is a very simple action and we just want to test the layout
 class Admin::AssetsController; def rescue_action(e) raise e end; end

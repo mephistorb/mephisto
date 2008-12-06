@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../test_helper'
-require_dependency 'feed_controller'
 
 # Re-raise errors caught by the controller.
 class FeedController; def rescue_action(e) raise e end; end
