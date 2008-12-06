@@ -3,4 +3,5 @@ release based on Rails 2.2.
 
   Why must we run 'rake db:bootstrap:copy_default_theme' after unit tests?
   After posting a comment, we get redirected to :permalink/comments/:id
+  The Golum bug: "6 commentss" (on the main page)
   We need to review our TODO comments

@@ -35,17 +35,11 @@ module Mephisto
       
       map_from_plugins(map)
       
-      # TODO - revisit these explicit routes and figure out why the last map.connect is not generating the correct routes
-      map.connect 'account/:action', :controller => 'account'
-      map.connect 'admin/sections/:action/:id', :controller => 'admin/sections'
-      map.connect 'admin/users/:action/:id', :controller => 'admin/users'
-      map.connect 'admin/sites/:action/:id', :controller => 'admin/sites'
-      map.connect 'admin/resources/:action', :controller => 'admin/resources'
-      map.connect 'admin/templates/:action', :controller => 'admin/templates'
-      map.connect 'admin/design/:action', :controller => 'admin/design'
-      map.connect 'admin/settings/:action', :controller => 'admin/settings'
-
-      map.connect ':controller/:action/:id/:version', :version => nil, :controller => /routing_navigator|account|(admin\/\w+)/, :id => /[^\/]*/
+      map.connect(':controller/:action/:id/:version',
+                  :controller => /routing_navigator|account|admin\/\w+/,
+                  :action => /[^\/]*/,
+                  :id => /[^\/]*/,
+                  :defaults => { :version => nil })
 
       yield if block_given?
       
