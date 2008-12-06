@@ -27,6 +27,6 @@
     <div class="empty" style="margin: 20px;">You have no files of this type or have yet to upload any files. <%= link_to 'Upload one now &raquo;', :action => 'new' %></div>
   <% end %>
 
-<% if @assets.page_count > 1 %>
+<% if @assets.total_pages > 1 %>
   <%= will_paginate @assets, :id => 'pagination' %>
 <% end %>

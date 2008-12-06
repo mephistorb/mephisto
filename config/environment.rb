@@ -53,6 +53,7 @@ Rails::Initializer.run do |config|
              :source => 'http://gems.github.com'
   config.gem 'rubyzip', :lib => 'zip/zipfilesystem'
   config.gem 'liquid'
+  config.gem 'will_paginate'
 end
 
 # Don't update this file, make custom tweaks in config/initializers/custom.rb, 

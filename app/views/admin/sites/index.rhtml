@@ -41,7 +41,7 @@
 
 
 <!-- begin pagination -->
-<% if @sites.page_count > 1 -%>
+<% if @sites.total_pages > 1 -%>
   <%= will_paginate @sites, :id => 'pagination' %>
 <% end -%>
 <!-- /end pagination -->

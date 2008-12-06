@@ -60,7 +60,7 @@
 <!-- /end article list -->
 
 <!-- begin pagination -->
-<% if @articles.page_count > 1 -%>
+<% if @articles.total_pages > 1 -%>
   <%= will_paginate @articles, :id => 'pagination' %>
 <% end -%>
 <!-- /end pagination -->

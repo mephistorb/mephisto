@@ -1,5 +1,5 @@
 <% unless @cached_pages.empty? -%>
-  <%= will_paginate @cached_pages, :class => 'pages' if @cached_pages.page_count > 1 %>
+  <%= will_paginate @cached_pages, :class => 'pages' if @cached_pages.total_pages > 1 %>
   <!-- begin cached pages list -->
   <h2>Cached Pages</h2><br/>
   <table id="cached-pages" cellspacing="0" cellpadding="0">
@@ -17,7 +17,7 @@
     </tbody>
   </table>
   <!-- /end cached pages list -->
-  <%= will_paginate @cached_pages, :id => 'pagination' if @cached_pages.page_count > 1 %>
+  <%= will_paginate @cached_pages, :id => 'pagination' if @cached_pages.total_pages > 1 %>
 <% else -%>
   <div class="empty">There currently aren't any pages being cached by Mephisto.</div>
 <% end -%>
