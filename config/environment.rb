@@ -49,6 +49,8 @@ Rails::Initializer.run do |config|
   config.gem 'RedCloth', :version => '3.0.4', :lib => 'redcloth'
   config.gem 'BlueCloth', :lib => 'bluecloth'
   config.gem 'faker'
+  config.gem 'notahat-machinist', :lib => 'machinist',
+             :source => 'http://gems.github.com'
   config.gem 'rubyzip', :lib => 'zip/zipfilesystem'
   config.gem 'liquid'
 end
