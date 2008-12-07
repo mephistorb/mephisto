@@ -1,9 +1,8 @@
-unless @section.new_record?
-  page.insert_html(:bottom, 'sections', :partial => 'section',
-                   :object => @section)
-  page << "$('section_name').value = ''"
-  page.call 'Flash.notice', "Section '#{h @section.name}' created."
-else
+if @section.errors.any?  
   page.visual_effect :shake, 'section_name'
-  page.flash.errors error_messages_for(:section) if @section.errors.any?
+  page.flash.errors error_messages_for(:section)
+else
+  page.flash.fade_error
+  page.flash.notice "Section '#{h @section.name}' created."
+  page['sections'].replace_html(render(:partial => 'section', :collection => @sections))
 end

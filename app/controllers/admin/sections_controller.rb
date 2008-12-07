@@ -2,7 +2,7 @@ class Admin::SectionsController < Admin::BaseController
   cache_sweeper :article_sweeper, :except => :index
   before_filter :protect_action, :only => :order
   before_filter :find_and_sort_templates,   :only => [:index, :edit]
-  before_filter :find_and_reorder_sections, :only => [:index, :edit]
+  before_filter :find_and_reorder_sections, :only => [:index, :edit, :create]
   before_filter :find_section,              :only => [:destroy, :update]
   clear_empty_templates_for :section, :template, :layout, :archive_template, :only => [:create, :update]
 
