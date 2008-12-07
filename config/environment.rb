@@ -44,6 +44,9 @@ Rails::Initializer.run do |config|
   # (enables use of different database adapters for development and test environments)
   config.active_record.schema_format = :ruby
 
+  # Register our observers.
+  config.active_record.observers = [:article_observer, :comment_observer]
+
   # We're slowly moving the contents of vendor and vender/plugins into
   # vendor/gems by adding config.gem declarations.
   config.gem 'RedCloth', :version => '3.0.4', :lib => 'redcloth'

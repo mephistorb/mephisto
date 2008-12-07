@@ -6,8 +6,6 @@ require 'ruby_pants'
 require 'xmlrpc_patch'
 require 'base64'
 
-ActiveRecord::Base.observers = [:article_observer, :comment_observer]
-
 # temporarily moved to vendor/plugins/aaa/init.rb to make sure
 # it's loaded before all other plugins
 # Object::RAILS_PATH = Pathname.new(File.expand_path(RAILS_ROOT))
