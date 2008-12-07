@@ -2,33 +2,33 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 # DEPRECATED, see spec/filters/absolute_url_spec.rb
 
-context "Default Url" do
+class DefaultUrlTest < ActiveSupport::TestCase
   include Mephisto::Liquid::UrlMethods
   
-  it "should have root absolute url" do
+  test "should have root absolute url" do
     assert_equal '/', absolute_url
   end
   
-  it "should join url pieces" do
+  test "should join url pieces" do
     assert_equal '/foo', absolute_url(:foo)
     assert_equal '/foo/bar', absolute_url(:foo, :bar)
     assert_equal '/foo/bar/baz.html', absolute_url(:foo, :bar, 'baz.html')
   end
   
-  it "should join relative path" do
+  test "should join relative path" do
     assert_equal '/foo/bar/baz.html', absolute_url('foo/bar/baz.html')
   end
   
-  it "should join absolute path" do
+  test "should join absolute path" do
     assert_equal '/foo/bar/baz.html', absolute_url('/foo/bar/baz.html')
   end
   
-  it "should join path ending with a slash" do
+  test "should join path ending with a slash" do
     assert_equal '/foo/bar/baz', absolute_url('foo/bar/baz/')
   end
 end
 
-context "Custom Relative Url" do
+class CustomRelativeUrlTest < ActiveSupport::TestCase
   include Mephisto::Liquid::UrlMethods
   attr_reader :relative_url_root
   
@@ -36,25 +36,25 @@ context "Custom Relative Url" do
     @relative_url_root = '/blog'
   end
   
-  it "should have root absolute url" do
+  test "should have root absolute url" do
     assert_equal '/blog/', absolute_url
   end
   
-  it "should join url pieces" do
+  test "should join url pieces" do
     assert_equal '/blog/foo',              absolute_url(:foo)
     assert_equal '/blog/foo/bar',          absolute_url(:foo, :bar)
     assert_equal '/blog/foo/bar/baz.html', absolute_url(:foo, :bar, 'baz.html')
   end
   
-  it "should join relative path" do
+  test "should join relative path" do
     assert_equal '/blog/foo/bar/baz.html', absolute_url('foo/bar/baz.html')
   end
   
-  it "should join absolute path" do
+  test "should join absolute path" do
     assert_equal '/foo/bar/baz.html', absolute_url('/foo/bar/baz.html')
   end
   
-  it "should join path ending with a slash" do
+  test "should join path ending with a slash" do
     assert_equal '/blog/foo/bar/baz', absolute_url('foo/bar/baz/')
   end
 end

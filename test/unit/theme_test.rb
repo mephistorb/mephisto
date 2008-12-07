@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-context "Theme" do
+class ThemeTest < ActiveSupport::TestCase
   fixtures :sites
 
   def setup
@@ -8,15 +8,15 @@ context "Theme" do
     @theme = sites(:first).theme
   end
 
-  it "should find preview" do
+  test "should find preview" do
     assert @theme.preview.exist?
   end
 
-  it "should respond to to_param for routes" do
+  test "should respond to to_param for routes" do
     assert_equal 'current', @theme.to_param
   end
 
-  it "should export files" do
+  test "should export files" do
     @theme.export 'foo', :to => THEME_ROOT
     
     THEME_FILES.each do |path|
@@ -24,7 +24,7 @@ context "Theme" do
     end
   end
 
-  it "should export files as zip" do 
+  test "should export files as zip" do 
     @theme.export_as_zip 'foo', :to => THEME_ROOT
     
     assert File.exists?(File.join(THEME_ROOT, 'foo.zip'))
@@ -36,7 +36,7 @@ context "Theme" do
     end
   end
 
-  it "should import files" do
+  test "should import files" do
     dest = THEME_ROOT + 'site-1/other/hemingway'
     Theme.import THEME_ROOT + 'site-1/hemingway.zip', :to => dest
     assert dest.exist?
@@ -45,7 +45,7 @@ context "Theme" do
     end
   end
   
-  it "should not import bad theme" do
+  test "should not import bad theme" do
     dest = THEME_ROOT + 'site-1/other/hemingway'
     assert_raise ThemeError do
       Theme.import THEME_ROOT + 'site-1/bad-hemingway.zip', :to => dest
@@ -53,18 +53,18 @@ context "Theme" do
     assert !dest.exist?
   end
   
-  it "should raise MissingThemesError on missing themes" do
+  test "should raise MissingThemesError on missing themes" do
     site = Site.new
     site.stubs(:themes).returns([])
     site.stubs(:current_theme_path).returns(0)
     assert_raises(MissingThemesError) { site.theme }
   end
   
-  it "should retrieve extension" do
+  test "should retrieve extension" do
     assert_equal ".liquid", @theme.extension
   end
   
-  it "should find templates" do
+  test "should find templates" do
     assert_equal 15, @theme.attachments.size
     assert_equal 12, @theme.templates.size
     assert_equal 3, @theme.resources.size

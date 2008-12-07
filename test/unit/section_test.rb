@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-context "Section" do
+class SectionTest < ActiveSupport::TestCase
   fixtures :sections, :contents, :assigned_sections, :sites, :users
 
   def test_find_or_create_sanity_check
@@ -102,12 +102,12 @@ context "Section" do
     assert_equal({ :path => %w(about) }, sections(:about).hash_for_url)
   end
 
-  it "should return correct sections" do
+  test "should return correct sections" do
     assert_models_equal [sections(:about), sections(:africa), sections(:bucharest), sections(:earth), sections(:europe), sections(:home), sections(:links), sections(:paged_section)], sites(:first).sections.find(:all, :order => 'name')
     assert_models_equal [sections(:about), sections(:links), sections(:paged_section)], sites(:first).sections.find_paged
   end
 
-  it "should order articles in sections" do
+  test "should order articles in sections" do
     assert_reorder_articles sections(:about),
       [contents(:welcome), contents(:about), contents(:site_map), contents(:draft), contents(:future)],
       [contents(:about), contents(:site_map), contents(:welcome), contents(:future), contents(:draft)]

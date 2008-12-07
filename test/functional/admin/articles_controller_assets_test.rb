@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../test_helper'
 # Re-raise errors caught by the controller.
 class Admin::ArticlesController; def rescue_action(e) raise e end; end
 
-context "Admin Articles Controller Assets" do
+class AdminArticlesControllerAssetsTest < ActiveSupport::TestCase
   fixtures :contents, :content_versions, :sections, :assigned_sections, :users, :sites, :tags, :taggings, :memberships, :assigned_assets, :assets
 
   def setup
@@ -14,7 +14,7 @@ context "Admin Articles Controller Assets" do
     FileUtils.mkdir_p ASSET_PATH
   end
 
-  it "should upload asset" do
+  test "should upload asset" do
     asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     assert_difference Asset, :count, asset_count do
@@ -24,7 +24,7 @@ context "Admin Articles Controller Assets" do
     end
   end
 
-  it "should upload asset and redirect to article" do
+  test "should upload asset and redirect to article" do
     asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     assert_difference Asset, :count, asset_count do
@@ -36,7 +36,7 @@ context "Admin Articles Controller Assets" do
     end
   end
 
-  it "should upload asset as member" do
+  test "should upload asset as member" do
     asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     login_as :ben
@@ -47,7 +47,7 @@ context "Admin Articles Controller Assets" do
     end
   end
 
-  it "should upload asset and redirect to article as member" do
+  test "should upload asset and redirect to article as member" do
     asset_count = has_image_processor? ? 3 : 1 # asset + 2 thumbnails
     
     login_as :ben
@@ -60,7 +60,7 @@ context "Admin Articles Controller Assets" do
     end
   end
 
-  it "should not error on new article asset upload" do
+  test "should not error on new article asset upload" do
     assert_no_difference Asset, :count do
       post :upload
       assert_response :success
@@ -68,7 +68,7 @@ context "Admin Articles Controller Assets" do
     end
   end
 
-  it "should not error on article asset upload" do
+  test "should not error on article asset upload" do
     assert_no_difference Asset, :count do
       post :upload, :id => contents(:welcome).id
       assert_response :success
@@ -77,7 +77,7 @@ context "Admin Articles Controller Assets" do
     end
   end
 
-  it "should not create article when uploading asset" do
+  test "should not create article when uploading asset" do
     Time.mock! Time.local(2005, 1, 1, 12, 0, 0) do
       assert_no_difference Article, :count do
         post :upload, :asset => { :uploaded_data => fixture_file_upload('assets/logo.png', 'image/png') }, 
@@ -93,21 +93,21 @@ context "Admin Articles Controller Assets" do
     end
   end
 
-  it "should add asset to article" do
+  test "should add asset to article" do
     assert_difference AssignedAsset, :count do
       post :attach, :id => contents(:welcome).id, :version => assets(:mov).id
     end
     assert_models_equal [assets(:gif), assets(:mp3), assets(:mov)], contents(:welcome).assets(true)
   end
   
-  it "should add inactive asset to article" do
+  test "should add inactive asset to article" do
     assert_no_difference AssignedAsset, :count do
       post :attach, :id => contents(:welcome).id, :version => assets(:png).id
     end
     assert_models_equal [assets(:gif), assets(:mp3), assets(:png)], contents(:welcome).assets(true)
   end
 
-  it "should find deactivate article assets" do
+  test "should find deactivate article assets" do
     assert_no_difference AssignedAsset, :count do
       post :detach, :id => contents(:welcome).id, :version => assets(:mp3).id
     end

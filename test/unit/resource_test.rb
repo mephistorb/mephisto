@@ -1,28 +1,28 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-context "Existing Theme Resources" do
+class ExistingThemeResourcesTest < ActiveSupport::TestCase
   fixtures :sites
 
   def setup
     prepare_theme_fixtures
   end
 
-  it "should count correct assets" do
+  test "should count correct assets" do
     assert_equal 3, sites(:first).resources.size
     assert_equal 0, sites(:hostess).resources.size
   end
 
-  it "should carry theme reference" do
+  test "should carry theme reference" do
     assert_equal sites(:first).theme.path, sites(:first).resources.theme.path
   end
 
-  it "should add resource" do
+  test "should add resource" do
     f = sites(:hostess).resources.write 'foo.css'
     assert_equal (sites(:hostess).attachment_path + 'stylesheets/foo.css'), f
     assert !f.file?
   end
 
-  it "should add and create resource" do
+  test "should add and create resource" do
     f = sites(:hostess).resources.write 'foo.css', 'foo'
     assert_equal (sites(:hostess).attachment_path + 'stylesheets/foo.css'), f
     assert_equal 'foo', f.read
@@ -30,13 +30,13 @@ context "Existing Theme Resources" do
   end
 end
 
-context "Resource" do
+class ResourceTest < ActiveSupport::TestCase
   def setup
     @resources = Resources.new
     @resources.stubs(:theme).returns(stub(:path => ''))
   end
 
-  it "should return correct content type for Pathname" do
+  test "should return correct content type for Pathname" do
     exts  = %w(.js .css .png .jpg .jpeg .gif .swf)
     types = %w(text/javascript text/css image/png image/jpeg image/jpeg image/gif application/x-shockwave-flash)
     exts.each_with_index do |ext, i|
@@ -44,7 +44,7 @@ context "Resource" do
     end
   end
   
-  it "should return correct full path for filename" do
+  test "should return correct full path for filename" do
     paths = Hash.new { 'images' }
     paths['.js']  = 'javascripts'
     paths['.css'] = 'stylesheets'

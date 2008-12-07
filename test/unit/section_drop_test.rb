@@ -42,7 +42,7 @@ class SectionDropTest < Test::Unit::TestCase
   end
 end
 
-context "Section Contents" do
+class SectionContentsTest < ActiveSupport::TestCase
   fixtures :sites, :sections, :contents, :assigned_sections
 
   def setup
@@ -50,12 +50,12 @@ context "Section Contents" do
     @section.context = mock_context
   end
 
-  it "should list articles" do
+  test "should list articles" do
     assert_models_equal [contents(:welcome), contents(:another)], @section.articles.collect(&:source)
     assert_models_equal [contents(:welcome)], @section.latest_articles(1).collect(&:source)
   end
 
-  it "should list articles" do
+  test "should list comments" do
     assert_models_equal [contents(:welcome_comment)], @section.comments.collect(&:source)
     assert_models_equal [contents(:welcome_comment)], @section.latest_comments(1).collect(&:source)
   end

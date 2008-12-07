@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-context "Template" do
+class TemplateTest < ActiveSupport::TestCase
   fixtures :sites
 
   def setup

@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 # Re-raise errors caught by the controller.
 class AccountController; def rescue_action(e) raise e end; end
 
-context "Account Controller Login" do
+class AccountControllerLoginTest < ActiveSupport::TestCase
   fixtures :users, :sites, :memberships
 
   def setup
@@ -12,21 +12,21 @@ context "Account Controller Login" do
     @response   = ActionController::TestResponse.new
   end
 
-  it "should have routes for all actions" do
+  test "should have routes for all actions" do
     %w(login logout forget activate).each do |action|
       assert_routing("account/#{action}",
                      :controller => "account", :action => action)
     end
   end
 
-  it "should login as mephisto admin" do
+  test "should login as mephisto admin" do
     post :login, :login => 'quentin', :password => 'test'
     assert session[:user]
     # quentin has User.admin true
     assert_redirected_to :controller => 'admin/overview', :action => 'index'
   end
 
-  it "should login as site member" do
+  test "should login as site member" do
     post :login, :login => 'arthur', :password => 'test'
     assert session[:user]
     # arthur is an admin for the site :first
@@ -35,7 +35,7 @@ context "Account Controller Login" do
     assert !session[:user]
   end
 
-  it "should login as site user" do
+  test "should login as site user" do
     post :login, :login => 'ben', :password => 'test'
     assert session[:user]
     # ben is not an admin so should be redirected to the front page
@@ -44,19 +44,19 @@ context "Account Controller Login" do
     assert !session[:user]
   end
 
-  it "should fail login and not redirect" do
+  test "should fail login and not redirect" do
     post :login, :login => 'quentin', :password => 'bad password'
     assert_nil session[:user]
     assert_response :success
   end
 
-  it "should fail login for disabled user and not redirect" do
+  test "should fail login for disabled user and not redirect" do
     post :login, :login => 'aaron', :password => 'test'
     assert_nil session[:user]
     assert_response :success
   end
 
-  it "should logout" do
+  test "should logout" do
     login_as :quentin
     get :logout
     assert_nil session[:user]
@@ -65,7 +65,7 @@ context "Account Controller Login" do
   end
 end
 
-context "Account Controller Cookie" do
+class AccountControllerCookieTest < ActiveSupport::TestCase
   fixtures :users, :sites, :memberships
 
   def setup
@@ -74,36 +74,36 @@ context "Account Controller Cookie" do
     @response   = ActionController::TestResponse.new
   end
 
-  it "should remember me" do
+  test "should remember me" do
     post :login, :login => 'quentin', :password => 'test', :remember_me => "1"
     assert_not_nil @response.cookies['token']
   end
 
-  it "should not remember me" do
+  test "should not remember me" do
     post :login, :login => 'quentin', :password => 'test', :remember_me => "0"
     assert_nil cookies[:auth_token]
   end
   
-  it "should delete token on logout" do
+  test "should delete token on logout" do
     @request.cookies["token"] = cookie_for(:quentin)
     login_as :quentin
     get :logout
     assert_equal @response.cookies['token'], []
   end
 
-  it "should login with cookie" do
+  test "should login with cookie" do
     @request.cookies["token"] = cookie_for(:quentin)
     get :index
     assert @controller.send(:logged_in?)
   end
 
-  it "should fail cookie login with expired token" do
+  test "should fail cookie login with expired token" do
     @request.cookies["token"] = cookie_for(:arthur)
     get :index
     assert !@controller.send(:logged_in?)
   end
 
-  it "should fail cookie login with invalid token" do
+  test "should fail cookie login with invalid token" do
     @request.cookies["token"] = auth_token('invalid_auth_token')
     get :index
     assert !@controller.send(:logged_in?)
@@ -124,7 +124,7 @@ context "Account Controller Cookie" do
     end
 end
 
-context "Account Controller Password Reset" do
+class AccountControllerPasswordResetTest < ActiveSupport::TestCase
   fixtures :users, :sites, :memberships
 
   def setup
@@ -135,7 +135,7 @@ context "Account Controller Password Reset" do
     @emails.clear
   end
 
-  it "should ignore invalid reset attempt" do
+  test "should ignore invalid reset attempt" do
     assert_no_difference @emails, :size do
       get :forget
     end
@@ -144,7 +144,7 @@ context "Account Controller Password Reset" do
     assert_nil flash[:notice]
   end
 
-  it "should ignore reset attempt with missing email" do
+  test "should ignore reset attempt with missing email" do
     assert_no_difference @emails, :size do
       post :forget
     end
@@ -153,7 +153,7 @@ context "Account Controller Password Reset" do
     assert_nil flash[:notice]
   end
 
-  it "should ignore reset attempt with bad email" do
+  test "should ignore reset attempt with bad email" do
     assert_no_difference @emails, :size do
       post :forget, :email => 'foobar'
     end
@@ -162,7 +162,7 @@ context "Account Controller Password Reset" do
     assert_nil flash[:notice]
   end
   
-  it "should send user token by email on good email" do
+  test "should send user token by email on good email" do
     old_token = users(:quentin).token
     assert_difference @emails, :size do
       post :forget, :email => users(:quentin).email
@@ -174,7 +174,7 @@ context "Account Controller Password Reset" do
     assert_nil flash[:error]
   end
   
-  it "should activate valid token" do
+  test "should activate valid token" do
     old_token = users(:quentin).token
     get :activate, :id => users(:quentin).token
     assert_equal users(:quentin), @controller.send(:current_user)
@@ -183,7 +183,7 @@ context "Account Controller Password Reset" do
     assert_nil flash[:error]
   end
   
-  it "should not activate invalid token" do
+  test "should not activate invalid token" do
     old_token = users(:arthur).token
     get :activate, :id => users(:arthur).token
     assert !@controller.send(:logged_in?)
