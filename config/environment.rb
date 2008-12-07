@@ -17,6 +17,15 @@ require File.join(File.dirname(__FILE__), 'boot')
 require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
 require File.join(File.dirname(__FILE__), '../lib/mephisto/plugin')
 
+# Don't load the application when running rake db:* tasks, because doing so
+# will try to access database tables before they exist.  See
+# http://rails.lighthouseapp.com/projects/8994/tickets/63, which allegedly
+# fixes this problem.  Here's where I got the idea:
+# http://justbarebones.blogspot.com/2008/05/rails-202-restful-authentication-and.html
+def safe_to_load_application?
+  File.basename($0) != "rake" || ARGV.none? {|a| a =~ /^db:/ }
+end
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
   
@@ -45,7 +54,9 @@ Rails::Initializer.run do |config|
   config.active_record.schema_format = :ruby
 
   # Register our observers.
-  config.active_record.observers = [:article_observer, :comment_observer]
+  if safe_to_load_application?
+    config.active_record.observers = [:article_observer, :comment_observer]
+  end
 
   # We're slowly moving the contents of vendor and vender/plugins into
   # vendor/gems by adding config.gem declarations.

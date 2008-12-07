@@ -1,25 +1,18 @@
 # Set this if you're running under a sub directory
 # ActionController::AbstractRequest.relative_url_root = '/blog'
 
-# TODO - This ugly conditional is required to support 'rake db:create',
-# which attempts to load this file before the database exists, preventing
-# us from accessing Site.  Remove this when we upgrade to a new enough
-# version of Rails.  Taken from:
-#   http://justbarebones.blogspot.com/2008/05/rails-202-restful-authentication-and.html
-# See http://rails.lighthouseapp.com/projects/8994/tickets/63 for the fix.
-unless File.basename($0) == "rake" && ARGV.include?("db:create")
-
+# If it's safe to load the application, then go ahead and configure it.
+if safe_to_load_application?
   # Turn this on to get detailed cache sweeper logging in production mode
   # Site.cache_sweeper_tracing = true
 
   # Enable if you want to host multiple sites on this app
   Site.multi_sites_enabled = true
 
+  # shouldn't need to set the host, it's set automatically
+  UserMailer.default_url_options[:host] = 'localhost:3000'
+  UserMailer.mail_from = 'webmaster@localhost'
 end
-
-# shouldn't need to set the host, it's set automatically
-UserMailer.default_url_options[:host] = 'localhost:3000'
-UserMailer.mail_from = 'webmaster@localhost'
 
 # defaults to ImageScience, then RMagick, then nothing
 # ASSET_IMAGE_PROCESSOR = :image_science || :rmagick || :none
