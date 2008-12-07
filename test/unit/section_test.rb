@@ -102,12 +102,12 @@ context "Section" do
     assert_equal({ :path => %w(about) }, sections(:about).hash_for_url)
   end
 
-  specify "should return correct sections" do
+  it "should return correct sections" do
     assert_models_equal [sections(:about), sections(:africa), sections(:bucharest), sections(:earth), sections(:europe), sections(:home), sections(:links), sections(:paged_section)], sites(:first).sections.find(:all, :order => 'name')
     assert_models_equal [sections(:about), sections(:links), sections(:paged_section)], sites(:first).sections.find_paged
   end
 
-  specify "should order articles in sections" do
+  it "should order articles in sections" do
     assert_reorder_articles sections(:about),
       [contents(:welcome), contents(:about), contents(:site_map), contents(:draft), contents(:future)],
       [contents(:about), contents(:site_map), contents(:welcome), contents(:future), contents(:draft)]

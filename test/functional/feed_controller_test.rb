@@ -60,12 +60,12 @@ context "About Section Feed" do
     get :feed, :sections => ['about']
   end
 
-  specify "should select correct records" do
+  it "should select correct records" do
     assert_equal sections(:about), assigns(:section)
     assert_equal [contents(:welcome), contents(:about), contents(:site_map)], assigns(:articles)
   end
   
-  specify "should show correct titles" do
+  it "should show correct titles" do
     assert_select 'feed>title', 'Mephisto - About'
     assert_select 'feed>entry>title', 3 do |titles|
       assert_equal 'Welcome to Mephisto', titles[0].children.first.content
@@ -74,7 +74,7 @@ context "About Section Feed" do
     end
   end
   
-  specify "should show correct links" do
+  it "should show correct links" do
     assert_select 'feed>link[href=?][type=?]', 'http://test.host/about', 'text/html'
     assert_select 'feed>entry>link[href]', 4 do |hrefs|
       assert_equal "http://test.host/about",                 hrefs[0]['href']
@@ -95,7 +95,7 @@ context "Home Section Feed" do
     @contents = get_xpath '//entry/content'
   end
   
-  specify "should show titles" do
+  it "should show titles" do
     assert_select 'feed>title', 'Mephisto - Home'
     assert_select 'feed>entry>title', 2 do |elements|
       assert_equal 'Welcome to Mephisto',         elements[0].children.first.content
@@ -103,7 +103,7 @@ context "Home Section Feed" do
     end
   end
   
-  specify "should show correct links" do
+  it "should show correct links" do
     assert_select 'feed>link[href=?][type=?]', 'http://test.host/', 'text/html'
     assert_select 'feed>entry>link[href]', 3 do |hrefs|
       assert_match /\/welcome-to-mephisto$/,         hrefs[0]['href']
@@ -112,11 +112,11 @@ context "Home Section Feed" do
     end
   end
 
-  specify "should show podcast" do
+  it "should show podcast" do
     assert_select 'feed>entry>link[rel=?][length=?][type=?]', 'enclosure', '252366', 'audio/mpeg'
   end
 
-  specify "show absolute urls with custom relative url root" do
+  it "show absolute urls with custom relative url root" do
     begin
       old_root = ActionController::Base.relative_url_root
       ActionController::Base.relative_url_root = '/weblog'
@@ -129,12 +129,12 @@ context "Home Section Feed" do
     end
   end
 
-  specify "should not double escape html" do
+  it "should not double escape html" do
     text = @contents.first.get_text.to_s.strip
     assert text.starts_with("welcome summary\n&lt;p&gt;quentin&#8217;s &#8220;welcome&#8221;"), "'#{text.inspect}' was double escaped"
   end
   
-  specify "should sanitize content" do
+  it "should sanitize content" do
     text = @contents.first.get_text.to_s.strip
     evil = "<script>hi</script><a onclick=\"foo\" href=\"#\">linkage</a></p>"
     good = %(<a href="#">linkage</a></p>)

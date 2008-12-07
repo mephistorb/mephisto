@@ -12,25 +12,25 @@ context "Mephisto Controller Redirections" do
     @response   = ActionController::TestResponse.new
   end
 
-  specify "should handle denied requests" do
+  it "should handle denied requests" do
     %w(deny/foo/bar deny/foo/bar/baz limited_deny deny/bar/baz/blah).each { |path| assert_denied path }
   end
 
-  specify "should redirect without variable matches" do
+  it "should redirect without variable matches" do
     assert_redirected_to '/to/here', 'redirect/from/here'
     assert_redirected_to '/bar',     'sanitize/path'
   end
   
-  specify "should redirect with unused variable matches" do
+  it "should redirect with unused variable matches" do
     assert_redirected_to 'http://external', 'redirect/external'
   end
   
-  specify "should redirect with wildcard match" do
+  it "should redirect with wildcard match" do
     assert_redirected_to '/this/foo',     'redirect/match/wildcard/foo'
     assert_redirected_to '/this/foo/bar', 'redirect/match/wildcard/foo/bar'
   end
 
-  specify "should redirect and match multiple vars" do
+  it "should redirect and match multiple vars" do
     assert_redirected_to '/this/bar/foo',     'redirect/match/vars/foo/bar'
     assert_redirected_to '/this/bar/baz/foo', 'redirect/match/vars/foo/bar/baz'
   end

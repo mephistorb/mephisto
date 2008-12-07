@@ -50,12 +50,12 @@ context "Section Contents" do
     @section.context = mock_context
   end
 
-  specify "should list articles" do
+  it "should list articles" do
     assert_models_equal [contents(:welcome), contents(:another)], @section.articles.collect(&:source)
     assert_models_equal [contents(:welcome)], @section.latest_articles(1).collect(&:source)
   end
 
-  specify "should list articles" do
+  it "should list articles" do
     assert_models_equal [contents(:welcome_comment)], @section.comments.collect(&:source)
     assert_models_equal [contents(:welcome_comment)], @section.latest_comments(1).collect(&:source)
   end
