@@ -8,6 +8,10 @@ describe Membership do
     # don't even have a membership.
     User.update_all(['admin = ?', false])
 
+    # Tell the site controller to leave on-disk theme directories alone.
+    Site.any_instance.stubs(:setup_site_theme_directories).returns(nil)
+    Site.any_instance.stubs(:flush_cache_and_remove_site_directories).returns(nil)
+
     @default_site = Site.make(:title => "Default Site")
     @cupcake_site = Site.make(:title => "Cupcake Site")
 

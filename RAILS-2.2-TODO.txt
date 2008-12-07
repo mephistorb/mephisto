@@ -6,3 +6,12 @@ release based on Rails 2.2.
   SECURITY: Don't ship :session_key in environment.rb!
   Try to upgrade to gem version of coderay
   We need to review our TODO comments
+
+== Other issues
+
+When running the unit tests, we need theme directories in themes/site-$ID.
+But this namespace is also used by the development and production
+databases.  Are the test suites clobbering user themes accidentally?  See
+spec/models/membership_spec.rb for one quick-and-dirty workaround.  Perhaps
+for all non-production environments, we should prepend RAILS-ENV to the
+theme name, giving us themes/test-site-$ID?
