@@ -1,8 +1,3 @@
-require File.join(File.dirname(__FILE__), 'plugin_about_patch')
-
-# needs to be loaded before or at beginning of plugin init stage because it
-# allows to use add_tab and add_admin_tab from plugin init.rb
-
 module Mephisto 
   def self.plugins
     @@plugins ||= Engines::Plugin::List.new Engines.plugins.select{ |plugin| plugin.mephisto_plugin? }
