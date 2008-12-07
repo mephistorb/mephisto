@@ -34,7 +34,7 @@ class Admin::ThemesController < Admin::BaseController
   end
 
   def import
-    return unless request.post?
+    return unless request.post? # If this is a GET, just render form.
     unless params[:theme] && params[:theme].size > 0 && theme_content_types.include?(params[:theme].content_type.strip)
       flash.now[:error] = "Invalid theme uploaded."
       return

@@ -10,11 +10,8 @@ class Admin::BaseController < ApplicationController
   protected
     def protect_action
       if request.get?
-        if params[:id]
-          redirect_to :action => 'show', :id => params[:id]
-        else
-          redirect_to :action => 'index'
-        end
+        flash[:error] = "The action #{params[:action]} in the controller #{params[:controller]} does not accept get requests"
+        redirect_to :action => 'index'
       else
         true
       end

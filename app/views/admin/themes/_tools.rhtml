@@ -10,12 +10,12 @@
   <div id="theme-options">
     <ul>
     <% unless @theme.current? -%>
-      <li><%= link_to 'Use theme', :action => 'change_to', :id => @theme %></li>
+      <li><%= link_to 'Use theme', {:action => 'change_to', :id => @theme }, :method => :post %></li>
       <li><%= link_to 'Edit theme', :controller => 'design', :action => 'index', :theme => @theme %></li>
     <% else -%>
       <li><%= link_to 'Edit theme', :controller => 'design', :action => 'index' %></li>
     <% end -%>
-      <li><%= link_to 'Download theme', :action => 'export', :id => @theme %></li>
+      <li><%= link_to 'Download theme', {:action => 'export', :id => @theme}, :method => :post %></li>
     <% unless @theme.current? -%>
       <li><%= link_to_remote 'Delete theme', :url => {:action => 'destroy', :id => @theme}, :method => :delete,
                 :confirm => "Are you sure you wish to delete this theme stored at 'themes/site-#{site.id}/#{@theme.path.relative_path_from(site.theme_path).to_s}'?" %></li>

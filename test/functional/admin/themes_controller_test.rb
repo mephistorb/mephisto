@@ -76,11 +76,20 @@ context "Admin Themes Controller" do
     assert_equal %w(current encytemedia), sites(:first).themes.collect(&:name)
   end
 
-  specify "should change theme" do
+  specify "should change theme with a post" do
     post :change_to, :id => 'encytemedia'
     assert_equal 'encytemedia', sites(:first).reload.current_theme_path
     assert sites(:first).theme.path.exist?, "#{sites(:first).theme.path.to_s} does not exist"
     assert_equal 'encytemedia', sites(:first).theme.name
     assert_equal 'Encytemedia', sites(:first).theme.title
   end
+  
+  specify "should not change theme with a get" do
+    get :change_to, :id => 'encytemedia'
+    assert_redirected_to :action => 'index'
+    assert_not_equal 'encytemedia', sites(:first).reload.current_theme_path
+    assert_not_equal 'encytemedia', sites(:first).theme.name
+    assert_not_equal 'Encytemedia', sites(:first).theme.title
+  end
+  
 end
