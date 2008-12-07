@@ -6,6 +6,8 @@ release based on Rails 2.2.
   SECURITY: Don't ship :session_key in environment.rb!
   Try to upgrade to gem version of coderay
   We need to review our TODO comments
+  Clean out the issue tracker: http://ar-code.lighthouseapp.com/projects/34-mephisto
+  rake rails:update:javascripts => complicated because mephisto/application.js depends on older versions.
 
 == Other issues
 
