@@ -33,6 +33,11 @@ Rails::Initializer.run do |config|
   config.frameworks -= [ :active_resource ]
 
   config.load_paths += %W( #{RAILS_ROOT}/app/cachers #{RAILS_ROOT}/app/drops #{RAILS_ROOT}/app/filters )
+
+  # This gem is a lightly-patched, in-tree version of rubypants.  The
+  # upstream gem was last released in 2004, and needs to be repackaged
+  # before we can treat it like a normal gem.
+  config.load_paths += %W( #{RAILS_ROOT}/vendor/rubypants-0.2.0/lib )
   
   # NFI why this is here.  find and eradicate the bug.
   config.load_paths += %W( #{RAILS_ROOT}/vendor/rails/actionwebservice/lib )
