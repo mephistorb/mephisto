@@ -4,6 +4,7 @@ config/deploy.rb
 db/*.sqlite3
 log/*.log
 public/assets
+public/cache
 public/plugin_assets
 tmp
 themes/*

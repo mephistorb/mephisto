@@ -2,7 +2,7 @@
 
 # The production environment is meant for finished, "live" apps.
 # Code is not reloaded between requests
-config.cache_classes = true
+config.cache_classes = safe_to_load_application? ? true : false
 
 # Use a different logger for distributed setups
 # config.logger        = SyslogLogger.new
