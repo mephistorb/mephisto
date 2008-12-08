@@ -17,7 +17,7 @@ class CodeMacroTest < Test::Unit::TestCase
   def test_code_macro_with_language_and_line_numbers
     html = process_macros '<macro:code lang="ruby" line_numbers="list">assert_equal 4, 2 + 2</macro:code>'
     
-    expected = "<ol class=\"CodeRay\"><li>assert_equal <span class=\"i\">4</span>, <span class=\"i\">2</span> + <span class=\"i\">2</span></li></ol>\n"
+    expected = "<ol class=\"CodeRay\">\n<li>assert_equal <span class=\"i\">4</span>, <span class=\"i\">2</span> + <span class=\"i\">2</span></li>\n</ol>\n"
     
     assert_equal expected, html
   end

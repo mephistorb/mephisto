@@ -73,6 +73,7 @@ Rails::Initializer.run do |config|
   config.gem 'liquid'
   config.gem 'will_paginate'
   config.gem 'mocha'
+  config.gem 'coderay'
 end
 
 # Don't update this file, make custom tweaks in config/initializers/custom.rb, 
