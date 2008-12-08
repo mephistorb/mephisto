@@ -18,6 +18,11 @@ class ApplicationControllerTest < Test::Unit::TestCase
     @response   = ActionController::TestResponse.new
   end
   
+  def teardown
+    @sub.destroy
+    @uk.destroy
+  end
+  
   def test_should_raise_404_if_no_site
     Site.delete_all
     host! 'test.hosts'

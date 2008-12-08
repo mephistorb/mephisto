@@ -29,13 +29,14 @@ class Admin::SitesControllerTest < Test::Unit::TestCase
     assert_response :success
   end
 
-  def test_should_create_site
+  def test_should_create_and_destroy_site
     login_as :quentin
     assert_difference Site, :count do
       post :create, :site => { :host => 'example.com', :email => 'foo@example.com', :title => 'example', :subtitle => 'example site' }
       assert_redirected_to :action => 'index'
       assert flash[:notice]
     end
+    assert Site.find_by_host('example.com').destroy
   end
 
   def test_should_show_error_while_creating_site

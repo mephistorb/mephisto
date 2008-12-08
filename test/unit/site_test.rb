@@ -31,7 +31,7 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal '', sites(:first).reload.filter
   end
 
-  test "should create site with default home section" do
+  test "should create and destroy site with default home section" do
     site = nil
     assert_difference Site, :count do
       assert_difference Section, :count do
@@ -42,6 +42,7 @@ class SiteTest < ActiveSupport::TestCase
     assert_equal '',     site.sections.first.path
     assert_equal 1,      site.sections.size
     assert site.sections.first.home?
+    assert site.destroy
   end
 
   test "should generate search url" do
