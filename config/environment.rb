@@ -8,8 +8,7 @@
 #require 'ruby-debug'
 #Debugger.start
 
-# Mephisto only works with Rails 2.0 right now, so lock it to 2.0.5, which
-# has the latest set of security fixes for 2.0.
+# Mephisto now requires Rails 2.2
 RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
