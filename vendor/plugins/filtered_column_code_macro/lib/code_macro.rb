@@ -1,6 +1,6 @@
 require 'coderay'
 class CodeMacro < FilteredColumn::Macros::Base
-  DEFAULT_OPTIONS = {:css => :class, :wrap => :div, :line_numbers => :table, :tab_width => 2, :bold_every => 5, :hint => false, :line_number_start => 1}
+  DEFAULT_OPTIONS = {:wrap => :div, :line_numbers => :table, :tab_width => 2, :bold_every => 5, :hint => false, :line_number_start => 1}
   def self.filter(attributes, inner_text = '', text = '')
     # It's a whole lot easier to just set your attributes statically
     # I think for most of us the only option we're gonna change is 'lang'
@@ -31,7 +31,7 @@ class CodeMacro < FilteredColumn::Macros::Base
         RAILS_DEFAULT_LOGGER.warn "CodeRay Error: #{$!.message}"
         RAILS_DEFAULT_LOGGER.debug $!.backtrace.join("\n")
       end
-      "<pre><code>#{inner_text}</code></pre>"
+      "<pre><code>#{CGI.escapeHTML(inner_text)}</code></pre>"
     end
   end
 end
