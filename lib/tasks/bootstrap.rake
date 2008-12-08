@@ -1,4 +1,6 @@
-SITE_DIR = File.join(RAILS_ROOT, 'themes/site-' + (ENV['SITE_ID'] || '1'))
+require 'mephisto/theme_root'
+SITE_THEME_DIR = File.join(THEME_ROOT, "site-#{(ENV['SITE_ID'] || '1')}")
+
 namespace :db do
   desc "Loads a schema.rb file into the database and then loads the initial database fixtures."
   task :bootstrap do |task_args|
@@ -26,11 +28,11 @@ namespace :db do
     end
     
     %w(environment db:schema:load db:bootstrap:load tmp:create).each { |t| Rake::Task[t].execute task_args}
-    if File.exists?(SITE_DIR)
+    if File.exists?(SITE_THEME_DIR)
       puts "skipping default theme creation..."
     else
       Rake::Task["db:bootstrap:copy_default_theme"].execute task_args
-      puts "copied default theme to #{SITE_DIR}..."
+      puts "copied default theme to #{SITE_THEME_DIR}..."
     end
     
     puts
@@ -60,8 +62,8 @@ namespace :db do
     
     desc "Copy default theme to site theme"
     task :copy_default_theme do
-      FileUtils.mkdir_p SITE_DIR
-      theme_path = File.join(SITE_DIR, 'simpla')
+      FileUtils.mkdir_p SITE_THEME_DIR
+      theme_path = File.join(SITE_THEME_DIR, 'simpla')
       FileUtils.cp_r File.join(RAILS_ROOT, 'themes/default'), theme_path
       Dir[File.join(theme_path, '**/.svn')].each do |dir|
         FileUtils.rm_rf dir

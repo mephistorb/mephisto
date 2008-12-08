@@ -11,6 +11,7 @@ require 'base64'
 # Object::RAILS_PATH = Pathname.new(File.expand_path(RAILS_ROOT))
 
 require 'mephisto'
+require 'mephisto/theme_root'
 
 class ActionController::Dispatcher
   def self.register_liquid_tags

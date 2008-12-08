@@ -22,6 +22,7 @@ require File.join(File.dirname(__FILE__), '../lib/mephisto/plugin')
 # fixes this problem.  Here's where I got the idea:
 # http://justbarebones.blogspot.com/2008/05/rails-202-restful-authentication-and.html
 def safe_to_load_application?
+  puts File.basename($0)
   File.basename($0) != "rake" || !ARGV.any? {|a| a =~ /^db:/ }
 end
 

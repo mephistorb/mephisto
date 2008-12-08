@@ -27,7 +27,6 @@ Time.class_eval do
   end
 end
 
-THEME_ROOT = RAILS_PATH + 'tmp/themes' unless Object.const_defined?(:THEME_ROOT)
 THEME_FILES = [
   'about.yml',
   'preview.png',

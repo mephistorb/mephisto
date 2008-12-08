@@ -19,7 +19,7 @@ class MissingThemesError < StandardError
   attr_reader :site
   def initialize(site)
     @site = site
-    super "No themes found in '#{site.theme_path.to_s}/#{site.current_theme_path}'.  This must be set correctly in the site settings."
+    super "No themes found in '#{site.theme_path.to_s}/#{site.current_theme_path}'.  This must be set correctly in the site settings.  You may be able to fix this by running 'rake db:bootstrap:copy_default_theme'"
   end
 end
 

@@ -1,8 +1,9 @@
 require 'uri'
+require 'mephisto/theme_root'
 
 class Site < ActiveRecord::Base
   @@default_assigns = {}
-  @@theme_path      = Pathname.new(RAILS_ROOT) + (Rails.env.test? ? 'tmp/themes' : 'themes')
+  @@theme_path      = Object::THEME_ROOT
   cattr_reader :theme_path, :default_assigns
 
   cattr_accessor :multi_sites_enabled, :cache_sweeper_tracing
@@ -317,10 +318,10 @@ class Site < ActiveRecord::Base
     
     def setup_site_theme_directories
       begin
-        theme_path = "#{self.theme_path}/simpla"
+        current_theme_path = self.theme_path + "simpla"
         FileUtils.mkdir_p(self.theme_path)
-        FileUtils.cp_r("#{RAILS_ROOT}/themes/default", theme_path)
-        Dir[File.join(theme_path, '**/.svn')].each do |dir|
+        FileUtils.cp_r("#{RAILS_ROOT}/themes/default", current_theme_path)
+        Dir[File.join(current_theme_path, '**/.svn')].each do |dir|
           FileUtils.rm_rf dir
         end
       rescue
