@@ -22,6 +22,8 @@ class CodeMacro < FilteredColumn::Macros::Base
     # start with line number
     options[:line_number_start] = attributes[:line_number_start].to_i unless attributes[:line_number_start].blank?
 
+    inner_text = inner_text.gsub(/\A\r?\n/, '').chomp
+
     begin
       CodeRay.scan(inner_text, lang.to_sym).html(options)
     rescue ArgumentError
