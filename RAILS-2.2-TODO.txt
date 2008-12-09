@@ -17,3 +17,22 @@ databases.  Are the test suites clobbering user themes accidentally?  See
 spec/models/membership_spec.rb for one quick-and-dirty workaround.  Perhaps
 for all non-production environments, we should prepend RAILS-ENV to the
 theme name, giving us themes/test-site-$ID?
+
+== Security
+
+We need to do a basic security audit.
+
+  Cookies
+    Make sure cookies are HTTP-only whenever possible
+    Can we restrict admin cookies to /admin ?
+    Make sure logging out clears all relevant cookies and tokens
+  Cross-site scripting
+    Check all fields in comments
+    Check macro:* bodies and parameters
+      filtered_column_code_macro
+      filtered_column_flikr_macro
+    Do we have trackback support to check?
+    Do we need to upgrade to an industrial-strength HTML sanitizer?
+    For now, we'll assume that users with access to /admin don't try XSS
+  Everything else
+    Review http://guides.rubyonrails.org/security.html
