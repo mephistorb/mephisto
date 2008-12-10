@@ -1,22 +1,11 @@
 This is a list of issues that we need to fix before making a Mephisto
 release based on Rails 2.2.
 
+/ Try to upgrade to gem version of coderay
+  Make sure both old- and new-style plugins work
+  Security audit--see blow
   Drop TZInfo completely--see app/models/site.rb (fix docs, too)
-  Handle inactive users with named scopes, not acts_as_versioned
-  SECURITY: Don't ship :session_key in environment.rb!
-  Try to upgrade to gem version of coderay
   We need to review our TODO comments
-  Clean out the issue tracker: http://ar-code.lighthouseapp.com/projects/34-mephisto
-  rake rails:update:javascripts => complicated because mephisto/application.js depends on older versions.
-
-== Other issues
-
-When running the unit tests, we need theme directories in themes/site-$ID.
-But this namespace is also used by the development and production
-databases.  Are the test suites clobbering user themes accidentally?  See
-spec/models/membership_spec.rb for one quick-and-dirty workaround.  Perhaps
-for all non-production environments, we should prepend RAILS-ENV to the
-theme name, giving us themes/test-site-$ID?
 
 == Security
 
@@ -26,13 +15,39 @@ We need to do a basic security audit.
     Make sure cookies are HTTP-only whenever possible
     Can we restrict admin cookies to /admin ?
     Make sure logging out clears all relevant cookies and tokens
+    Check for session fixation attacks
+    Expire sessions after a while?
   Cross-site scripting
+/   Turn on protect_against_forgery
     Check all fields in comments
+      It looks like the failed comment error form has issues
     Check macro:* bodies and parameters
       filtered_column_code_macro
       filtered_column_flikr_macro
     Do we have trackback support to check?
     Do we need to upgrade to an industrial-strength HTML sanitizer?
     For now, we'll assume that users with access to /admin don't try XSS
+  Password change
+    Make change-password forms safe against CSRF
+    Require the user to enter the old password when changing it
+    Require password to change e-mail address
   Everything else
+/   Don't ship :session_key in environment.rb!
+    Do we need to override verifiable_request_format?
+    Review mass assignment in public controllers
     Review http://guides.rubyonrails.org/security.html
+    Can we use SafeERB?
+
+  Admin only
+    Filter file names for uploads
+    Review mass assignment in admin controllers
+
+== After next release
+
+  Handle inactive users with named scopes, not acts_as_versioned
+  Clean out the issue tracker
+    http://ar-code.lighthouseapp.com/projects/34-mephisto
+  rake rails:update:javascripts
+    (complicated because mephisto/application.js depends on older versions)
+  Fix sidebar tabs to do something sensible with unsaved articles
+

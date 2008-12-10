@@ -49,6 +49,12 @@ module ApplicationHelper
     ActionController::Base.relative_url_root
   end
 
+  # Make our form_authenticity_token token available to JavaScript.
+  def init_mephisto_authenticity_token
+    return "" unless protect_against_forgery?
+    "Mephisto.token = '#{form_authenticity_token}';"
+  end
+
   if RAILS_ENV == 'development'
     def gravatar_url_for(user, size = 80)
       'mephisto/avatar.gif'

@@ -7,6 +7,9 @@ class Admin::BaseController < ApplicationController
   before_filter :login_from_cookie
   before_filter :login_required, :except => :feed
 
+  # See ActionController::RequestForgeryProtection for details.
+  protect_from_forgery
+  
   protected
     def protect_action
       if request.get?

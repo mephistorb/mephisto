@@ -157,7 +157,7 @@ TinyTab.callbacks ={
   'search-files': function(q) {
     if(!q) return;
     $('spinner').show();
-    new Ajax.Request(Mephisto.root + '/admin/assets/search', {parameters: 'q=' + escape(q)});
+    new Ajax.Request(Mephisto.root + '/admin/assets/search', {method: 'get', parameters: 'q=' + escape(q)});
   }
 };
 
@@ -300,7 +300,8 @@ var ArticleForm = {
     var articleId = location.href.match(/\/([0-9]+)\/(edit|upload)/)[1];
     var attached  = $('attached-widget-' + assetId);
     if(attached) return;
-    new Ajax.Request('/admin/articles/attach/' + articleId + '/' + assetId);
+    new Ajax.Request('/admin/articles/attach/' + articleId + '/' + assetId,
+                     { parameters: 'authenticity_token=' + Mephisto.token });
     $$('.widget').each(function(asset) { if(assetId == asset.getAttribute('id').match(/-(\d+)$/)[1]) asset.addClassName('selected-widget'); });
   },
 
@@ -308,7 +309,9 @@ var ArticleForm = {
     var articleId = location.href.match(/\/([0-9]+)\/(edit|upload)/)[1];
     var attached  = $('attached-widget-' + assetId);
     var label     = $('attached-widget-version-' + assetId);
-    new Ajax.Request('/admin/articles/label/' + articleId + '/' + assetId + '?label=' + escape(label.value));
+    new Ajax.Request('/admin/articles/label/' + articleId + '/' + assetId,
+                     { parameters: 'authenticity_token=' + Mephisto.token +
+                         '&label=' + escape(label.value) });
     if(attached) return;
   },
 
@@ -316,7 +319,8 @@ var ArticleForm = {
     var articleId = location.href.match(/\/([0-9]+)\/(edit|upload)/)[1];
     var attached  = $('attached-widget-' + assetId);
     if(!attached) return;
-    new Ajax.Request('/admin/articles/detach/' + articleId + '/' + assetId);
+    new Ajax.Request('/admin/articles/detach/' + articleId + '/' + assetId,
+                     { parameters: 'authenticity_token=' + Mephisto.token });
     new Effect.DropOut(attached, {afterFinish: function() { attached.remove(); }});
     $$('.widget').each(function(asset) { if(assetId == asset.getAttribute('id').match(/-(\d+)$/)[1]) asset.removeClassName('selected-widget'); });
   },

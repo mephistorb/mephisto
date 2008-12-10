@@ -28,7 +28,7 @@ module Mephisto
       map.overview 'admin/overview.xml', :controller => 'admin/overview', :action => 'feed'
       map.admin    'admin', :controller => 'admin/overview', :action => 'index'
       map.resources :assets, :path_prefix => '/admin', :controller => 'admin/assets', :member => { :add_bucket => :post },
-        :collection => { :latest => :post, :search => :post, :upload => :post, :clear_bucket => :post }
+        :collection => { :latest => [:get, :post], :search => [:get, :post], :upload => :post, :clear_bucket => :post }
       
       # Where oh where is my xmlrpc code?
       # map.connect 'xmlrpc', :controller => 'backend', :action => 'xmlrpc' 
