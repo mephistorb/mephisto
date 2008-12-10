@@ -25,6 +25,12 @@ def safe_to_load_application?
   File.basename($0) != "rake" || !ARGV.any? {|a| a =~ /^db:/ }
 end
 
+# Make sure we a site-specific secret key file.
+unless File.exists?(File.join(File.dirname(__FILE__),
+                              'initializers/session_store.rb'))
+  raise "You need to run 'rake db:bootstrap:session' to create a secret key."
+end
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence those specified here
   
@@ -44,11 +50,6 @@ Rails::Initializer.run do |config|
   # Force all environments to use the same logger level 
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
-
-  # Use the database for sessions instead of the file system
-  # (create the session table with 'rake create_sessions_table')
-  # config.action_controller.session_store = :active_record_store
-  config.action_controller.session = { :session_key => "_mephisto_session", :secret => "bd088a0f5b476fe5a2c02653a93ed14a95a8396829ce4e726ee77553ab6438a98d0f3e6d80fc6b120370ba047f28e09f71543ae5f842365e5070e7db51fb2cb9" }
 
   # Make Active Record use UTC-base instead of local time
   config.active_record.default_timezone = :utc
