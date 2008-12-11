@@ -1,13 +1,13 @@
 <div class="group">
   <dl>
     <dt>
-      <%= label_tag :data, labels[:data] %>
+      <%= label_tag :data, h(labels[:data]) %>
       <p class="hint"><%= hint %></p>
     </dt>
     <dd><%= text_area_tag :data, h(attachment && attachment.file? ? attachment.read : params[:data]), :class => 'fat', :rows => 20 %></dd>
     <% if controller.action_name == 'index' -%>
     <dt>
-      <%= label_tag :filename, labels[:filename] %>
+      <%= label_tag :filename, h(labels[:filename]) %>
       <p class="hint">You can create one of three types of files: Liquid (*.liquid), CSS (*.css), and Javascript (*.js).</p>
     </dt>
     <dd><%= text_field_tag :filename, params[:filename] %></dd>

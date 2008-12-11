@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />   
-    <title><%= site.title %>: Admin <%= controller.controller_name %></title>
+    <title><%=h site.title %>: Admin <%=h controller.controller_name %></title>
     <%= stylesheet_link_tag 'mephisto/mephisto' %>
     <%= javascript_include_tag 'mephisto/prototype', 'mephisto/effects', 'mephisto/dragdrop', 'mephisto/lowpro', 'mephisto/application' %>
     <script type="text/javascript">Mephisto.root = '<%= relative_url_root %>'; <%= init_mephisto_authenticity_token %></script>
@@ -36,7 +36,7 @@
             <li><%= link_to 'Articles',  :controller => '/admin/articles' %></li>
             <li><%= link_to 'Assets',    :controller => '/admin/assets' %></li>
           <% Mephisto::Plugin.tabs.each do |tab| -%>
-            <li><%= link_to tab.first, tab.last %></li>
+            <li><%= link_to h(tab.first), tab.last %></li>
           <% end -%>
           </ul>
           <% if admin? -%>
@@ -49,7 +49,7 @@
             <li><%= link_to 'Plugins',  :controller => '/admin/plugins' %></li>
 					<% end -%>
           <% Mephisto::Plugin.admin_tabs.each do |tab| -%>
-            <li><%= link_to tab.first.to_s.tableize.humanize, tab.last %></li>
+            <li><%= link_to h(tab.first.to_s.tableize.humanize), tab.last %></li>
           <% end -%>
           </ul>
           <% end -%>
@@ -80,8 +80,8 @@
         <!-- div.left -->
         <div id="main">
           <div id="flashes">
-            <div id="flash-errors" style="display: none;"><%= flash[:error] %></div>
-            <div id="flash-notice" style="display:none"><%= flash[:notice] %></div>
+            <div id="flash-errors" style="display: none;"><%=h flash[:error] %></div>
+            <div id="flash-notice" style="display:none"><%=h flash[:notice] %></div>
           </div>
           <!-- begin action nav -->
           <%= yield :action_nav %>

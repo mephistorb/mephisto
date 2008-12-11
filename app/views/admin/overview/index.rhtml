@@ -49,7 +49,7 @@
     <h3>Recent activity</h3>
     <ul class="slist" id="activity">
       <% @users.each do |user| -%>
-        <li style="clear:right;"><%= avatar_for user %><%= link_to who(user.login), :controller => 'users', :action => 'show', :id => user %><br /> showed up <%= distance_of_time_in_words_to_now(user.updated_at) %> ago</li>
+        <li style="clear:right;"><%= avatar_for user %><%= link_to who(user.login), :controller => 'users', :action => 'show', :id => user %><br /> showed up <%=h distance_of_time_in_words_to_now(user.updated_at) %> ago</li>
       <% end -%>
     </ul>
   </div>

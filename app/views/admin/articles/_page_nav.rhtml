@@ -3,7 +3,7 @@
 <div id="page-nav">
   <ul id="act-nav" class="clear">
     <% if controller.controller_name == 'comments' && controller.action_name == 'index' && @comments.size > 0 -%>
-      <li><%= link_to_remote "Delete these #{@filter != 'all' ? @filter : ''} comments", :confirm => "Are you sure you wish to delete all #{@filter != 'all' ? @filter : ''} comments?",
+      <li><%= link_to_remote h("Delete these #{@filter != 'all' ? @filter : ''} comments"), :confirm => "Are you sure you wish to delete all #{@filter != 'all' ? @filter : ''} comments?",
           :url => { :controller => 'comments', :action => 'destroy', :id => @article }, :with => "ArticleForm.getAvailableComments().toQueryString('comment')"
         %></li>
     <% end -%>

@@ -2,7 +2,7 @@
 
 <h3 style="border-bottom:1px solid #ccc;padding:5px">
 <% if @article -%>
-Comments on <%= link_to @article.title, edit_article_path(@article), :style => 'border:none' %> <span class="right"><%= @article.published? ? link_to(image_tag('/images/mephisto/icons/24-zoom-in.png', :style => 'vertical-align: middle'), @site.permalink_for(@article), :style => 'border:none;') : '&nbsp;' %></span>
+Comments on <%= link_to h(@article.title), edit_article_path(@article), :style => 'border:none' %> <span class="right"><%= @article.published? ? link_to(image_tag('/images/mephisto/icons/24-zoom-in.png', :style => 'vertical-align: middle'), @site.permalink_for(@article), :style => 'border:none;') : '&nbsp;' %></span>
 <% else -%>
 Comments for all articles
 <% end -%>
@@ -22,7 +22,7 @@ Comments for all articles
     <blockquote><p>"<%= strip_tags(comment.body) %>"</p></blockquote>
     <% end -%>
     <span class="meta">
-      <cite>&mdash; <%= author_link_for comment %><%= %( (#{comment.author_email})) unless comment.author_email.blank? %> said <%=  time_ago_in_words comment.created_at %> ago</cite>
+      <cite>&mdash; <%= author_link_for comment %><%=h %( (#{comment.author_email})) unless comment.author_email.blank? %> said <%=h time_ago_in_words comment.created_at %> ago</cite>
     
     <%= link_to_remote 'Edit', :url => edit_article_comment_path(comment.article, comment), :method => :get %> |
     <% if comment.approved? -%>

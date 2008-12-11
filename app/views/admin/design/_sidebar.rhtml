@@ -4,18 +4,18 @@
   *_layout suffix (e.g custom_layout).</p>
 <ul id="attachments">
   <% @theme.templates.template_types(@theme.extension).each do |template| -%>
-    <li><%= link_to template, url_for_theme(:controller => 'templates', :action => 'edit', :filename => template) %></li>
+    <li><%= link_to h(template), url_for_theme(:controller => 'templates', :action => 'edit', :filename => template) %></li>
   <% end -%>
   <% @theme.templates.custom(@theme.extension).each_with_index do |template, i| -%>
     <li id="templates-<%= i %>">
       <%= delete_link :templates, template, "templates-#{i}" %>
-      <%= link_to template, url_for_theme(:controller => 'templates', :action => 'edit', :filename => template) %>
+      <%= link_to h(template), url_for_theme(:controller => 'templates', :action => 'edit', :filename => template) %>
     </li>
   <% end -%>
   <% @theme.resources.reject { |r| @theme.resources.image?(r) }.each_with_index do |resource, i| -%>
     <li id="resources-<%= i %>">
       <%= delete_link :resources, resource.basename.to_s, "resources-#{i}" %>
-      <%= link_to resource.basename, url_for_theme(:controller => 'resources', :action => 'edit', :filename => resource.basename) %>
+      <%= link_to h(resource.basename), url_for_theme(:controller => 'resources', :action => 'edit', :filename => resource.basename) %>
     </li>
   <% end -%>
 </ul>
@@ -25,7 +25,7 @@
 <p>Select an image to use in your template.</p>
 <ul id="attachments">
   <% @theme.resources.select { |r| @theme.resources.image?(r) }.each_with_index do |image, i| -%>
-    <li id="images-<%= i %>"><%= delete_link :resources, image.basename.to_s, "images-#{i}" %> <%=  image.basename %> </li>
+    <li id="images-<%= i %>"><%= delete_link :resources, h(image.basename.to_s), "images-#{i}" %> <%= h(image.basename) %> </li>
   <% end -%>
 </ul>
 
