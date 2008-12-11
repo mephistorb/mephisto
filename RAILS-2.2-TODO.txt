@@ -2,8 +2,8 @@ This is a list of issues that we need to fix before making a Mephisto
 release based on Rails 2.2.
 
 / Try to upgrade to gem version of coderay
-  Make sure both old- and new-style plugins work
-  Security audit--see blow
+  Make sure we know what's up with plugins
+  Security audit--see below
   Drop TZInfo completely--see app/models/site.rb (fix docs, too)
   We need to review our TODO comments
 
@@ -12,11 +12,11 @@ release based on Rails 2.2.
 We need to do a basic security audit.
 
   Cookies
-    Make sure cookies are HTTP-only whenever possible
-    Can we restrict admin cookies to /admin ?
-    Make sure logging out clears all relevant cookies and tokens
+X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
+/   Make sure logging out clears all relevant cookies and tokens
     Check for session fixation attacks
     Expire sessions after a while?
+    Make sure cookies are HTTP-only whenever possible
   Cross-site scripting
 /   Turn on protect_against_forgery
     Check all fields in comments
@@ -33,14 +33,27 @@ We need to do a basic security audit.
     Require password to change e-mail address
   Everything else
 /   Don't ship :session_key in environment.rb!
-    Do we need to override verifiable_request_format?
+/   Do we need to override verifiable_request_format? No.
+    Check redirection in lib/authenticated_system.rb
     Review mass assignment in public controllers
+    Check regexes for ^ and $
     Review http://guides.rubyonrails.org/security.html
-    Can we use SafeERB?
 
   Admin only
     Filter file names for uploads
     Review mass assignment in admin controllers
+    Can we use SafeERB?
+
+== Mass assignment protection
+
+# We need to modify this and put somewhere appropriate.
+ActiveRecord::Base.class_eval do
+  # Raise an error if mass-assignment occurs during unit tests.  Taken from:
+  # http://almosteffortless.com/2008/11/27/raising-protected-attribute-assignme
+  def log_protected_attribute_removal(*attributes)
+    raise "Can't mass-assign these protected attributes: #{attributes.join(', '
+  end
+end
 
 == After next release
 
