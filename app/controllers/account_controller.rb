@@ -1,8 +1,11 @@
 class AccountController < ApplicationController
   include AuthenticatedSystem
   before_filter { |c| UserMailer.default_url_options[:host] = c.request.host_with_port }
+  before_filter :protect_action, :except => [:index, :login, :activate]
   before_filter :login_from_cookie
   layout 'simple'
+
+  protect_from_forgery
 
   def index
     render :action => 'login'

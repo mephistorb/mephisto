@@ -11,8 +11,11 @@ module AuthenticatedSystem
     
     # Store the given user in the session.
     def current_user=(new_user)
-      # Reset session to prevent session fixation.
-      reset_session
+      # Reset session to prevent session fixation, unless we're just
+      # clearing an already-cleared user (in which case we need to keep the
+      # authenticity_token valid, allowing us to handle errors on the login
+      # form without authenticity errors).
+      reset_session unless new_user.nil? and @current_user.nil?
       session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
       @current_user = new_user
     end

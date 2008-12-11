@@ -11,15 +11,6 @@ class Admin::BaseController < ApplicationController
   protect_from_forgery
   
   protected
-    def protect_action
-      if request.get?
-        flash[:error] = "The action #{params[:action]} in the controller #{params[:controller]} does not accept get requests"
-        redirect_to :action => 'index'
-      else
-        true
-      end
-    end
-
     # standard authorization method.  allow logged in users that are admins, or members in certain actions
     def authorized?
       logged_in? && (admin? || member_actions.include?(action_name) || allow_member?)

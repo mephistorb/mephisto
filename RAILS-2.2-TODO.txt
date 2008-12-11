@@ -14,7 +14,7 @@ We need to do a basic security audit.
   Cookies
 X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
 /   Make sure logging out clears all relevant cookies and tokens
-    Check for session fixation attacks
+/   Check for session fixation attacks
     Expire sessions after a while?
     Make sure cookies are HTTP-only whenever possible
   Cross-site scripting
@@ -30,7 +30,8 @@ X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
   Password change
     Make change-password forms safe against CSRF
     Require the user to enter the old password when changing it
-    Require password to change e-mail address
+      This will break our password reset system, actually
+    Require password to change e-mail address?
   Everything else
 /   Don't ship :session_key in environment.rb!
 /   Do we need to override verifiable_request_format? No.

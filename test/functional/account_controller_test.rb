@@ -31,7 +31,7 @@ class AccountControllerLoginTest < ActiveSupport::TestCase
     assert session[:user]
     # arthur is an admin for the site :first
     assert_redirected_to :controller => 'admin/overview', :action => 'index'
-    get :logout
+    post :logout
     assert !session[:user]
   end
 
@@ -40,7 +40,7 @@ class AccountControllerLoginTest < ActiveSupport::TestCase
     assert session[:user]
     # ben is not an admin so should be redirected to the front page
     assert_redirected_to :controller => 'mephisto', :action => 'dispatch'
-    get :logout
+    post :logout
     assert !session[:user]
   end
 
@@ -58,7 +58,7 @@ class AccountControllerLoginTest < ActiveSupport::TestCase
 
   test "should logout" do
     login_as :quentin
-    get :logout
+    post :logout
     assert_nil session[:user]
     assert_redirected_to dispatch_path
     assert_response :redirect
@@ -87,7 +87,7 @@ class AccountControllerCookieTest < ActiveSupport::TestCase
   test "should delete token on logout" do
     @request.cookies["token"] = cookie_for(:quentin)
     login_as :quentin
-    get :logout
+    post :logout
     assert_equal @response.cookies['token'], []
   end
 
@@ -135,11 +135,11 @@ class AccountControllerPasswordResetTest < ActiveSupport::TestCase
     @emails.clear
   end
 
-  test "should ignore invalid reset attempt" do
+  test "should ignore reset attempt using GET" do
     assert_no_difference @emails, :size do
       get :forget
     end
-    assert_redirected_to :action => 'login'
+    assert_redirected_to :action => 'index'
     assert flash[:error]
     assert_nil flash[:notice]
   end

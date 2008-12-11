@@ -19,6 +19,15 @@ class ApplicationController < ActionController::Base
     helper_method :admin?
     helper_method :global_admin?
     
+    def protect_action
+      if request.get?
+        flash[:error] = "The action #{params[:action]} in the controller #{params[:controller]} does not accept get requests"
+        redirect_to :action => 'index'
+      else
+        true
+      end
+    end
+
     def admin?
       logged_in? && (current_user.admin? || current_user.site_admin?)
     end

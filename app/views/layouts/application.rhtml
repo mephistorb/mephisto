@@ -23,7 +23,7 @@
 			<% end %>
         <li><%= link_to 'Account', :controller => 'users', :action => 'show', :id => current_user %></li>
 
-        <li><%= link_to 'Logout', :controller => '/account', :action => 'logout' %></li>
+        <li><%= link_to 'Logout', { :controller => '/account', :action => 'logout' }, :method => :post %></li>
       </ul>
 
       <h1><%= link_to "#{site.title} &mdash; Admin", { :controller => '/admin/overview' }, :title => "#{site.title} admin" %></h1>
