@@ -15,8 +15,8 @@ We need to do a basic security audit.
 X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
 /   Make sure logging out clears all relevant cookies and tokens
 /   Check for session fixation attacks
+/   Make sure cookies are HTTP-only whenever possible
     Expire sessions after a while?
-    Make sure cookies are HTTP-only whenever possible
   Cross-site scripting
 /   Turn on protect_against_forgery
     Check all fields in comments

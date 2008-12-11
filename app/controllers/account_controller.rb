@@ -15,7 +15,7 @@ class AccountController < ApplicationController
     return unless request.post?
     self.current_user = User.authenticate_for(site, params[:login], params[:password])
     if logged_in?
-      cookies[:token] = { :value => current_user.reset_token!, :expires => Time.now.utc+2.weeks } if params[:remember_me] == "1"
+      cookies[:token] = { :value => current_user.reset_token!, :expires => Time.now.utc+2.weeks, :http_only => true } if params[:remember_me] == "1"
       return redirect_back_or_default(default_url(self.current_user))
     end
     flash.now[:error] = "Could not log you in. Are you sure your Login name and Password are correct?"
