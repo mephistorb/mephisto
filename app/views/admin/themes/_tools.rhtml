@@ -1,6 +1,6 @@
 <div id="theme-info" class="clearfix">
   <h3>
-    <%= @theme.title %> (v<%= @theme.version %>)by <% if @theme.author %><a href="<%= @theme.homepage %>"><%= @theme.author %></a><% else %>Unknown<% end %>
+    <%=h @theme.title %> (v<%=h @theme.version %>)by <% if @theme.author %><a href="<%=h @theme.homepage %>"><%=h @theme.author %></a><% else %>Unknown<% end %>
     <%= link_to_function 'close', 'Dialog.close()', :id => 'close-dialog' %>
   </h3>
   <div id="screenshot">
