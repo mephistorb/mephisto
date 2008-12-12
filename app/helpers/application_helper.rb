@@ -75,9 +75,8 @@ module ApplicationHelper
      ['Expire 3 months after publishing',     90]]
   end
 
-  def sanitize_feed_content(html, sanitize_tables = false)
-    options = sanitize_tables ? {} : {:tags => %w(table thead tfoot tbody td tr th)}
-    returning h(white_list(html.strip, options)) do |html|
+  def sanitize_feed_content(html)
+    returning h(sanitize(html.strip)) do |html|
       html.gsub! /&amp;(#\d+);/ do |s|
         "&#{$1};"
       end

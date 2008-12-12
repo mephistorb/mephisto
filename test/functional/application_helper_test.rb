@@ -14,7 +14,7 @@ end
 
 class ApplicationHelperTest < Test::Unit::TestCase
   fixtures :assets, :users
-  include ActionView::Helpers::TagHelper, ApplicationHelper, WhiteListHelper
+  include ActionView::Helpers::TagHelper, ApplicationHelper
   
   def request
     @request ||= ApplicationHelperTestController.new

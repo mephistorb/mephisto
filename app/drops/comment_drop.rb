@@ -1,13 +1,12 @@
 class CommentDrop < BaseDrop
   include Mephisto::Liquid::UrlMethods
-  include WhiteListHelper
   
   timezone_dates :published_at, :created_at
   liquid_attributes.push(*[:author, :author_email, :author_ip, :title])
 
   def initialize(source)
     super
-    @liquid.update 'is_approved' => @source.approved?, 'body' => white_list(@source.body_html)
+    @liquid.update 'is_approved' => @source.approved?, 'body' => ActionView::Base.white_list_sanitizer.sanitize(@source.body_html)
   end
   
   def author_url

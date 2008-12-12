@@ -4,8 +4,6 @@ end
 
 Liquid::For.send :include, Mephisto::Liquid::ForWithSorting
 
-WhiteListHelper.tags.merge %w(table tr td)
-
 class MissingTemplateError < StandardError
   attr_reader :template_type, :templates
   def initialize(template_type, templates)

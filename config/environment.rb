@@ -63,6 +63,9 @@ Rails::Initializer.run do |config|
     config.active_record.observers = [:article_observer, :comment_observer]
   end
 
+  # Allow table tags in untrusted HTML.
+  config.action_view.sanitized_allowed_tags = 'table', 'tr', 'td'
+
   # We're slowly moving the contents of vendor and vender/plugins into
   # vendor/gems by adding config.gem declarations.
   config.gem 'RedCloth', :version => '3.0.4', :lib => 'redcloth'
