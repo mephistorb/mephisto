@@ -28,7 +28,10 @@ end
 # Make sure we a site-specific secret key file.
 unless File.exists?(File.join(File.dirname(__FILE__),
                               'initializers/session_store.rb'))
-  raise "You need to run 'rake db:bootstrap:session' to create a secret key."
+  raise <<EOD
+You need to run 'rake config/initializers/session_store.rb' to create a
+secret key for encrypting session cookies.
+EOD
 end
 
 Rails::Initializer.run do |config|
