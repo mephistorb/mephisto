@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />   
-    <title>Mephisto: <%= controller.controller_name %> Admin</title>
+    <title>Mephisto: <%=h controller.controller_name %> Admin</title>
     <%= stylesheet_link_tag 'mephisto/fullscreen' %>
     <%= javascript_include_tag 'mephisto/prototype', 'mephisto/effects', 'mephisto/lowpro', 'mephisto/application' %>
     <script type="text/javascript">Mephisto.root = '<%= relative_url_root %>';</script>
   </head>
-  <body id="body-<%= controller.controller_name %>">
+  <body id="body-<%=h controller.controller_name %>">
   
       <!-- div.header -->
       <div id="header">
-        <h1><%= link_to "#{site.title} &mdash; Admin", { :controller => '/admin/overview' }, :title => "#{site.title} admin" %></h1>
+        <h1><%= link_to "#{h site.title} &mdash; Admin", { :controller => '/admin/overview' }, :title => "#{site.title} admin" %></h1>
       </div>
       <!-- /div.header -->
         
@@ -20,8 +20,8 @@
       
       <!-- div.content -->
       <div id="fullscreen">
-        <div id="flash-errors" style="display: none;"><%= flash[:error] %></div>
-        <div id="flash-notice" style="display:none"><%= flash[:notice] %></div>
+        <div id="flash-errors" style="display: none;"><%=h flash[:error] %></div>
+        <div id="flash-notice" style="display:none"><%=h flash[:notice] %></div>
         
         <!-- div.left -->
         <div id="main">

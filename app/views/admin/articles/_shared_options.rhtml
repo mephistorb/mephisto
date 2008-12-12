@@ -5,7 +5,7 @@
       <li>
         <%= check_box_tag 'article[section_ids][]', section.id, @article.has_section?(section), 
               :id => "article_section_ids_#{section.id}" %>
-        <label for="article_section_ids_<%= section.id %>"><%= section.name %></label>
+        <label for="article_section_ids_<%= section.id %>"><%=h section.name %></label>
       </li>
     <% end %>
   </ul>

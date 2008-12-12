@@ -26,7 +26,7 @@
         <li><%= link_to 'Logout', { :controller => '/account', :action => 'logout' }, :method => :post %></li>
       </ul>
 
-      <h1><%= link_to "#{site.title} &mdash; Admin", { :controller => '/admin/overview' }, :title => "#{site.title} admin" %></h1>
+      <h1><%= link_to "#{h site.title} &mdash; Admin", { :controller => '/admin/overview' }, :title => "#{site.title} admin" %></h1>
 
       <!-- div.nav -->  
       <div id="nav">

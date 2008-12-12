@@ -1,6 +1,6 @@
 <tr class="<%= article.status %>" id="article_<%= article.id %>">
   <td><%= image_tag "mephisto/icons/#{status_icon[article.status][1]}", :class => "#{status_icon[article.status][0]} icon", :title => "This article is #{article.status}", :alt => "#{article.status}" %></td>
-  <td class="article_title"><%= link_to(article.title, {:action => 'edit', :id => article}) %></td>
+  <td class="article_title"><%= link_to(h(article.title), {:action => 'edit', :id => article}) %></td>
   <td class="ccount">
     <% if article.comments.size == 0 %>
       none

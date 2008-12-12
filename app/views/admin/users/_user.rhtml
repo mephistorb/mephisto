@@ -1,7 +1,7 @@
 <li id="<%= user.dom_id %>" class="clear<%= %( deleted) unless user.deleted_at.nil? %><%= %( selected) if @user == user %>" fsdfa>
     <%= avatar_for user %>
-    <h3><%= link_to user.login, :action => 'show', :id => user %></h3>
-    <%= user.email %>
+    <h3><%= link_to h(user.login), :action => 'show', :id => user %></h3>
+    <%=h user.email %>
   <% unless user.admin? || user == current_user -%>
     <p>
       <%= check_box_tag user.dom_id(:user_toggle), user.id,  user.deleted_at.nil?, :onclick => "UserForm.toggle(this);" %>

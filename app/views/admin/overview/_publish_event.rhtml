@@ -1,5 +1,5 @@
 <li class="event-article<%= " shade" if defined?(shaded) && shaded == true %>">
   <span class="event-time"><%= event_time_for event, later %></span>
   <%= link_to h(event.title), :controller => 'articles', :action => 'edit', :id => event.article_id %> was created.
-  <span class="meta">by <%= link_to who(event.user.login), :controller => 'users', :action => 'show', :id => event.user %></span>
+  <span class="meta">by <%= link_to h(who(event.user.login)), :controller => 'users', :action => 'show', :id => event.user %></span>
 </li>
