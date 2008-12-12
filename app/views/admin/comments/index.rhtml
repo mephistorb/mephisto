@@ -22,7 +22,7 @@ Comments for all articles
     <blockquote><p>"<%= strip_tags(comment.body) %>"</p></blockquote>
     <% end -%>
     <span class="meta">
-      <cite>&mdash; <%= author_link_for comment %><%=h %( (#{comment.author_email})) unless comment.author_email.blank? %> said <%=h time_ago_in_words comment.created_at %> ago</cite>
+      <cite>&mdash; <%= author_link_for comment %><%=h %( (#{comment.author_email})) unless comment.author_email.blank? %> said <%=h time_ago_in_words(comment.created_at) %> ago</cite>
     
     <%= link_to_remote 'Edit', :url => edit_article_comment_path(comment.article, comment), :method => :get %> |
     <% if comment.approved? -%>

@@ -52,7 +52,7 @@
     <h3>Some stats</h3>
     <p>
       You have a uploaded a total of <strong><%= pluralize site.assets.count, 'asset'%></strong>, using
-      <strong><%=h number_to_human_size site.assets.sum(:size) %></strong>.
+      <strong><%=h number_to_human_size(site.assets.sum(:size)) %></strong>.
     </p>
   </div>
 <% end %>
