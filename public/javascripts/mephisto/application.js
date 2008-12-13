@@ -342,11 +342,13 @@ Comments = {
 var UserForm = {
   toggle: function(chk) {
     $('user-' + chk.getAttribute('value') + '-progress').show();
-    new Ajax.Request(Mephisto.root + '/admin/users/' + (chk.checked ? 'enable' : 'destroy') + '/' + chk.getAttribute('value'));
+    new Ajax.Request(Mephisto.root + '/admin/users/' + (chk.checked ? 'enable' : 'destroy') + '/' + chk.getAttribute('value'),
+                     { parameters: 'authenticity_token=' + Mephisto.token });
   },
   toggleAdmin: function(chk) {
     $('user-' + chk.getAttribute('value') + '-progress').show();
-    new Ajax.Request(Mephisto.root + '/admin/users/admin/' + chk.getAttribute('value'));
+    new Ajax.Request(Mephisto.root + '/admin/users/admin/' + chk.getAttribute('value'),
+                     { parameters: 'authenticity_token=' + Mephisto.token });
   }
 }
 
