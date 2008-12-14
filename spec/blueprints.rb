@@ -15,7 +15,7 @@ Site.blueprint do
   filter             { 'textile_filter' }
   approve_comments   { false }
   comment_age        { 30 }
-  timezone           { "America/New_York" }
+  timezone           { TZInfo::Timezone.new("America/New_York") }
   articles_per_page  { 15 }
   permalink_style    { ":year/:month/:day/:permalink" }
   tag_path           { 'tags' }

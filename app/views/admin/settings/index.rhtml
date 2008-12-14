@@ -29,7 +29,7 @@
     </dt>
     <dd><%= f.text_field :email %></dd>
     <dt><label for="site_timezone">Website Timezone</label></dt>
-    <dd><%= select_tag 'site_timezone', options_for_select(['UTC'] + ActiveSupport::TimeZone.all.map{|tz| [tz.to_s, tz.name]}.sort, @site.timezone.name), :name => 'site[timezone]' %></dd>
+    <dd><%= time_zone_select 'site', 'timezone_name', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %></dd>
     <dt>
       <label for="site_lang">Site language</label>
       <span class="hint">Used to specify language in your site feeds</span>

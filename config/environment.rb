@@ -67,7 +67,7 @@ Rails::Initializer.run do |config|
   end
 
   # Allow table tags in untrusted HTML.
-  config.action_view.sanitized_allowed_tags = 'table', 'tr', 'td'
+  config.action_view.sanitized_allowed_tags = ['table', 'tr', 'td']
 
   # We're slowly moving the contents of vendor and vender/plugins into
   # vendor/gems by adding config.gem declarations.
@@ -81,6 +81,7 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate'
   config.gem 'mocha'
   config.gem 'coderay'
+  config.gem 'tzinfo'
 end
 
 # Don't update this file, make custom tweaks in config/initializers/custom.rb, 
