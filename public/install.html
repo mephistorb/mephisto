@@ -37,8 +37,10 @@
             <h2 style="margin: 10px 0">Installing Mephisto</h2>
             <p>Follow these steps to get Mephisto up and running like a pro!</p>
             <br />
-            <p><strong>Note:</strong> We are targeting the Rails 2.0 release series for Mephisto 1.0. Therefore, if you are using gem rails (most hosting environments do),
-               you will need to freeze edge rails: <code>rake rails:freeze:edge</code></p>
+            <p><strong>Note:</strong> Mephisto requires a specific version
+            of Rails, specified in config/environment.rb.  If this version
+            isn't installed on your hosting service, you will need to
+            freeze edge rails: <code>rake rails:freeze:edge</code></p>
             <br />
 
             <p>You can visit the <a href="http://mephistoblog.com/docs/setup">Mephisto install documentation</a> on the site to get the most recent content, 
@@ -49,7 +51,6 @@
                 <li>Copy config/database.example.yml to config/database.yml</li>
                 <li>Edit database.yml and set your database credentials.</li>
                 <li>Upload the entire mephisto directory to your webserver.</li>
-                <li>Make sure you upload the tzinfo gem (see above) with the directory, or that your host has it preinstalled.</li>
                 <li>Run rake db:bootstrap from a terminal of some sorts (use rake db:bootstrap <span class="caps">RAILS</span>_ENV=production to be sure you’ve bootstrapped the production database.)</li>
                 <li>Login to your administration at http://domain.com/admin with the username: admin and password: test</li>
               </ol>

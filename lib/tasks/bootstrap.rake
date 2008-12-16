@@ -7,25 +7,6 @@ namespace :db do
     mkdir_p File.join(RAILS_ROOT, 'log')
     
     require 'rubygems' unless Object.const_defined?(:Gem)
-    $:.push *Dir[File.join(RAILS_ROOT, 'vendor/tzinfo*/lib')]
-    begin
-      require 'tzinfo'
-    rescue LoadError
-      puts
-      puts '=' * 80
-      puts
-      puts "You are missing the tzinfo gem.  Please install it before proceeding."
-      puts
-      puts "If you can't install on your server:"
-      puts "  gem install tzinfo (from your local machine)"
-      puts "  rake gems:freeze GEM=tzinfo (from the mephisto directory)"
-      puts
-      puts "Now, upload the vendor/tzinfo-0.3.1 folder with the rest of Mephisto.'"
-      puts
-      puts '=' * 80
-      puts
-      raise
-    end
     
     %w(environment db:schema:load db:bootstrap:load tmp:create).each { |t| Rake::Task[t].execute task_args}
     if File.exists?(SITE_THEME_DIR)

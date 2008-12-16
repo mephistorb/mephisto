@@ -1,7 +1,5 @@
 # this is for standard library loading and configuration.  All the hardcore monkey patching is in the mephisto plugin.
-require 'tzinfo'
 require 'action_controller/dispatcher'
-require 'coderay'
 require 'ruby_pants'
 require 'xmlrpc_patch'
 require 'base64'
