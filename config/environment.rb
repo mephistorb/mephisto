@@ -81,7 +81,7 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate'
   config.gem 'mocha'
   config.gem 'coderay'
-  config.gem 'tzinfo'
+  config.gem 'tzinfo', :version => '>= 0.3.12'
 end
 
 # Don't update this file, make custom tweaks in config/initializers/custom.rb, 
