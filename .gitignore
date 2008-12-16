@@ -1,4 +1,5 @@
 .rake_tasks
+Capfile
 config/database.yml
 config/deploy.rb
 config/initializers/session_store.rb
