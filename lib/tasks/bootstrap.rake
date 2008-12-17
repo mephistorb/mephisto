@@ -45,7 +45,7 @@ namespace :db do
     task :copy_default_theme do
       FileUtils.mkdir_p SITE_THEME_DIR
       theme_path = File.join(SITE_THEME_DIR, 'simpla')
-      FileUtils.cp_r File.join(RAILS_ROOT, 'themes/default'), theme_path
+      FileUtils.cp_r File.join(RAILS_ROOT, 'app/themes/default'), theme_path
       Dir[File.join(theme_path, '**/.svn')].each do |dir|
         FileUtils.rm_rf dir
       end
