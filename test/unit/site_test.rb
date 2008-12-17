@@ -67,6 +67,12 @@ class SiteTest < ActiveSupport::TestCase
     assert Site.extensions.include?(".liquid")
   end
 
+  test "should have tainted fields" do
+    # If this is failing, your database adapter probably doesn't taint data
+    # correctly, and there isn't a corresponding fix in safe_erb.
+    assert sites(:first).title.tainted?
+  end
+
   protected
     def assert_reorder_sections(old_order, expected)
       assert_models_equal old_order, sites(:first).sections
