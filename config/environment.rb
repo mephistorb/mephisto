@@ -82,6 +82,8 @@ Rails::Initializer.run do |config|
   config.gem 'mocha'
   config.gem 'coderay'
   config.gem 'tzinfo', :version => '>= 0.3.12'
+  config.gem 'emk-safe_erb', :version => '>= 0.1.1', :lib => 'safe_erb',
+             :source => 'http://gems.github.com'
 end
 
 # Don't update this file, make custom tweaks in config/initializers/custom.rb, 
