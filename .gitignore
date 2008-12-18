@@ -9,5 +9,5 @@ public/assets
 public/cache
 public/plugin_assets
 tmp
-themes/*
+themes
 *~

@@ -323,7 +323,7 @@ class Site < ActiveRecord::Base
       begin
         current_theme_path = self.theme_path + "simpla"
         FileUtils.mkdir_p(self.theme_path)
-        FileUtils.cp_r("#{RAILS_ROOT}/themes/default", current_theme_path)
+        FileUtils.cp_r("#{RAILS_ROOT}/app/themes/default", current_theme_path)
         Dir[File.join(current_theme_path, '**/.svn')].each do |dir|
           FileUtils.rm_rf dir
         end
