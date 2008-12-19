@@ -7,7 +7,6 @@ class Comment < Content
   before_validation :clean_up_author_url
   after_validation_on_create  :snag_article_attributes
   before_create  :check_comment_expiration
-  before_create  :sanitize_attributes
   before_save    :update_counter_cache
   before_destroy :decrement_counter_cache
   belongs_to :article
@@ -78,12 +77,6 @@ class Comment < Content
   end
 
   protected
-    def sanitize_attributes
-      [:author, :author_url, :author_email, :author_ip, :user_agent, :referrer].each do |a|
-        self.send("#{a}=", CGI::escapeHTML(self.send(a).to_s))
-      end
-    end
-
     def snag_article_attributes
       self.filter ||= article.site.filter
       [:site, :title, :published_at, :permalink].each { |a| self.send("#{a}=", article.send(a)) }
