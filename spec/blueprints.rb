@@ -13,7 +13,7 @@ Site.blueprint do
   title              { Sham.title }
   host               { Sham.host }
   filter             { 'textile_filter' }
-  approve_comments   { false }
+  approve_comments   { true }
   comment_age        { 30 }
   timezone           { TZInfo::Timezone.new("America/New_York") }
   articles_per_page  { 15 }

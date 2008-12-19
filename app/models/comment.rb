@@ -14,7 +14,7 @@ class Comment < Content
   has_one :event, :dependent => :destroy
   before_create  :check_if_previewing
 
-  attr_accessible :article, :article_id, :user_id, :user, :excerpt, :body, :author, :author_url, :author_email, :author_ip, :updater_id, :updater, :comment_age, :user_agent, :referrer, :preview
+  attr_accessible :article, :article_id, :user_id, :user, :excerpt, :body, :author, :author_url, :author_email, :author_ip, :user_agent, :referrer, :preview
   attr_accessor :preview
   class Previewing < StandardError; end
 

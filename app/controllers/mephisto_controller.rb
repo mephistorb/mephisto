@@ -47,7 +47,19 @@ class MephistoController < ApplicationController
         redirect_to site.permalink_for(@article) and return
       end
 
-      @comment = @article.comments.build(params[:comment].merge(:user_id => session[:user], :author_ip => request.remote_ip, :user_agent => request.user_agent, :referrer => request.referer))
+      # Since this input is utterly untrustworthy (no authenticity_token,
+      # session, or anything else required), build the record manually.
+      comment_data = {
+        :user_id => session[:user],
+        :author_ip => request.remote_ip,
+        :user_agent => request.user_agent,
+        :referrer => request.referer,
+        :author => params[:comment][:author],
+        :author_email => params[:comment][:author_email],
+        :author_url => params[:comment][:author_url],
+        :body => params[:comment][:body]
+      }
+      @comment = @article.comments.build(comment_data)
       @comment.check_approval site, request if @comment.valid?
       @comment.save!
       redirect_to dispatch_path(:path => (site.permalink_for(@article)[1..-1].split('/') << 'comments' << @comment.id.to_s), :anchor => @comment.dom_id)
