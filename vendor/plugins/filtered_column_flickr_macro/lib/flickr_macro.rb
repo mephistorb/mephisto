@@ -27,9 +27,15 @@ class FlickrMacro < FilteredColumn::Macros::Base
     if(caption.blank?)
       captioncode = ""
     else
-      captioncode = "<p class=\"caption\" style=\"width:#{width}px\">#{caption}</p>"
+      captioncode = "<p class=\"caption\" style=\"width:#{h width}px\">#{h caption}</p>"
     end
 
-    "<div style=\"#{style}\" class=\"flickrplugin\"><a href=\"#{imagelink}\"><img src=\"#{imageurl}\" width=\"#{width}\" height=\"#{height}\" alt=\"#{alt}\" title=\"#{title}\"/></a>#{captioncode}</div>"
+    "<div style=\"#{h style}\" class=\"flickrplugin\"><a href=\"#{h imagelink}\"><img src=\"#{h imageurl}\" width=\"#{h width}\" height=\"#{h height}\" alt=\"#{h alt}\" title=\"#{h title}\"/></a>#{captioncode}</div>"
+  end
+
+  private
+
+  def h str
+    CGI.escapeHTML(str)
   end
 end

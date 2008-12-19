@@ -21,10 +21,10 @@ X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
     Check all fields in comments
 ,     It looks like the failed comment error form has issues
 /     Fix comment submission form to not use mass assignment
-    Check macro:* bodies and parameters
+/   Check macro:* bodies and parameters
 /     Make sure comment output is properly sanitized in any case
 /     filtered_column_code_macro
-      filtered_column_flikr_macro - lots of issues
+/     filtered_column_flikr_macro - lots of issues
 /   Do we have trackback support to check? No.
   Password change
     Verify token required to change e-mail and password
