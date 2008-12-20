@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   end
   
   filter_parameter_logging "password"
+  filter_parameter_logging "token"
   
   protected
     helper_method :admin?
