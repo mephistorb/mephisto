@@ -40,6 +40,11 @@ class CommentDropTest < Test::Unit::TestCase
     assert_equal %Q{<a href="http://&lt;strong&gt;https://abc&lt;/strong&gt;">&lt;strong&gt;rico&lt;/strong&gt;</a>}, @comment.author_link
   end
   
+  def test_should_not_be_fooled_by_newlines_in_author_url
+    @comment.source.author_url = "javascript:alert('Oops')\nhttp://"
+    assert_equal "http://javascript:alert('Oops')\nhttp://", @comment.author_url
+  end
+
   def test_should_show_filtered_text
     comment  = contents(:welcome).comments.create :body => '*test* comment', :author => 'bob', :author_ip => '127.0.0.1'
     assert_valid comment

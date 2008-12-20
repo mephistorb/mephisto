@@ -1,7 +1,7 @@
 # Object model of a plugin in plugins/vendor. May or may not have an internal Mephisto::Plugins::Plugin (an AR).
 module Mephisto
   class DirectoryPlugin
-    @@filter = /^mephisto_(\w+)$/
+    @@filter = /\Amephisto_(\w+)\z/
     attr_accessor :plugin, :path
     
     def self.scan

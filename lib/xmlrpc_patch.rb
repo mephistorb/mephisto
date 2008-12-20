@@ -2,7 +2,7 @@ module XMLRPC
   module Convert
     def self.dateTime(str)
       case str
-      when /^(-?\d\d\d\d)-?(\d\d)-?(\d\d)T(\d\d):(\d\d):(\d\d)(?:Z|([+-])(\d\d):?(\d\d))?$/
+      when /\A(-?\d\d\d\d)-?(\d\d)-?(\d\d)T(\d\d):(\d\d):(\d\d)(?:Z|([+-])(\d\d):?(\d\d))?\z/
         a = [$1, $2, $3, $4, $5, $6].collect{|i| i.to_i}
         if $7
           ofs = $8.to_i*3600 + $9.to_i*60
@@ -16,7 +16,7 @@ module XMLRPC
           a = [ utc.year, utc.month, utc.day, utc.hour, utc.min, utc.sec ]
         end
         XMLRPC::DateTime.new(*a)
-      when /^(-?\d\d)-?(\d\d)-?(\d\d)T(\d\d):(\d\d):(\d\d)(Z|([+-]\d\d):(\d\d))?$/
+      when /\A(-?\d\d)-?(\d\d)-?(\d\d)T(\d\d):(\d\d):(\d\d)(Z|([+-]\d\d):(\d\d))?\z/
         a = [$1, $2, $3, $4, $5, $6].collect{|i| i.to_i}
         if a[0] < 70
           a[0] += 2000

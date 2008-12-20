@@ -9,7 +9,7 @@ class Theme
     dest        = options[:to].is_a?(Pathname) ? options[:to] : Pathname.new(options[:to] || '.')
     basename    = dest.basename.to_s
     if dest.exist? || basename == 'current'
-      basename  = basename =~ /(.*)_(\d+)$/ ? $1 : basename
+      basename  = basename =~ /(.*)_(\d+)\z/ ? $1 : basename
       number    = $2 ? $2.to_i + 1 : 2
       dirname   = dest.dirname
       dest      = dirname + "#{basename}_#{number}"
@@ -27,7 +27,7 @@ class Theme
         dir_path = Pathname.new(dest + dir)
         FileUtils.mkdir_p dir_path unless dir_path.exist?
         z.dir.entries(dir).each do |entry|
-          next unless entry =~ /(\.\w+)$/ && allowed_extensions.include?($1)
+          next unless entry =~ /(\.\w+)\z/ && allowed_extensions.include?($1)
           z.file.open(File.join(dir, entry)) { |zf| File.open(dir_path + entry, 'wb') { |f| f << zf.read } }
         end
       end
@@ -47,7 +47,7 @@ class Theme
       @base_path = base
       @path      = Pathname.new(@base_path)
     end
-    layout = (@path + "layouts").children(false).select {|v| v.to_s =~ /^layout/}[0] if (@path + "layouts").directory?
+    layout = (@path + "layouts").children(false).select {|v| v.to_s =~ /\Alayout/}[0] if (@path + "layouts").directory?
     @extension = layout.extname if layout
   end
 

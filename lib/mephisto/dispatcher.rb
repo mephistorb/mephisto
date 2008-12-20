@@ -1,7 +1,7 @@
 module Mephisto
   class Dispatcher
     PERMALINK_OPTIONS = { :year => '\d{4}', :month => '\d{1,2}', :day => '\d{1,2}', :permalink => '[\w\-]+', :id => '\d+' }
-    PERMALINK_VAR     = /^:([a-z]+)$/
+    PERMALINK_VAR     = /\A:([a-z]+)\z/
 
     def self.run(site, path)
       # check for any bad urls like /foo//bar
@@ -80,7 +80,7 @@ module Mephisto
             result.first[var] = match[i+1]
           end
           result << match[variables.size + 2] # comments | comments.xml | changes.xml
-          result.last.gsub!(/\/(.*)$/, '') if result.last
+          result.last.gsub!(/\/(.*)\z/, '') if result.last
           result << match[variables.size + 4] # comment id
         end
       end

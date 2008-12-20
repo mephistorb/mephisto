@@ -26,15 +26,17 @@ X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
 /     filtered_column_code_macro
 /     filtered_column_flikr_macro - lots of issues
 /   Do we have trackback support to check? No.
-  Password change
-    Verify token required to change e-mail and password
+/ Password change
+/   Verify token required to change e-mail and password
   Everything else
 /   Don't ship :session_key in environment.rb!
 /   Do we need to override verifiable_request_format? No.
-    Check redirection in lib/authenticated_system.rb
+/   Check redirection in lib/authenticated_system.rb
     Detect mass assignment failures in unit tests
-    Review mass assignment in public controllers
-    Check regexes for ^ and $
+/   Review mass assignment in public controllers - comments
+/   Check regexes for ^ and $
+    Filter IMG tags
+    Block database updates on POST requests
     Review http://guides.rubyonrails.org/security.html again
 
   Admin only

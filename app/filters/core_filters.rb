@@ -28,7 +28,7 @@ module CoreFilters
 
   def parse_date(date)
     return Time.now.utc if date.blank?
-    date = "#{date}-1" if date.to_s =~ /^\d{4}-\d{1,2}$/ unless [Time, Date].include?(date.class)
+    date = "#{date}-1" if date.to_s =~ /\A\d{4}-\d{1,2}\z/ unless [Time, Date].include?(date.class)
     date = date.to_time
   end
 

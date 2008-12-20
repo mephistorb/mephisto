@@ -7,7 +7,7 @@ class Admin::DesignController < Admin::BaseController
       return
     end
 
-    if params[:filename] =~ /\.(css|js)$/i
+    if params[:filename] =~ /\.(css|js)\z/i
       @resource = @theme.resources.write params[:filename], params[:data]
       redirect_to url_for_theme(:controller => 'resources', :action => 'edit', :filename => @resource.basename.to_s)
     else

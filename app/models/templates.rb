@@ -7,8 +7,8 @@ class Templates < Attachments
   end
   
   def [](template_name)
-    template_name = File.basename(template_name.to_s).sub /#{theme.extension}$/, ''
-    theme.path + "#{template_name =~ /layout$/ ? 'layouts' : 'templates'}/#{template_name}#{theme.extension}"
+    template_name = File.basename(template_name.to_s).sub /#{theme.extension}\z/, ''
+    theme.path + "#{template_name =~ /layout\z/ ? 'layouts' : 'templates'}/#{template_name}#{theme.extension}"
   end
 
   def collect_templates(template_type, *custom_templates)

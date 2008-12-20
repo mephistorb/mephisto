@@ -87,7 +87,7 @@ module Mephisto
     end
     
     protected
-      @@sanitize_path_regex = /^(\/)|(https?:\/\/)/
+      @@sanitize_path_regex = /\A(\/)|(https?:\/\/)/
       def self.sanitize_path(path)
         path =~ @@sanitize_path_regex ? path : "/#{path.split("://").last}"
       end

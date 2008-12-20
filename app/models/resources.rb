@@ -20,8 +20,8 @@ class Resources < Attachments
   def [](filename)
     path = 
       case filename
-        when /\.js$/i  then 'javascripts'
-        when /\.css$/i then 'stylesheets'
+        when /\.js\z/i  then 'javascripts'
+        when /\.css\z/i then 'stylesheets'
         else                'images'
       end
       

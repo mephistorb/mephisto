@@ -11,7 +11,7 @@ class CommentDrop < BaseDrop
   
   def author_url
     return nil if source.author_url.blank?
-    @source.author_url =~ /^https?:\/\// ? @source.author_url : "http://" + @source.author_url
+    @source.author_url =~ /\Ahttps?:\/\// ? @source.author_url : "http://" + @source.author_url
   end
 
   def url

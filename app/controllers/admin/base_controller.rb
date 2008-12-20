@@ -22,7 +22,7 @@ class Admin::BaseController < ApplicationController
     end
 
     def find_and_sort_templates
-      @layouts, @templates = site.templates.partition { |t| t.dirname.to_s =~ /layouts$/ }
+      @layouts, @templates = site.templates.partition { |t| t.dirname.to_s =~ /layouts\z/ }
     end
     
     def self.clear_empty_templates_for(model, *attributes)

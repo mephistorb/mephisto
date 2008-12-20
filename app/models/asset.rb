@@ -14,11 +14,11 @@ class Asset < ActiveRecord::Base
 
   class << self
     def movie?(content_type)
-      content_type.to_s =~ /^video/ || extra_content_types[:movie].include?(content_type)
+      content_type.to_s =~ /\Avideo/ || extra_content_types[:movie].include?(content_type)
     end
         
     def audio?(content_type)
-      content_type.to_s =~ /^audio/ || extra_content_types[:audio].include?(content_type)
+      content_type.to_s =~ /\Aaudio/ || extra_content_types[:audio].include?(content_type)
     end
     
     def other?(content_type)
@@ -72,7 +72,7 @@ class Asset < ActiveRecord::Base
 
   def public_filename_with_host(thumbnail = nil)
     returning public_filename_without_host(thumbnail) do |s|
-      s.gsub! /^\/assets\/[^\/]+\//, "/assets/#{$1}" if Site.multi_sites_enabled
+      s.gsub! /\A\/assets\/[^\/]+\//, "/assets/#{$1}" if Site.multi_sites_enabled
     end
   end
   alias_method_chain :public_filename, :host

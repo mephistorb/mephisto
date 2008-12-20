@@ -260,8 +260,8 @@ class Site < ActiveRecord::Base
     end
 
     def check_permalink_style
-      permalink_style.sub! /^\//, ''
-      permalink_style.sub! /\/$/, ''
+      permalink_style.sub! /\A\//, ''
+      permalink_style.sub! /\/\z/, ''
       pieces = permalink_style.split('/')
       errors.add :permalink_style, 'cannot have blank paths' if pieces.any?(&:blank?)
       pieces.each do |p|

@@ -6,7 +6,7 @@ class FeedController < ApplicationController
   def feed
     sections = params[:sections].clone
     last = sections.last
-    sections.delete(last) if last =~ /\.xml$/
+    sections.delete(last) if last =~ /\.xml\z/
     @section_path = sections.blank? ? '' : sections.join('/')
     case last
       when 'all_comments.xml'

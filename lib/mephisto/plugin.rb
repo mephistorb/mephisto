@@ -29,7 +29,7 @@ module Mephisto
     end
     
     def mephisto_plugin?
-      name =~ /^mephisto_(\w+)$/
+      name =~ /\Amephisto_(\w+)\z/
     end
     
     def configurable?
@@ -37,7 +37,7 @@ module Mephisto
     end
     
     def mephisto_name
-      name.sub /^mephisto_/, ''
+      name.sub /\Amephisto_/, ''
     end
     alias :conf_name :mephisto_name
   end
