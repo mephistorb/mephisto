@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate_for(site, login, password)
+    return nil if site.nil? || login.nil? || login.blank? || password.nil? || password.blank?
     u = find(:first, @@membership_options.merge(
       :conditions => ['users.login = ? and (memberships.site_id = ? or users.admin = ?)', login, site.id, true]))
     u && u.authenticated?(password) ? u : nil
@@ -55,6 +56,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_by_token(site, token)
+    return nil if site.nil? || token.nil? || token.blank?
     find(:first, @@membership_options.merge(:conditions => ['token = ? and token_expires_at > ? and (memberships.site_id = ? or users.admin = ?)', token, Time.now.utc, site.id, true]))
   end
   
