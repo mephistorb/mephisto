@@ -43,7 +43,10 @@ class AccountController < ApplicationController
   def activate
     self.current_user = site.user_by_token(params[:id])
     if logged_in?
-      current_user.reset_token!
+      # TODO - See security comments on AuthenticatedSystem#login_from_cookie.
+      ActiveRecord::Base.with_writable_records do
+        current_user.reset_token!
+      end
     else
       flash[:error] = "Invalid token.  Try resending your forgotten password request."
     end

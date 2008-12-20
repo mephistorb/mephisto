@@ -74,7 +74,17 @@ module AuthenticatedSystem
     def login_from_cookie
       return unless cookies[:token] && !logged_in?
       self.current_user = site.user_by_token(cookies[:token])
-      cookies[:token] = { :value => self.current_user.reset_token! , :expires => self.current_user.token_expires_at } if logged_in?
+      # TODO - We allow the token to be changed on GET requests and we log
+      # the user in.  I haven't fully analyzed the consequences of allowing
+      # session and token updates on hostile GET requests triggered by CSRF
+      # attacks.  If this helps out in some kind of attack, it would affect
+      # almost every single web application in existence.
+      ActiveRecord::Base.with_writable_records do
+        cookies[:token] = {
+          :value => self.current_user.reset_token!,
+          :expires => self.current_user.token_expires_at
+        } if logged_in?
+      end
       true
     end
 

@@ -3,6 +3,7 @@ class Admin::AssetsController < Admin::BaseController
   skip_before_filter :login_required
   before_filter :find_asset, :except => [:index, :new, :create, :latest, :search, :upload, :clear_bucket]
   before_filter :login_required
+  before_filter :protect_action, :except => [:index, :new, :latest, :search]
 
   def index
     search_assets 24

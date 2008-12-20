@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   include Mephisto::CachingMethods
   before_filter  :set_cache_root
+  around_filter  :get_requests_are_readonly
   helper_method  :site
   attr_reader    :site
 
@@ -92,6 +93,21 @@ class ApplicationController < ActionController::Base
         self.class.page_cache_directory = site.page_cache_directory.to_s
       else
         render_404 "You need to create your first site!"
+      end
+    end
+
+    # Much of a web browser's built-in protection against CSRF attacks
+    # assumes that all GET requests are "safe".  Since we don't want to
+    # rely on getting this 100% right in every controller and plugin, let's
+    # just enforce this policy globally.  You can override this using
+    # <code>skip_filter :get_requests_are_readonly</code>.
+    def get_requests_are_readonly
+      if request.method == :get
+        ActiveRecord::Base.with_readonly_records do
+          yield
+        end
+      else
+        yield
       end
     end
 
