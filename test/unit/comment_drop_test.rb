@@ -52,6 +52,15 @@ class CommentDropTest < Test::Unit::TestCase
     assert_equal '<p><strong>test</strong> comment</p>', liquid.before_method(:body)
   end
   
+  def test_should_not_allow_img_tags
+    # img tags can be used in CSRF attacks against actions that
+    # accidentally allow GET requests to perform destructive actions.
+    comment = contents(:welcome_comment)
+    comment.body = 'a<img src="/admin/site/destroy/1" />b'
+    comment.save!
+    assert_equal '<p>ab</p>', comment.to_liquid.before_method(:body)
+  end
+
   def test_comment_url
     t = Time.now.utc - 3.days
     assert_equal "/#{t.year}/#{t.month}/#{t.day}/welcome-to-mephisto", @comment.url

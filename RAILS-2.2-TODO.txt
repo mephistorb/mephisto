@@ -3,8 +3,8 @@ release based on Rails 2.2.
 
 / Try to upgrade to gem version of coderay
 / Fix TZInfo to work again
-  Make sure we know what's up with plugins
   Security audit--see below
+  Make sure we know what's up with plugins
   We need to review our TODO comments
 
 == Security
@@ -16,10 +16,10 @@ X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
 /   Make sure logging out clears all relevant cookies and tokens
 /   Check for session fixation attacks
 /   Make sure cookies are HTTP-only whenever possible
-  Cross-site scripting
+/ Cross-site scripting
 /   Turn on protect_against_forgery
-    Check all fields in comments
-,     It looks like the failed comment error form has issues
+/   Check all fields in comments
+/     It looks like the failed comment error form has issues
 /     Fix comment submission form to not use mass assignment
 /   Check macro:* bodies and parameters
 /     Make sure comment output is properly sanitized in any case
@@ -32,7 +32,6 @@ X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
 /   Don't ship :session_key in environment.rb!
 /   Do we need to override verifiable_request_format? No.
 /   Check redirection in lib/authenticated_system.rb
-    Detect mass assignment failures in unit tests
 /   Review mass assignment in public controllers - comments
 /   Check regexes for ^ and $
 /   Filter IMG tags
@@ -52,6 +51,7 @@ X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
     Require the user to enter the old password when changing it
       This will break our password reset system, actually
     Require password to change e-mail address?
+    Detect mass assignment failures in unit tests - not really security issue
 
 == Mass assignment protection
 
