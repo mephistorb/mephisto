@@ -6,7 +6,7 @@ require 'rake/rdoctask'
 require 'rake/gempackagetask'
 
 GEM = "safe_erb"
-GEM_VERSION = "0.1.1"
+GEM_VERSION = "0.1.2"
 SUMMARY = "Automatically detect improperty-escaped text in ERB templates"
 AUTHORS = ["Shinya Kasatani", "Matthew Bass", "Eric Kidd"]
 EMAIL = "git@randomhacks.net"
