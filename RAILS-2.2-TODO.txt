@@ -35,7 +35,7 @@ X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
     Detect mass assignment failures in unit tests
 /   Review mass assignment in public controllers - comments
 /   Check regexes for ^ and $
-    Filter IMG tags
+/   Filter IMG tags
     Block database updates on POST requests
     Review http://guides.rubyonrails.org/security.html again
 
