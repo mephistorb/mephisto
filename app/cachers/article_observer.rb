@@ -1,12 +1,7 @@
 class ArticleObserver < ActiveRecord::Observer
   def before_save(record)
     if (record.is_a?(Article) && record.save_version?) || record.is_a?(Comment)
-      @event = Event.new
-      @event.mode = case
-        when record.is_a?(Comment) then 'comment'
-        when record.new_record?    then 'publish'
-        else 'edit'
-      end
+      @event = Event.new :mode => Event.mode_from(record)
     end
   end
 
