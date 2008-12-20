@@ -3,6 +3,9 @@ ENV['TZ'] = 'US/Central'
 
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
+require 'ruby-debug'
+require 'machinist'
+require File.join(File.dirname(__FILE__), '..', 'spec', 'blueprints')
 require File.expand_path(File.dirname(__FILE__) + "/actor")
 ASSET_PATH = File.join(RAILS_ROOT, 'test/fixtures/tmp/assets') unless Object.const_defined?(:ASSET_PATH)
 require File.join(File.dirname(__FILE__), 'referenced_caching_test_helper')
