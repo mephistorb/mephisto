@@ -3,7 +3,8 @@ release based on Rails 2.2.
 
 / Try to upgrade to gem version of coderay
 / Fix TZInfo to work again
-  Security audit--see below
+/ Security audit--see below
+  Fix script/generate
   Make sure we know what's up with plugins
   We need to review our TODO comments
 
@@ -28,20 +29,24 @@ X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
 /   Do we have trackback support to check? No.
 / Password change
 /   Verify token required to change e-mail and password
-  Everything else
+/ Everything else
 /   Don't ship :session_key in environment.rb!
 /   Do we need to override verifiable_request_format? No.
 /   Check redirection in lib/authenticated_system.rb
 /   Review mass assignment in public controllers - comments
 /   Check regexes for ^ and $
 /   Filter IMG tags
-    Block database updates on POST requests
-    Review http://guides.rubyonrails.org/security.html again
+/   Block database updates on POST requests
+/   Review http://guides.rubyonrails.org/security.html again
 
   Admin only
     For now, we'll assume that users with access to /admin don't try XSS
     Filter file names for uploads
+    Can we block file uploads into public?  What about caching?
     Review mass assignment in admin controllers
+    Only allow global admin functions on site 1 (or admin domain?)
+    Can we isolate articles, etc., from admin to prevent XSS?
+    Review http://guides.rubyonrails.org/security.html another time
 
   Later
     Improve password changing
@@ -49,7 +54,7 @@ X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
     Expire sessions after a while?
     Do we need to upgrade to an industrial-strength HTML sanitizer?
     Require the user to enter the old password when changing it
-      This will break our password reset system, actually
+      This will break our password reset system--need a major fix
     Require password to change e-mail address?
     Detect mass assignment failures in unit tests - not really security issue
 
