@@ -3,7 +3,7 @@
 
 module Mephisto 
   def self.plugins
-    @@plugins ||= Engines::Plugin::List.new Engines.plugins.select{ |plugin| plugin.mephisto_plugin? }
+    @@plugins ||= Engines::Plugin::List.new(Engines.plugins.select{ |plugin| plugin.mephisto_plugin? })
   end
   
   module Plugin
