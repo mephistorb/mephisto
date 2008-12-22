@@ -9,6 +9,12 @@ class Admin::ThemesController < Admin::BaseController
     send_file((@theme.preview.exist? ? @theme.preview : RAILS_PATH + 'public/images/mephisto/preview.png').to_s, :type => 'image/png', :disposition => 'inline')
   end
 
+  def show
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def export
     theme_site_path = temp_theme_path_for(params[:id])
     theme_zip_path  = theme_site_path   + "#{params[:id]}.zip"

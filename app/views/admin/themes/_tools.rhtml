@@ -5,7 +5,7 @@
   </h3>
   <div id="screenshot">
     <img src="<%= url_for(:controller => '/admin/themes', :action => 'preview_for', :id => @theme) %>" alt="Theme preview" title="<%=h @theme.title %> (v<%=h @theme.version %>)" />
-    <p><%= @theme.summary %></p>
+    <p><%=h @theme.summary %></p>
   </div>
   <div id="theme-options">
     <ul>

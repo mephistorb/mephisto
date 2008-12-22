@@ -10,5 +10,4 @@ describe Admin::ThemesController do
     params_from(:post, path).should == params
     route_for(params).should == path
   end
-    
 end

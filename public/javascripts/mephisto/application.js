@@ -614,7 +614,8 @@ Event.addBehavior({
     var img = this.down('img');
     var pieces = img.src.split('/');
     new Dialog.Rjs();
-    new Ajax.Request(Mephisto.root + '/admin/themes/show/' + pieces[pieces.length-1]);
+    new Ajax.Request(Mephisto.root + '/admin/themes/show/' + pieces[pieces.length-1],
+                     { method: 'get' });
   }
   
   //'.theme': function() {

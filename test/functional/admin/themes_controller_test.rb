@@ -26,6 +26,12 @@ class AdminThemesControllerTest < ActiveSupport::TestCase
     assert_redirected_to :controller => '/account', :action => 'login'
   end
   
+  test "should respond to show" do
+    login_as :arthur
+    xhr(:get, 'show', :id => 'encytemedia', :format => 'js')
+    assert_response :success
+  end
+
   test "should show import form" do
     get :import
     assert_response :success
