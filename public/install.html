@@ -43,6 +43,13 @@
             freeze edge rails: <code>rake rails:freeze:edge</code></p>
             <br />
 
+            <p>You will need to install the <code>tzinfo</code> gem using
+            the following command.  For some reason, unpacking
+            the <code>tzinfo</code> gem into <code>vendor/gems</code>
+            breaks Rails' time-zone handling.</p>
+
+            <pre>sudo rake gems:install</pre>
+
             <p>You can visit the <a href="http://mephistoblog.com/docs/setup">Mephisto install documentation</a> on the site to get the most recent content, 
               however for the impatient, here's the quick setup guide:</p>
             <br />
