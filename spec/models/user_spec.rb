@@ -41,5 +41,9 @@ describe User do
     rescue ActiveRecord::RecordInvalid # This is OK, too.
     end
   end
+
+  it "should default to a Textile filter" do
+    User.new.filter.should == 'textile_filter'
+  end
 end
 

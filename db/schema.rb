@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081223142853) do
+ActiveRecord::Schema.define(:version => 20081223221228) do
 
   create_table "assets", :force => true do |t|
     t.string   "content_type"
@@ -206,7 +206,7 @@ ActiveRecord::Schema.define(:version => 20081223142853) do
     t.datetime "deleted_at"
     t.string   "token"
     t.datetime "token_expires_at"
-    t.string   "filter"
+    t.string   "filter",                          :default => "textile_filter"
     t.boolean  "admin",                           :default => false
   end
 

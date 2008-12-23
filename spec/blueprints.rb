@@ -25,7 +25,6 @@ end
 User.blueprint do
   login            { Sham.login }
   email            { Sham.email }
-  filter           { 'textile_filter' }
   token            { 'quentintoken' }
   admin            { false }
   salt             { '7e3041ebc2fc05a40c60028e2c4901a81035d3cd' }
