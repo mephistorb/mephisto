@@ -12,7 +12,6 @@ Sham.tag   { Faker::Lorem.words(1) }
 Site.blueprint do
   title              { Sham.title }
   host               { Sham.host }
-  filter             { 'textile_filter' }
   approve_comments   { true }
   comment_age        { 30 }
   timezone           { TZInfo::Timezone.new("America/New_York") }
