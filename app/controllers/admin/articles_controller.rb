@@ -94,15 +94,18 @@ class Admin::ArticlesController < Admin::BaseController
   def attach
     @asset = site.assets.find(params[:version])
     @article.assets.add @asset
+    respond_to {|format| format.js }
   end
 
   def detach
     @asset = site.assets.find(params[:version])
     @article.assets.remove @asset
+    respond_to {|format| format.js }
   end
 
   def label
     AssignedAsset.update_all ['label = ?', params[:label]], ['article_id = ? and asset_id = ?', params[:id], params[:version]]
+    respond_to {|format| format.js }
   end
 
   protected

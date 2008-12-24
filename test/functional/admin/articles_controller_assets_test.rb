@@ -114,6 +114,15 @@ class AdminArticlesControllerAssetsTest < ActiveSupport::TestCase
     assert_models_equal [assets(:gif)], contents(:welcome).assets
   end
 
+  test "should be able to change asset label" do
+    @assignment = assigned_assets(:welcome_gif)
+    post(:label, :id => @assignment.article, :version => @assignment.asset,
+         :label => 'Updated label')
+    assert_response :success
+    @assignment.reload
+    assert_equal 'Updated label', @assignment.label
+  end
+
   def teardown
     FileUtils.rm_rf ASSET_PATH
   end
