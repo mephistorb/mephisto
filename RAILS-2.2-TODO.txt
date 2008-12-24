@@ -13,36 +13,18 @@ release based on Rails 2.2.
   Make sure we know what's up with plugins
   We need to review our TODO comments
 
+== Fixing JavaScripts
+
+Our JavaScripts are actually pretty broken, and have been for a while.
+
+  Update to latest Prototype
+  Fix admin/articles
+  Fix admin/assets
+  Test other controllers for breakage
+
 == Security
 
-We need to do a basic security audit.
-
-/ Cookies
-X   Can we restrict admin cookies to /admin ? No--need /accounts, too.
-/   Make sure logging out clears all relevant cookies and tokens
-/   Check for session fixation attacks
-/   Make sure cookies are HTTP-only whenever possible
-/ Cross-site scripting
-/   Turn on protect_against_forgery
-/   Check all fields in comments
-/     It looks like the failed comment error form has issues
-/     Fix comment submission form to not use mass assignment
-/   Check macro:* bodies and parameters
-/     Make sure comment output is properly sanitized in any case
-/     filtered_column_code_macro
-/     filtered_column_flikr_macro - lots of issues
-/   Do we have trackback support to check? No.
-/ Password change
-/   Verify token required to change e-mail and password
-/ Everything else
-/   Don't ship :session_key in environment.rb!
-/   Do we need to override verifiable_request_format? No.
-/   Check redirection in lib/authenticated_system.rb
-/   Review mass assignment in public controllers - comments
-/   Check regexes for ^ and $
-/   Filter IMG tags
-/   Block database updates on POST requests
-/   Review http://guides.rubyonrails.org/security.html again
+Here's a list of remaining security work:
 
   Admin only
     For now, we'll assume that users with access to /admin don't try XSS
