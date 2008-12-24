@@ -126,14 +126,22 @@ class MephistoController < ApplicationController
       @feed_title = "Comments"
       @comments = @article.comments
       @comments.reverse!
-      render :action => 'feed', :content_type => 'application/xml'
+      respond_to do |format|
+        format.xml do
+          render :action => 'feed', :content_type => 'application/xml'
+        end
+      end
     end
 
     def dispatch_changes_feed
       show_404 and return unless find_article
       @feed_title = "Changes"
       @articles = @article.versions.find(:all, :include => :updater, :order => 'version desc')
-      render :action => 'feed', :content_type => 'application/xml'
+      respond_to do |format|
+        format.xml do
+          render :action => 'feed', :content_type => 'application/xml'
+        end
+      end
     end
 
     def paged_search_url_for(page)

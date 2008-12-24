@@ -26,7 +26,9 @@ class Admin::OverviewController < Admin::BaseController
 
   def feed
     @events = @site.events.find(:all, :order => 'events.created_at DESC', :include => [:article, :user], :limit => 25)
-    render :layout => false
+    respond_to do |format|
+      format.xml { render :layout => false }
+    end
   end
   
   def delete

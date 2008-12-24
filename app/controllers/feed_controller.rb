@@ -9,12 +9,16 @@ class FeedController < ApplicationController
     sections.delete(last) if last =~ /\.xml\z/
     @section_path = sections.blank? ? '' : sections.join('/')
     case last
-      when 'all_comments.xml'
-        comment_feed_for_site
-      when 'comments.xml'
-        comment_feed_for_section
-      else
-        article_feed_for_section
+    when 'all_comments.xml'
+      comment_feed_for_site
+    when 'comments.xml'
+      comment_feed_for_section
+    else
+      article_feed_for_section
+    end
+
+    respond_to do |format|
+      format.xml
     end
   rescue ActiveRecord::RecordNotFound
     render_404
