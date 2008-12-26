@@ -317,12 +317,15 @@ Spotlight.prototype = {
       check.setAttribute('checked', 'checked');
     }
     
-    this.search();
+    this.search(element);
   },
   
-  search: function(page) {
+  search: function(elem) {
+    // Our elem argument is passed in by Form.Element.Observer, but we
+    // don't actually need it.  We also used to have a 'page' argument,
+    // but I couldn't find any code using it.  
     $('spinner').show();
-    $('page').value = page || '1';
+    $('page').value = '1';
     new Ajax.Request(this.form.action, {
       asynchronous: true, 
       evalScripts:  true, 
