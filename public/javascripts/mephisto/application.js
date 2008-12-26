@@ -53,7 +53,7 @@ var TinyTab = Class.create();
 TinyTab.callbacks ={
   'latest-files': function() {
     if($('latest-assets').childNodes.length == 0)
-      new Ajax.Request(Mephisto.root + '/admin/assets/latest');
+      new Ajax.Request(Mephisto.root + '/admin/assets/latest', {method: 'get'});
   },
   'search-files': function(q) {
     if(!q) return;
@@ -275,7 +275,8 @@ var SectionForm = {
   },
 
   saveSortable: function(section_id, container_id) {
-    var query = $$('#'+container_id+' li').inject([], function(qu, li) {
+    var token = 'authenticity_token=' + Mephisto.token;
+    var query = $$('#'+container_id+' li').inject([token], function(qu, li) {
       qu.push('sorted_ids[]=' + li.getAttribute('id').substr(container_id.length));
       return qu;
     }).join('&')
