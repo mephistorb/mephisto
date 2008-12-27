@@ -3,6 +3,7 @@ ENV['TZ'] = 'US/Central'
 
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
+require 'webrat/rails'
 require 'ruby-debug'
 require 'machinist'
 require File.join(File.dirname(__FILE__), '..', 'spec', 'blueprints')
@@ -12,6 +13,10 @@ require File.join(File.dirname(__FILE__), 'referenced_caching_test_helper')
 
 Site.cache_sweeper_tracing = true
 ActiveRecord::Base.instantiate_observers
+
+Webrat.configure do |config|
+  config.mode = :rails
+end
 
 Time.class_eval do
   class << self
