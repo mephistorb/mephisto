@@ -77,17 +77,19 @@ Rails::Initializer.run do |config|
   # We're slowly moving the contents of vendor and vender/plugins into
   # vendor/gems by adding config.gem declarations.
   config.gem 'RedCloth', :version => '3.0.4', :lib => 'redcloth'
-  config.gem 'BlueCloth', :lib => 'bluecloth'
-  config.gem 'faker'
-  config.gem 'notahat-machinist', :lib => 'machinist',
-             :source => 'http://gems.github.com'
-  config.gem 'rubyzip', :lib => 'zip/zipfilesystem'
-  config.gem 'liquid'
-  config.gem 'will_paginate'
-  config.gem 'mocha'
-  config.gem 'coderay'
+  config.gem 'BlueCloth', :version => '>= 1.0.0', :lib => 'bluecloth'
+  config.gem 'rubyzip', :version => '>= 0.9.1', :lib => 'zip/zipfilesystem'
+  config.gem 'liquid', :version => '>= 1.9.0'
+  config.gem 'will_paginate', :version => '>= 2.2.2'
+  config.gem 'mocha', :version => '0.9.3'
+  config.gem 'coderay', :version => '0.8.260'
   config.gem 'tzinfo', :version => '>= 0.3.12'
   config.gem 'emk-safe_erb', :version => '>= 0.1.2', :lib => 'safe_erb',
+             :source => 'http://gems.github.com'
+
+  # These libraries are needed for our tests and specs.
+  config.gem 'faker', :version => '0.3.1'
+  config.gem 'notahat-machinist', :version => '0.1.2', :lib => 'machinist',
              :source => 'http://gems.github.com'
   config.gem 'nokogiri', :version => '>= 1.1.0' # Used by webrat.
   config.gem 'brynary-webrat', :version => '>= 0.3.2.2', :lib => 'webrat',
