@@ -81,15 +81,15 @@ Rails::Initializer.run do |config|
   config.gem 'rubyzip', :version => '>= 0.9.1', :lib => 'zip/zipfilesystem'
   config.gem 'liquid', :version => '>= 1.9.0'
   config.gem 'will_paginate', :version => '>= 2.2.2'
-  config.gem 'mocha', :version => '0.9.3'
-  config.gem 'coderay', :version => '0.8.260'
+  config.gem 'mocha', :version => '>= 0.9.3'
+  config.gem 'coderay', :version => '>= 0.8.260'
   config.gem 'tzinfo', :version => '>= 0.3.12'
   config.gem 'emk-safe_erb', :version => '>= 0.1.2', :lib => 'safe_erb',
              :source => 'http://gems.github.com'
 
   # These libraries are needed for our tests and specs.
-  config.gem 'faker', :version => '0.3.1'
-  config.gem 'notahat-machinist', :version => '0.1.2', :lib => 'machinist',
+  config.gem 'faker', :version => '>= 0.3.1'
+  config.gem 'notahat-machinist', :version => '>= 0.1.2', :lib => 'machinist',
              :source => 'http://gems.github.com'
   config.gem 'nokogiri', :version => '>= 1.1.0' # Used by webrat.
   config.gem 'brynary-webrat', :version => '>= 0.3.2.2', :lib => 'webrat',
