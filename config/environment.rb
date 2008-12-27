@@ -89,6 +89,8 @@ Rails::Initializer.run do |config|
   config.gem 'tzinfo', :version => '>= 0.3.12'
   config.gem 'emk-safe_erb', :version => '>= 0.1.2', :lib => 'safe_erb',
              :source => 'http://gems.github.com'
+  config.gem 'nokogiri', :version => '>= 1.1.0' # Used by webrat.
+  config.gem 'webrat', :version => '>= 0.3.2'
 end
 
 # Don't update this file, make custom tweaks in config/initializers/custom.rb, 

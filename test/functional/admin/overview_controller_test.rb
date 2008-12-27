@@ -22,7 +22,7 @@ class Admin::OverviewControllerTest < ActionController::TestCase
   def test_should_allow_site_admins_to_access_site
     @user = User.make
     Membership.make :user => @user, :site => @site, :admin => true
-    @request.session[:user] = User.authenticate_for(@site, @user.login, 'test')
+    @request.session[:user] = User.authenticate_for(@site, @user.login, 'password')
 
     get :index
     assert_response :success
@@ -31,7 +31,7 @@ class Admin::OverviewControllerTest < ActionController::TestCase
   def test_should_allow_site_members_to_acces_overview
     @user = User.make
     Membership.make :user => @user, :site => @site, :admin => false
-    @request.session[:user] = User.authenticate_for(@site, @user.login, 'test')
+    @request.session[:user] = User.authenticate_for(@site, @user.login, 'password')
 
     get :index
     assert_response :success
@@ -45,7 +45,7 @@ class Admin::OverviewControllerTest < ActionController::TestCase
   def test_should_allow_http_auth_on_feed
     @user = User.make
     Membership.make :user => @user, :site => @site, :admin => true
-    @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("#{@user.login}:test")}"
+    @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("#{@user.login}:password")}"
     get :feed
     assert_response :success
   end
@@ -72,7 +72,7 @@ class Admin::OverviewControllerTest < ActionController::TestCase
       Membership.make :user => @admin, :site => @site, :admin => true
     end
 
-    @request.session[:user] = User.authenticate_for(@site, @admin.login, 'test')
+    @request.session[:user] = User.authenticate_for(@site, @admin.login, 'password')
     get :index
     assert assigns(:todays_events).include?(@event1),    "#{assigns(:todays_events).collect(&:id).inspect}"
     assert assigns(:todays_events).include?(@event2),  "#{assigns(:todays_events).collect(&:id).inspect}"

@@ -1,4 +1,31 @@
 require File.dirname(__FILE__) + '/../test_helper'
+
+# This file is much older than our other integration tests, and it predates
+# our decision to use Webrat.  So we want to keep the code and techniques
+# in this file as isolated as possible from our other integration tests.
+
+class ActionController::Integration::Session
+  def login_as(login)
+    post 'http://test.host/account/login', :login => login, :password => 'test'
+    assert request.session[:user]
+    assert redirect?
+  end
+
+  def get_with_basic(url, options = {})
+    get url, nil, 'authorization' => "Basic #{Base64.encode64("#{options[:login]}:test")}"
+  end
+
+  def assert_redirected_to(url)
+    assert redirect?
+    assert_equal url, interpret_uri(headers["location"].first)
+  end
+
+  def assert_redirected_to!(url)
+    assert_redirected_to(url)
+    follow_redirect!
+  end
+end
+
 class CachingTest < ActionController::IntegrationTest
   fixtures :contents, :users, :sections, :assigned_sections, :sites
 
@@ -8,7 +35,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_necessary_feeds_and_sections_when_publishing_article
-    visitor = visit
+    visitor = visit_with_session
     writer  = login_as :quentin
     
     visit_sections_and_feeds_with visitor
@@ -25,7 +52,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_feeds_and_sections_when_publishing_article
-    visitor = visit
+    visitor = visit_with_session
     writer  = login_as :quentin
     
     visit_sections_and_feeds_with visitor
@@ -39,7 +66,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_only_expire_overview_when_creating_draft
-    visitor = visit
+    visitor = visit_with_session
     writer  = login_as :quentin
     
     visit_sections_and_feeds_with visitor
@@ -61,7 +88,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_only_expire_overview_when_revising_draft
-    visitor = visit
+    visitor = visit_with_session
     writer  = login_as :quentin
     
     visit_sections_and_feeds_with visitor
@@ -82,7 +109,7 @@ class CachingTest < ActionController::IntegrationTest
 
   def test_should_expire_sections_when_publishing_draft
     AssignedSection.delete_all 'id > 9'
-    visitor = visit
+    visitor = visit_with_session
     writer  = login_as :quentin
     
     visit_sections_and_feeds_with visitor
@@ -100,7 +127,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_articles_after_editing
-    visitor = visit
+    visitor = visit_with_session
     writer  = login_as :quentin
     
     assert_caches_page contents(:welcome).full_permalink do
@@ -128,7 +155,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_cache_and_expire_overview_feed_on_edited_article
-    rss     = visit
+    rss     = visit_with_session
     writer  = login_as :quentin
 
     assert_caches_page overview_path do
@@ -141,7 +168,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_not_expire_cache_on_new_comment
-    visitor = visit
+    visitor = visit_with_session
     assert_caches_page contents(:welcome).full_permalink do
       visitor.read contents(:welcome)
     end
@@ -152,14 +179,14 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_not_cache_comment_post
-    visitor = visit
+    visitor = visit_with_session
     assert_expires_pages "#{contents(:welcome).full_permalink}/comments" do
       visitor.comment_on contents(:welcome), :author => 'bob', :body => 'what a wonderful post.'
     end
   end
 
   def test_should_not_cache_comment_post_on_article_with_closed_comments
-    visitor = visit
+    visitor = visit_with_session
     contents(:welcome).update_attribute :comment_age, -1
     assert_expires_pages "#{contents(:welcome).full_permalink}/comments" do
       visitor.comment_on contents(:welcome), :author => 'bob', :body => 'what a wonderful post.'
@@ -167,7 +194,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_not_cache_comment_post_on_article_with_invalid_comment
-    visitor = visit
+    visitor = visit_with_session
     assert_expires_pages "#{contents(:welcome).full_permalink}/comments" do
       assert_no_difference Comment, :count do
         visitor.comment_on contents(:welcome), {}
@@ -176,14 +203,14 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_not_cache_comments_page_on_get
-    visitor = visit
+    visitor = visit_with_session
     assert_expires_pages "#{contents(:welcome).full_permalink}/comments" do
       visitor.get "#{contents(:welcome).full_permalink}/comments"
     end
   end
 
   def test_should_expire_cache_on_new_comment_if_approved
-    visitor = visit
+    visitor = visit_with_session
     assert_caches_page contents(:welcome).full_permalink do
       visitor.read contents(:welcome)
     end
@@ -198,7 +225,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_cache_when_comment_is_approved
-    visitor = visit
+    visitor = visit_with_session
     assert_caches_page contents(:welcome).full_permalink do
       visitor.read contents(:welcome)
     end
@@ -212,7 +239,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_cache_when_comment_is_unapproved
-    visitor = visit
+    visitor = visit_with_session
     assert_caches_page contents(:welcome).full_permalink do
       visitor.read contents(:welcome)
     end
@@ -226,8 +253,8 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_cache_when_approved_comment_is_deleted
-    visitor = visit
-    rss     = visit
+    visitor = visit_with_session
+    rss     = visit_with_session
     writer  = login_as :quentin
     assert_caches_page contents(:welcome).full_permalink do
       visitor.read contents(:welcome)
@@ -243,8 +270,8 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_only_expire_overview_when_unapproved_comment_is_deleted
-    visitor = visit
-    rss     = visit
+    visitor = visit_with_session
+    rss     = visit_with_session
     writer  = login_as :quentin
     assert_caches_page contents(:welcome).full_permalink do
       visitor.read contents(:welcome)
@@ -263,7 +290,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_not_cache_bad_urls
-    visitor = visit
+    visitor = visit_with_session
     pages   = ['/about/blah', '/foo/bar', '2006/1/2/fasd']
     assert_no_difference CachedPage, :count do
       assert_expires_pages *pages do
@@ -273,7 +300,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_section_cache_when_updating_section
-    visitor = visit
+    visitor = visit_with_session
     assert_caches_page section_url_for(:about) do
       visitor.read sections(:about)
     end
@@ -294,7 +321,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_cache_when_updating_template
-    visit_sections_and_feeds_with visit
+    visit_sections_and_feeds_with visit_with_session
     assert_expires_pages section_url_for(:home), section_url_for(:about), feed_url_for(:home), feed_url_for(:about) do
       login_as :quentin do |writer|
         writer.update_template sites(:first).templates[:error], '<p>error!</p>'
@@ -303,7 +330,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_new_assigned_section_to_article
-    visitor = visit
+    visitor = visit_with_session
     writer  = login_as :quentin
     visit_sections_and_feeds_with visitor
     assert_expires_pages feed_url_for(:about), section_url_for(:about) do
@@ -319,7 +346,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_section_when_removing_from_article
-    visit_sections_and_feeds_with visit
+    visit_sections_and_feeds_with visit_with_session
     assert_expires_pages section_url_for(:home), section_url_for(:about), feed_url_for(:home), feed_url_for(:about) do
       login_as :quentin do |writer|
         writer.revise contents(:site_map), :sections => [sections(:home)]
@@ -328,7 +355,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_section_and_article_cache_when_deleting_article
-    visitor = visit
+    visitor = visit_with_session
     
     visit_sections_and_feeds_with visitor
     visitor.read contents(:site_map)
@@ -344,7 +371,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_resource_when_updating_resource
-    visitor = visit
+    visitor = visit_with_session
     assert_caches_page '/images/rails-logo.png' do
       visitor.read '/images/rails-logo.png'
     end
@@ -357,7 +384,7 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   def test_should_expire_resource_when_removing_resource
-    visitor = visit
+    visitor = visit_with_session
     assert_caches_page '/images/rails-logo.png' do
       visitor.read '/images/rails-logo.png'
     end
@@ -372,7 +399,7 @@ class CachingTest < ActionController::IntegrationTest
   # TODO test_should_expire_resource_when_uploading_resource
 
   def test_should_not_cache_searches
-    visitor = visit
+    visitor = visit_with_session
     assert_expires_page "/search" do
       visitor.get  '/search'
       visitor.get  '/search', :q => 'foo'
@@ -382,7 +409,7 @@ class CachingTest < ActionController::IntegrationTest
 
   def test_should_not_cache_denied_route
     assert_expires_page '/limited_deny' do
-      visit { |v| v.get '/limited_deny' }
+      visit_with_session { |v| v.get '/limited_deny' }
     end
     
     assert_not_cached '/limited_deny'
@@ -390,7 +417,7 @@ class CachingTest < ActionController::IntegrationTest
 
   def test_should_not_cache_redirected_route
     assert_expires_page '/redirect/external' do
-      visit do |v| 
+      visit_with_session do |v| 
         v.get '/redirect/external'
         assert v.redirect?
         assert_equal 'http://external', v.headers["location"].first
@@ -399,6 +426,33 @@ class CachingTest < ActionController::IntegrationTest
   end
 
   protected
+    include Mephisto::Caching::ReferencedCachingTestHelper
+  
+    # creates a session as a logged on user
+    def login_as(login)
+      visit_with_session do |sess|
+        sess.login_as login
+        yield sess if block_given?
+      end
+    end
+
+    # creates an anonymous session
+    def visit_with_session
+      open_session do |sess|
+        sess.host = 'test.host'
+        sess.extend Mephisto::Integration::Actor
+        yield sess if block_given?
+      end
+    end
+
+    def section_url_for(section, article = nil)
+      (article ? sections(section).to_page_url(contents(article)) : sections(section).to_url) * '/'
+    end
+
+    def feed_url_for(section)
+      "/feed/#{sections(section).to_feed_url * '/'}"
+    end
+
     def visit_sections_and_feeds_with(visitor)
       assert_difference CachedPage, :count, 4 do
         assert_caches_page section_url_for(:home) do
