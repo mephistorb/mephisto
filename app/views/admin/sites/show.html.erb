@@ -11,7 +11,7 @@
 <% form_for :site, :url => { :action => "update", :id => @site } do |f| -%>
 <%= f.error_messages %>
 <div id="general" class="setgroup">
-  <h3><%=h @site.title %> <small>(<%= mail_to @site.email %>)</small></h3>
+  <h3><%=h @site.title %> <small>(<%= mail_to h( @site.email ) %>)</small></h3>
   <dl class="setform">
 		<dt><label for="site_host">Host</label></dt>
 		<dd><%= f.text_field :host %></dd>
