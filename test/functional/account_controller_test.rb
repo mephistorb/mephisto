@@ -38,8 +38,8 @@ class AccountControllerLoginTest < ActiveSupport::TestCase
   test "should login as site user" do
     post :login, :login => 'ben', :password => 'test'
     assert session[:user]
-    # ben is not an admin so should be redirected to the front page
-    assert_redirected_to :controller => 'mephisto', :action => 'dispatch'
+    # ben is not a site admin but as a user ben has the ability to post so direct ben to the admin overview
+    assert_redirected_to :controller => 'admin/overview', :action => 'index'
     post :logout
     assert !session[:user]
   end

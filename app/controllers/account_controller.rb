@@ -55,6 +55,7 @@ class AccountController < ApplicationController
 
   protected
     def default_url(user)
-      admin? ? url_for(:controller => '/admin/overview', :action => 'index') : dispatch_url(:path => [])
+      # If the user can log in then they have permission to act in the admin section (non-admins can post, admins can admin the site)
+      logged_in? ? url_for(:controller => '/admin/overview', :action => 'index') : dispatch_url(:path => [])
     end
 end
