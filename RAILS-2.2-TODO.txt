@@ -9,6 +9,7 @@ release based on Rails 2.2.
   Figure out why Mephisto won't work unless tzinfo is installed
   Fix two intermittent comment failures in mephisto_controller_spec
   Follow up on courtenay's BlueCloth patch
+  Add notes about db:create and Unicode to install notes
 
   Make sure we know what's up with plugins
   We need to review our TODO comments
