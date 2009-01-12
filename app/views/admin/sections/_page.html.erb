@@ -1,4 +1,4 @@
 <li id="page-<%= page.id %>">
   <span class="iconb orange handle">&nbsp;</span>
-  <%= link_to page.title, :controller => 'articles', :action => 'edit', :id => page %>
+  <%= link_to h(page.title), :controller => 'articles', :action => 'edit', :id => page %>
 </li>
