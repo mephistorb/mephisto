@@ -16,3 +16,5 @@ config.gem 'nokogiri', :version => '>= 1.1.0' # Used by webrat.
 config.gem 'brynary-webrat', :version => '>= 0.3.2.2', :lib => 'webrat',
                              :source => 'http://gems.github.com'
 
+config.gem 'ruby-debug'
+
