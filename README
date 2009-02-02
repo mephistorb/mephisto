@@ -16,17 +16,15 @@ XXX oh, we can't depend on the rails helpers at all, because they don't
     translate the time from UTC (assuming the TZ env var is correctly
     set) to site time, you've to roll our own, or monkey patch rails :/
 
-= Tests
+= Dependencies
 
-First make sure you have configured a test database in config/database.yml.
+Note that Mephisto depends on fewer gems when RAILS_ENV=production than it
+does in a development environment.
 
-Running the tests requires installing additional gems
+Run 'rake gems:install' to install the development gems.  In a production
+environment, run:
 
-  sudo rake gems:install RAILS_ENV=test
-
-You can now run the tests
-
-  rake test
+  RAILS_ENV=production rake gems:install
 
 = License
 
