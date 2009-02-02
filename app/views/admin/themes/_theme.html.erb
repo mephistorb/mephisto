@@ -3,7 +3,7 @@
         <span title="stored in /<%=h theme.name %>"><%=h theme.title %></span>
         <span class="thememeta">
           <% unless theme.version.blank? -%>v<%=h theme.version %> |<% end -%>
-          by <%=h theme.linked_author.blank? ? 'unknown' : theme.linked_author %>
+          by <%= theme_author_link(theme) %>
         </span>
       </h3>
       <a id="theme-dialog-<%= theme_counter %>" class="theme_dialog">

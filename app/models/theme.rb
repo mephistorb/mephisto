@@ -1,4 +1,6 @@
 class Theme
+
+
   @@root_theme_files   = %w(about.yml preview.png)
   @@theme_directories  = %w(templates layouts javascripts stylesheets images)
   @@allowed_extensions = %w(.js .css .png .gif .jpg .swf .ico) | Site.extensions
@@ -86,11 +88,6 @@ class Theme
   def title
     class << self ; attr_reader :title ; end
     @title = properties['title'] || name
-  end
-
-  def linked_author
-    class << self ; attr_reader :linked_author ; end
-    @linked_author = homepage.blank? ? author : %(<a href="#{CGI.escapeHTML homepage}">#{author}</a>)
   end
 
   def attachments
