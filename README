@@ -16,6 +16,18 @@ XXX oh, we can't depend on the rails helpers at all, because they don't
     translate the time from UTC (assuming the TZ env var is correctly
     set) to site time, you've to roll our own, or monkey patch rails :/
 
+= Tests
+
+First make sure you have configured a test database in config/database.yml.
+
+Running the tests requires installing additional gems
+
+  sudo rake gems:install RAILS_ENV=test
+
+You can now run the tests
+
+  rake test
+
 = License
 
 Mephisto is distributed under the same license as Ruby on Rails. See
