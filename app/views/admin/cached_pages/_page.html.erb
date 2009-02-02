@@ -1,7 +1,7 @@
 <tr id="cached-page-<%= page.id %>" class="<%= cycle("odd","even") %>">
   <td>&nbsp;</td>
   <td><%= h page.url %></div></td>
-  <td nowrap="nowrap" class="time"><%= display_cached_page_date(page) %></td>
+  <td nowrap="nowrap" class="time"><%= h(display_cached_page_date(page)) %></td>
   <td>
     <span id="cached-page-link-<%= page.id %>" class="cached-page-link"><%= link_to_remote 'Clear', {:url => { :action => 'destroy', :id => page }} , :class => "util" %></span>
     <span id="cached-page-deleted-<%= page.id %>" class="cached-page-deleted" style="display:none;">Cleared</span>
